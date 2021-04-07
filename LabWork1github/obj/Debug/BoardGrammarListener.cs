@@ -87,6 +87,28 @@ public interface IBoardGrammarListener : IParseTreeListener {
 	void ExitPlace([NotNull] BoardGrammarParser.PlaceContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.x"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterX([NotNull] BoardGrammarParser.XContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.x"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitX([NotNull] BoardGrammarParser.XContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.y"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterY([NotNull] BoardGrammarParser.YContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.y"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitY([NotNull] BoardGrammarParser.YContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="BoardGrammarParser.boardCreation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

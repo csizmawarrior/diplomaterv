@@ -35,14 +35,15 @@ public partial class TrapGrammarParser : Parser {
 		MOVEROUNDS=8, COLON=9, SEMI=10, COMMA=11, NUMBER=12, ID=13, WS=14;
 	public const int
 		RULE_definition = 0, RULE_name = 1, RULE_statementList = 2, RULE_statement = 3, 
-		RULE_place = 4, RULE_nameDeclaration = 5, RULE_effectDeclaration = 6, 
-		RULE_circleMove = 7, RULE_effect = 8, RULE_damage = 9, RULE_heal = 10, 
-		RULE_monsterSpawn = 11, RULE_teleport = 12, RULE_rangeDeclaration = 13, 
-		RULE_moveRoundDeclaration = 14;
+		RULE_nameDeclaration = 4, RULE_effectDeclaration = 5, RULE_circleMove = 6, 
+		RULE_effect = 7, RULE_damage = 8, RULE_heal = 9, RULE_monsterSpawn = 10, 
+		RULE_teleport = 11, RULE_rangeDeclaration = 12, RULE_moveRoundDeclaration = 13, 
+		RULE_place = 14, RULE_x = 15, RULE_y = 16;
 	public static readonly string[] ruleNames = {
-		"definition", "name", "statementList", "statement", "place", "nameDeclaration", 
+		"definition", "name", "statementList", "statement", "nameDeclaration", 
 		"effectDeclaration", "circleMove", "effect", "damage", "heal", "monsterSpawn", 
-		"teleport", "rangeDeclaration", "moveRoundDeclaration"
+		"teleport", "rangeDeclaration", "moveRoundDeclaration", "place", "x", 
+		"y"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -138,16 +139,16 @@ public partial class TrapGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 33;
+			State = 37;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==NAME) {
 				{
 				{
-				State = 30; statementList();
+				State = 34; statementList();
 				}
 				}
-				State = 35;
+				State = 39;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -193,7 +194,7 @@ public partial class TrapGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 36; Match(ID);
+			State = 40; Match(ID);
 			}
 		}
 		catch (RecognitionException re) {
@@ -245,17 +246,17 @@ public partial class TrapGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 38; nameDeclaration();
-			State = 42;
+			State = 42; nameDeclaration();
+			State = 46;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==RANGE || _la==EFFECT_T) {
 				{
 				{
-				State = 39; statement();
+				State = 43; statement();
 				}
 				}
-				State = 44;
+				State = 48;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -307,77 +308,29 @@ public partial class TrapGrammarParser : Parser {
 		StatementContext _localctx = new StatementContext(_ctx, State);
 		EnterRule(_localctx, 6, RULE_statement);
 		try {
-			State = 48;
+			State = 52;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 45; effectDeclaration();
+				State = 49; effectDeclaration();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 46; rangeDeclaration();
+				State = 50; rangeDeclaration();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 47; circleMove();
+				State = 51; circleMove();
 				}
 				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.ReportError(this, re);
-			_errHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class PlaceContext : ParserRuleContext {
-		public ITerminalNode[] NUMBER() { return GetTokens(TrapGrammarParser.NUMBER); }
-		public ITerminalNode NUMBER(int i) {
-			return GetToken(TrapGrammarParser.NUMBER, i);
-		}
-		public PlaceContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_place; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
-			if (typedListener != null) typedListener.EnterPlace(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
-			if (typedListener != null) typedListener.ExitPlace(this);
-		}
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ITrapGrammarVisitor<TResult> typedVisitor = visitor as ITrapGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitPlace(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public PlaceContext place() {
-		PlaceContext _localctx = new PlaceContext(_ctx, State);
-		EnterRule(_localctx, 8, RULE_place);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 50; Match(NUMBER);
-			State = 51; Match(COMMA);
-			State = 52; Match(NUMBER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -419,7 +372,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public NameDeclarationContext nameDeclaration() {
 		NameDeclarationContext _localctx = new NameDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 10, RULE_nameDeclaration);
+		EnterRule(_localctx, 8, RULE_nameDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -468,7 +421,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public EffectDeclarationContext effectDeclaration() {
 		EffectDeclarationContext _localctx = new EffectDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 12, RULE_effectDeclaration);
+		EnterRule(_localctx, 10, RULE_effectDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -519,7 +472,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public CircleMoveContext circleMove() {
 		CircleMoveContext _localctx = new CircleMoveContext(_ctx, State);
-		EnterRule(_localctx, 14, RULE_circleMove);
+		EnterRule(_localctx, 12, RULE_circleMove);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -576,7 +529,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public EffectContext effect() {
 		EffectContext _localctx = new EffectContext(_ctx, State);
-		EnterRule(_localctx, 16, RULE_effect);
+		EnterRule(_localctx, 14, RULE_effect);
 		try {
 			State = 73;
 			_errHandler.Sync(this);
@@ -646,7 +599,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public DamageContext damage() {
 		DamageContext _localctx = new DamageContext(_ctx, State);
-		EnterRule(_localctx, 18, RULE_damage);
+		EnterRule(_localctx, 16, RULE_damage);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -691,7 +644,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public HealContext heal() {
 		HealContext _localctx = new HealContext(_ctx, State);
-		EnterRule(_localctx, 20, RULE_heal);
+		EnterRule(_localctx, 18, RULE_heal);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -738,7 +691,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public MonsterSpawnContext monsterSpawn() {
 		MonsterSpawnContext _localctx = new MonsterSpawnContext(_ctx, State);
-		EnterRule(_localctx, 22, RULE_monsterSpawn);
+		EnterRule(_localctx, 20, RULE_monsterSpawn);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -785,7 +738,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public TeleportContext teleport() {
 		TeleportContext _localctx = new TeleportContext(_ctx, State);
-		EnterRule(_localctx, 24, RULE_teleport);
+		EnterRule(_localctx, 22, RULE_teleport);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -830,7 +783,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public RangeDeclarationContext rangeDeclaration() {
 		RangeDeclarationContext _localctx = new RangeDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 26, RULE_rangeDeclaration);
+		EnterRule(_localctx, 24, RULE_rangeDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -877,7 +830,7 @@ public partial class TrapGrammarParser : Parser {
 	[RuleVersion(0)]
 	public MoveRoundDeclarationContext moveRoundDeclaration() {
 		MoveRoundDeclarationContext _localctx = new MoveRoundDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 28, RULE_moveRoundDeclaration);
+		EnterRule(_localctx, 26, RULE_moveRoundDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -897,37 +850,176 @@ public partial class TrapGrammarParser : Parser {
 		return _localctx;
 	}
 
+	public partial class PlaceContext : ParserRuleContext {
+		public XContext x() {
+			return GetRuleContext<XContext>(0);
+		}
+		public YContext y() {
+			return GetRuleContext<YContext>(0);
+		}
+		public PlaceContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_place; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
+			if (typedListener != null) typedListener.EnterPlace(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
+			if (typedListener != null) typedListener.ExitPlace(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ITrapGrammarVisitor<TResult> typedVisitor = visitor as ITrapGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPlace(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public PlaceContext place() {
+		PlaceContext _localctx = new PlaceContext(_ctx, State);
+		EnterRule(_localctx, 28, RULE_place);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 96; x();
+			State = 97; Match(COMMA);
+			State = 98; y();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.ReportError(this, re);
+			_errHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class XContext : ParserRuleContext {
+		public ITerminalNode NUMBER() { return GetToken(TrapGrammarParser.NUMBER, 0); }
+		public XContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_x; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
+			if (typedListener != null) typedListener.EnterX(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
+			if (typedListener != null) typedListener.ExitX(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ITrapGrammarVisitor<TResult> typedVisitor = visitor as ITrapGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitX(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public XContext x() {
+		XContext _localctx = new XContext(_ctx, State);
+		EnterRule(_localctx, 30, RULE_x);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 100; Match(NUMBER);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.ReportError(this, re);
+			_errHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class YContext : ParserRuleContext {
+		public ITerminalNode NUMBER() { return GetToken(TrapGrammarParser.NUMBER, 0); }
+		public YContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_y; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
+			if (typedListener != null) typedListener.EnterY(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
+			if (typedListener != null) typedListener.ExitY(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ITrapGrammarVisitor<TResult> typedVisitor = visitor as ITrapGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitY(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public YContext y() {
+		YContext _localctx = new YContext(_ctx, State);
+		EnterRule(_localctx, 32, RULE_y);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 102; Match(NUMBER);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.ReportError(this, re);
+			_errHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\x10\x63\x4\x2\t"+
-		"\x2\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t"+
-		"\t\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10"+
-		"\t\x10\x3\x2\a\x2\"\n\x2\f\x2\xE\x2%\v\x2\x3\x3\x3\x3\x3\x4\x3\x4\a\x4"+
-		"+\n\x4\f\x4\xE\x4.\v\x4\x3\x5\x3\x5\x3\x5\x5\x5\x33\n\x5\x3\x6\x3\x6\x3"+
-		"\x6\x3\x6\x3\a\x3\a\x3\a\x3\a\x3\a\x3\b\x3\b\x3\b\x3\b\x3\b\x3\t\x3\t"+
-		"\x3\t\x3\t\x3\t\x3\n\x3\n\x3\n\x3\n\x5\nL\n\n\x3\v\x3\v\x3\v\x3\f\x3\f"+
-		"\x3\f\x3\r\x3\r\x3\r\x3\xE\x3\xE\x3\xE\x3\xF\x3\xF\x3\xF\x3\xF\x3\xF\x3"+
-		"\x10\x3\x10\x3\x10\x3\x10\x3\x10\x2\x2\x2\x11\x2\x2\x4\x2\x6\x2\b\x2\n"+
-		"\x2\f\x2\xE\x2\x10\x2\x12\x2\x14\x2\x16\x2\x18\x2\x1A\x2\x1C\x2\x1E\x2"+
-		"\x2\x2Z\x2#\x3\x2\x2\x2\x4&\x3\x2\x2\x2\x6(\x3\x2\x2\x2\b\x32\x3\x2\x2"+
-		"\x2\n\x34\x3\x2\x2\x2\f\x38\x3\x2\x2\x2\xE=\x3\x2\x2\x2\x10\x42\x3\x2"+
-		"\x2\x2\x12K\x3\x2\x2\x2\x14M\x3\x2\x2\x2\x16P\x3\x2\x2\x2\x18S\x3\x2\x2"+
-		"\x2\x1AV\x3\x2\x2\x2\x1CY\x3\x2\x2\x2\x1E^\x3\x2\x2\x2 \"\x5\x6\x4\x2"+
-		"! \x3\x2\x2\x2\"%\x3\x2\x2\x2#!\x3\x2\x2\x2#$\x3\x2\x2\x2$\x3\x3\x2\x2"+
-		"\x2%#\x3\x2\x2\x2&\'\a\xF\x2\x2\'\x5\x3\x2\x2\x2(,\x5\f\a\x2)+\x5\b\x5"+
-		"\x2*)\x3\x2\x2\x2+.\x3\x2\x2\x2,*\x3\x2\x2\x2,-\x3\x2\x2\x2-\a\x3\x2\x2"+
-		"\x2.,\x3\x2\x2\x2/\x33\x5\xE\b\x2\x30\x33\x5\x1C\xF\x2\x31\x33\x5\x10"+
-		"\t\x2\x32/\x3\x2\x2\x2\x32\x30\x3\x2\x2\x2\x32\x31\x3\x2\x2\x2\x33\t\x3"+
-		"\x2\x2\x2\x34\x35\a\xE\x2\x2\x35\x36\a\r\x2\x2\x36\x37\a\xE\x2\x2\x37"+
-		"\v\x3\x2\x2\x2\x38\x39\a\b\x2\x2\x39:\a\v\x2\x2:;\x5\x4\x3\x2;<\a\f\x2"+
-		"\x2<\r\x3\x2\x2\x2=>\a\t\x2\x2>?\a\v\x2\x2?@\x5\x12\n\x2@\x41\a\f\x2\x2"+
-		"\x41\xF\x3\x2\x2\x2\x42\x43\x5\x1C\xF\x2\x43\x44\a\r\x2\x2\x44\x45\x5"+
-		"\x1E\x10\x2\x45\x46\a\f\x2\x2\x46\x11\x3\x2\x2\x2GL\x5\x14\v\x2HL\x5\x16"+
-		"\f\x2IL\x5\x1A\xE\x2JL\x5\x18\r\x2KG\x3\x2\x2\x2KH\x3\x2\x2\x2KI\x3\x2"+
-		"\x2\x2KJ\x3\x2\x2\x2L\x13\x3\x2\x2\x2MN\a\x6\x2\x2NO\a\xE\x2\x2O\x15\x3"+
-		"\x2\x2\x2PQ\a\x5\x2\x2QR\a\xE\x2\x2R\x17\x3\x2\x2\x2ST\a\x3\x2\x2TU\x5"+
-		"\n\x6\x2U\x19\x3\x2\x2\x2VW\a\x4\x2\x2WX\x5\n\x6\x2X\x1B\x3\x2\x2\x2Y"+
-		"Z\a\a\x2\x2Z[\a\v\x2\x2[\\\a\xE\x2\x2\\]\a\f\x2\x2]\x1D\x3\x2\x2\x2^_"+
-		"\a\n\x2\x2_`\a\v\x2\x2`\x61\a\xE\x2\x2\x61\x1F\x3\x2\x2\x2\x6#,\x32K";
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\x10k\x4\x2\t\x2"+
+		"\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t\t"+
+		"\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10\t"+
+		"\x10\x4\x11\t\x11\x4\x12\t\x12\x3\x2\a\x2&\n\x2\f\x2\xE\x2)\v\x2\x3\x3"+
+		"\x3\x3\x3\x4\x3\x4\a\x4/\n\x4\f\x4\xE\x4\x32\v\x4\x3\x5\x3\x5\x3\x5\x5"+
+		"\x5\x37\n\x5\x3\x6\x3\x6\x3\x6\x3\x6\x3\x6\x3\a\x3\a\x3\a\x3\a\x3\a\x3"+
+		"\b\x3\b\x3\b\x3\b\x3\b\x3\t\x3\t\x3\t\x3\t\x5\tL\n\t\x3\n\x3\n\x3\n\x3"+
+		"\v\x3\v\x3\v\x3\f\x3\f\x3\f\x3\r\x3\r\x3\r\x3\xE\x3\xE\x3\xE\x3\xE\x3"+
+		"\xE\x3\xF\x3\xF\x3\xF\x3\xF\x3\x10\x3\x10\x3\x10\x3\x10\x3\x11\x3\x11"+
+		"\x3\x12\x3\x12\x3\x12\x2\x2\x2\x13\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE"+
+		"\x2\x10\x2\x12\x2\x14\x2\x16\x2\x18\x2\x1A\x2\x1C\x2\x1E\x2 \x2\"\x2\x2"+
+		"\x2`\x2\'\x3\x2\x2\x2\x4*\x3\x2\x2\x2\x6,\x3\x2\x2\x2\b\x36\x3\x2\x2\x2"+
+		"\n\x38\x3\x2\x2\x2\f=\x3\x2\x2\x2\xE\x42\x3\x2\x2\x2\x10K\x3\x2\x2\x2"+
+		"\x12M\x3\x2\x2\x2\x14P\x3\x2\x2\x2\x16S\x3\x2\x2\x2\x18V\x3\x2\x2\x2\x1A"+
+		"Y\x3\x2\x2\x2\x1C^\x3\x2\x2\x2\x1E\x62\x3\x2\x2\x2 \x66\x3\x2\x2\x2\""+
+		"h\x3\x2\x2\x2$&\x5\x6\x4\x2%$\x3\x2\x2\x2&)\x3\x2\x2\x2\'%\x3\x2\x2\x2"+
+		"\'(\x3\x2\x2\x2(\x3\x3\x2\x2\x2)\'\x3\x2\x2\x2*+\a\xF\x2\x2+\x5\x3\x2"+
+		"\x2\x2,\x30\x5\n\x6\x2-/\x5\b\x5\x2.-\x3\x2\x2\x2/\x32\x3\x2\x2\x2\x30"+
+		".\x3\x2\x2\x2\x30\x31\x3\x2\x2\x2\x31\a\x3\x2\x2\x2\x32\x30\x3\x2\x2\x2"+
+		"\x33\x37\x5\f\a\x2\x34\x37\x5\x1A\xE\x2\x35\x37\x5\xE\b\x2\x36\x33\x3"+
+		"\x2\x2\x2\x36\x34\x3\x2\x2\x2\x36\x35\x3\x2\x2\x2\x37\t\x3\x2\x2\x2\x38"+
+		"\x39\a\b\x2\x2\x39:\a\v\x2\x2:;\x5\x4\x3\x2;<\a\f\x2\x2<\v\x3\x2\x2\x2"+
+		"=>\a\t\x2\x2>?\a\v\x2\x2?@\x5\x10\t\x2@\x41\a\f\x2\x2\x41\r\x3\x2\x2\x2"+
+		"\x42\x43\x5\x1A\xE\x2\x43\x44\a\r\x2\x2\x44\x45\x5\x1C\xF\x2\x45\x46\a"+
+		"\f\x2\x2\x46\xF\x3\x2\x2\x2GL\x5\x12\n\x2HL\x5\x14\v\x2IL\x5\x18\r\x2"+
+		"JL\x5\x16\f\x2KG\x3\x2\x2\x2KH\x3\x2\x2\x2KI\x3\x2\x2\x2KJ\x3\x2\x2\x2"+
+		"L\x11\x3\x2\x2\x2MN\a\x6\x2\x2NO\a\xE\x2\x2O\x13\x3\x2\x2\x2PQ\a\x5\x2"+
+		"\x2QR\a\xE\x2\x2R\x15\x3\x2\x2\x2ST\a\x3\x2\x2TU\x5\x1E\x10\x2U\x17\x3"+
+		"\x2\x2\x2VW\a\x4\x2\x2WX\x5\x1E\x10\x2X\x19\x3\x2\x2\x2YZ\a\a\x2\x2Z["+
+		"\a\v\x2\x2[\\\a\xE\x2\x2\\]\a\f\x2\x2]\x1B\x3\x2\x2\x2^_\a\n\x2\x2_`\a"+
+		"\v\x2\x2`\x61\a\xE\x2\x2\x61\x1D\x3\x2\x2\x2\x62\x63\x5 \x11\x2\x63\x64"+
+		"\a\r\x2\x2\x64\x65\x5\"\x12\x2\x65\x1F\x3\x2\x2\x2\x66g\a\xE\x2\x2g!\x3"+
+		"\x2\x2\x2hi\a\xE\x2\x2i#\x3\x2\x2\x2\x6\'\x30\x36K";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

@@ -61,13 +61,6 @@ public interface ITrapGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStatement([NotNull] TrapGrammarParser.StatementContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TrapGrammarParser.place"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPlace([NotNull] TrapGrammarParser.PlaceContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="TrapGrammarParser.nameDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -136,5 +129,26 @@ public interface ITrapGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMoveRoundDeclaration([NotNull] TrapGrammarParser.MoveRoundDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TrapGrammarParser.place"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPlace([NotNull] TrapGrammarParser.PlaceContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TrapGrammarParser.x"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitX([NotNull] TrapGrammarParser.XContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TrapGrammarParser.y"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitY([NotNull] TrapGrammarParser.YContext context);
 }
 } // namespace LabWork1github

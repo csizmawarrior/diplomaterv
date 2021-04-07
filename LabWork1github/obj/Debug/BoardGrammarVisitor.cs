@@ -68,6 +68,20 @@ public interface IBoardGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitPlace([NotNull] BoardGrammarParser.PlaceContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="BoardGrammarParser.x"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitX([NotNull] BoardGrammarParser.XContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BoardGrammarParser.y"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitY([NotNull] BoardGrammarParser.YContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="BoardGrammarParser.boardCreation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

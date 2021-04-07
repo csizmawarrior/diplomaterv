@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LabWork1
+namespace LabWork1github
 {
     public class Board
     {
         private int width = 0;
-        private int length = 0;
+        private int height = 0;
 
         public Player player { get; set; }
 
@@ -17,8 +17,7 @@ namespace LabWork1
 
         public List<Trap> Traps { get; set; }
 
-
-        public int With
+        public int Width
         {
             get
             {
@@ -30,16 +29,16 @@ namespace LabWork1
                     width = value;
             }
         }
-        public int Length
+        public int Height
         {
             get
             {
-                return length;
+                return height;
             }
             set
             {
-                if (length == 0)
-                    length = value;
+                if (height == 0)
+                    height = value;
             }
         }
     }

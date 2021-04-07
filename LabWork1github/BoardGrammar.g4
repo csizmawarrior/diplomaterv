@@ -9,8 +9,10 @@ statement: boardCreation
         ;
 
 typeName: ID;
-place: COORDINATE ',' COORDINATE;
+place: x ',' y;
 
+x: COORDINATE;
+y: COORDINATE;
 boardCreation: BOARD  place ';';
 playerPlacement: PLAYER place ';' ;
 monsterPlacement: MOSNTER place typeName ';' ;

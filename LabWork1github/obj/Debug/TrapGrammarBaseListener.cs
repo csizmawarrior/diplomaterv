@@ -88,19 +88,6 @@ public partial class TrapGrammarBaseListener : ITrapGrammarListener {
 	public virtual void ExitStatement([NotNull] TrapGrammarParser.StatementContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TrapGrammarParser.place"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPlace([NotNull] TrapGrammarParser.PlaceContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TrapGrammarParser.place"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPlace([NotNull] TrapGrammarParser.PlaceContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="TrapGrammarParser.nameDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -229,6 +216,45 @@ public partial class TrapGrammarBaseListener : ITrapGrammarListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMoveRoundDeclaration([NotNull] TrapGrammarParser.MoveRoundDeclarationContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.place"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPlace([NotNull] TrapGrammarParser.PlaceContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.place"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPlace([NotNull] TrapGrammarParser.PlaceContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.x"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterX([NotNull] TrapGrammarParser.XContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.x"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitX([NotNull] TrapGrammarParser.XContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.y"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterY([NotNull] TrapGrammarParser.YContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.y"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitY([NotNull] TrapGrammarParser.YContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

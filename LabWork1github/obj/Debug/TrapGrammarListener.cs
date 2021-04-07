@@ -76,17 +76,6 @@ public interface ITrapGrammarListener : IParseTreeListener {
 	void ExitStatement([NotNull] TrapGrammarParser.StatementContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TrapGrammarParser.place"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPlace([NotNull] TrapGrammarParser.PlaceContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TrapGrammarParser.place"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPlace([NotNull] TrapGrammarParser.PlaceContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="TrapGrammarParser.nameDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -195,5 +184,38 @@ public interface ITrapGrammarListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitMoveRoundDeclaration([NotNull] TrapGrammarParser.MoveRoundDeclarationContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.place"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPlace([NotNull] TrapGrammarParser.PlaceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.place"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPlace([NotNull] TrapGrammarParser.PlaceContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.x"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterX([NotNull] TrapGrammarParser.XContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.x"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitX([NotNull] TrapGrammarParser.XContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.y"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterY([NotNull] TrapGrammarParser.YContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.y"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitY([NotNull] TrapGrammarParser.YContext context);
 }
 } // namespace LabWork1github

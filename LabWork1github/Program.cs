@@ -3,7 +3,7 @@ using LabWork1github;
 using System;
 using System.Collections.Generic;
 
-namespace LabWork1
+namespace LabWork1github
 {
     class Program
     {
@@ -11,6 +11,7 @@ namespace LabWork1
         public static Board Board = new Board();
         public static List<MonsterType> monsterTypes = new List<MonsterType>();
         public static List<TrapType> trapTypes = new List<TrapType>();
+        public static int starterHP = 300;
 
         static void Main(string[] args)
         {

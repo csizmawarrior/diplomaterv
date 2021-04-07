@@ -101,6 +101,32 @@ public partial class BoardGrammarBaseListener : IBoardGrammarListener {
 	public virtual void ExitPlace([NotNull] BoardGrammarParser.PlaceContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.x"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterX([NotNull] BoardGrammarParser.XContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.x"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitX([NotNull] BoardGrammarParser.XContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.y"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterY([NotNull] BoardGrammarParser.YContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.y"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitY([NotNull] BoardGrammarParser.YContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="BoardGrammarParser.boardCreation"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

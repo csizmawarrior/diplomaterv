@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using LabWork1;
+using LabWork1github;
 using LabWork1github;
 using static LabWork1github.MonsterGrammarParser;
 
-namespace LabWork1
+namespace LabWork1github
 {
     class MonsterGrammarVisitor : MonsterGrammarBaseVisitor<object>
     {

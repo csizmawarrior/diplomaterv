@@ -55,6 +55,8 @@
     <Compile Include="BoardGrammar.g4.parser.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
+    <Compile Include="BoardGrammarVisitor.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterGrammar.g4.lexer.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
@@ -81,6 +83,7 @@
     <Compile Include="TrapGrammar.g4.parser.cs">
       <DependentUpon>TrapGrammar.g4</DependentUpon>
     </Compile>
+    <Compile Include="TrapGrammarVisitor.cs" />
     <Compile Include="TrapType.cs" />
   </ItemGroup>
   <ItemGroup>

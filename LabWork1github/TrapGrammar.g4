@@ -9,7 +9,7 @@ statement: effectDeclaration
         | circleMove
         ;
 
-place: NUMBER ',' NUMBER;
+
 
 nameDeclaration: NAME ':' name ';' ;
 effectDeclaration: EFFECT_T ':' effect ';';
@@ -23,6 +23,10 @@ monsterSpawn: SPAWN place;
 teleport: TELEPORT_T place;
 rangeDeclaration: RANGE ':' NUMBER ';';
 moveRoundDeclaration: MOVEROUNDS ':' NUMBER;
+place: x ',' y;
+
+x: NUMBER;
+y: NUMBER;
 
 SPAWN: 'spawn';
 TELEPORT_T: 'teleport';
