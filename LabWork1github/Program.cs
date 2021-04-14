@@ -7,6 +7,8 @@ namespace LabWork1github
 {
     class Program
     {
+
+
         //átír grammarek hogy jó legyen a place
         public static Board Board = new Board();
         public static List<MonsterType> monsterTypes = new List<MonsterType>();
@@ -19,6 +21,20 @@ namespace LabWork1github
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
             Console.WriteLine("Hello World!");
 
+
+            MonsterTypeLoader();
+            TrapLoader();
+            BoardLoader();
+
+            Console.WriteLine("Hello World!");
+
+            Console.ReadKey();
+
+            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+        }
+
+        private static void MonsterTypeLoader()
+        {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/CloseMonster.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
             MonsterGrammarLexer MonsterGrammarLexer_ = new MonsterGrammarLexer(inputStream);
@@ -27,18 +43,30 @@ namespace LabWork1github
             MonsterGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
             MonsterGrammarVisitor visitor = new MonsterGrammarVisitor();
             visitor.Visit(chatContext);
+        }
 
-            foreach (var monster in monsterTypes)
-            {
-                Console.WriteLine(monster.Name);
-                Console.WriteLine(monster.ShootRound);
-                Console.WriteLine(monster.MoveRound);
-                Console.WriteLine(monster.Range);
-            }
+        public static void BoardLoader()
+        {
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/BoardCreation.txt");
+            AntlrInputStream inputStream = new AntlrInputStream(text);
+            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
+            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
+            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(chatContext);
+        }
 
-            Console.ReadKey();
-
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+        public static void TrapLoader()
+        {
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/TrapTypes.txt");
+            AntlrInputStream inputStream = new AntlrInputStream(text);
+            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
+            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
+            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(chatContext);
         }
     }
 }

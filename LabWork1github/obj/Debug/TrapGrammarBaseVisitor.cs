@@ -101,7 +101,7 @@ public partial class TrapGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	public virtual Result VisitEffectDeclaration([NotNull] TrapGrammarParser.EffectDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TrapGrammarParser.circleMove"/>.
+	/// Visit a parse tree produced by <see cref="TrapGrammarParser.moveData"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -109,7 +109,7 @@ public partial class TrapGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitCircleMove([NotNull] TrapGrammarParser.CircleMoveContext context) { return VisitChildren(context); }
+	public virtual Result VisitMoveData([NotNull] TrapGrammarParser.MoveDataContext context) { return VisitChildren(context); }
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TrapGrammarParser.effect"/>.

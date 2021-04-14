@@ -43,17 +43,6 @@ public interface IPlayerGrammarListener : IParseTreeListener {
 	void ExitProgram([NotNull] PlayerGrammarParser.ProgramContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="PlayerGrammarParser.statementList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterStatementList([NotNull] PlayerGrammarParser.StatementListContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="PlayerGrammarParser.statementList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitStatementList([NotNull] PlayerGrammarParser.StatementListContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="PlayerGrammarParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

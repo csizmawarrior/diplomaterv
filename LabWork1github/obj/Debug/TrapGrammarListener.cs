@@ -98,15 +98,15 @@ public interface ITrapGrammarListener : IParseTreeListener {
 	void ExitEffectDeclaration([NotNull] TrapGrammarParser.EffectDeclarationContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TrapGrammarParser.circleMove"/>.
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.moveData"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCircleMove([NotNull] TrapGrammarParser.CircleMoveContext context);
+	void EnterMoveData([NotNull] TrapGrammarParser.MoveDataContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TrapGrammarParser.circleMove"/>.
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.moveData"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCircleMove([NotNull] TrapGrammarParser.CircleMoveContext context);
+	void ExitMoveData([NotNull] TrapGrammarParser.MoveDataContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TrapGrammarParser.effect"/>.

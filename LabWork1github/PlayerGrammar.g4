@@ -6,8 +6,7 @@
 
 grammar PlayerGrammar;
 
-program: statementList;
-statementList: statement*;
+program: statement;
 statement: movingStatement
         | shootingStatement
         | healthCheckStatement

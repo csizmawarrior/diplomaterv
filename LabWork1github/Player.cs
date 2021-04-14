@@ -10,10 +10,26 @@ namespace LabWork1github
     {
         public Player(Place p, int hp)
         {
-            health = hp;
-            place = p;
+            Health = hp;
+            Place = p;
         }
-        public int health { get; set; }
-        public Place place { get; set; }
+        
+        public int Health { get; set; }
+        public Place Place { get; set; }
+
+        public void Damage(int amount)
+        {
+            Health -= amount;
+        }
+        public void Heal(int amount)
+        {
+            Health += amount;
+            if (Health > Program.starterHP)
+                Health = Program.starterHP;
+        }
+        public void Teleport(Place newPlace)
+        {
+            Place = newPlace;
+        }
     }
 }

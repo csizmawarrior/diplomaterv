@@ -6,14 +6,14 @@ name: ID;
 statementList: nameDeclaration statement*;
 statement: effectDeclaration
         | rangeDeclaration
-        | circleMove
+        | moveData
         ;
 
 
 
 nameDeclaration: NAME ':' name ';' ;
 effectDeclaration: EFFECT_T ':' effect ';';
-circleMove: rangeDeclaration',' moveRoundDeclaration ';';
+moveData: rangeDeclaration',' moveRoundDeclaration ';';
 
 
 effect: damage | heal | teleport | monsterSpawn;

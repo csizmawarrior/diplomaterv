@@ -34,11 +34,11 @@ public partial class PlayerGrammarParser : Parser {
 		SEMI=1, COMMA=2, FORWARD=3, LEFT=4, RIGHT=5, BACKWARD=6, MOVE=7, SHOOT=8, 
 		HEALTH=9, WS=10;
 	public const int
-		RULE_program = 0, RULE_statementList = 1, RULE_statement = 2, RULE_direction = 3, 
-		RULE_movingStatement = 4, RULE_shootingStatement = 5, RULE_healthCheckStatement = 6;
+		RULE_program = 0, RULE_statement = 1, RULE_direction = 2, RULE_movingStatement = 3, 
+		RULE_shootingStatement = 4, RULE_healthCheckStatement = 5;
 	public static readonly string[] ruleNames = {
-		"program", "statementList", "statement", "direction", "movingStatement", 
-		"shootingStatement", "healthCheckStatement"
+		"program", "statement", "direction", "movingStatement", "shootingStatement", 
+		"healthCheckStatement"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -99,8 +99,8 @@ public partial class PlayerGrammarParser : Parser {
 		_interp = new ParserATNSimulator(this,_ATN);
 	}
 	public partial class ProgramContext : ParserRuleContext {
-		public StatementListContext statementList() {
-			return GetRuleContext<StatementListContext>(0);
+		public StatementContext statement() {
+			return GetRuleContext<StatementContext>(0);
 		}
 		public ProgramContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -129,68 +129,7 @@ public partial class PlayerGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 14; statementList();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.ReportError(this, re);
-			_errHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class StatementListContext : ParserRuleContext {
-		public StatementContext[] statement() {
-			return GetRuleContexts<StatementContext>();
-		}
-		public StatementContext statement(int i) {
-			return GetRuleContext<StatementContext>(i);
-		}
-		public StatementListContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_statementList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IPlayerGrammarListener typedListener = listener as IPlayerGrammarListener;
-			if (typedListener != null) typedListener.EnterStatementList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IPlayerGrammarListener typedListener = listener as IPlayerGrammarListener;
-			if (typedListener != null) typedListener.ExitStatementList(this);
-		}
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IPlayerGrammarVisitor<TResult> typedVisitor = visitor as IPlayerGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitStatementList(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public StatementListContext statementList() {
-		StatementListContext _localctx = new StatementListContext(_ctx, State);
-		EnterRule(_localctx, 2, RULE_statementList);
-		int _la;
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 19;
-			_errHandler.Sync(this);
-			_la = _input.La(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOVE) | (1L << SHOOT) | (1L << HEALTH))) != 0)) {
-				{
-				{
-				State = 16; statement();
-				}
-				}
-				State = 21;
-				_errHandler.Sync(this);
-				_la = _input.La(1);
-			}
+			State = 12; statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -237,27 +176,27 @@ public partial class PlayerGrammarParser : Parser {
 	[RuleVersion(0)]
 	public StatementContext statement() {
 		StatementContext _localctx = new StatementContext(_ctx, State);
-		EnterRule(_localctx, 4, RULE_statement);
+		EnterRule(_localctx, 2, RULE_statement);
 		try {
-			State = 25;
+			State = 17;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case MOVE:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 22; movingStatement();
+				State = 14; movingStatement();
 				}
 				break;
 			case SHOOT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 23; shootingStatement();
+				State = 15; shootingStatement();
 				}
 				break;
 			case HEALTH:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 24; healthCheckStatement();
+				State = 16; healthCheckStatement();
 				}
 				break;
 			default:
@@ -299,12 +238,12 @@ public partial class PlayerGrammarParser : Parser {
 	[RuleVersion(0)]
 	public DirectionContext direction() {
 		DirectionContext _localctx = new DirectionContext(_ctx, State);
-		EnterRule(_localctx, 6, RULE_direction);
+		EnterRule(_localctx, 4, RULE_direction);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 27;
+			State = 19;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FORWARD) | (1L << LEFT) | (1L << RIGHT) | (1L << BACKWARD))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -357,12 +296,12 @@ public partial class PlayerGrammarParser : Parser {
 	[RuleVersion(0)]
 	public MovingStatementContext movingStatement() {
 		MovingStatementContext _localctx = new MovingStatementContext(_ctx, State);
-		EnterRule(_localctx, 8, RULE_movingStatement);
+		EnterRule(_localctx, 6, RULE_movingStatement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 29; Match(MOVE);
-			State = 30; direction();
+			State = 21; Match(MOVE);
+			State = 22; direction();
 			}
 		}
 		catch (RecognitionException re) {
@@ -404,12 +343,12 @@ public partial class PlayerGrammarParser : Parser {
 	[RuleVersion(0)]
 	public ShootingStatementContext shootingStatement() {
 		ShootingStatementContext _localctx = new ShootingStatementContext(_ctx, State);
-		EnterRule(_localctx, 10, RULE_shootingStatement);
+		EnterRule(_localctx, 8, RULE_shootingStatement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 32; Match(SHOOT);
-			State = 33; direction();
+			State = 24; Match(SHOOT);
+			State = 25; direction();
 			}
 		}
 		catch (RecognitionException re) {
@@ -448,11 +387,11 @@ public partial class PlayerGrammarParser : Parser {
 	[RuleVersion(0)]
 	public HealthCheckStatementContext healthCheckStatement() {
 		HealthCheckStatementContext _localctx = new HealthCheckStatementContext(_ctx, State);
-		EnterRule(_localctx, 12, RULE_healthCheckStatement);
+		EnterRule(_localctx, 10, RULE_healthCheckStatement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 35; Match(HEALTH);
+			State = 27; Match(HEALTH);
 			}
 		}
 		catch (RecognitionException re) {
@@ -467,20 +406,17 @@ public partial class PlayerGrammarParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\f(\x4\x2\t\x2\x4"+
-		"\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x3\x2\x3\x2"+
-		"\x3\x3\a\x3\x14\n\x3\f\x3\xE\x3\x17\v\x3\x3\x4\x3\x4\x3\x4\x5\x4\x1C\n"+
-		"\x4\x3\x5\x3\x5\x3\x6\x3\x6\x3\x6\x3\a\x3\a\x3\a\x3\b\x3\b\x3\b\x2\x2"+
-		"\x2\t\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE\x2\x2\x3\x3\x2\x5\b#\x2\x10"+
-		"\x3\x2\x2\x2\x4\x15\x3\x2\x2\x2\x6\x1B\x3\x2\x2\x2\b\x1D\x3\x2\x2\x2\n"+
-		"\x1F\x3\x2\x2\x2\f\"\x3\x2\x2\x2\xE%\x3\x2\x2\x2\x10\x11\x5\x4\x3\x2\x11"+
-		"\x3\x3\x2\x2\x2\x12\x14\x5\x6\x4\x2\x13\x12\x3\x2\x2\x2\x14\x17\x3\x2"+
-		"\x2\x2\x15\x13\x3\x2\x2\x2\x15\x16\x3\x2\x2\x2\x16\x5\x3\x2\x2\x2\x17"+
-		"\x15\x3\x2\x2\x2\x18\x1C\x5\n\x6\x2\x19\x1C\x5\f\a\x2\x1A\x1C\x5\xE\b"+
-		"\x2\x1B\x18\x3\x2\x2\x2\x1B\x19\x3\x2\x2\x2\x1B\x1A\x3\x2\x2\x2\x1C\a"+
-		"\x3\x2\x2\x2\x1D\x1E\t\x2\x2\x2\x1E\t\x3\x2\x2\x2\x1F \a\t\x2\x2 !\x5"+
-		"\b\x5\x2!\v\x3\x2\x2\x2\"#\a\n\x2\x2#$\x5\b\x5\x2$\r\x3\x2\x2\x2%&\a\v"+
-		"\x2\x2&\xF\x3\x2\x2\x2\x4\x15\x1B";
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\f \x4\x2\t\x2\x4"+
+		"\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x3\x2\x3\x2\x3\x3\x3"+
+		"\x3\x3\x3\x5\x3\x14\n\x3\x3\x4\x3\x4\x3\x5\x3\x5\x3\x5\x3\x6\x3\x6\x3"+
+		"\x6\x3\a\x3\a\x3\a\x2\x2\x2\b\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\x2\x3\x3"+
+		"\x2\x5\b\x1B\x2\xE\x3\x2\x2\x2\x4\x13\x3\x2\x2\x2\x6\x15\x3\x2\x2\x2\b"+
+		"\x17\x3\x2\x2\x2\n\x1A\x3\x2\x2\x2\f\x1D\x3\x2\x2\x2\xE\xF\x5\x4\x3\x2"+
+		"\xF\x3\x3\x2\x2\x2\x10\x14\x5\b\x5\x2\x11\x14\x5\n\x6\x2\x12\x14\x5\f"+
+		"\a\x2\x13\x10\x3\x2\x2\x2\x13\x11\x3\x2\x2\x2\x13\x12\x3\x2\x2\x2\x14"+
+		"\x5\x3\x2\x2\x2\x15\x16\t\x2\x2\x2\x16\a\x3\x2\x2\x2\x17\x18\a\t\x2\x2"+
+		"\x18\x19\x5\x6\x4\x2\x19\t\x3\x2\x2\x2\x1A\x1B\a\n\x2\x2\x1B\x1C\x5\x6"+
+		"\x4\x2\x1C\v\x3\x2\x2\x2\x1D\x1E\a\v\x2\x2\x1E\r\x3\x2\x2\x2\x3\x13";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

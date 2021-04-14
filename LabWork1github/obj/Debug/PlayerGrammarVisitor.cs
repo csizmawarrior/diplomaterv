@@ -40,13 +40,6 @@ public interface IPlayerGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitProgram([NotNull] PlayerGrammarParser.ProgramContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="PlayerGrammarParser.statementList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitStatementList([NotNull] PlayerGrammarParser.StatementListContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="PlayerGrammarParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

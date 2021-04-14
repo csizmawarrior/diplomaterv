@@ -75,11 +75,11 @@ public interface ITrapGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitEffectDeclaration([NotNull] TrapGrammarParser.EffectDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TrapGrammarParser.circleMove"/>.
+	/// Visit a parse tree produced by <see cref="TrapGrammarParser.moveData"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCircleMove([NotNull] TrapGrammarParser.CircleMoveContext context);
+	Result VisitMoveData([NotNull] TrapGrammarParser.MoveDataContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TrapGrammarParser.effect"/>.

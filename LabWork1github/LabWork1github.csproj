@@ -58,6 +58,7 @@
     <Compile Include="BoardGrammarVisitor.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Monster.cs" />
+    <Compile Include="MonsterAI.cs" />
     <Compile Include="MonsterGrammar.g4.lexer.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
     </Compile>
@@ -74,9 +75,12 @@
     <Compile Include="PlayerGrammar.g4.parser.cs">
       <DependentUpon>PlayerGrammar.g4</DependentUpon>
     </Compile>
+    <Compile Include="PlayerGrammarVisitor.cs" />
+    <Compile Include="PlayerMove.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trap.cs" />
+    <Compile Include="TrapAI.cs" />
     <Compile Include="TrapGrammar.g4.lexer.cs">
       <DependentUpon>TrapGrammar.g4</DependentUpon>
     </Compile>
@@ -96,6 +100,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <Antlr4 Include="PlayerGrammar.g4">
       <Generator>MSBuild:Compile</Generator>

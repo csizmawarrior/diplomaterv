@@ -49,19 +49,6 @@ public partial class PlayerGrammarBaseListener : IPlayerGrammarListener {
 	public virtual void ExitProgram([NotNull] PlayerGrammarParser.ProgramContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="PlayerGrammarParser.statementList"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStatementList([NotNull] PlayerGrammarParser.StatementListContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="PlayerGrammarParser.statementList"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStatementList([NotNull] PlayerGrammarParser.StatementListContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="PlayerGrammarParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

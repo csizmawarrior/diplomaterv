@@ -114,17 +114,17 @@ public partial class TrapGrammarBaseListener : ITrapGrammarListener {
 	public virtual void ExitEffectDeclaration([NotNull] TrapGrammarParser.EffectDeclarationContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TrapGrammarParser.circleMove"/>.
+	/// Enter a parse tree produced by <see cref="TrapGrammarParser.moveData"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCircleMove([NotNull] TrapGrammarParser.CircleMoveContext context) { }
+	public virtual void EnterMoveData([NotNull] TrapGrammarParser.MoveDataContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TrapGrammarParser.circleMove"/>.
+	/// Exit a parse tree produced by <see cref="TrapGrammarParser.moveData"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCircleMove([NotNull] TrapGrammarParser.CircleMoveContext context) { }
+	public virtual void ExitMoveData([NotNull] TrapGrammarParser.MoveDataContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TrapGrammarParser.effect"/>.

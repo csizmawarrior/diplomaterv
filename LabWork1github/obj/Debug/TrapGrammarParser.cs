@@ -35,13 +35,13 @@ public partial class TrapGrammarParser : Parser {
 		MOVEROUNDS=8, COLON=9, SEMI=10, COMMA=11, NUMBER=12, ID=13, WS=14;
 	public const int
 		RULE_definition = 0, RULE_name = 1, RULE_statementList = 2, RULE_statement = 3, 
-		RULE_nameDeclaration = 4, RULE_effectDeclaration = 5, RULE_circleMove = 6, 
+		RULE_nameDeclaration = 4, RULE_effectDeclaration = 5, RULE_moveData = 6, 
 		RULE_effect = 7, RULE_damage = 8, RULE_heal = 9, RULE_monsterSpawn = 10, 
 		RULE_teleport = 11, RULE_rangeDeclaration = 12, RULE_moveRoundDeclaration = 13, 
 		RULE_place = 14, RULE_x = 15, RULE_y = 16;
 	public static readonly string[] ruleNames = {
 		"definition", "name", "statementList", "statement", "nameDeclaration", 
-		"effectDeclaration", "circleMove", "effect", "damage", "heal", "monsterSpawn", 
+		"effectDeclaration", "moveData", "effect", "damage", "heal", "monsterSpawn", 
 		"teleport", "rangeDeclaration", "moveRoundDeclaration", "place", "x", 
 		"y"
 	};
@@ -280,8 +280,8 @@ public partial class TrapGrammarParser : Parser {
 		public RangeDeclarationContext rangeDeclaration() {
 			return GetRuleContext<RangeDeclarationContext>(0);
 		}
-		public CircleMoveContext circleMove() {
-			return GetRuleContext<CircleMoveContext>(0);
+		public MoveDataContext moveData() {
+			return GetRuleContext<MoveDataContext>(0);
 		}
 		public StatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -328,7 +328,7 @@ public partial class TrapGrammarParser : Parser {
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 51; circleMove();
+				State = 51; moveData();
 				}
 				break;
 			}
@@ -442,37 +442,37 @@ public partial class TrapGrammarParser : Parser {
 		return _localctx;
 	}
 
-	public partial class CircleMoveContext : ParserRuleContext {
+	public partial class MoveDataContext : ParserRuleContext {
 		public RangeDeclarationContext rangeDeclaration() {
 			return GetRuleContext<RangeDeclarationContext>(0);
 		}
 		public MoveRoundDeclarationContext moveRoundDeclaration() {
 			return GetRuleContext<MoveRoundDeclarationContext>(0);
 		}
-		public CircleMoveContext(ParserRuleContext parent, int invokingState)
+		public MoveDataContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_circleMove; } }
+		public override int RuleIndex { get { return RULE_moveData; } }
 		public override void EnterRule(IParseTreeListener listener) {
 			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
-			if (typedListener != null) typedListener.EnterCircleMove(this);
+			if (typedListener != null) typedListener.EnterMoveData(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			ITrapGrammarListener typedListener = listener as ITrapGrammarListener;
-			if (typedListener != null) typedListener.ExitCircleMove(this);
+			if (typedListener != null) typedListener.ExitMoveData(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITrapGrammarVisitor<TResult> typedVisitor = visitor as ITrapGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitCircleMove(this);
+			if (typedVisitor != null) return typedVisitor.VisitMoveData(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public CircleMoveContext circleMove() {
-		CircleMoveContext _localctx = new CircleMoveContext(_ctx, State);
-		EnterRule(_localctx, 12, RULE_circleMove);
+	public MoveDataContext moveData() {
+		MoveDataContext _localctx = new MoveDataContext(_ctx, State);
+		EnterRule(_localctx, 12, RULE_moveData);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
