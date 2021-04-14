@@ -8,12 +8,13 @@ namespace LabWork1github
 {
     public class Place
     {
-        public Place(int x, int y)
+        public Place(uint x, uint y)
         {
             X = x;
             Y = y;
         }
-        public int X { get; set; }
-        public int Y { get; set; }
+        
+        public uint X { get; set; }
+        public uint Y { get; set; }
     }
 }

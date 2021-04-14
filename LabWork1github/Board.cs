@@ -27,6 +27,8 @@ namespace LabWork1github
             {
                 if (width == 0)
                     width = value;
+                if (value < 0)
+                    throw new NullReferenceException("negative width");
             }
         }
         public int Height
@@ -39,6 +41,8 @@ namespace LabWork1github
             {
                 if (height == 0)
                     height = value;
+                if (value < 0)
+                    throw new NullReferenceException("negative width");
             }
         }
     }

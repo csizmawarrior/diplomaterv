@@ -43,16 +43,16 @@ namespace LabWork1github
         public override object VisitPlayerPlacement([NotNull] PlayerPlacementContext context)
         {
             PlaceContext place = context.place();
-            int xPos = int.Parse(place.x().GetText());
-            int yPos = int.Parse(place.y().GetText());
+            uint xPos = uint.Parse(place.x().GetText());
+            uint yPos = uint.Parse(place.y().GetText());
             Program.Board.player = new Player(new Place(xPos, yPos), Program.starterHP);
             return base.VisitPlayerPlacement(context);
         }
         public override object VisitMonsterPlacement([NotNull] MonsterPlacementContext context)
         {
             PlaceContext place = context.place();
-            int xPos = int.Parse(place.x().GetText());
-            int yPos = int.Parse(place.y().GetText());
+            uint xPos = uint.Parse(place.x().GetText());
+            uint yPos = uint.Parse(place.y().GetText());
             string typeName = context.typeName().GetText();
             for(int i = 0; i < Program.monsterTypes.Count; i++)
             {
@@ -69,8 +69,8 @@ namespace LabWork1github
         public override object VisitTrapPlacement([NotNull] TrapPlacementContext context)
         {
             PlaceContext place = context.place();
-            int xPos = int.Parse(place.x().GetText());
-            int yPos = int.Parse(place.y().GetText());
+            uint xPos = uint.Parse(place.x().GetText());
+            uint yPos = uint.Parse(place.y().GetText());
             string typeName = context.typeName().GetText();
             for (int i = 0; i < Program.trapTypes.Count; i++)
             {

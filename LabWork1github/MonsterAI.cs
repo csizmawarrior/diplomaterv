@@ -20,8 +20,8 @@ namespace LabWork1github
         {
            foreach(Monster monster in monsters)
             {
-                int XDistance = player.Place.X - monster.Place.X;
-                int YDistance = player.Place.Y - monster.Place.Y;
+                uint XDistance = player.Place.X - monster.Place.X;
+                uint YDistance = player.Place.Y - monster.Place.Y;
 
                 if (monster.Type.ShootRound != null)
                     shootAttempt(XDistance, YDistance, player, monster, roundNum);
@@ -30,7 +30,7 @@ namespace LabWork1github
             }
         }
 
-        private void shootAttempt(int xDistance, int yDistance, Player player, Monster monster, int roundNum)
+        private void shootAttempt(uint xDistance, uint yDistance, Player player, Monster monster, int roundNum)
         {
             if(roundNum % monster.Type.ShootRound == 0)
             {
@@ -39,19 +39,19 @@ namespace LabWork1github
             }
         }
 
-        private void moveMonster(int XDistance, int YDistance, Player player, Monster monster, int roundNum)
+        private void moveMonster(uint XDistance, uint YDistance, Player player, Monster monster, int roundNum)
         {
             double rand = random.NextDouble();
             if(roundNum % monster.Type.MoveRound == 0)
             {
                 if (rand >= 0.5 && Math.Abs(XDistance) <= Math.Abs(monster.Type.Range))
                 {
-                    monster.Place.X += (int)(XDistance * 0.5);
+                    monster.Place.X = (uint)((int)monster.Place.X + (int)(XDistance * 0.5));
                     return;
                 }
                 if (rand < 0.5 && Math.Abs(YDistance) <= Math.Abs(monster.Type.Range))
                 {
-                    monster.Place.Y += (int)(YDistance * 0.5);
+                    monster.Place.Y = (uint)((int)monster.Place.Y + (int)(YDistance * 0.5));
                     return;
                 }
             }

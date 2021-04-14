@@ -32,18 +32,18 @@ namespace LabWork1github
 
         private void moveTrap(Trap trap, Player player, double rand)
         {
-            int XDistance = player.Place.X - trap.Place.X;
-            int YDistance = player.Place.Y - trap.Place.Y;
+            uint XDistance = player.Place.X - trap.Place.X;
+            uint YDistance = player.Place.Y - trap.Place.Y;
             if (XDistance == 0 && YDistance == 0)
                 return;
             if(rand >= 0.5 && Math.Abs(XDistance) <= Math.Abs(trap.Type.Range))
             {
-                trap.Place.X += (int)(XDistance * 0.5);
+                trap.Place.X = (uint)((int)trap.Place.X + (int)(XDistance * 0.5));
                 return;
             }
             if (rand < 0.5 && Math.Abs(YDistance) <= Math.Abs(trap.Type.Range))
             {
-                trap.Place.Y += (int)(YDistance * 0.5);
+                trap.Place.Y = (uint)((int)trap.Place.Y + (int)(YDistance * 0.5));
                 return;
             }
 
