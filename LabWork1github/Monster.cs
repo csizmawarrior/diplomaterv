@@ -10,12 +10,17 @@ namespace LabWork1github
     {
         public Monster(int hp, MonsterType type, Place place)
         {
-            health = hp;
+            Health = hp;
             Type = type;
             Place = place;
         }
-        public int health { get; set; }
+        public int Health { get; set; }
         public MonsterType Type { get; private set; }
         public Place Place { get; set; }
+
+        public void Damage(int amount)
+        {
+            Health -= amount;
+        }
     }
 }

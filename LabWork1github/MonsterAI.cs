@@ -8,15 +8,10 @@ namespace LabWork1github
 {
     class MonsterAI
     {
-        private List<Monster> monsters = new List<Monster>();
 
-        public MonsterAI(List<Monster> monsterList)
-        {
-            monsters = monsterList;
-        }
         private Random random = new Random();
 
-        public void Step(int roundNum, Player player)
+        public void Step(int roundNum, Player player, List<Monster> monsters)
         {
            foreach(Monster monster in monsters)
             {
@@ -55,7 +50,6 @@ namespace LabWork1github
                     return;
                 }
             }
-                
         }
     }
 }

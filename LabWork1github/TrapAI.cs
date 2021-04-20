@@ -51,7 +51,7 @@ namespace LabWork1github
 
         private void AffectPlayer(Player player, Trap trap)
         {
-            if (player.Place.X == trap.Place.X && player.Place.Y == trap.Place.Y)
+            if (trap.Place.directionTo(player.Place) == "collision")
             {
                 switch (trap.Type.EffectType)
                 {

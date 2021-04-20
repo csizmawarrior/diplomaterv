@@ -31,5 +31,23 @@ namespace LabWork1github
         {
             Place = newPlace;
         }
+        public void Move(string direction)
+        {
+            switch (direction)
+            {
+                case "F":
+                    Place.X += 1;
+                    break;
+                case "B":
+                    Place.X -= 1;
+                    break;
+                case "L":
+                    Place.Y -= 1;
+                    break;
+                case "R":
+                    Place.Y += 1;
+                    break;
+            }
+        }
     }
 }
