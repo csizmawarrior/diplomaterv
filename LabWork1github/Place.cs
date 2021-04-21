@@ -24,9 +24,9 @@ namespace LabWork1github
                 return "L";
             if (otherPlace.X == X && otherPlace.Y == Y+1)
                 return "R";
-            if (otherPlace.X == X-1 && otherPlace.Y == Y)
-                return "B";
             if (otherPlace.X == X+1 && otherPlace.Y == Y)
+                return "B";
+            if (otherPlace.X == X-1 && otherPlace.Y == Y)
                 return "F";
             return "away";
         }

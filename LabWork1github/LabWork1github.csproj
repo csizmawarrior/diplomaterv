@@ -56,6 +56,7 @@
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
     <Compile Include="BoardGrammarVisitor.cs" />
+    <Compile Include="Drawer.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterAI.cs" />

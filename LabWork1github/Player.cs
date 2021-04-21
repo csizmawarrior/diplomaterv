@@ -36,10 +36,10 @@ namespace LabWork1github
             switch (direction)
             {
                 case "F":
-                    Place.X += 1;
+                    Place.X -= 1;
                     break;
                 case "B":
-                    Place.X -= 1;
+                    Place.X += 1;
                     break;
                 case "L":
                     Place.Y -= 1;

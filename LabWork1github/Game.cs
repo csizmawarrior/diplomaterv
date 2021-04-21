@@ -29,40 +29,42 @@ namespace LabWork1github
 
         public bool wrongMove = false;
 
+        public Drawer drawer;
+
         public void Start()
         {
             while (Player.Health > 0 && Monsters.Count > 0)
             {
-                round++;
+                if(!wrongMove)
+                    round++;
                 Step();
             }
+            drawer.writeCommand("You died!");
         }
 
         public void Step()
         {
-            while (Player.Health > 0)
-            {
-                round++;
+
                 wrongMove = false;
-                Console.WriteLine("Give a command!");
+                drawer.writeCommand("Give a command!");
                 string inputLine = Console.ReadLine();
                 commandProcess(inputLine);
                 switch (move.CommandType)
                 {
                     case CommandType.health:
-                        Console.WriteLine("The payer's health is: " + Player.Health);
+                        drawer.writeCommand("The payer's health is: " + Player.Health);
                         break;
                     case CommandType.move:
                         if (fallingCheck(Player, move))
                         {
-                            Console.WriteLine("Invalid move, falling off the board, try again!");
+                            drawer.writeCommand("Invalid move, falling off the board, try again!");
                             wrongMove = true;
                             break;
                         }
                         for (int i = 0; i < Monsters.Count; i++)
                         {
                             if (Monsters.ElementAt(i).Place.directionTo(Player.Place) == "collision") { 
-                                Console.WriteLine("Invalid move, bumping into Monster, you damaged yourself, try again!");
+                                drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again!");
                                 Player.Damage(25);
                                 wrongMove = true;
                                 break;
@@ -84,12 +86,12 @@ namespace LabWork1github
                         }
                         break;
                     default:
-                        Console.WriteLine("Invalid command! Try again!");
+                        drawer.writeCommand("Invalid command! Try again!");
                         wrongMove = true;
                         break;
                 }
                 if (wrongMove)
-                    continue;
+                    return;
 
                 trapAI.Step(round, Player);
 
@@ -104,8 +106,6 @@ namespace LabWork1github
                     Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(0), trapAI.spawnPoint));
 
 
-            }
-            
             //TODO: draw things out, and write things out
 
             }
@@ -114,6 +114,7 @@ namespace LabWork1github
             {
                 monsterAI = new MonsterAI();
                 trapAI = new TrapAI(Traps);
+                drawer = new Drawer();
                 foreach (Monster monster in Monsters)
                 {
                     if (monster.Place.X > Board.Width || monster.Place.Y > Board.Height)
@@ -150,9 +151,9 @@ namespace LabWork1github
                     return true;
                 if (Player.Place.X == Board.Width - 1 && move.Direction == "R")
                     return true;
-                if (Player.Place.Y == 0 && move.Direction == "B")
+                if (Player.Place.Y == 0 && move.Direction == "F")
                     return true;
-                if (Player.Place.Y == Board.Height - 1 && move.Direction == "F")
+                if (Player.Place.Y == Board.Height - 1 && move.Direction == "B")
                     return true;
                 return false;
         }
