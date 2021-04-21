@@ -45,7 +45,7 @@ namespace LabWork1github
             PlaceContext place = context.place();
             uint xPos = uint.Parse(place.x().GetText());
             uint yPos = uint.Parse(place.y().GetText());
-            Program.Board.player = new Player(new Place(xPos, yPos), Program.starterHP);
+            Program.Board.Player = new Player(new Place(xPos, yPos), Program.starterHP);
             return base.VisitPlayerPlacement(context);
         }
         public override object VisitMonsterPlacement([NotNull] MonsterPlacementContext context)

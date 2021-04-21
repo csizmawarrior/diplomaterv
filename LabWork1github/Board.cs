@@ -11,7 +11,7 @@ namespace LabWork1github
         private int width = 0;
         private int height = 0;
 
-        public Player player { get; set; }
+        public Player Player { get; set; }
 
         public List<Monster> Monsters { get; set; }
 

@@ -115,6 +115,10 @@ namespace LabWork1github
                 monsterAI = new MonsterAI();
                 trapAI = new TrapAI(Traps);
                 drawer = new Drawer();
+                Board = Program.Board;
+                Monsters = Board.Monsters;
+                Traps = Board.Traps;
+                Player = Board.Player;
                 foreach (Monster monster in Monsters)
                 {
                     if (monster.Place.X > Board.Width || monster.Place.Y > Board.Height)

@@ -23,9 +23,15 @@ namespace LabWork1github
 
 
             MonsterTypeLoader();
-            TrapLoader();
+            TrapTypeLoader();
             BoardLoader();
 
+            //TODO: You shouldn't be able to put 2 of the same kind of things on top of each other in board loader
+            //      or put a player on a trap by default
+
+            Game theGame = new Game();
+            theGame.Init();
+            theGame.Start();
             Console.WriteLine("Hello World!");
 
             Console.ReadKey();
@@ -57,7 +63,7 @@ namespace LabWork1github
             visitor.Visit(chatContext);
         }
 
-        public static void TrapLoader()
+        public static void TrapTypeLoader()
         {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/TrapTypes.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
