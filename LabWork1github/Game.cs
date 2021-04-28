@@ -41,7 +41,10 @@ namespace LabWork1github
                     round++;
                 Step();
             }
-            drawer.writeCommand("You died!");
+            if (Player.Health <= 0)
+                drawer.writeCommand("You died!");
+            else
+                drawer.writeCommand("You WON!");
         }
 
         public void Step()
@@ -65,7 +68,7 @@ namespace LabWork1github
                         }
                         for (int i = 0; i < Monsters.Count; i++)
                         {
-                            if (Monsters.ElementAt(i).Place.directionTo(Player.Place) == "collision") { 
+                            if (Monsters.ElementAt(i).Place.directionTo(Player.Place) == move.Direction) { 
                                 drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again!");
                                 Player.Damage(25);
                                 wrongMove = true;
@@ -75,16 +78,11 @@ namespace LabWork1github
                         Player.Move(move.Direction);
                         break;
                     case CommandType.shoot:
-                        switch (move.Direction)
+                        for(int i = 0; i < Monsters.Count; i++)
                         {
-                            case "F":
-                                for(int i = 0; i < Monsters.Count; i++)
-                                {
-                                    if (Monsters.ElementAt(i).Place.directionTo(Player.Place) == move.Direction) {
-                                        Monsters.ElementAt(i).Damage(50);
-                                    }
-                                }
-                                break;
+                             if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) {
+                                  Monsters.ElementAt(i).Damage(50);
+                             }
                         }
                         break;
                     default:
@@ -99,8 +97,11 @@ namespace LabWork1github
 
                 foreach(Monster monster in Monsters)
                 {
-                    if (monster.Health <= 0)
-                        Monsters.Remove(monster);
+                if (monster.Health <= 0)
+                {
+                    Monsters.Remove(monster);
+                    break;
+                }
                 }
 
                 monsterAI.Step(round, Player, Monsters);

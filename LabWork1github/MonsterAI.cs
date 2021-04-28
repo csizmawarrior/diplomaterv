@@ -15,8 +15,8 @@ namespace LabWork1github
         {
            foreach(Monster monster in monsters)
             {
-                uint XDistance = player.Place.X - monster.Place.X;
-                uint YDistance = player.Place.Y - monster.Place.Y;
+                uint XDistance = (uint) Math.Abs((int)(player.Place.X - monster.Place.X));
+                uint YDistance = (uint) Math.Abs((int)(player.Place.Y - monster.Place.Y));
 
                 if (monster.Type.ShootRound != null && monster.Type.ShootRound != 0)
                     shootAttempt(XDistance, YDistance, player, monster, roundNum);
