@@ -23,7 +23,7 @@ namespace LabWork1github
                 AffectPlayer(player, trap);
                 if(trap.Type.MoveRound != null && trap.Type.MoveRound != 0)
                 {
-                    if (trap.Type.Range != null && roundNum % trap.Type.MoveRound == 0)
+                    if (trap.Type.Range != null && trap.Type.Range!=0 && roundNum % trap.Type.MoveRound == 0)
                         moveTrap(trap, player, random.NextDouble());
                 }
             }

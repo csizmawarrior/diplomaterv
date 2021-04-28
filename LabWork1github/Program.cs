@@ -40,7 +40,7 @@ namespace LabWork1github
 
         private static void MonsterTypeLoader()
         {
-            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/CloseMonster.txt");
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/MonsterTypes.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
             MonsterGrammarLexer MonsterGrammarLexer_ = new MonsterGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(MonsterGrammarLexer_);
