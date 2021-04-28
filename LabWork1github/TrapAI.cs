@@ -18,6 +18,7 @@ namespace LabWork1github
 
         public void Step(int roundNum, Player player, List<Trap> traps)
         {
+            Spawning = false;
             foreach(Trap trap in traps)
             {
                 AffectPlayer(player, trap);
