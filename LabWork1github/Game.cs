@@ -33,8 +33,10 @@ namespace LabWork1github
 
         public void Start()
         {
+            drawer.drawBoard(Board, Player, Monsters, Traps);
             while (Player.Health > 0 && Monsters.Count > 0)
             {
+
                 if(!wrongMove)
                     round++;
                 Step();
@@ -93,7 +95,7 @@ namespace LabWork1github
                 if (wrongMove)
                     return;
 
-                trapAI.Step(round, Player);
+                trapAI.Step(round, Player, Traps);
 
                 foreach(Monster monster in Monsters)
                 {
@@ -105,6 +107,7 @@ namespace LabWork1github
                 if (trapAI.Spawning)
                     Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(0), trapAI.spawnPoint));
 
+            drawer.drawBoard(Board, Player, Monsters, Traps);
 
             //TODO: draw things out, and write things out
 
@@ -113,7 +116,7 @@ namespace LabWork1github
         public void Init()
             {
                 monsterAI = new MonsterAI();
-                trapAI = new TrapAI(Traps);
+                trapAI = new TrapAI();
                 drawer = new Drawer();
                 Board = Program.Board;
                 Monsters = Board.Monsters;

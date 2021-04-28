@@ -30,6 +30,8 @@ namespace LabWork1github
             }
             for(int i = 0; i < board.Height; i++)
             {
+                //First Line
+
                 for(int j = 0; j < board.Width; j++)
                 {
                     occupied = false;
@@ -40,25 +42,39 @@ namespace LabWork1github
                     {
                         if (trap.Place.directionTo(new Place((uint)i, (uint)j)) == "collision")
                         {
-                            Console.WriteLine(" TTT");
+                            Console.Write(" TTT");
                             trapOccupied = true;
                             break;
                         }
                     }
                     if(!trapOccupied)
-                        Console.WriteLine(" ---");
+                        Console.Write(" |||");
                     if(j == board.Width-1)
-                        Console.WriteLine("\n");
+                        Console.Write("\n");
 
                 }
+                //Middle line
+
                 for (int j = 0; j < board.Width; j++)
                 {
+                    occupied = false;
+                    trapOccupied = false;
+
+                    foreach (Trap trap in traps)
+                    {
+                        if (trap.Place.directionTo(new Place((uint)i, (uint)j)) == "collision")
+                        {
+                            trapOccupied = true;
+                            break;
+                        }
+                    }
+
                     if (trapOccupied)
                     {
-                        Console.WriteLine(" T");
+                        Console.Write(" T");
                     }
                     else
-                        Console.WriteLine(" |");
+                        Console.Write(" |");
 
                     foreach (Place place in places)
                     {
@@ -71,47 +87,61 @@ namespace LabWork1github
 
                     if (!occupied)
                     {
-                        Console.WriteLine("||");
+                        Console.Write("||");
                         if (j == board.Width - 1)
-                            Console.WriteLine("\n");
+                            Console.Write("\n");
                         continue;
                     }
                     if (player.Place.directionTo(new Place((uint)i, (uint)j)) == "collision")
-                        Console.WriteLine("P");
+                        Console.Write("P");
                     else
                     {
                         foreach(Monster monster in monsters)
                         {
                             if (monster.Place.directionTo(new Place((uint)i, (uint)j)) == "collision")
                             {
-                                Console.WriteLine("M");
+                                Console.Write("M");
                                 found = true;
                                 break;
                             }
                         }
                         if(!found)
-                            Console.WriteLine("T");
+                            Console.Write("T");
                     }
 
                     if(trapOccupied)
-                        Console.WriteLine("T");
+                        Console.Write("T");
                     else
-                        Console.WriteLine("|");
+                        Console.Write("|");
+                    if(j==board.Width-1)
+                        Console.Write("\n");
                 }
+                //Third line
 
                 for(int j = 0; j < board.Width; j++)
                 {
+                    trapOccupied = false;
+
+                    foreach (Trap trap in traps)
+                    {
+                        if (trap.Place.directionTo(new Place((uint)i, (uint)j)) == "collision")
+                        {
+                            trapOccupied = true;
+                            break;
+                        }
+                    }
+
                     if (trapOccupied)
-                        Console.WriteLine(" TTT");
+                        Console.Write(" TTT");
                     else
-                        Console.WriteLine(" |||");
+                        Console.Write(" |||");
 
                     if (j == board.Width - 1)
-                        Console.WriteLine("\n");
+                        Console.Write("\n");
                 }
-                Console.WriteLine("\n");
+                Console.Write("\n");
             }
-            Console.WriteLine("\n");
+            Console.Write("\n");
         }
     }
 }

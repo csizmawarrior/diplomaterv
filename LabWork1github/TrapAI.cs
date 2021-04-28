@@ -8,24 +8,23 @@ namespace LabWork1github
 {
     class TrapAI
     {
-        public TrapAI(List<Trap> trapList)
+        public TrapAI()
         {
-            traps = trapList;
         }
 
-        private List<Trap> traps = new List<Trap>();
         public bool Spawning = false;
         public Place spawnPoint;
         private Random random = new Random();
 
-        public void Step(int roundNum, Player player)
+        public void Step(int roundNum, Player player, List<Trap> traps)
         {
             foreach(Trap trap in traps)
             {
                 AffectPlayer(player, trap);
-                if(trap.Type.MoveRound != null && trap.Type.Range != null && roundNum % trap.Type.MoveRound == 0)
+                if(trap.Type.MoveRound != null && trap.Type.MoveRound != 0)
                 {
-                    moveTrap(trap, player, random.NextDouble());
+                    if (trap.Type.Range != null && roundNum % trap.Type.MoveRound == 0)
+                        moveTrap(trap, player, random.NextDouble());
                 }
             }
         }

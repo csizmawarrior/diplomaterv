@@ -15,8 +15,8 @@ x: COORDINATE;
 y: COORDINATE;
 boardCreation: BOARD  place ';';
 playerPlacement: PLAYER place ';' ;
-monsterPlacement: MOSNTER place typeName ';' ;
-trapPlacement: TRAP place typeName ';' ;
+monsterPlacement: MONSTER place ',' typeName ';' ;
+trapPlacement: TRAP place ',' typeName ';' ;
 
 
 SEMI: ';';

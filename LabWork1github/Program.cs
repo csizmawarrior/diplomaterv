@@ -67,11 +67,11 @@ namespace LabWork1github
         {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/TrapTypes.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
-            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
-            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
-            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
-            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            TrapGrammarLexer TrapGrammarLexer_ = new TrapGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(TrapGrammarLexer_);
+            TrapGrammarParser TrapGrammarParser = new TrapGrammarParser(commonTokenStream);
+            TrapGrammarParser.DefinitionContext chatContext = TrapGrammarParser.definition();
+            TrapGrammarVisitor visitor = new TrapGrammarVisitor();
             visitor.Visit(chatContext);
         }
     }

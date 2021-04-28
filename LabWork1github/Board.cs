@@ -13,9 +13,10 @@ namespace LabWork1github
 
         public Player Player { get; set; }
 
-        public List<Monster> Monsters { get; set; }
+        public List<Monster> Monsters { get; set; } = new List<Monster>();
+        
 
-        public List<Trap> Traps { get; set; }
+        public List<Trap> Traps { get; set; } = new List<Trap>();
 
         public int Width
         {

@@ -18,9 +18,9 @@ namespace LabWork1github
                 uint XDistance = player.Place.X - monster.Place.X;
                 uint YDistance = player.Place.Y - monster.Place.Y;
 
-                if (monster.Type.ShootRound != null)
+                if (monster.Type.ShootRound != null && monster.Type.ShootRound != 0)
                     shootAttempt(XDistance, YDistance, player, monster, roundNum);
-                if (monster.Type.MoveRound != null)
+                if (monster.Type.MoveRound != null && monster.Type.MoveRound != 0)
                     moveMonster(XDistance, YDistance, player, monster, roundNum);
             }
         }
