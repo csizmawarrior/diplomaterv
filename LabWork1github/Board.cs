@@ -15,7 +15,6 @@ namespace LabWork1github
 
         public List<Monster> Monsters { get; set; } = new List<Monster>();
         
-
         public List<Trap> Traps { get; set; } = new List<Trap>();
 
         public int Width

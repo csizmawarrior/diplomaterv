@@ -49,7 +49,6 @@ namespace LabWork1github
 
         public void Step()
         {
-
                 wrongMove = false;
                 drawer.writeCommand("Give a command!");
                 string inputLine = Console.ReadLine();
@@ -68,14 +67,15 @@ namespace LabWork1github
                         }
                         for (int i = 0; i < Monsters.Count; i++)
                         {
-                            if (Monsters.ElementAt(i).Place.directionTo(Player.Place) == move.Direction) { 
+                            if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) { 
                                 drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again!");
                                 Player.Damage(25);
                                 wrongMove = true;
                                 break;
                             }
                         }
-                        Player.Move(move.Direction);
+                        if(!wrongMove)
+                            Player.Move(move.Direction);
                         break;
                     case CommandType.shoot:
                         for(int i = 0; i < Monsters.Count; i++)
@@ -126,17 +126,37 @@ namespace LabWork1github
                 foreach (Monster monster in Monsters)
                 {
                     if (monster.Place.X > Board.Width || monster.Place.Y > Board.Height)
+                    {
                         Monsters.Remove(monster);
+                        drawer.writeCommand("A monster was out of bounds, so it got deleted");
+                    }
                 }
                 foreach (Trap Trap in Traps)
                 {
                     if (Trap.Place.X > Board.Width || Trap.Place.Y > Board.Height)
+                    {
                         Traps.Remove(Trap);
+                        drawer.writeCommand("A trap was out of bounds, so it got deleted");
+                    }
+
                     if (Trap.Type.EffectPlace != null)
                     {
                         if (Trap.Type.EffectPlace.X > Board.Width || Trap.Type.EffectPlace.Y > Board.Height)
+                        {
                             Traps.Remove(Trap);
+                            drawer.writeCommand("A trap's effect place was out of bounds, so it got deleted");
+                        }
                     }
+
+                    foreach(Monster monster in Monsters)
+                    {
+                        if(monster.Place.directionTo(Player.Place) == "collision")
+                            throw new NullReferenceException("Player is on the same spot as a monster.");
+                        if (monster.Place.directionTo(Trap.Place) == "collision")
+                            throw new NullReferenceException("Monster spawned on a trap");
+                    }
+                    if (Trap.Place.directionTo(Player.Place) == "collision")
+                        throw new NullReferenceException("Player spawned on a trap");
                 }
                 if (Player.Place.X > Board.Width || Player.Place.Y > Board.Height)
                     throw new NullReferenceException("Player is not on the board");
@@ -155,13 +175,13 @@ namespace LabWork1github
 
              private bool fallingCheck(Player player, PlayerMove move)
              {
-                if (Player.Place.X == 0 && move.Direction == "L")
+                if (Player.Place.Y == 0 && move.Direction == "L")
                     return true;
-                if (Player.Place.X == Board.Width - 1 && move.Direction == "R")
+                if (Player.Place.Y == Board.Width - 1 && move.Direction == "R")
                     return true;
-                if (Player.Place.Y == 0 && move.Direction == "F")
+                if (Player.Place.X == 0 && move.Direction == "F")
                     return true;
-                if (Player.Place.Y == Board.Height - 1 && move.Direction == "B")
+                if (Player.Place.X == Board.Height - 1 && move.Direction == "B")
                     return true;
                 return false;
         }
