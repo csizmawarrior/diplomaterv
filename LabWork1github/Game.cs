@@ -112,8 +112,6 @@ namespace LabWork1github
 
             drawer.drawBoard(Board, Player, Monsters, Traps);
 
-            //TODO: draw things out, and write things out
-
             }
 
         private bool checkSpawn(Place spawnPoint)

@@ -26,7 +26,7 @@ namespace LabWork1github
             TrapTypeLoader();
             BoardLoader();
 
-            //TODO: You shouldn't be able to put 2 of the same kind of things on top of each other in board loader
+            
             //      or put a player on a trap by default
 
             Game theGame = new Game();
