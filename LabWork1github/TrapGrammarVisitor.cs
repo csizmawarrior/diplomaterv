@@ -68,8 +68,8 @@ namespace LabWork1github
                 {
                     Program.trapTypes.ElementAt(i).EffectType = TrapEffect.Spawner;
                     Program.trapTypes.ElementAt(i).EffectPlace = new Place(
-                                                                            uint.Parse(context.place().x().GetText()),
-                                                                            uint.Parse(context.place().y().GetText())
+                                                                            uint.Parse(context.place().x().GetText())-1,
+                                                                            uint.Parse(context.place().y().GetText())-1
                                                                             );
                 }
             }
@@ -83,8 +83,8 @@ namespace LabWork1github
                 {
                     Program.trapTypes.ElementAt(i).EffectType = TrapEffect.Teleport;
                     Program.trapTypes.ElementAt(i).EffectPlace = new Place(
-                                                                            uint.Parse(context.place().x().GetText()),
-                                                                            uint.Parse(context.place().y().GetText())
+                                                                            uint.Parse(context.place().x().GetText())-1,
+                                                                            uint.Parse(context.place().y().GetText())-1
                                                                             );
                 }
             }

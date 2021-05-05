@@ -49,70 +49,89 @@ namespace LabWork1github
 
         public void Step()
         {
-                wrongMove = false;
-                drawer.writeCommand("Give a command!");
-                string inputLine = Console.ReadLine();
-                commandProcess(inputLine);
-                switch (move.CommandType)
-                {
-                    case CommandType.health:
-                        drawer.writeCommand("The payer's health is: " + Player.Health);
+            wrongMove = false;
+            drawer.writeCommand("Give a command!");
+            string inputLine = Console.ReadLine();
+            commandProcess(inputLine);
+            switch (move.CommandType)
+            {
+                case CommandType.health:
+                    drawer.writeCommand("The payer's health is: " + Player.Health);
+                    break;
+                case CommandType.move:
+                    if (fallingCheck(Player, move))
+                    {
+                        drawer.writeCommand("Invalid move, falling off the board, try again!");
+                        wrongMove = true;
                         break;
-                    case CommandType.move:
-                        if (fallingCheck(Player, move))
-                        {
-                            drawer.writeCommand("Invalid move, falling off the board, try again!");
+                    }
+                    for (int i = 0; i < Monsters.Count; i++)
+                    {
+                        if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) {
+                            drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again!");
+                            Player.Damage(25);
                             wrongMove = true;
                             break;
                         }
-                        for (int i = 0; i < Monsters.Count; i++)
-                        {
-                            if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) { 
-                                drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again!");
-                                Player.Damage(25);
-                                wrongMove = true;
-                                break;
-                            }
+                    }
+                    if (!wrongMove)
+                        Player.Move(move.Direction);
+                    break;
+                case CommandType.shoot:
+                    for (int i = 0; i < Monsters.Count; i++)
+                    {
+                        if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) {
+                            Monsters.ElementAt(i).Damage(50);
                         }
-                        if(!wrongMove)
-                            Player.Move(move.Direction);
-                        break;
-                    case CommandType.shoot:
-                        for(int i = 0; i < Monsters.Count; i++)
-                        {
-                             if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) {
-                                  Monsters.ElementAt(i).Damage(50);
-                             }
-                        }
-                        break;
-                    default:
-                        drawer.writeCommand("Invalid command! Try again!");
-                        wrongMove = true;
-                        break;
-                }
-                if (wrongMove)
-                    return;
+                    }
+                    break;
+                default:
+                    drawer.writeCommand("Invalid command! Try again!");
+                    wrongMove = true;
+                    break;
+            }
+            if (wrongMove)
+                return;
 
-                trapAI.Step(round, Player, Traps);
+            trapAI.Step(round, Player, Traps);
 
-                foreach(Monster monster in Monsters)
-                {
+            foreach (Monster monster in Monsters)
+            {
                 if (monster.Health <= 0)
                 {
                     Monsters.Remove(monster);
                     break;
                 }
-                }
+            }
 
-                monsterAI.Step(round, Player, Monsters);
-                if (trapAI.Spawning)
+            monsterAI.Step(round, Player, Monsters);
+            if (trapAI.Spawning) { 
+                if(checkSpawn(trapAI.spawnPoint))
                     Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(0), trapAI.spawnPoint));
+            }
 
             drawer.drawBoard(Board, Player, Monsters, Traps);
 
             //TODO: draw things out, and write things out
 
             }
+
+        private bool checkSpawn(Place spawnPoint)
+        {
+            foreach(Trap trap in Traps)
+            {
+                if (trap.Place.directionTo(spawnPoint) == "collision")
+                    return false;
+            }
+            foreach (Monster monster in Monsters)
+            {
+                if (monster.Place.directionTo(spawnPoint) == "collision")
+                    return false;
+            }
+            if (Player.Place.directionTo(spawnPoint) == "collision")
+                return false;
+            return true;
+        }
 
         public void Init()
             {

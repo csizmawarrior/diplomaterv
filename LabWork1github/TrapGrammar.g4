@@ -21,7 +21,7 @@ damage: DAMAGE NUMBER;
 heal: HEAL NUMBER;
 monsterSpawn: SPAWN place;
 teleport: TELEPORT_T place;
-rangeDeclaration: RANGE ':' NUMBER ';';
+rangeDeclaration: RANGE ':' NUMBER;
 moveRoundDeclaration: MOVEROUNDS ':' NUMBER;
 place: x ',' y;
 

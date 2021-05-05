@@ -45,7 +45,7 @@ namespace LabWork1github
             PlaceContext place = context.place();
             uint xPos = uint.Parse(place.x().GetText());
             uint yPos = uint.Parse(place.y().GetText());
-            Program.Board.Player = new Player(new Place(xPos, yPos), Program.starterHP);
+            Program.Board.Player = new Player(new Place(xPos-1, yPos-1), Program.starterHP);
             return base.VisitPlayerPlacement(context);
         }
         public override object VisitMonsterPlacement([NotNull] MonsterPlacementContext context)
@@ -58,7 +58,7 @@ namespace LabWork1github
             {
                 if(typeName == Program.monsterTypes.ElementAt(i).Name)
                 {
-                    Program.Board.Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(i), new Place(xPos, yPos)));
+                    Program.Board.Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(i), new Place(xPos-1, yPos-1)));
                     return base.VisitMonsterPlacement(context);
                 }
 
@@ -76,7 +76,7 @@ namespace LabWork1github
             {
                 if (typeName == Program.trapTypes.ElementAt(i).Name)
                 {
-                    Program.Board.Traps.Add(new Trap(Program.trapTypes.ElementAt(i), new Place(xPos, yPos)));
+                    Program.Board.Traps.Add(new Trap(Program.trapTypes.ElementAt(i), new Place(xPos-1, yPos-1)));
                     return base.VisitTrapPlacement(context);
                 }
 

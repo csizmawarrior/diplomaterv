@@ -59,6 +59,7 @@ namespace LabWork1github
                 {
                     occupied = false;
                     trapOccupied = false;
+                    found = false;
 
                     foreach (Trap trap in traps)
                     {
