@@ -14,8 +14,6 @@ statement: effectDeclaration
 nameDeclaration: NAME ':' name ';' ;
 effectDeclaration: EFFECT_T ':' effect ';';
 moveData: rangeDeclaration',' moveRoundDeclaration ';';
-
-
 effect: damage | heal | teleport | monsterSpawn;
 damage: DAMAGE NUMBER;
 heal: HEAL NUMBER;
@@ -36,7 +34,6 @@ RANGE: 'range';
 NAME: 'name';
 EFFECT_T: 'effect';
 MOVEROUNDS: 'moverounds';
-
 COLON: ':';
 SEMI: ';';
 COMMA: ',';

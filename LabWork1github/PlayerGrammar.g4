@@ -11,12 +11,10 @@ statement: movingStatement
         | shootingStatement
         | healthCheckStatement
         ;
-
 direction: 'F' | 'L' | 'R' | 'B';
 movingStatement: MOVE direction;
 shootingStatement: SHOOT direction;
 healthCheckStatement: HEALTH;
-
 
 SEMI: ';';
 COMMA: ',';
@@ -24,9 +22,7 @@ FORWARD: 'F';
 LEFT: 'L';
 RIGHT: 'R';
 BACKWARD: 'B';
-
 MOVE: 'move';
 SHOOT: 'shoot';
 HEALTH: 'health';
-
 WS: (' ' | '\t' | '\n' | '\r') -> skip;

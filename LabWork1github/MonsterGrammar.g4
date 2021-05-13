@@ -8,20 +8,15 @@ statement: shootRoundDeclaration
         | rangeDeclaration
         | moveRoundDeclaration
         ;
-
 nameDeclaration: NAME_T ':' name ';' ;
 rangeDeclaration: RANGE_T ':' NUMBER ';';
 moveRoundDeclaration: MOVEROUNDS_T ':' NUMBER ';';
 shootRoundDeclaration: SHOOTROUNDS_T ':' NUMBER ';';
 
-
-
 NAME_T: 'name';
 RANGE_T: 'range';
 MOVEROUNDS_T: 'moverounds';
 SHOOTROUNDS_T: 'shootrounds';
-
-
 COLON: ':';
 SEMI: ';';
 COMMA: ',';
