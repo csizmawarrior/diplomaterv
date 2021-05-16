@@ -142,7 +142,7 @@ namespace LabWork1github
                 Player = Board.Player;
                 foreach (Monster monster in Monsters)
                 {
-                    if (monster.Place.X > Board.Width || monster.Place.Y > Board.Height)
+                    if (monster.Place.X > Board.Height || monster.Place.Y > Board.Width)
                     {
                         Monsters.Remove(monster);
                         drawer.writeCommand("A monster was out of bounds, so it got deleted");
@@ -150,7 +150,7 @@ namespace LabWork1github
                 }
                 foreach (Trap Trap in Traps)
                 {
-                    if (Trap.Place.X > Board.Width || Trap.Place.Y > Board.Height)
+                    if (Trap.Place.X > Board.Height || Trap.Place.Y > Board.Width)
                     {
                         Traps.Remove(Trap);
                         drawer.writeCommand("A trap was out of bounds, so it got deleted");
@@ -158,7 +158,7 @@ namespace LabWork1github
 
                     if (Trap.Type.EffectPlace != null)
                     {
-                        if (Trap.Type.EffectPlace.X > Board.Width || Trap.Type.EffectPlace.Y > Board.Height)
+                        if (Trap.Type.EffectPlace.X > Board.Height || Trap.Type.EffectPlace.Y > Board.Width)
                         {
                             Traps.Remove(Trap);
                             drawer.writeCommand("A trap's effect place was out of bounds, so it got deleted");
@@ -175,7 +175,7 @@ namespace LabWork1github
                     if (Trap.Place.directionTo(Player.Place) == "collision")
                         throw new NullReferenceException("Player spawned on a trap");
                 }
-                if (Player.Place.X > Board.Width || Player.Place.Y > Board.Height)
+                if (Player.Place.X > Board.Height || Player.Place.Y > Board.Width)
                     throw new NullReferenceException("Player is not on the board");
             }
 
