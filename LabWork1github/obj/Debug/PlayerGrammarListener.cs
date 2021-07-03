@@ -96,5 +96,16 @@ public interface IPlayerGrammarListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitHealthCheckStatement([NotNull] PlayerGrammarParser.HealthCheckStatementContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PlayerGrammarParser.helpStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterHelpStatement([NotNull] PlayerGrammarParser.HelpStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PlayerGrammarParser.helpStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitHelpStatement([NotNull] PlayerGrammarParser.HelpStatementContext context);
 }
 } // namespace LabWork1github

@@ -144,5 +144,17 @@ namespace LabWork1github
             }
             Console.Write("\n");
         }
+
+        internal void writeHelp()
+        {
+            Console.WriteLine("Guide for the game: ");
+            Console.WriteLine("The available commands as a player: ");
+            Console.WriteLine("shoot <Direction>: shoots 1 block into that direction, damaging the monster on that block, if it stands there.");
+            Console.WriteLine("move <Direction>: moves 1 block into that direction, if a monster blocks the way, the move damages you.");
+            Console.WriteLine("health: the game writes our your health to the screen.");
+            Console.WriteLine("help: The guide for the game gets displayed to the screen.");
+            Console.WriteLine("Available Directions: F B L R as forward, backwards, left and right");
+            Console.WriteLine("Kill all monsters to win. If you die you lose.");
+        }
     }
 }

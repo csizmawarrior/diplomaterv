@@ -10,11 +10,13 @@ program: statement;
 statement: movingStatement
         | shootingStatement
         | healthCheckStatement
+		| helpStatement
         ;
 direction: 'F' | 'L' | 'R' | 'B';
 movingStatement: MOVE direction;
 shootingStatement: SHOOT direction;
 healthCheckStatement: HEALTH;
+helpStatement: HELP;
 
 SEMI: ';';
 COMMA: ',';
@@ -25,4 +27,6 @@ BACKWARD: 'B';
 MOVE: 'move';
 SHOOT: 'shoot';
 HEALTH: 'health';
+HELP: 'help';
+//TODO: help command
 WS: (' ' | '\t' | '\n' | '\r') -> skip;

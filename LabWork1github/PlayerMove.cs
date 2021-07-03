@@ -10,7 +10,8 @@ namespace LabWork1github
     {
         move,
         shoot,
-        health
+        health,
+        help
     }
 
     public class PlayerMove

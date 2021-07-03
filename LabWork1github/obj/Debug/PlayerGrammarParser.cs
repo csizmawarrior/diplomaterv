@@ -32,21 +32,22 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 public partial class PlayerGrammarParser : Parser {
 	public const int
 		SEMI=1, COMMA=2, FORWARD=3, LEFT=4, RIGHT=5, BACKWARD=6, MOVE=7, SHOOT=8, 
-		HEALTH=9, WS=10;
+		HEALTH=9, HELP=10, WS=11;
 	public const int
 		RULE_program = 0, RULE_statement = 1, RULE_direction = 2, RULE_movingStatement = 3, 
-		RULE_shootingStatement = 4, RULE_healthCheckStatement = 5;
+		RULE_shootingStatement = 4, RULE_healthCheckStatement = 5, RULE_helpStatement = 6;
 	public static readonly string[] ruleNames = {
 		"program", "statement", "direction", "movingStatement", "shootingStatement", 
-		"healthCheckStatement"
+		"healthCheckStatement", "helpStatement"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "';'", "','", "'F'", "'L'", "'R'", "'B'", "'move'", "'shoot'", "'health'"
+		null, "';'", "','", "'F'", "'L'", "'R'", "'B'", "'move'", "'shoot'", "'health'", 
+		"'help'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "SEMI", "COMMA", "FORWARD", "LEFT", "RIGHT", "BACKWARD", "MOVE", 
-		"SHOOT", "HEALTH", "WS"
+		"SHOOT", "HEALTH", "HELP", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -129,7 +130,7 @@ public partial class PlayerGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 12; statement();
+			State = 14; statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -152,6 +153,9 @@ public partial class PlayerGrammarParser : Parser {
 		}
 		public HealthCheckStatementContext healthCheckStatement() {
 			return GetRuleContext<HealthCheckStatementContext>(0);
+		}
+		public HelpStatementContext helpStatement() {
+			return GetRuleContext<HelpStatementContext>(0);
 		}
 		public StatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -178,25 +182,31 @@ public partial class PlayerGrammarParser : Parser {
 		StatementContext _localctx = new StatementContext(_ctx, State);
 		EnterRule(_localctx, 2, RULE_statement);
 		try {
-			State = 17;
+			State = 20;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case MOVE:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 14; movingStatement();
+				State = 16; movingStatement();
 				}
 				break;
 			case SHOOT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 15; shootingStatement();
+				State = 17; shootingStatement();
 				}
 				break;
 			case HEALTH:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 16; healthCheckStatement();
+				State = 18; healthCheckStatement();
+				}
+				break;
+			case HELP:
+				EnterOuterAlt(_localctx, 4);
+				{
+				State = 19; helpStatement();
 				}
 				break;
 			default:
@@ -243,7 +253,7 @@ public partial class PlayerGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 19;
+			State = 22;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FORWARD) | (1L << LEFT) | (1L << RIGHT) | (1L << BACKWARD))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -300,8 +310,8 @@ public partial class PlayerGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 21; Match(MOVE);
-			State = 22; direction();
+			State = 24; Match(MOVE);
+			State = 25; direction();
 			}
 		}
 		catch (RecognitionException re) {
@@ -347,8 +357,8 @@ public partial class PlayerGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 24; Match(SHOOT);
-			State = 25; direction();
+			State = 27; Match(SHOOT);
+			State = 28; direction();
 			}
 		}
 		catch (RecognitionException re) {
@@ -391,7 +401,50 @@ public partial class PlayerGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 27; Match(HEALTH);
+			State = 30; Match(HEALTH);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.ReportError(this, re);
+			_errHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class HelpStatementContext : ParserRuleContext {
+		public ITerminalNode HELP() { return GetToken(PlayerGrammarParser.HELP, 0); }
+		public HelpStatementContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_helpStatement; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			IPlayerGrammarListener typedListener = listener as IPlayerGrammarListener;
+			if (typedListener != null) typedListener.EnterHelpStatement(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			IPlayerGrammarListener typedListener = listener as IPlayerGrammarListener;
+			if (typedListener != null) typedListener.ExitHelpStatement(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IPlayerGrammarVisitor<TResult> typedVisitor = visitor as IPlayerGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitHelpStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public HelpStatementContext helpStatement() {
+		HelpStatementContext _localctx = new HelpStatementContext(_ctx, State);
+		EnterRule(_localctx, 12, RULE_helpStatement);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 32; Match(HELP);
 			}
 		}
 		catch (RecognitionException re) {
@@ -406,17 +459,19 @@ public partial class PlayerGrammarParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\f \x4\x2\t\x2\x4"+
-		"\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x3\x2\x3\x2\x3\x3\x3"+
-		"\x3\x3\x3\x5\x3\x14\n\x3\x3\x4\x3\x4\x3\x5\x3\x5\x3\x5\x3\x6\x3\x6\x3"+
-		"\x6\x3\a\x3\a\x3\a\x2\x2\x2\b\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\x2\x3\x3"+
-		"\x2\x5\b\x1B\x2\xE\x3\x2\x2\x2\x4\x13\x3\x2\x2\x2\x6\x15\x3\x2\x2\x2\b"+
-		"\x17\x3\x2\x2\x2\n\x1A\x3\x2\x2\x2\f\x1D\x3\x2\x2\x2\xE\xF\x5\x4\x3\x2"+
-		"\xF\x3\x3\x2\x2\x2\x10\x14\x5\b\x5\x2\x11\x14\x5\n\x6\x2\x12\x14\x5\f"+
-		"\a\x2\x13\x10\x3\x2\x2\x2\x13\x11\x3\x2\x2\x2\x13\x12\x3\x2\x2\x2\x14"+
-		"\x5\x3\x2\x2\x2\x15\x16\t\x2\x2\x2\x16\a\x3\x2\x2\x2\x17\x18\a\t\x2\x2"+
-		"\x18\x19\x5\x6\x4\x2\x19\t\x3\x2\x2\x2\x1A\x1B\a\n\x2\x2\x1B\x1C\x5\x6"+
-		"\x4\x2\x1C\v\x3\x2\x2\x2\x1D\x1E\a\v\x2\x2\x1E\r\x3\x2\x2\x2\x3\x13";
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\r%\x4\x2\t\x2\x4"+
+		"\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x3\x2\x3\x2"+
+		"\x3\x3\x3\x3\x3\x3\x3\x3\x5\x3\x17\n\x3\x3\x4\x3\x4\x3\x5\x3\x5\x3\x5"+
+		"\x3\x6\x3\x6\x3\x6\x3\a\x3\a\x3\b\x3\b\x3\b\x2\x2\x2\t\x2\x2\x4\x2\x6"+
+		"\x2\b\x2\n\x2\f\x2\xE\x2\x2\x3\x3\x2\x5\b \x2\x10\x3\x2\x2\x2\x4\x16\x3"+
+		"\x2\x2\x2\x6\x18\x3\x2\x2\x2\b\x1A\x3\x2\x2\x2\n\x1D\x3\x2\x2\x2\f \x3"+
+		"\x2\x2\x2\xE\"\x3\x2\x2\x2\x10\x11\x5\x4\x3\x2\x11\x3\x3\x2\x2\x2\x12"+
+		"\x17\x5\b\x5\x2\x13\x17\x5\n\x6\x2\x14\x17\x5\f\a\x2\x15\x17\x5\xE\b\x2"+
+		"\x16\x12\x3\x2\x2\x2\x16\x13\x3\x2\x2\x2\x16\x14\x3\x2\x2\x2\x16\x15\x3"+
+		"\x2\x2\x2\x17\x5\x3\x2\x2\x2\x18\x19\t\x2\x2\x2\x19\a\x3\x2\x2\x2\x1A"+
+		"\x1B\a\t\x2\x2\x1B\x1C\x5\x6\x4\x2\x1C\t\x3\x2\x2\x2\x1D\x1E\a\n\x2\x2"+
+		"\x1E\x1F\x5\x6\x4\x2\x1F\v\x3\x2\x2\x2 !\a\v\x2\x2!\r\x3\x2\x2\x2\"#\a"+
+		"\f\x2\x2#\xF\x3\x2\x2\x2\x3\x16";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

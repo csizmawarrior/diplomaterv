@@ -73,5 +73,12 @@ public interface IPlayerGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitHealthCheckStatement([NotNull] PlayerGrammarParser.HealthCheckStatementContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PlayerGrammarParser.helpStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHelpStatement([NotNull] PlayerGrammarParser.HelpStatementContext context);
 }
 } // namespace LabWork1github

@@ -30,5 +30,10 @@ namespace LabWork1github
             Game.move.Direction = context.direction().GetText();
             return base.VisitShootingStatement(context);
         }
+        public override object VisitHelpStatement([NotNull] HelpStatementContext context)
+        {
+            Game.move.CommandType = CommandType.help;
+            return base.VisitHelpStatement(context);
+        }
     }
 }

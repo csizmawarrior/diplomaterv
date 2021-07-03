@@ -85,6 +85,10 @@ namespace LabWork1github
                         }
                     }
                     break;
+                case CommandType.help:
+                    wrongMove = true;
+                    drawer.writeHelp();
+                    break;
                 default:
                     drawer.writeCommand("Invalid command! Try again!");
                     wrongMove = true;

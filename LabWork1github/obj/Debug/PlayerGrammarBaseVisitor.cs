@@ -99,5 +99,16 @@ public partial class PlayerGrammarBaseVisitor<Result> : AbstractParseTreeVisitor
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitHealthCheckStatement([NotNull] PlayerGrammarParser.HealthCheckStatementContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PlayerGrammarParser.helpStatement"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitHelpStatement([NotNull] PlayerGrammarParser.HelpStatementContext context) { return VisitChildren(context); }
 }
 } // namespace LabWork1github

@@ -9,8 +9,6 @@ statement: effectDeclaration
         | moveData
         ;
 
-
-
 nameDeclaration: NAME ':' name ';' ;
 effectDeclaration: EFFECT_T ':' effect ';';
 moveData: rangeDeclaration',' moveRoundDeclaration ';';

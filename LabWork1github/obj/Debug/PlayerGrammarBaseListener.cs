@@ -113,6 +113,19 @@ public partial class PlayerGrammarBaseListener : IPlayerGrammarListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitHealthCheckStatement([NotNull] PlayerGrammarParser.HealthCheckStatementContext context) { }
 
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PlayerGrammarParser.helpStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterHelpStatement([NotNull] PlayerGrammarParser.HelpStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PlayerGrammarParser.helpStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitHelpStatement([NotNull] PlayerGrammarParser.HelpStatementContext context) { }
+
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
 	public virtual void EnterEveryRule([NotNull] ParserRuleContext context) { }
