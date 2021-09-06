@@ -1,12 +1,11 @@
 grammar BoardGrammar;
 
 program: statementList;
-statementList: statement*;
-statement: boardCreation
-        | playerPlacement
-        | monsterPlacement
-        | trapPlacement
-        ;
+statementList: boardCreation statement*;
+statement: playerPlacement
+         | monsterPlacement
+         | trapPlacement
+         ;
 
 typeName: ID;
 place: x ',' y;
