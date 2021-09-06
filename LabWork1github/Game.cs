@@ -31,6 +31,54 @@ namespace LabWork1github
 
         public Drawer drawer;
 
+        public void Init()
+        {
+            monsterAI = new MonsterAI();
+            trapAI = new TrapAI();
+            drawer = new Drawer();
+            Board = Program.Board;
+            Monsters = Board.Monsters;
+            Traps = Board.Traps;
+            Player = Board.Player;
+            foreach (Monster monster in Monsters)
+            {
+                if (monster.Place.X > Board.Height || monster.Place.Y > Board.Width)
+                {
+                    Monsters.Remove(monster);
+                    drawer.writeCommand("A monster was out of bounds, so it got deleted");
+                }
+            }
+            foreach (Trap Trap in Traps)
+            {
+                if (Trap.Place.X > Board.Height || Trap.Place.Y > Board.Width)
+                {
+                    Traps.Remove(Trap);
+                    drawer.writeCommand("A trap was out of bounds, so it got deleted");
+                }
+
+                if (Trap.Type.EffectPlace != null)
+                {
+                    if (Trap.Type.EffectPlace.X > Board.Height || Trap.Type.EffectPlace.Y > Board.Width)
+                    {
+                        Traps.Remove(Trap);
+                        drawer.writeCommand("A trap's effect place was out of bounds, so it got deleted");
+                    }
+                }
+
+                foreach (Monster monster in Monsters)
+                {
+                    if (monster.Place.directionTo(Player.Place) == "collision")
+                        throw new NullReferenceException("Player is on the same spot as a monster.");
+                    if (monster.Place.directionTo(Trap.Place) == "collision")
+                        throw new NullReferenceException("Monster spawned on a trap");
+                }
+                if (Trap.Place.directionTo(Player.Place) == "collision")
+                    throw new NullReferenceException("Player spawned on a trap");
+            }
+            if (Player.Place.X > Board.Height || Player.Place.Y > Board.Width)
+                throw new NullReferenceException("Player is not on the board");
+        }
+
         public void Start()
         {
             drawer.drawBoard(Board, Player, Monsters, Traps);
@@ -61,14 +109,14 @@ namespace LabWork1github
                 case CommandType.move:
                     if (fallingCheck(Player, move))
                     {
-                        drawer.writeCommand("Invalid move, falling off the board, try again!");
+                        drawer.writeCommand("Invalid move, falling off the board, try again next turn!");
                         wrongMove = true;
                         break;
                     }
                     for (int i = 0; i < Monsters.Count; i++)
                     {
                         if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) {
-                            drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again!");
+                            drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again next turn!");
                             Player.Damage(25);
                             wrongMove = true;
                             break;
@@ -134,54 +182,6 @@ namespace LabWork1github
             if (Player.Place.directionTo(spawnPoint) == "collision")
                 return false;
             return true;
-        }
-
-        public void Init()
-            {
-                monsterAI = new MonsterAI();
-                trapAI = new TrapAI();
-                drawer = new Drawer();
-                Board = Program.Board;
-                Monsters = Board.Monsters;
-                Traps = Board.Traps;
-                Player = Board.Player;
-                foreach (Monster monster in Monsters)
-                {
-                    if (monster.Place.X > Board.Height || monster.Place.Y > Board.Width)
-                    {
-                        Monsters.Remove(monster);
-                        drawer.writeCommand("A monster was out of bounds, so it got deleted");
-                    }
-                }
-                foreach (Trap Trap in Traps)
-                {
-                    if (Trap.Place.X > Board.Height || Trap.Place.Y > Board.Width)
-                    {
-                        Traps.Remove(Trap);
-                        drawer.writeCommand("A trap was out of bounds, so it got deleted");
-                    }
-
-                    if (Trap.Type.EffectPlace != null)
-                    {
-                        if (Trap.Type.EffectPlace.X > Board.Height || Trap.Type.EffectPlace.Y > Board.Width)
-                        {
-                            Traps.Remove(Trap);
-                            drawer.writeCommand("A trap's effect place was out of bounds, so it got deleted");
-                        }
-                    }
-
-                    foreach(Monster monster in Monsters)
-                    {
-                        if(monster.Place.directionTo(Player.Place) == "collision")
-                            throw new NullReferenceException("Player is on the same spot as a monster.");
-                        if (monster.Place.directionTo(Trap.Place) == "collision")
-                            throw new NullReferenceException("Monster spawned on a trap");
-                    }
-                    if (Trap.Place.directionTo(Player.Place) == "collision")
-                        throw new NullReferenceException("Player spawned on a trap");
-                }
-                if (Player.Place.X > Board.Height || Player.Place.Y > Board.Width)
-                    throw new NullReferenceException("Player is not on the board");
         }
 
         private void commandProcess(string inputCommand)
