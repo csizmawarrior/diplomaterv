@@ -94,6 +94,7 @@ namespace LabWork1github
                     wrongMove = true;
                     break;
             }
+
             if (wrongMove)
                 return;
 
@@ -115,8 +116,8 @@ namespace LabWork1github
             }
 
             drawer.drawBoard(Board, Player, Monsters, Traps);
-
-            }
+            move = new PlayerMove();
+        }
 
         private bool checkSpawn(Place spawnPoint)
         {
@@ -181,10 +182,10 @@ namespace LabWork1github
                 }
                 if (Player.Place.X > Board.Height || Player.Place.Y > Board.Width)
                     throw new NullReferenceException("Player is not on the board");
-            }
+        }
 
-            private void commandProcess(string inputCommand)
-            {
+        private void commandProcess(string inputCommand)
+        {
                 AntlrInputStream inputStream = new AntlrInputStream(inputCommand);
                 PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
                 CommonTokenStream commonTokenStream = new CommonTokenStream(PlayerGrammarLexer_);
@@ -192,10 +193,10 @@ namespace LabWork1github
                 PlayerGrammarParser.StatementContext chatContext = PlayerGrammarParser.statement();
                 PlayerGrammarVisitor visitor = new PlayerGrammarVisitor();
                 visitor.Visit(chatContext);
-            }
+        }
 
-             private bool fallingCheck(Player player, PlayerMove move)
-             {
+        private bool fallingCheck(Player player, PlayerMove move)
+        {
                 if (Player.Place.Y == 0 && move.Direction == "L")
                     return true;
                 if (Player.Place.Y == Board.Width - 1 && move.Direction == "R")

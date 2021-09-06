@@ -28,5 +28,4 @@ MOVE: 'move';
 SHOOT: 'shoot';
 HEALTH: 'health';
 HELP: 'help';
-//TODO: help command
 WS: (' ' | '\t' | '\n' | '\r') -> skip;
