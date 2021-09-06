@@ -9,7 +9,7 @@ namespace LabWork1github
     {
 
 
-        //átír grammarek hogy jó legyen a place
+
         public static Board Board = new Board();
         public static List<MonsterType> monsterTypes = new List<MonsterType>();
         public static List<TrapType> trapTypes = new List<TrapType>();
@@ -17,8 +17,6 @@ namespace LabWork1github
 
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
 
 
@@ -26,16 +24,12 @@ namespace LabWork1github
             TrapTypeLoader();
             BoardLoader();
 
-            
-            //      or put a player on a trap by default
-
             Game theGame = new Game();
             theGame.Init();
             theGame.Start();
 
             Console.ReadKey();
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
         }
 
         private static void MonsterTypeLoader()
