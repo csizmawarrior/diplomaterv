@@ -57,6 +57,12 @@
     </Compile>
     <Compile Include="BoardGrammarVisitor.cs" />
     <Compile Include="Drawer.cs" />
+    <Compile Include="DynamicMonster.g4.lexer.cs">
+      <DependentUpon>DynamicMonster.g4</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicMonster.g4.parser.cs">
+      <DependentUpon>DynamicMonster.g4</DependentUpon>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterAI.cs" />
@@ -102,6 +108,10 @@
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
     <None Include="ClassDiagram1.cd" />
+    <Antlr4 Include="DynamicMonster.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>LabWork1github</CustomToolNamespace>
+    </Antlr4>
     <None Include="packages.config" />
     <Antlr4 Include="PlayerGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
