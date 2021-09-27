@@ -97,5 +97,24 @@ namespace LabWork1github
             }
             return base.VisitDistanceDeclare(context);
         }
+        public override object VisitShootDeclaration([NotNull] ShootDeclarationContext context)
+        {
+
+            for (int i = 0; i < Program.monsterTypes.Count; i++)
+            {
+                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
+                {
+
+
+                }
+            }
+
+                    return base.VisitShootDeclaration(context);
+        }
+        public override object VisitIfexpression([NotNull] IfexpressionContext context)
+        {
+
+            return base.VisitIfexpression(context);
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    class ShootCommand
+    public class ShootCommand
     {
     }
 }

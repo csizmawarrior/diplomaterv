@@ -30,5 +30,7 @@ namespace LabWork1github
         public int ShootRound { get; set; }
         public int Health { get; set; }
         public List<MoveCommand> Moves { get; set; }
+        public List<IfCommand> ConditionedCommands { get; set; }
+        public List<ShootCommand> Shoots { get; set; }
     }
 }
