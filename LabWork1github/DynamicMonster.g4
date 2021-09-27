@@ -8,14 +8,18 @@ statement: healthDeclaration
         | rangeDeclaration
         | moveDeclaration
         | shootDeclaration
+		| ifexpression
+		| whileexpression
         ;
 
 nameDeclaration: NAME_T EQUALS name ';' ;
 rangeDeclaration: RANGE_T EQUALS NUMBER ';';
 healthDeclaration: HEALTH EQUALS NUMBER ';';
-moveDeclaration: MOVE DIRECTION | MOVE place | MOVE DIRECTION COLON distanceDeclare | MOVE TO PLAYER ;
-shootDeclaration: SHOOT DIRECTION | SHOOT place | SHOOT DIRECTION COLON distanceDeclare | SHOOT COLON damageDeclare
+moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION COLON distanceDeclare | MOVE TO PLAYER ;
+shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION COLON distanceDeclare | SHOOT COLON damageDeclare
                 | SHOOT TO PLAYER | SHOOT DIRECTION COLON distanceDeclare COLON damageDeclare | SHOOT place COLON damageDeclare ;
+ifexpression: IF boolexpression block ;
+whileexpression: WHILE boolexpression block;
 
 
 damageDeclare: DAMAGE COLON NUMBER;
@@ -26,8 +30,7 @@ character: PLAYER | ME;
 booloperation: numberoperations* COMPARE numberoperations* | character ALIVE | PLAYER IN RANGE_T ;
 boolsconnected: booloperation EXPRESSIONCONNECTER booloperation;
 boolexpression: PARENTHESISSTART boolsconnected PARENTHESISCLOSE;
-ifexpression: IF boolexpression block ;
-whileexpression: WHILE boolexpression block;
+
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;

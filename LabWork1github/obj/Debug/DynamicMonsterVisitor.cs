@@ -96,6 +96,20 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitShootDeclaration([NotNull] DynamicMonsterParser.ShootDeclarationContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.damageDeclare"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -150,20 +164,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBoolexpression([NotNull] DynamicMonsterParser.BoolexpressionContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.place"/>.

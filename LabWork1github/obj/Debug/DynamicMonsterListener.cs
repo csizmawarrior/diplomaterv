@@ -131,6 +131,28 @@ public interface IDynamicMonsterListener : IParseTreeListener {
 	void ExitShootDeclaration([NotNull] DynamicMonsterParser.ShootDeclarationContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.damageDeclare"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -217,28 +239,6 @@ public interface IDynamicMonsterListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBoolexpression([NotNull] DynamicMonsterParser.BoolexpressionContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.place"/>.

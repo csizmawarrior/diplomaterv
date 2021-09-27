@@ -10,6 +10,12 @@ C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\MonsterGramma
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\MonsterGrammarBaseListener.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\MonsterGrammarVisitor.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\MonsterGrammarBaseVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterLexer.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterParser.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterBaseListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterBaseVisitor.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarLexer.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarParser.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarListener.cs

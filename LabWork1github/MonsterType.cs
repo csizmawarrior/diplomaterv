@@ -28,5 +28,7 @@ namespace LabWork1github
         public int Range { get; set; }
         public int MoveRound { get; set; }
         public int ShootRound { get; set; }
+        public int Health { get; set; }
+        public List<MoveCommand> Moves { get; set; }
     }
 }

@@ -153,6 +153,32 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitShootDeclaration([NotNull] DynamicMonsterParser.ShootDeclarationContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.damageDeclare"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -255,32 +281,6 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBoolexpression([NotNull] DynamicMonsterParser.BoolexpressionContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.ifexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIfexpression([NotNull] DynamicMonsterParser.IfexpressionContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.whileexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.place"/>.

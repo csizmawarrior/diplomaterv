@@ -33,3 +33,9 @@ C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1githu
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.csproj.CopyComplete
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.exe
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.pdb
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterLexer.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterParser.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterBaseListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterBaseVisitor.cs
