@@ -64,6 +64,12 @@
       <DependentUpon>DynamicMonster.g4</DependentUpon>
     </Compile>
     <Compile Include="DynamicMonsterVisitor.cs" />
+    <Compile Include="DynamicTrap.g4.lexer.cs">
+      <DependentUpon>DynamicTrap.g4</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicTrap.g4.parser.cs">
+      <DependentUpon>DynamicTrap.g4</DependentUpon>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="IfCommand.cs" />
     <Compile Include="Monster.cs" />
@@ -113,6 +119,10 @@
     </Antlr4>
     <None Include="ClassDiagram1.cd" />
     <Antlr4 Include="DynamicMonster.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>LabWork1github</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="DynamicTrap.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>

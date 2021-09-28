@@ -179,17 +179,17 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.damageDeclare"/>.
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.damageDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDamageDeclare([NotNull] DynamicMonsterParser.DamageDeclareContext context) { }
+	public virtual void EnterDamageDeclaration([NotNull] DynamicMonsterParser.DamageDeclarationContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.damageDeclare"/>.
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.damageDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDamageDeclare([NotNull] DynamicMonsterParser.DamageDeclareContext context) { }
+	public virtual void ExitDamageDeclaration([NotNull] DynamicMonsterParser.DamageDeclarationContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.distanceDeclare"/>.
@@ -218,6 +218,19 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitBlock([NotNull] DynamicMonsterParser.BlockContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.secondnumparam"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSecondnumparam([NotNull] DynamicMonsterParser.SecondnumparamContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.secondnumparam"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSecondnumparam([NotNull] DynamicMonsterParser.SecondnumparamContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.numberoperations"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -244,6 +257,19 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitCharacter([NotNull] DynamicMonsterParser.CharacterContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.booloperation"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -255,6 +281,19 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBooloperation([NotNull] DynamicMonsterParser.BooloperationContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.secondbooloperation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSecondbooloperation([NotNull] DynamicMonsterParser.SecondbooloperationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.secondbooloperation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSecondbooloperation([NotNull] DynamicMonsterParser.SecondbooloperationContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.boolsconnected"/>.
@@ -281,6 +320,45 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBoolexpression([NotNull] DynamicMonsterParser.BoolexpressionContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.possibleAttributes"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPossibleAttributes([NotNull] DynamicMonsterParser.PossibleAttributesContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.possibleAttributes"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPossibleAttributes([NotNull] DynamicMonsterParser.PossibleAttributesContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.numholder"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNumholder([NotNull] DynamicMonsterParser.NumholderContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.numholder"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNumholder([NotNull] DynamicMonsterParser.NumholderContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.place"/>.

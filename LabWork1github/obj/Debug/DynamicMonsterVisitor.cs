@@ -110,11 +110,11 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.damageDeclare"/>.
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.damageDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDamageDeclare([NotNull] DynamicMonsterParser.DamageDeclareContext context);
+	Result VisitDamageDeclaration([NotNull] DynamicMonsterParser.DamageDeclarationContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.distanceDeclare"/>.
@@ -131,6 +131,13 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitBlock([NotNull] DynamicMonsterParser.BlockContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondnumparam"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSecondnumparam([NotNull] DynamicMonsterParser.SecondnumparamContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.numberoperations"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -145,11 +152,25 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitCharacter([NotNull] DynamicMonsterParser.CharacterContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.booloperation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBooloperation([NotNull] DynamicMonsterParser.BooloperationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondbooloperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSecondbooloperation([NotNull] DynamicMonsterParser.SecondbooloperationContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.boolsconnected"/>.
@@ -164,6 +185,27 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBoolexpression([NotNull] DynamicMonsterParser.BoolexpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.possibleAttributes"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPossibleAttributes([NotNull] DynamicMonsterParser.PossibleAttributesContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.numholder"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNumholder([NotNull] DynamicMonsterParser.NumholderContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.place"/>.
