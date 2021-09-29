@@ -309,19 +309,6 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	public virtual void ExitCharacter([NotNull] DynamicTrapParser.CharacterContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.secondnumberoperations"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSecondnumberoperations([NotNull] DynamicTrapParser.SecondnumberoperationsContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.secondnumberoperations"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSecondnumberoperations([NotNull] DynamicTrapParser.SecondnumberoperationsContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

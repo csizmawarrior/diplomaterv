@@ -263,17 +263,6 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	void ExitCharacter([NotNull] DynamicTrapParser.CharacterContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.secondnumberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterSecondnumberoperations([NotNull] DynamicTrapParser.SecondnumberoperationsContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.secondnumberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitSecondnumberoperations([NotNull] DynamicTrapParser.SecondnumberoperationsContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -152,13 +152,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitCharacter([NotNull] DynamicMonsterParser.CharacterContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.booloperation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -266,17 +266,6 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	public virtual Result VisitCharacter([NotNull] DynamicTrapParser.CharacterContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.secondnumberoperations"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitSecondnumberoperations([NotNull] DynamicTrapParser.SecondnumberoperationsContext context) { return VisitChildren(context); }
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>

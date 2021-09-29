@@ -219,17 +219,6 @@ public interface IDynamicMonsterListener : IParseTreeListener {
 	void ExitCharacter([NotNull] DynamicMonsterParser.CharacterContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.booloperation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

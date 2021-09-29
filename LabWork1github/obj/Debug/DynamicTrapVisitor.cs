@@ -180,13 +180,6 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitCharacter([NotNull] DynamicTrapParser.CharacterContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.secondnumberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSecondnumberoperations([NotNull] DynamicTrapParser.SecondnumberoperationsContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
