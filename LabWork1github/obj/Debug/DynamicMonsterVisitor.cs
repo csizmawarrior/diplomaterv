@@ -82,6 +82,20 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitHealthDeclaration([NotNull] DynamicMonsterParser.HealthDeclarationContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.damageDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDamageDeclaration([NotNull] DynamicMonsterParser.DamageDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.distanceDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDistanceDeclare([NotNull] DynamicMonsterParser.DistanceDeclareContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.moveDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -110,25 +124,18 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitWhileexpression([NotNull] DynamicMonsterParser.WhileexpressionContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.damageDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDamageDeclaration([NotNull] DynamicMonsterParser.DamageDeclarationContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.distanceDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDistanceDeclare([NotNull] DynamicMonsterParser.DistanceDeclareContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.block"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBlock([NotNull] DynamicMonsterParser.BlockContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.numholder"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNumholder([NotNull] DynamicMonsterParser.NumholderContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondnumparam"/>.
@@ -143,13 +150,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitNumberoperations([NotNull] DynamicMonsterParser.NumberoperationsContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.character"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCharacter([NotNull] DynamicMonsterParser.CharacterContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.booloperation"/>.
@@ -180,6 +180,13 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitBoolexpression([NotNull] DynamicMonsterParser.BoolexpressionContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.character"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCharacter([NotNull] DynamicMonsterParser.CharacterContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.possibleAttributes"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -192,13 +199,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.numholder"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNumholder([NotNull] DynamicMonsterParser.NumholderContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.place"/>.

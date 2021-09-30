@@ -16,26 +16,26 @@ statement: healthDeclaration ';'
 nameDeclaration: NAME_T EQUALS name ';' ;
 rangeDeclaration: RANGE_T EQUALS NUMBER ;
 healthDeclaration: HEALTH EQUALS NUMBER ;
+damageDeclaration: DAMAGE EQUALS NUMBER ;
+distanceDeclare: DISTANCE EQUALS NUMBER;
 moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION distanceDeclare | MOVE TO PLAYER | MOVE TO RANDOM ;
 shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION distanceDeclare | SHOOT DIRECTION damageDeclaration | SHOOT RANDOM
                 | SHOOT TO PLAYER | SHOOT TO PLAYER damageDeclaration | SHOOT DIRECTION distanceDeclare damageDeclaration | SHOOT TO place damageDeclaration ;
 ifexpression: IF boolexpression block ;
 whileexpression: WHILE boolexpression block | WHILE boolexpression statement;
-damageDeclaration: DAMAGE EQUALS NUMBER ;
 
-
-distanceDeclare: DISTANCE EQUALS NUMBER;
 block: BRACKETCLOSE statement* BRACKETCLOSE;
+numholder: ROUND | NUMBER | characterAttribute | ABSOLUTE numholder ABSOLUTE;
 secondnumparam: NUMOPERATION numholder;
 numberoperations: numholder secondnumparam*;
-character: PLAYER | ME | TRAP | MONSTER;
 booloperation: numberoperations COMPARE numberoperations | character ALIVE | character IN RANGE_T | character IS NEAR;
 secondbooloperation: EXPRESSIONCONNECTER booloperation;
 boolsconnected: booloperation secondbooloperation*;
 boolexpression: PARENTHESISSTART boolsconnected PARENTHESISCLOSE;
-possibleAttributes: HEALTH | PLACE_T | RANGE_T | DAMAGE;
+character: PLAYER | ME | TRAP | MONSTER;
+possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | RANGE_T | DAMAGE;
 characterAttribute: character ATTRIBUTE possibleAttributes;
-numholder: ROUND | NUMBER | characterAttribute | ABSOLUTE numholder ABSOLUTE;
+
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;

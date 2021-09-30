@@ -39,7 +39,7 @@ booloperation: numberoperations COMPARE numberoperations | character ALIVE | cha
 secondbooloperation: EXPRESSIONCONNECTER booloperation;
 boolsconnected: booloperation secondbooloperation*;
 boolexpression: PARENTHESISSTART boolsconnected PARENTHESISCLOSE;
-possibleAttributes: HEALTH | PLACE_T | RANGE_T | DAMAGE | HEAL;
+possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | RANGE_T | DAMAGE | HEAL;
 characterAttribute: character ATTRIBUTE possibleAttributes;
 numholder: ROUND | NUMBER | characterAttribute | ABSOLUTE numholder ABSOLUTE;
 place: x ',' y;

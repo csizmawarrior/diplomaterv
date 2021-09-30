@@ -25,12 +25,18 @@ namespace LabWork1github
                     name = value;
             }
         }
+
+        public int Damage { get; set; }
         public int Range { get; set; }
-        public int MoveRound { get; set; }
-        public int ShootRound { get; set; }
         public int Health { get; set; }
         public List<MoveCommand> Moves { get; set; }
         public List<IfCommand> ConditionedCommands { get; set; }
         public List<ShootCommand> Shoots { get; set; }
+
+
+
+        //TODO: get out, now only for old code
+        public int MoveRound { get; set; }
+        public int ShootRound { get; set; }
     }
 }
