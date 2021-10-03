@@ -153,19 +153,6 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	public virtual void ExitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.rangeDeclare"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRangeDeclare([NotNull] DynamicTrapParser.RangeDeclareContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.rangeDeclare"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRangeDeclare([NotNull] DynamicTrapParser.RangeDeclareContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

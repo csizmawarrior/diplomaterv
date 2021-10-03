@@ -15,6 +15,6 @@ namespace LabWork1github
         public int Damage { get; set; }
 
 
-        public void Shoot() { }
+        public void Shoot(Player p, List<Monster> monsters, List<Trap> traps, int round) { }
     }
 }

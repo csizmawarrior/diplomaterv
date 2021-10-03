@@ -38,16 +38,6 @@ namespace LabWork1github
             return base.VisitNameDeclaration(context);
         }
 
-        public override object VisitRangeDeclaration([NotNull] RangeDeclarationContext context)
-        {
-            for(int i = 0; i < Program.monsterTypes.Count; i++)
-            {
-                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
-                    Program.monsterTypes.ElementAt(i).Range = int.Parse(context.NUMBER().GetText());
-            }
-            return base.VisitRangeDeclaration(context);
-        }
-
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
             for (int i = 0; i < Program.monsterTypes.Count; i++)
@@ -177,6 +167,7 @@ namespace LabWork1github
                         Program.monsterTypes.ElementAt(i).Shoots.Add(newCommand);
                         return base.VisitShootDeclaration(context);
                     }
+                    //delegate
                     var helpPlayer = context.PLAYER();
                     if (helpPlayer != null)
                     {
@@ -196,6 +187,18 @@ namespace LabWork1github
             }
 
                     return base.VisitShootDeclaration(context);
+        }
+
+        public void moveDirection(Player player, List<Monster> monsters, List<Trap> traps, int round)
+        {
+            for (int i = 0; i < Program.monsterTypes.Count; i++)
+            {
+
+                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
+                {
+
+                }
+            }
         }
 
         public override object VisitIfexpression([NotNull] IfexpressionContext context)

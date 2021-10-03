@@ -27,7 +27,6 @@ namespace LabWork1github
         }
 
         public int Damage { get; set; }
-        public int Range { get; set; }
         public int Health { get; set; }
         public List<MoveCommand> Moves { get; set; }
         public List<IfCommand> ConditionedCommands { get; set; }

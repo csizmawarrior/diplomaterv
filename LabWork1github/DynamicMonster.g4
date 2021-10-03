@@ -5,7 +5,6 @@ name: ID;
 
 statementList: nameDeclaration statement*;
 statement: healthDeclaration ';'
-        | rangeDeclaration ';'
 		| damageDeclaration ';'
         | moveDeclaration ';'
         | shootDeclaration ';'
@@ -14,7 +13,6 @@ statement: healthDeclaration ';'
         ;
 
 nameDeclaration: NAME_T EQUALS name ';' ;
-rangeDeclaration: RANGE_T EQUALS NUMBER ;
 healthDeclaration: HEALTH EQUALS NUMBER ;
 damageDeclaration: DAMAGE EQUALS NUMBER ;
 distanceDeclare: DISTANCE EQUALS NUMBER;
@@ -28,12 +26,12 @@ block: BRACKETCLOSE statement* BRACKETCLOSE;
 numholder: ROUND | NUMBER | characterAttribute | ABSOLUTE numholder ABSOLUTE;
 secondnumparam: NUMOPERATION numholder;
 numberoperations: numholder secondnumparam*;
-booloperation: numberoperations COMPARE numberoperations | character ALIVE | character IN RANGE_T | character IS NEAR;
+booloperation: numberoperations COMPARE numberoperations | character ALIVE | character IS NEAR;
 secondbooloperation: EXPRESSIONCONNECTER booloperation;
 boolsconnected: booloperation secondbooloperation*;
 boolexpression: PARENTHESISSTART boolsconnected PARENTHESISCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
-possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | RANGE_T | DAMAGE;
+possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | DAMAGE;
 characterAttribute: character ATTRIBUTE possibleAttributes;
 
 place: x ',' y;
@@ -45,7 +43,6 @@ DISTANCE: 'distance';
 DAMAGE: 'damage';
 DIRECTION: 'F' | 'L' | 'R' | 'B';
 NAME_T: 'name';
-RANGE_T: 'range';
 IN: 'in';
 TRAP: 'trap';
 PLAYER: 'player';

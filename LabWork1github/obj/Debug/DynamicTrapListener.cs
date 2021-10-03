@@ -131,17 +131,6 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	void ExitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.rangeDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterRangeDeclare([NotNull] DynamicTrapParser.RangeDeclareContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.rangeDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitRangeDeclare([NotNull] DynamicTrapParser.RangeDeclareContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

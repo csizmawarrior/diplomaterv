@@ -87,17 +87,6 @@ public interface IDynamicMonsterListener : IParseTreeListener {
 	void ExitNameDeclaration([NotNull] DynamicMonsterParser.NameDeclarationContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.rangeDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterRangeDeclaration([NotNull] DynamicMonsterParser.RangeDeclarationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.rangeDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitRangeDeclaration([NotNull] DynamicMonsterParser.RangeDeclarationContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.healthDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

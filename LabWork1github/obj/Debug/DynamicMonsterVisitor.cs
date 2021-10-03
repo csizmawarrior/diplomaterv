@@ -68,13 +68,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitNameDeclaration([NotNull] DynamicMonsterParser.NameDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.rangeDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitRangeDeclaration([NotNull] DynamicMonsterParser.RangeDeclarationContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.healthDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

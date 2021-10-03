@@ -101,19 +101,6 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitNameDeclaration([NotNull] DynamicMonsterParser.NameDeclarationContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.rangeDeclaration"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRangeDeclaration([NotNull] DynamicMonsterParser.RangeDeclarationContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.rangeDeclaration"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRangeDeclaration([NotNull] DynamicMonsterParser.RangeDeclarationContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.healthDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

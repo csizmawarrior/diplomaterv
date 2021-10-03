@@ -134,17 +134,6 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	public virtual Result VisitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.rangeDeclare"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitRangeDeclare([NotNull] DynamicTrapParser.RangeDeclareContext context) { return VisitChildren(context); }
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>

@@ -96,13 +96,6 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.rangeDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitRangeDeclare([NotNull] DynamicTrapParser.RangeDeclareContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

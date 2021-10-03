@@ -90,17 +90,6 @@ public partial class DynamicMonsterBaseVisitor<Result> : AbstractParseTreeVisito
 	public virtual Result VisitNameDeclaration([NotNull] DynamicMonsterParser.NameDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.rangeDeclaration"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitRangeDeclaration([NotNull] DynamicMonsterParser.RangeDeclarationContext context) { return VisitChildren(context); }
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.healthDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
