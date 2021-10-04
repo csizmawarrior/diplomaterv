@@ -35,6 +35,10 @@ namespace LabWork1github
 
         public Trap ActualTrap { get; set; }
 
+        public int NoExecution { get; set; } = 0;
+
+        public int ImmediateExecution { get; set; } = 0;
+
         public void Init()
         {
             monsterAI = new MonsterAI();

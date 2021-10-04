@@ -28,11 +28,8 @@ namespace LabWork1github
 
         public int Damage { get; set; }
         public int Health { get; set; }
-        public List<MoveCommand> Moves { get; set; }
-        public List<IfCommand> Ifs { get; set; }
-        public List<ShootCommand> Shoots { get; set; }
 
-
+        public List<Command> Commands { get; set; }
 
         //TODO: get out, now only for old code
         public int MoveRound { get; set; }

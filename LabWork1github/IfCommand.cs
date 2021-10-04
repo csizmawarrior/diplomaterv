@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public delegate bool IfDelegate(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round, IfCommand command);
+    public delegate bool IfDelegate(GameParamProvider provider, IfCommand command);
 
-    public class IfCommand
+    public class IfCommand : Command
     {
-        public int Round { get; set; }
+        public int CommandCount { get; set; }
+
 
         //TODO: need to find what is required so every condition can be decided
         //can be done with config file? or a new type?
 
         public IfDelegate IfDelegate { get; set; }
 
-        public bool Execute(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round, IfCommand command)
+        public override void Execute(GameParamProvider provider)
         {
-            return IfDelegate(player, monsters, monster, traps, round, command);
+            if(!IfDelegate(provider, this));
+                provider.NoExecution(CommandCount);
+            provider.Execute(CommandCount);
         }
-
     }
 }

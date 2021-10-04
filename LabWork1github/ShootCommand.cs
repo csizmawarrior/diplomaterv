@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public delegate void ShootDelegate(Player player, Monster monster, ShootCommand command);
+    public delegate void ShootDelegate(GameParamProvider provider, ShootCommand command);
 
-    public class ShootCommand
+    public class ShootCommand : Command
     {
         public int Distance { get; set; } = 1;
         public string Direction { get; set; }
@@ -18,8 +18,10 @@ namespace LabWork1github
 
         public ShootDelegate ShootDelegate { get; set; }
 
-        public void Shoot(Player p, Monster monster) {
-            ShootDelegate(p, monster, this);
+        public override void Execute(GameParamProvider provider)
+        {
+            ShootDelegate(provider, this);
         }
+
     }
 }

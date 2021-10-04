@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    class GameParamProvider
+    public class GameParamProvider
     {
         Game game;
         public GameParamProvider(Game g)
@@ -40,6 +40,14 @@ namespace LabWork1github
         public Trap GetTrap()
         {
             return game.ActualTrap;
+        }
+        public void NoExecution(int commandCount)
+        {
+            game.NoExecution = commandCount;
+        }
+        public void Execute(int commandCount)
+        {
+            game.ImmediateExecution = commandCount;
         }
     }
 }

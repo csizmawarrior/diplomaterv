@@ -59,6 +59,8 @@ namespace LabWork1github
                     
                     
                     MoveCommand newCommand = new MoveCommand();
+                    if (context.distanceDeclare() != null)
+                        newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
                    
                     var direction = context.DIRECTION();
                     if (direction != null)
@@ -66,8 +68,8 @@ namespace LabWork1github
                         if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
                             throw new NotSupportedException("Wrong direction in Monster commandlist");
                         newCommand.Direction = direction.GetText();
-                        newCommand.MoveDelegate = new MoveDelegate(moveDirection);
-                        Program.monsterTypes.ElementAt(i).Moves.Add(newCommand);
+                        newCommand.MoveDelegate = new MoveDelegate(MoveDirection);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitMoveDeclaration(context);
                     }
                     PlaceContext place = context.place();
@@ -75,15 +77,15 @@ namespace LabWork1github
                         uint xPos = uint.Parse(place.x().GetText());
                         uint yPos = uint.Parse(place.y().GetText());
                         newCommand.targetPlace = new Place(xPos, yPos);
-                        newCommand.MoveDelegate = new MoveDelegate(moveToPlace);
-                        Program.monsterTypes.ElementAt(i).Moves.Add(newCommand);
+                        newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitMoveDeclaration(context);
                     }
                     var helpPlayer = context.PLAYER();
                     if(helpPlayer != null)
                     {
                         newCommand.targetPlace = Program.Board.Player.Place;
-                        Program.monsterTypes.ElementAt(i).Moves.Add(newCommand);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitMoveDeclaration(context);
                     }
                     var random = context.RANDOM();
@@ -93,8 +95,8 @@ namespace LabWork1github
                         uint XPos = (uint)(rand.Next() % Program.Board.Height);
                         uint YPos = (uint)(rand.Next() % Program.Board.Width);
                         newCommand.targetPlace = new Place(XPos, YPos);
-                        newCommand.MoveDelegate = new MoveDelegate(moveToPlace);
-                        Program.monsterTypes.ElementAt(i).Moves.Add(newCommand);
+                        newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitMoveDeclaration(context);
 
                     }
@@ -104,25 +106,6 @@ namespace LabWork1github
             return base.VisitMoveDeclaration(context);
         }
 
-        public override object VisitDistanceDeclare([NotNull] DistanceDeclareContext context)
-        {
-            for (int i = 0; i < Program.monsterTypes.Count; i++)
-            {
-                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
-                {
-                    foreach(var command in Program.monsterTypes.ElementAt(i).Moves)
-                    {
-                       
-                            int dist = int.Parse(context.NUMBER().GetText());
-                            if (dist < 0)
-                                throw new NotSupportedException("negative distance not supported");
-                                command.Distance = dist;
-                        
-                    }
-                }
-            }
-            return base.VisitDistanceDeclare(context);
-        }
 
         public override object VisitDamageDeclaration([NotNull] DamageDeclarationContext context)
         {
@@ -130,21 +113,6 @@ namespace LabWork1github
             if (damage < 0)
                 throw new NotSupportedException("Negative damage is not supported");
 
-            for (int i = 0; i < Program.monsterTypes.Count; i++)
-            {
-                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
-                {
-                    foreach (var command in Program.monsterTypes.ElementAt(i).Moves)
-                    {
-                       
-                            command.Damage = damage;
-                            return base.VisitDamageDeclaration(context);
-                        
-                     }
-                   
-                    Program.monsterTypes.ElementAt(i).Damage = damage;
-                }
-            }
             return base.VisitDamageDeclaration(context);
         }
 
@@ -157,14 +125,17 @@ namespace LabWork1github
                 {
                    
                     ShootCommand newCommand = new ShootCommand();
+                    if (context.distanceDeclare() != null)
+                        newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+
                     var direction = context.DIRECTION();
                     if (direction != null)
                     {
                         if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
                             throw new NotSupportedException("Wrong direction in Monster commandlist");
                         newCommand.Direction = direction.GetText();
-                        newCommand.ShootDelegate = new ShootDelegate(shootDirection);
-                        Program.monsterTypes.ElementAt(i).Shoots.Add(newCommand);
+                        newCommand.ShootDelegate = new ShootDelegate(ShootDirection);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitShootDeclaration(context);
                     }
                     PlaceContext place = context.place();
@@ -173,16 +144,16 @@ namespace LabWork1github
                         uint xPos = uint.Parse(place.x().GetText());
                         uint yPos = uint.Parse(place.y().GetText());
                         newCommand.targetPlace = new Place(xPos, yPos);
-                        newCommand.ShootDelegate = new ShootDelegate(shootToPlace);
-                        Program.monsterTypes.ElementAt(i).Shoots.Add(newCommand);
+                        newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitShootDeclaration(context);
                     }
                     var helpPlayer = context.PLAYER();
                     if (helpPlayer != null)
                     {
                         newCommand.targetPlace = Program.Board.Player.Place;
-                        newCommand.ShootDelegate = new ShootDelegate(shootToPlayer);
-                        Program.monsterTypes.ElementAt(i).Shoots.Add(newCommand);
+                        newCommand.ShootDelegate = new ShootDelegate(ShootToPlayer);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitShootDeclaration(context);
                     }
                     var random = context.RANDOM();
@@ -192,8 +163,8 @@ namespace LabWork1github
                         uint XPos = (uint)(rand.Next() % Program.Board.Height);
                         uint YPos = (uint)(rand.Next() % Program.Board.Width);
                         newCommand.targetPlace = new Place(XPos, YPos);
-                        newCommand.ShootDelegate = new ShootDelegate(shootToPlace);
-                        Program.monsterTypes.ElementAt(i).Shoots.Add(newCommand);
+                        newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
+                        Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                         return base.VisitShootDeclaration(context);
                     }
                 }
@@ -209,117 +180,123 @@ namespace LabWork1github
             {
                 if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
                 {
-                    //for (int j = 0; j < Program.monsterTypes.ElementAt(i).Whiles.Count; j++)
-                    //{
-                    //    
-                    //}
                     IfCommand newCommand = new IfCommand();
-                    Program.monsterTypes.ElementAt(i).Ifs.Add(newCommand);
+                    newCommand.CommandCount = context.block().ChildCount - 2;
+                    newCommand.IfDelegate = getCondition(context.boolexpression());
+                    Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                     return base.VisitIfexpression(context);
                 }
             }
             return base.VisitIfexpression(context);
         }
-        public override object VisitBooloperation([NotNull] BooloperationContext context)
+
+        private IfDelegate getCondition(BoolexpressionContext context)
         {
 
+
+            return new IfDelegate();
+        }
+
+        public override object VisitBooloperation([NotNull] BooloperationContext context)
+        {
+            
             return base.VisitBooloperation(context);
         }
 
-        public void moveDirection(Player player, Monster monster, MoveCommand command)
+        public void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
             
             switch (command.Direction)
             {
                 case "F":
-                    if ((int)monster.Place.X - command.Distance >= 0)
-                        monster.Place.X -= (uint)command.Distance;
+                    if ((int)provider.GetMonster().Place.X - command.Distance >= 0)
+                        provider.GetMonster().Place.X -= (uint)command.Distance;
                     break;
                 case "B":
-                    monster.Place.X += (uint)command.Distance;
+                    provider.GetMonster().Place.X += (uint)command.Distance;
                     break;
                 case "L":
-                    if ((int)monster.Place.Y - command.Distance >= 0)
-                        monster.Place.Y -= (uint)command.Distance;
+                    if ((int)provider.GetMonster().Place.Y - command.Distance >= 0)
+                        provider.GetMonster().Place.Y -= (uint)command.Distance;
                     break;
                 case "R":
-                    monster.Place.Y += (uint)command.Distance;
+                    provider.GetMonster().Place.Y += (uint)command.Distance;
                     break;
             }
         }
-        public void moveToPlace(Player player, Monster monster, MoveCommand command)
+        public void MoveToPlace(GameParamProvider provider, MoveCommand command)
         {
-            monster.Place = command.targetPlace;
+            provider.GetMonster().Place = command.targetPlace;
         }
-        public void moveToPlayer(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, MoveCommand command)
+        public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
         {
             Random rand = new Random();
             if (rand.Next() % 2 == 0) {
                 if (rand.Next() % 2 == 0)
-                    monster.Place.X = player.Place.X + 1;
+                    provider.GetMonster().Place.X = provider.GetPlayer().Place.X + 1;
                 else
-                    monster.Place.X = player.Place.X - 1;
+                    provider.GetMonster().Place.X = provider.GetPlayer().Place.X - 1;
                }
             if(rand.Next() % 2 == 0)
-                monster.Place.Y = player.Place.Y + 1;
+                provider.GetMonster().Place.Y = provider.GetPlayer().Place.Y + 1;
             else
-                monster.Place.Y = player.Place.Y - 1;
+                provider.GetMonster().Place.Y = provider.GetPlayer().Place.Y - 1;
 
         }
 
-        public void shootDirection(Player player, Monster monster, ShootCommand command)
+        public void ShootDirection(GameParamProvider provider, ShootCommand command)
         {
             switch (command.Direction)
             {
                 case "F":
-                    if (player.Place.Y != monster.Place.Y)
+                    if (provider.GetPlayer().Place.Y != provider.GetMonster().Place.Y)
                         break;
                     for (int i =0; i < command.Distance; i++) {
-                        if ((int)monster.Place.X - i >= 0)
-                            if (player.Place.X == monster.Place.X - (uint)command.Distance)
-                                player.Damage(command.Damage);
+                        if ((int)provider.GetMonster().Place.X - i >= 0)
+                            if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X - (uint)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
             }
                     break;
                 case "B":
-                    if (player.Place.Y != monster.Place.Y)
+                    if (provider.GetPlayer().Place.Y != provider.GetMonster().Place.Y)
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                            if (player.Place.X == monster.Place.X + (uint)command.Distance)
-                                player.Damage(command.Damage);
+                            if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X + (uint)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
                 case "L":
-                    if (player.Place.X != monster.Place.X)
+                    if (provider.GetPlayer().Place.X != provider.GetMonster().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)monster.Place.Y - i >= 0)
-                            if (player.Place.Y == monster.Place.Y - (uint)command.Distance)
-                                player.Damage(command.Damage);
+                        if ((int)provider.GetMonster().Place.Y - i >= 0)
+                            if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y - (uint)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
                 case "R":
-                    if (player.Place.X != monster.Place.X)
+                    if (provider.GetPlayer().Place.X != provider.GetMonster().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                            if (player.Place.Y == monster.Place.Y + (uint)command.Distance)
-                                player.Damage(command.Damage);
+                            if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y + (uint)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
             }
         }
 
-        public void shootToPlace(Player player, Monster monster, ShootCommand command)
+        public void ShootToPlace(GameParamProvider provider, ShootCommand command)
         {
-            if (player.Place.Equals(command.targetPlace))
-                player.Damage(command.Damage);
+            if (provider.GetPlayer().Place.Equals(command.targetPlace))
+                provider.GetPlayer().Damage(command.Damage);
         }
 
-        public void shootToPlayer(Player player, Monster monster, ShootCommand command)
+        public void ShootToPlayer(GameParamProvider provider, ShootCommand command)
         {
-                player.Damage(command.Damage);
+                provider.GetPlayer().Damage(command.Damage);
         }
 
 

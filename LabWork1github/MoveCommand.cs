@@ -6,22 +6,46 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public delegate void MoveDelegate(Player player, Monster monster, MoveCommand command);
+    public delegate void MoveDelegate(GameParamProvider provider, MoveCommand command);
 
-    public class MoveCommand
+    public class MoveCommand : Command
     {
-        public int Distance { get; set; } = 1;
+        private int _distance =1 ;
+
+        public int Distance
+        {
+            get { return _distance; }
+            set
+            {
+                if (value <= 0)
+                    throw new NotSupportedException("Negative or zero Distance is not supported!");
+                _distance = value;
+            }
+        }
+
         public int Round { get; set; }
-        public int Damage { get; set; } = 10;
+        private int _damage = 10;
+
+        public int Damage
+        {
+            get { return _damage; }
+            set {
+                if(value<=0)
+                    throw new NotSupportedException("Negative or zero Distance is not supported!");
+                _damage = value;
+            }
+        }
+
         public Place targetPlace { get; set; }
         public string Direction { get; set; }
 
         public MoveDelegate MoveDelegate { get; set; }
 
-
-        public void Move(Player player, Monster monster) {
-            MoveDelegate(player, monster, this);
+        public override void Execute(GameParamProvider provider)
+        {
+            MoveDelegate(provider, this);
         }
+
 
     }
 }
