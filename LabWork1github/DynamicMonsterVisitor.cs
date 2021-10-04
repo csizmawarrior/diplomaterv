@@ -62,6 +62,7 @@ namespace LabWork1github
                         if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
                             throw new NotSupportedException("Wrong direction in Monster commandlist");
                         newCommand.Direction = direction.GetText();
+                        newCommand.MoveDelegate = new MoveDelegate(moveDirection);
                         Program.monsterTypes.ElementAt(i).Moves.Add(newCommand);
                         return base.VisitMoveDeclaration(context);
                     }
@@ -70,6 +71,7 @@ namespace LabWork1github
                         uint xPos = uint.Parse(place.x().GetText());
                         uint yPos = uint.Parse(place.y().GetText());
                         newCommand.targetPlace = new Place(xPos, yPos);
+                        newCommand.MoveDelegate = new MoveDelegate(moveToPlace);
                         Program.monsterTypes.ElementAt(i).Moves.Add(newCommand);
                         return base.VisitMoveDeclaration(context);
                     }
@@ -87,6 +89,10 @@ namespace LabWork1github
                         uint XPos = (uint)(rand.Next() % Program.Board.Height);
                         uint YPos = (uint)(rand.Next() % Program.Board.Width);
                         newCommand.targetPlace = new Place(XPos, YPos);
+                        newCommand.MoveDelegate = new MoveDelegate(moveToPlace);
+                        Program.monsterTypes.ElementAt(i).Moves.Add(newCommand);
+                        return base.VisitMoveDeclaration(context);
+
                     }
 
                 }
@@ -167,7 +173,6 @@ namespace LabWork1github
                         Program.monsterTypes.ElementAt(i).Shoots.Add(newCommand);
                         return base.VisitShootDeclaration(context);
                     }
-                    //delegate
                     var helpPlayer = context.PLAYER();
                     if (helpPlayer != null)
                     {
@@ -189,16 +194,45 @@ namespace LabWork1github
                     return base.VisitShootDeclaration(context);
         }
 
-        public void moveDirection(Player player, List<Monster> monsters, List<Trap> traps, int round)
+        public void moveDirection(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round, MoveCommand command)
         {
-            for (int i = 0; i < Program.monsterTypes.Count; i++)
+            
+            switch (command.Direction)
             {
-
-                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
-                {
-
-                }
+                case "F":
+                    if ((int)monster.Place.X - command.Distance >= 0)
+                        monster.Place.X -= (uint)command.Distance;
+                    break;
+                case "B":
+                    monster.Place.X += (uint)command.Distance;
+                    break;
+                case "L":
+                    if ((int)monster.Place.Y - command.Distance >= 0)
+                        monster.Place.Y -= (uint)command.Distance;
+                    break;
+                case "R":
+                    monster.Place.Y += (uint)command.Distance;
+                    break;
             }
+        }
+        public void moveToPlace(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round, MoveCommand command)
+        {
+            monster.Place = command.targetPlace;
+        }
+        public void moveToPlayer(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round, MoveCommand command)
+        {
+            Random rand = new Random();
+            if (rand.Next() % 2 == 0) {
+                if (rand.Next() % 2 == 0)
+                    monster.Place.X = player.Place.X + 1;
+                else
+                    monster.Place.X = player.Place.X - 1;
+               }
+            if(rand.Next() % 2 == 0)
+                monster.Place.Y = player.Place.Y + 1;
+            else
+                monster.Place.Y = player.Place.Y - 1;
+
         }
 
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
