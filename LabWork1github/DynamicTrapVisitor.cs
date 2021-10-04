@@ -23,21 +23,7 @@ namespace LabWork1github
         }
         public override object VisitDistanceDeclare([NotNull] DistanceDeclareContext context)
         {
-            for (int i = 0; i < Program.trapTypes.Count; i++)
-            {
-                if (Program.trapTypes.ElementAt(i).Name.Equals(typeName))
-                {
-                    foreach (var command in Program.trapTypes.ElementAt(i).Moves)
-                    {
-                        if (command.Round == round)
-                        {
-                            string dist = context.ID().GetText();
-                            if (dist.Equals("F") || dist.Equals("L") || dist.Equals("B") || dist.Equals("R"))
-                                command.Distance = dist;
-                        }
-                    }
-                }
-            }
+            
             return base.VisitDistanceDeclare(context);
         }
     }

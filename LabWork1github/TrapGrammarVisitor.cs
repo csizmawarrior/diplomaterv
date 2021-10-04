@@ -18,15 +18,7 @@ namespace LabWork1github
             Program.trapTypes.Add(new TrapType(typeName));
             return base.VisitNameDeclaration(context);
         }
-        public override object VisitRangeDeclaration([NotNull] RangeDeclarationContext context)
-        {
-            for (int i = 0; i < Program.trapTypes.Count; i++)
-            {
-                if (Program.trapTypes.ElementAt(i).Name.Equals(typeName))
-                    Program.trapTypes.ElementAt(i).Range = int.Parse(context.NUMBER().GetText());
-            }
-            return base.VisitRangeDeclaration(context);
-        }
+       
         public override object VisitMoveRoundDeclaration([NotNull] MoveRoundDeclarationContext context)
         {
             for (int i = 0; i < Program.trapTypes.Count; i++)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public delegate void MoveDelegate(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round, MoveCommand command);
+    public delegate void MoveDelegate(Player player, Monster monster, MoveCommand command);
 
     public class MoveCommand
     {
@@ -19,8 +19,8 @@ namespace LabWork1github
         public MoveDelegate MoveDelegate { get; set; }
 
 
-        public void Move(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round) {
-            MoveDelegate(player, monsters, monster, traps, round, this);
+        public void Move(Player player, Monster monster) {
+            MoveDelegate(player, monster, this);
         }
 
     }

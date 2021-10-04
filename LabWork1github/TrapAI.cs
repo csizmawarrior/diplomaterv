@@ -24,8 +24,7 @@ namespace LabWork1github
                 AffectPlayer(player, trap);
                 if(trap.Type.MoveRound != null && trap.Type.MoveRound != 0)
                 {
-                    if (trap.Type.Range != null && trap.Type.Range!=0 && roundNum % trap.Type.MoveRound == 0)
-                        moveTrap(trap, player, random.NextDouble());
+                    
                 }
             }
         }
@@ -40,22 +39,7 @@ namespace LabWork1github
                 XDistance = trap.Place.X - player.Place.X;
             if (XDistance == 0 && YDistance == 0)
                 return;
-            if(rand >= 0.5 && Math.Abs(XDistance) <= Math.Abs(trap.Type.Range))
-            {
-                if(trap.Place.X < player.Place.X)
-                    trap.Place.X = (uint)((int)trap.Place.X + (int)(XDistance * 0.5));
-                else
-                    trap.Place.X = (uint)((int)trap.Place.X - (int)(XDistance * 0.5));
-                return;
-            }
-            if (rand < 0.5 && Math.Abs(YDistance) <= Math.Abs(trap.Type.Range))
-            {
-                if(trap.Place.Y < player.Place.Y)
-                    trap.Place.Y = (uint)((int)trap.Place.Y + (int)(YDistance * 0.5));
-                else
-                    trap.Place.Y = (uint)((int)trap.Place.Y - (int)(YDistance * 0.5));
-                return;
-            }
+           
 
         }
 

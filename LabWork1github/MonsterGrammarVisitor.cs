@@ -30,15 +30,7 @@ namespace LabWork1github
             }
             return base.VisitMoveRoundDeclaration(context);
         }
-        public override object VisitRangeDeclaration([NotNull] RangeDeclarationContext context)
-        {
-            for (int i = 0; i < Program.monsterTypes.Count; i++)
-            {
-                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
-                    Program.monsterTypes.ElementAt(i).Range = int.Parse(context.NUMBER().GetText());
-            }
-            return base.VisitRangeDeclaration(context);
-        }
+        
         public override object VisitShootRoundDeclaration([NotNull] ShootRoundDeclarationContext context)
         {
             for (int i = 0; i < Program.monsterTypes.Count; i++)

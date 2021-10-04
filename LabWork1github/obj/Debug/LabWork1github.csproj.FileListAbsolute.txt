@@ -39,3 +39,9 @@ C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonste
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterBaseListener.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterVisitor.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicMonsterBaseVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapLexer.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapParser.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapBaseListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapBaseVisitor.cs
