@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="TrapGrammarVisitor.cs" />
     <Compile Include="TrapType.cs" />
+    <Compile Include="WhileCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

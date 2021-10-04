@@ -40,6 +40,8 @@ namespace LabWork1github
 
         public int ImmediateExecution { get; set; } = 0;
 
+        public int Repeat { get; set; } = 0;
+
         public void Init()
         {
             monsterAI = new MonsterAI();

@@ -328,6 +328,7 @@ namespace LabWork1github
                 if (context.character().MONSTER() != null)
                     return new IfDelegate(BoolMethods.IsMonsterNear);
             }
+            if(context.secondnumberoperations() == null)
 
         }
 

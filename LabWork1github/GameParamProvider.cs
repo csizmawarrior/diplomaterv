@@ -53,5 +53,9 @@ namespace LabWork1github
         {
             game.ImmediateExecution = commandCount;
         }
+        public void Repeat(int commandCount)
+        {
+            game.Repeat = commandCount;
+        }
     }
 }
