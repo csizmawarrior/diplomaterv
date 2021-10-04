@@ -88,19 +88,6 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitStatement([NotNull] DynamicMonsterParser.StatementContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.insideBlock"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterInsideBlock([NotNull] DynamicMonsterParser.InsideBlockContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.insideBlock"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitInsideBlock([NotNull] DynamicMonsterParser.InsideBlockContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.nameDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

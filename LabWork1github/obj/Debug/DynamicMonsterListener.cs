@@ -76,17 +76,6 @@ public interface IDynamicMonsterListener : IParseTreeListener {
 	void ExitStatement([NotNull] DynamicMonsterParser.StatementContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.insideBlock"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterInsideBlock([NotNull] DynamicMonsterParser.InsideBlockContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.insideBlock"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitInsideBlock([NotNull] DynamicMonsterParser.InsideBlockContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.nameDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -12,12 +12,6 @@ statement: healthDeclaration ';'
 		| whileexpression ';'
         ;
 
-insideBlock: healthDeclaration ';'
-		| damageDeclaration ';'
-        | moveDeclaration ';'
-        | shootDeclaration ';'
-		;
-
 nameDeclaration: NAME_T EQUALS name ';' ;
 healthDeclaration: HEALTH EQUALS NUMBER ;
 damageDeclaration: DAMAGE EQUALS NUMBER ;
@@ -28,7 +22,7 @@ shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION distanceDec
 ifexpression: IF boolexpression block ;
 whileexpression: WHILE boolexpression block | WHILE boolexpression statement;
 
-block: BRACKETCLOSE insideBlock* BRACKETCLOSE;
+block: BRACKETCLOSE statement* BRACKETCLOSE;
 numholder: ROUND | NUMBER | characterAttribute | ABSOLUTE numholder ABSOLUTE;
 secondnumparam: NUMOPERATION numholder;
 numberoperations: numholder secondnumparam*;

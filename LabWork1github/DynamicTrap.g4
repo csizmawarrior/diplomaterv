@@ -13,12 +13,6 @@ statement: damageDeclaration ';'
 		| healDeclare ';'
         ;
 
-insideBlock: healthDeclaration ';'
-		| damageDeclaration ';'
-        | moveDeclaration ';'
-        | shootDeclaration ';'
-		;
-
 damageDeclaration: DAMAGE DIRECTION | DAMAGE DIRECTION damageDeclare | DAMAGE DIRECTION distanceDeclare | DAMAGE DIRECTION distanceDeclare damageDeclare
 					| DAMAGE RANDOM	| DAMAGE TO place | DAMAGE TO place damageDeclare | DAMAGE TO character | DAMAGE TO character damageDeclare ;
 healDeclaration: HEAL DIRECTION | HEAL DIRECTION healDeclare | HEAL DIRECTION distanceDeclare | HEAL DIRECTION distanceDeclare healDeclare
@@ -33,7 +27,7 @@ distanceDeclare: DISTANCE EQUALS NUMBER;
 ifexpression: IF boolexpression block ;
 whileexpression: WHILE boolexpression block | WHILE boolexpression statement;
 
-block: BRACKETCLOSE insideBlock* BRACKETCLOSE;
+block: BRACKETCLOSE statement* BRACKETCLOSE;
 firstnumparam : numholder;
 secondnumparam: NUMOPERATION numholder;
 numberoperations: numholder secondnumparam*;

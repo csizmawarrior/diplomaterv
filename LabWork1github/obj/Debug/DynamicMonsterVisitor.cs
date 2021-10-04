@@ -61,13 +61,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStatement([NotNull] DynamicMonsterParser.StatementContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.insideBlock"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitInsideBlock([NotNull] DynamicMonsterParser.InsideBlockContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.nameDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
