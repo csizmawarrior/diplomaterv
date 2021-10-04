@@ -182,7 +182,7 @@ namespace LabWork1github
                 {
                     IfCommand newCommand = new IfCommand();
                     newCommand.CommandCount = context.block().ChildCount - 2;
-                    newCommand.IfDelegate = getCondition(context.boolexpression());
+                    newCommand.IfDelegate = GetCondition(context.boolexpression());
                     Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                     return base.VisitIfexpression(context);
                 }
@@ -190,11 +190,15 @@ namespace LabWork1github
             return base.VisitIfexpression(context);
         }
 
-        private IfDelegate getCondition(BoolexpressionContext context)
+        private IfDelegate GetCondition(BoolexpressionContext context)
         {
-
-
-            return new IfDelegate();
+            if (context.boolsconnected().secondbooloperation() == null)
+                return SingleBool(context.boolsconnected().booloperation());
+            if (context.boolsconnected().secondbooloperation().EXPRESSIONCONNECTER().GetText().Equals("&&"))
+                return AndBool(context.boolsconnected().secondbooloperation());
+            if (context.boolsconnected().secondbooloperation().EXPRESSIONCONNECTER().GetText().Equals("||"))
+                return OrBool(context.boolsconnected().secondbooloperation());
+            throw new InvalidOperationException("no boolexpression received");
         }
 
         public override object VisitBooloperation([NotNull] BooloperationContext context)
@@ -299,6 +303,45 @@ namespace LabWork1github
                 provider.GetPlayer().Damage(command.Damage);
         }
 
+
+        private IfDelegate SingleBool(BooloperationContext context)
+        {
+            if(context.ALIVE() != null)
+            {
+                if (context.character().PLAYER() != null)
+                    return new IfDelegate(BoolMethods.IsPlayerAlive);
+                if (context.character().ME() != null)
+                    return new IfDelegate(BoolMethods.IsMeAlive);
+                if (context.character().TRAP() != null)
+                    return new IfDelegate(BoolMethods.IsTrapAlive);
+                if (context.character().MONSTER() != null)
+                    return new IfDelegate(BoolMethods.IsMonsterAlive);
+            }
+            if(context.NEAR() != null)
+            {
+                if (context.character().PLAYER() != null)
+                    return new IfDelegate(BoolMethods.IsPlayerNear);
+                if (context.character().ME() != null)
+                    return new IfDelegate(BoolMethods.IsMeNear);
+                if (context.character().TRAP() != null)
+                    return new IfDelegate(BoolMethods.IsTrapNear);
+                if (context.character().MONSTER() != null)
+                    return new IfDelegate(BoolMethods.IsMonsterNear);
+            }
+
+        }
+
+        private IfDelegate AndBool(SecondbooloperationContext context)
+        {
+
+        }
+
+        private IfDelegate OrBool(SecondbooloperationContext context)
+        {
+
+        }
+
+        
 
     }
 }

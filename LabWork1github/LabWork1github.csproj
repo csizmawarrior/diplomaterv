@@ -56,6 +56,7 @@
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
     <Compile Include="BoardGrammarVisitor.cs" />
+    <Compile Include="BoolMethods.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="DynamicMonster.g4.lexer.cs">

@@ -11,6 +11,7 @@ namespace LabWork1github
 
     public class Game
     {
+
         public Board Board { get; set; }
 
         public Player Player { get; set; }

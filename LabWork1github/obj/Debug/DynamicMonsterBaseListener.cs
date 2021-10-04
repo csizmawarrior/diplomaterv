@@ -244,6 +244,19 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitNumberoperations([NotNull] DynamicMonsterParser.NumberoperationsContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.booloperation"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
