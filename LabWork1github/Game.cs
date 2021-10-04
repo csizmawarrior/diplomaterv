@@ -25,11 +25,15 @@ namespace LabWork1github
 
         public static PlayerMove move = new PlayerMove();
 
-        private int round = 0;
+        public int Round { get; set; } = 0;
 
         public bool wrongMove = false;
 
         public Drawer drawer;
+
+        public Monster ActualMonster { get; set; }
+
+        public Trap ActualTrap { get; set; }
 
         public void Init()
         {
@@ -86,7 +90,7 @@ namespace LabWork1github
             {
 
                 if(!wrongMove)
-                    round++;
+                    Round++;
                 Step();
             }
             if (Player.Health <= 0)
@@ -146,7 +150,7 @@ namespace LabWork1github
             if (wrongMove)
                 return;
 
-            trapAI.Step(round, Player, Traps);
+            trapAI.Step(Round, Player, Traps);
 
             foreach (Monster monster in Monsters)
             {
@@ -157,7 +161,7 @@ namespace LabWork1github
                 }
             }
 
-            monsterAI.Step(round, Player, Monsters);
+            monsterAI.Step(Round, Player, Monsters);
             if (trapAI.Spawning) { 
                 if(checkSpawn(trapAI.spawnPoint))
                     Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(0), trapAI.spawnPoint));

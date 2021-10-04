@@ -13,7 +13,7 @@ namespace LabWork1github
     class DynamicMonsterVisitor : DynamicMonsterBaseVisitor<object>
     {
         private string typeName = "";
-        private int round = 1;
+
         private bool condition = false;
 
         public override object Visit([NotNull] IParseTree tree)
@@ -41,7 +41,7 @@ namespace LabWork1github
 
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
-            round++;
+           
             for (int i = 0; i < Program.monsterTypes.Count; i++)
             {
                 if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
@@ -52,23 +52,14 @@ namespace LabWork1github
 
         public override object VisitMoveDeclaration([NotNull] MoveDeclarationContext context)
         {
-            round++;
+           
             for (int i = 0; i < Program.monsterTypes.Count; i++)
             {
                 if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName)) {
                     
-                    for(int j = 0; j < Program.monsterTypes.ElementAt(i).Ifs.Count; j++)
-                    {
-                        if (Program.monsterTypes.ElementAt(i).Ifs.ElementAt(j).Round == round)
-                            round--;
-                    }
-                    //for (int j = 0; j < Program.monsterTypes.ElementAt(i).Whiles.Count; j++)
-                    //{
-                    //    if (Program.monsterTypes.ElementAt(i).Whiles.ElementAt(j).Round == round) 
-                    //        round--;
-                    //}
+                    
                     MoveCommand newCommand = new MoveCommand();
-                    newCommand.Round = round;
+                   
                     var direction = context.DIRECTION();
                     if (direction != null)
                     {
@@ -121,13 +112,12 @@ namespace LabWork1github
                 {
                     foreach(var command in Program.monsterTypes.ElementAt(i).Moves)
                     {
-                        if (command.Round == round)
-                        {
+                       
                             int dist = int.Parse(context.NUMBER().GetText());
                             if (dist < 0)
                                 throw new NotSupportedException("negative distance not supported");
                                 command.Distance = dist;
-                        }
+                        
                     }
                 }
             }
@@ -146,13 +136,12 @@ namespace LabWork1github
                 {
                     foreach (var command in Program.monsterTypes.ElementAt(i).Moves)
                     {
-                        if (command.Round == round)
-                        { 
+                       
                             command.Damage = damage;
                             return base.VisitDamageDeclaration(context);
-                        }
+                        
                      }
-                    round++;
+                   
                     Program.monsterTypes.ElementAt(i).Damage = damage;
                 }
             }
@@ -161,23 +150,13 @@ namespace LabWork1github
 
         public override object VisitShootDeclaration([NotNull] ShootDeclarationContext context)
         {
-            round++;
+           
             for (int i = 0; i < Program.monsterTypes.Count; i++)
             {
                 if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
                 {
-                    for (int j = 0; j < Program.monsterTypes.ElementAt(i).Ifs.Count; j++)
-                    {
-                        if (Program.monsterTypes.ElementAt(i).Ifs.ElementAt(j).Round == round)
-                            round--;
-                    }
-                    //for (int j = 0; j < Program.monsterTypes.ElementAt(i).Whiles.Count; j++)
-                    //{
-                    //    if (Program.monsterTypes.ElementAt(i).Whiles.ElementAt(j).Round == round) 
-                    //        round--;
-                    //}
+                   
                     ShootCommand newCommand = new ShootCommand();
-                    newCommand.Round = round;
                     var direction = context.DIRECTION();
                     if (direction != null)
                     {
@@ -225,15 +204,14 @@ namespace LabWork1github
 
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
         {
-            round++;
+            
             for (int i = 0; i < Program.monsterTypes.Count; i++)
             {
                 if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
                 {
                     //for (int j = 0; j < Program.monsterTypes.ElementAt(i).Whiles.Count; j++)
                     //{
-                    //    if (Program.monsterTypes.ElementAt(i).Whiles.ElementAt(j).Round == round) 
-                    //        round--;
+                    //    
                     //}
                     IfCommand newCommand = new IfCommand();
                     Program.monsterTypes.ElementAt(i).Ifs.Add(newCommand);
@@ -273,7 +251,7 @@ namespace LabWork1github
         {
             monster.Place = command.targetPlace;
         }
-        public void moveToPlayer(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, int round, MoveCommand command)
+        public void moveToPlayer(Player player, List<Monster> monsters, Monster monster, List<Trap> traps, MoveCommand command)
         {
             Random rand = new Random();
             if (rand.Next() % 2 == 0) {
