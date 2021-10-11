@@ -303,46 +303,5 @@ namespace LabWork1github
                 provider.GetPlayer().Damage(command.Damage);
         }
 
-
-        private IfDelegate SingleBool(BooloperationContext context)
-        {
-            if(context.ALIVE() != null)
-            {
-                if (context.character().PLAYER() != null)
-                    return new IfDelegate(BoolMethods.IsPlayerAlive);
-                if (context.character().ME() != null)
-                    return new IfDelegate(BoolMethods.IsMeAlive);
-                if (context.character().TRAP() != null)
-                    return new IfDelegate(BoolMethods.IsTrapAlive);
-                if (context.character().MONSTER() != null)
-                    return new IfDelegate(BoolMethods.IsMonsterAlive);
-            }
-            if(context.NEAR() != null)
-            {
-                if (context.character().PLAYER() != null)
-                    return new IfDelegate(BoolMethods.IsPlayerNear);
-                if (context.character().ME() != null)
-                    return new IfDelegate(BoolMethods.IsMeNear);
-                if (context.character().TRAP() != null)
-                    return new IfDelegate(BoolMethods.IsTrapNear);
-                if (context.character().MONSTER() != null)
-                    return new IfDelegate(BoolMethods.IsMonsterNear);
-            }
-            if(context.secondnumberoperations() == null)
-
-        }
-
-        private IfDelegate AndBool(SecondbooloperationContext context)
-        {
-
-        }
-
-        private IfDelegate OrBool(SecondbooloperationContext context)
-        {
-
-        }
-
-        
-
     }
 }
