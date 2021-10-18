@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public delegate bool WhileDelegate(GameParamProvider provider, WhileCommand command);
 
     public class WhileCommand : Command
     {
-        public WhileDelegate WhileDelegate { get; set; }
+        public Condition Condition { get; set; }
         public int CommandCount { get; set; }
 
         public override void Execute(GameParamProvider provider)
         {
-            if (WhileDelegate(provider, this))
+            if (Condition(provider))
                 provider.Repeat(CommandCount);
         }
     }

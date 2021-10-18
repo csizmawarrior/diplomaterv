@@ -19,25 +19,30 @@ distanceDeclare: DISTANCE EQUALS NUMBER;
 moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION distanceDeclare | MOVE TO PLAYER | MOVE TO RANDOM ;
 shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION distanceDeclare | SHOOT DIRECTION damageDeclaration | SHOOT RANDOM
                 | SHOOT TO PLAYER | SHOOT TO PLAYER damageDeclaration | SHOOT DIRECTION distanceDeclare damageDeclaration | SHOOT TO place damageDeclaration ;
-ifexpression: IF boolexpression block ;
-whileexpression: WHILE boolexpression block | WHILE boolexpression statement;
+ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block ;
+whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block | WHILE PARENTHESISSTART expression PARENTHESISCLOSE statement;
 
 block: BRACKETCLOSE statement* BRACKETCLOSE;
-numholder: ROUND | NUMBER | characterAttribute | ABSOLUTE numholder ABSOLUTE;
-secondnumparam: NUMOPERATION numholder;
-numberoperations: numholder secondnumparam*;
-secondnumberoperations: COMPARE numberoperations;
-booloperation: numberoperations secondnumberoperations | character ALIVE | character IS NEAR;
-secondbooloperation: EXPRESSIONCONNECTER booloperation;
-boolsconnected: booloperation secondbooloperation;
-boolexpression: PARENTHESISSTART boolsconnected PARENTHESISCLOSE;
+
+
+
+conditionexpression: PARENTHESISSTART expression PARENTHESISCLOSE;
+
 character: PLAYER | ME | TRAP | MONSTER;
 possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | DAMAGE;
 characterAttribute: character ATTRIBUTE possibleAttributes;
 
+
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
+
+expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE | ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
+something: character | NUMBER | ROUND | place | possibleAttributes;
+
+operation: ATTRIBUTE | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR;
+
+
 
 RANDOM: 'random';
 DISTANCE: 'distance';
@@ -63,9 +68,10 @@ SHOOT: 'shoot';
 
 EQUALS: '=' ;
 ABSOLUTE: '|';
-EXPRESSIONCONNECTER: '||' | '&&' ;
+NEGATE: '!';
+BOOLCONNECTER: '||' | '&&' ;
 COMPARE: '<' | '>' | '==' | '!=' ;
-NUMOPERATION: '+' | '-' | '*' | '/' | '%' ;
+NUMCONNECTER: '+' | '-' | '*' | '/' | '%' ;
 PARENTHESISSTART: '(';
 PARENTHESISCLOSE: ')';
 BRACKETCLOSE: '}';

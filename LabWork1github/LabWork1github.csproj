@@ -57,7 +57,6 @@
     </Compile>
     <Compile Include="BoardGrammarVisitor.cs" />
     <Compile Include="BoolMethods.cs" />
-    <Compile Include="BoolsConnectedVisitor.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="DynamicMonster.g4.lexer.cs">
@@ -79,6 +78,7 @@
     <Compile Include="IfCommand.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterAI.cs" />
+    <Compile Include="MonsterExpressionVisitor.cs" />
     <Compile Include="MonsterGrammar.g4.lexer.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
     </Compile>
@@ -101,6 +101,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShootCommand.cs" />
+    <Compile Include="Symbol.cs" />
     <Compile Include="Trap.cs" />
     <Compile Include="TrapAI.cs" />
     <Compile Include="TrapGrammar.g4.lexer.cs">

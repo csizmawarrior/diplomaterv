@@ -124,60 +124,11 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitBlock([NotNull] DynamicMonsterParser.BlockContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.numholder"/>.
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.conditionexpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitNumholder([NotNull] DynamicMonsterParser.NumholderContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondnumparam"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSecondnumparam([NotNull] DynamicMonsterParser.SecondnumparamContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.numberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNumberoperations([NotNull] DynamicMonsterParser.NumberoperationsContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondnumberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSecondnumberoperations([NotNull] DynamicMonsterParser.SecondnumberoperationsContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.booloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBooloperation([NotNull] DynamicMonsterParser.BooloperationContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.secondbooloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSecondbooloperation([NotNull] DynamicMonsterParser.SecondbooloperationContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.boolsconnected"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBoolsconnected([NotNull] DynamicMonsterParser.BoolsconnectedContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.boolexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBoolexpression([NotNull] DynamicMonsterParser.BoolexpressionContext context);
+	Result VisitConditionexpression([NotNull] DynamicMonsterParser.ConditionexpressionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.character"/>.
@@ -220,5 +171,26 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitY([NotNull] DynamicMonsterParser.YContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression([NotNull] DynamicMonsterParser.ExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.something"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSomething([NotNull] DynamicMonsterParser.SomethingContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.operation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperation([NotNull] DynamicMonsterParser.OperationContext context);
 }
 } // namespace LabWork1github

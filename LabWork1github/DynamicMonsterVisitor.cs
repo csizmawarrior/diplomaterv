@@ -182,29 +182,14 @@ namespace LabWork1github
                 {
                     IfCommand newCommand = new IfCommand();
                     newCommand.CommandCount = context.block().ChildCount - 2;
-                    newCommand.IfDelegate = GetCondition(context.boolexpression());
+
+                    //TODO: condition handle
+
                     Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                     return base.VisitIfexpression(context);
                 }
             }
             return base.VisitIfexpression(context);
-        }
-
-        private IfDelegate GetCondition(BoolexpressionContext context)
-        {
-            if (context.boolsconnected().secondbooloperation() == null)
-                return SingleBool(context.boolsconnected().booloperation());
-            if (context.boolsconnected().secondbooloperation().EXPRESSIONCONNECTER().GetText().Equals("&&"))
-                return AndBool(context.boolsconnected().secondbooloperation());
-            if (context.boolsconnected().secondbooloperation().EXPRESSIONCONNECTER().GetText().Equals("||"))
-                return OrBool(context.boolsconnected().secondbooloperation());
-            throw new InvalidOperationException("no boolexpression received");
-        }
-
-        public override object VisitBooloperation([NotNull] BooloperationContext context)
-        {
-            
-            return base.VisitBooloperation(context);
         }
 
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
