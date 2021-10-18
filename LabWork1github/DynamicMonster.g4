@@ -38,7 +38,7 @@ x: NUMBER;
 y: NUMBER;
 
 expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE | ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
-something: character | NUMBER | ROUND | place | possibleAttributes;
+something: character | NUMBER | ROUND | possibleAttributes;
 
 operation: ATTRIBUTE | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR;
 
