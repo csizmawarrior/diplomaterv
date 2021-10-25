@@ -18,6 +18,16 @@ namespace LabWork1github
         {
             return base.Visit(tree);
         }
+        public override object VisitExpression([NotNull] ExpressionContext context)
+        {
+            if (context.operation() != null)
+                if (context.operation().BOOLCONNECTER() != null)
+                    VisitBoolExpression(context.expression().ElementAt(0));
+            return base.VisitExpression(context);
+        }
+        public void VisitBoolExpression([NotNull] ExpressionContext context)
+        {
 
+        }
     }
 }
