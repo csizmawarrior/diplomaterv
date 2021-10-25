@@ -145,27 +145,6 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitBlock([NotNull] DynamicTrapParser.BlockContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.firstnumparam"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFirstnumparam([NotNull] DynamicTrapParser.FirstnumparamContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.secondnumparam"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSecondnumparam([NotNull] DynamicTrapParser.SecondnumparamContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.numberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNumberoperations([NotNull] DynamicTrapParser.NumberoperationsContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.character"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -173,53 +152,11 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitCharacter([NotNull] DynamicTrapParser.CharacterContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBooloperation([NotNull] DynamicTrapParser.BooloperationContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.secondbooloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSecondbooloperation([NotNull] DynamicTrapParser.SecondbooloperationContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.boolsconnected"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBoolsconnected([NotNull] DynamicTrapParser.BoolsconnectedContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.boolexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBoolexpression([NotNull] DynamicTrapParser.BoolexpressionContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.possibleAttributes"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitPossibleAttributes([NotNull] DynamicTrapParser.PossibleAttributesContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.characterAttribute"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCharacterAttribute([NotNull] DynamicTrapParser.CharacterAttributeContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.numholder"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNumholder([NotNull] DynamicTrapParser.NumholderContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.place"/>.
@@ -241,5 +178,26 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitY([NotNull] DynamicTrapParser.YContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression([NotNull] DynamicTrapParser.ExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.something"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSomething([NotNull] DynamicTrapParser.SomethingContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.operation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperation([NotNull] DynamicTrapParser.OperationContext context);
 }
 } // namespace LabWork1github

@@ -124,13 +124,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitBlock([NotNull] DynamicMonsterParser.BlockContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.conditionexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitConditionexpression([NotNull] DynamicMonsterParser.ConditionexpressionContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.character"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -143,13 +136,6 @@ public interface IDynamicMonsterVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitPossibleAttributes([NotNull] DynamicMonsterParser.PossibleAttributesContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicMonsterParser.place"/>.

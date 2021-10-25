@@ -175,17 +175,6 @@ public interface IDynamicMonsterListener : IParseTreeListener {
 	void ExitBlock([NotNull] DynamicMonsterParser.BlockContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.conditionexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterConditionexpression([NotNull] DynamicMonsterParser.ConditionexpressionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.conditionexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitConditionexpression([NotNull] DynamicMonsterParser.ConditionexpressionContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.character"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -206,17 +195,6 @@ public interface IDynamicMonsterListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitPossibleAttributes([NotNull] DynamicMonsterParser.PossibleAttributesContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.place"/>.

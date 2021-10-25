@@ -244,45 +244,6 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	public virtual void ExitBlock([NotNull] DynamicTrapParser.BlockContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.firstnumparam"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFirstnumparam([NotNull] DynamicTrapParser.FirstnumparamContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.firstnumparam"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFirstnumparam([NotNull] DynamicTrapParser.FirstnumparamContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.secondnumparam"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSecondnumparam([NotNull] DynamicTrapParser.SecondnumparamContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.secondnumparam"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSecondnumparam([NotNull] DynamicTrapParser.SecondnumparamContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.numberoperations"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumberoperations([NotNull] DynamicTrapParser.NumberoperationsContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.numberoperations"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumberoperations([NotNull] DynamicTrapParser.NumberoperationsContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.character"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -296,58 +257,6 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	public virtual void ExitCharacter([NotNull] DynamicTrapParser.CharacterContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBooloperation([NotNull] DynamicTrapParser.BooloperationContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBooloperation([NotNull] DynamicTrapParser.BooloperationContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.secondbooloperation"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSecondbooloperation([NotNull] DynamicTrapParser.SecondbooloperationContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.secondbooloperation"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSecondbooloperation([NotNull] DynamicTrapParser.SecondbooloperationContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.boolsconnected"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolsconnected([NotNull] DynamicTrapParser.BoolsconnectedContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.boolsconnected"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolsconnected([NotNull] DynamicTrapParser.BoolsconnectedContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.boolexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolexpression([NotNull] DynamicTrapParser.BoolexpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.boolexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolexpression([NotNull] DynamicTrapParser.BoolexpressionContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.possibleAttributes"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -359,32 +268,6 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPossibleAttributes([NotNull] DynamicTrapParser.PossibleAttributesContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.characterAttribute"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCharacterAttribute([NotNull] DynamicTrapParser.CharacterAttributeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.characterAttribute"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCharacterAttribute([NotNull] DynamicTrapParser.CharacterAttributeContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.numholder"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumholder([NotNull] DynamicTrapParser.NumholderContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.numholder"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumholder([NotNull] DynamicTrapParser.NumholderContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.place"/>.
@@ -424,6 +307,45 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitY([NotNull] DynamicTrapParser.YContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpression([NotNull] DynamicTrapParser.ExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpression([NotNull] DynamicTrapParser.ExpressionContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.something"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSomething([NotNull] DynamicTrapParser.SomethingContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.something"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSomething([NotNull] DynamicTrapParser.SomethingContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.operation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOperation([NotNull] DynamicTrapParser.OperationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.operation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOperation([NotNull] DynamicTrapParser.OperationContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

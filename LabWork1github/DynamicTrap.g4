@@ -24,24 +24,22 @@ nameDeclaration: NAME_T EQUALS name ';' ;
 damageDeclare: DAMAGE EQUALS NUMBER;
 healDeclare: HEAL EQUALS NUMBER;
 distanceDeclare: DISTANCE EQUALS NUMBER;
-ifexpression: IF boolexpression block ;
-whileexpression: WHILE boolexpression block | WHILE boolexpression statement;
+ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block;
+whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 
 block: BRACKETCLOSE statement* BRACKETCLOSE;
-firstnumparam : numholder;
-secondnumparam: NUMOPERATION numholder;
-numberoperations: numholder secondnumparam*;
 character: PLAYER | ME | MONSTER | TRAP;
-booloperation: numberoperations COMPARE numberoperations | character ALIVE | character IS NEAR character IS ON ME;
-secondbooloperation: EXPRESSIONCONNECTER booloperation;
-boolsconnected: booloperation secondbooloperation*;
-boolexpression: PARENTHESISSTART boolsconnected PARENTHESISCLOSE;
 possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | DAMAGE | HEAL;
-characterAttribute: character ATTRIBUTE possibleAttributes;
-numholder: ROUND | NUMBER | characterAttribute | ABSOLUTE numholder ABSOLUTE;
+
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
+
+expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE | ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
+something: character | NUMBER | ROUND | possibleAttributes | NOTHING;
+
+operation: ATTRIBUTE | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR;
+
 
 DISTANCE: 'distance';
 DAMAGE: 'damage';

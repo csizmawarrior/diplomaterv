@@ -208,39 +208,6 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	void ExitBlock([NotNull] DynamicTrapParser.BlockContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.firstnumparam"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterFirstnumparam([NotNull] DynamicTrapParser.FirstnumparamContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.firstnumparam"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitFirstnumparam([NotNull] DynamicTrapParser.FirstnumparamContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.secondnumparam"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterSecondnumparam([NotNull] DynamicTrapParser.SecondnumparamContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.secondnumparam"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitSecondnumparam([NotNull] DynamicTrapParser.SecondnumparamContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.numberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNumberoperations([NotNull] DynamicTrapParser.NumberoperationsContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.numberoperations"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNumberoperations([NotNull] DynamicTrapParser.NumberoperationsContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.character"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -252,50 +219,6 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	void ExitCharacter([NotNull] DynamicTrapParser.CharacterContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBooloperation([NotNull] DynamicTrapParser.BooloperationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.booloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBooloperation([NotNull] DynamicTrapParser.BooloperationContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.secondbooloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterSecondbooloperation([NotNull] DynamicTrapParser.SecondbooloperationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.secondbooloperation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitSecondbooloperation([NotNull] DynamicTrapParser.SecondbooloperationContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.boolsconnected"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBoolsconnected([NotNull] DynamicTrapParser.BoolsconnectedContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.boolsconnected"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBoolsconnected([NotNull] DynamicTrapParser.BoolsconnectedContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.boolexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBoolexpression([NotNull] DynamicTrapParser.BoolexpressionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.boolexpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBoolexpression([NotNull] DynamicTrapParser.BoolexpressionContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.possibleAttributes"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -305,28 +228,6 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitPossibleAttributes([NotNull] DynamicTrapParser.PossibleAttributesContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.characterAttribute"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCharacterAttribute([NotNull] DynamicTrapParser.CharacterAttributeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.characterAttribute"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCharacterAttribute([NotNull] DynamicTrapParser.CharacterAttributeContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.numholder"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNumholder([NotNull] DynamicTrapParser.NumholderContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.numholder"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNumholder([NotNull] DynamicTrapParser.NumholderContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.place"/>.
@@ -360,5 +261,38 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitY([NotNull] DynamicTrapParser.YContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExpression([NotNull] DynamicTrapParser.ExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExpression([NotNull] DynamicTrapParser.ExpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.something"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSomething([NotNull] DynamicTrapParser.SomethingContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.something"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSomething([NotNull] DynamicTrapParser.SomethingContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.operation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOperation([NotNull] DynamicTrapParser.OperationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.operation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOperation([NotNull] DynamicTrapParser.OperationContext context);
 }
 } // namespace LabWork1github

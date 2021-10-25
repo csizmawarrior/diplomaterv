@@ -23,14 +23,8 @@ ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block ;
 whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block | WHILE PARENTHESISSTART expression PARENTHESISCLOSE statement;
 
 block: BRACKETCLOSE statement* BRACKETCLOSE;
-
-
-
-conditionexpression: PARENTHESISSTART expression PARENTHESISCLOSE;
-
 character: PLAYER | ME | TRAP | MONSTER;
 possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | DAMAGE;
-characterAttribute: character ATTRIBUTE possibleAttributes;
 
 
 place: x ',' y;

@@ -205,19 +205,6 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	public virtual void ExitBlock([NotNull] DynamicMonsterParser.BlockContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.conditionexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterConditionexpression([NotNull] DynamicMonsterParser.ConditionexpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.conditionexpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitConditionexpression([NotNull] DynamicMonsterParser.ConditionexpressionContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.character"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -242,19 +229,6 @@ public partial class DynamicMonsterBaseListener : IDynamicMonsterListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPossibleAttributes([NotNull] DynamicMonsterParser.PossibleAttributesContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicMonsterParser.characterAttribute"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCharacterAttribute([NotNull] DynamicMonsterParser.CharacterAttributeContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicMonsterParser.place"/>.
