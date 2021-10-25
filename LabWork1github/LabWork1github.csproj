@@ -104,6 +104,7 @@
     <Compile Include="Symbol.cs" />
     <Compile Include="Trap.cs" />
     <Compile Include="TrapAI.cs" />
+    <Compile Include="TrapExpressionVisitor.cs" />
     <Compile Include="TrapGrammar.g4.lexer.cs">
       <DependentUpon>TrapGrammar.g4</DependentUpon>
     </Compile>

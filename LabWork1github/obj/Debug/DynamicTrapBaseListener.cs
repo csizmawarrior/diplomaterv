@@ -88,6 +88,71 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	public virtual void ExitStatement([NotNull] DynamicTrapParser.StatementContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTeleportDeclare([NotNull] DynamicTrapParser.TeleportDeclareContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTeleportDeclare([NotNull] DynamicTrapParser.TeleportDeclareContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.spawnDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSpawnDeclare([NotNull] DynamicTrapParser.SpawnDeclareContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.spawnDeclare"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSpawnDeclare([NotNull] DynamicTrapParser.SpawnDeclareContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -151,45 +216,6 @@ public partial class DynamicTrapBaseListener : IDynamicTrapListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.distanceDeclare"/>.

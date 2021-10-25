@@ -61,6 +61,41 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStatement([NotNull] DynamicTrapParser.StatementContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTeleportDeclare([NotNull] DynamicTrapParser.TeleportDeclareContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.spawnDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSpawnDeclare([NotNull] DynamicTrapParser.SpawnDeclareContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.damageDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -94,27 +129,6 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.distanceDeclare"/>.

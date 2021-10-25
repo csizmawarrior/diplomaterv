@@ -76,6 +76,61 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	void ExitStatement([NotNull] DynamicTrapParser.StatementContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTeleportDeclare([NotNull] DynamicTrapParser.TeleportDeclareContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTeleportDeclare([NotNull] DynamicTrapParser.TeleportDeclareContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.spawnDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSpawnDeclare([NotNull] DynamicTrapParser.SpawnDeclareContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.spawnDeclare"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSpawnDeclare([NotNull] DynamicTrapParser.SpawnDeclareContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -129,39 +184,6 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.distanceDeclare"/>.

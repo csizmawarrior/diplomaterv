@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static LabWork1github.DynamicMonsterParser;
+using static LabWork1github.DynamicTrapParser;
 using LabWork1github;
 
 namespace LabWork1github
 {
-    public class MonsterExpressionVisitor : DynamicMonsterBaseVisitor<object>
+    public class TrapExpressionVisitor : DynamicTrapBaseVisitor<object>
     {
 
-        public ExpressionContext ExpressionContext { get; set; }
+        public ExpressionContext ExpressionContext { get; private set; }
 
-        public MonsterExpressionVisitor(ExpressionContext context)
+        public TrapExpressionVisitor(ExpressionContext context)
         {
             ExpressionContext = context;
         }
@@ -47,10 +47,10 @@ namespace LabWork1github
             {
                 if (context.operation().ATTRIBUTE() != null || context.operation().NUMCONNECTER() != null)
                     throw new InvalidOperationException("Number operation sent instead of bool operation.");
-                if(context.operation().BOOLCONNECTER() != null)
+                if (context.operation().BOOLCONNECTER() != null)
                     VisitBoolExpression(context.expression().ElementAt(0));
                 if (context.operation().ALIVE() != null || context.operation().NEAR() != null)
-                        VisitFunctionExpression(context);
+                    VisitFunctionExpression(context);
                 if (context.operation().COMPARE() != null)
                     VisitNumberOperation(context.expression());
                 throw new InvalidOperationException("Not recognizeed operation option!");
@@ -71,11 +71,11 @@ namespace LabWork1github
 
         private void VisitNumberOperation(ExpressionContext[] expressionContext)
         {
-            foreach(ExpressionContext exp in expressionContext)
+            foreach (ExpressionContext exp in expressionContext)
             {
                 if (exp.ABSOLUTE() != null || exp.PARENTHESISCLOSE() != null) ;
-                    VisitNumberOperation(exp.expression());
-                if(exp.operation() != null)
+                VisitNumberOperation(exp.expression());
+                if (exp.operation() != null)
                 {
                     if (exp.operation().NUMCONNECTER() != null)
                         VisitNumberOperation(exp.expression());

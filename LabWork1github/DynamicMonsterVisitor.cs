@@ -178,14 +178,17 @@ namespace LabWork1github
             
             for (int i = 0; i < Program.monsterTypes.Count; i++)
             {
-                if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
+                if (Program.MonsterTypes.ElementAt(i).Name.Equals(typeName))
                 {
                     IfCommand newCommand = new IfCommand();
                     newCommand.CommandCount = context.block().ChildCount - 2;
 
+                    MonsterExpressionVisitor typeChecker = new MonsterExpressionVisitor(context.expression());
+                    typeChecker.CheckTypes();
+
                     //TODO: condition handle
 
-                    Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
+                    Program.MonsterTypes.ElementAt(i).Commands.Add(newCommand);
                     return base.VisitIfexpression(context);
                 }
             }

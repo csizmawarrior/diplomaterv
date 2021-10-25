@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
+    public delegate bool Condition(GameParamProvider provider);
 
     public class IfCommand : Command
     {
@@ -16,12 +17,11 @@ namespace LabWork1github
         //can be done with config file? or a new type?
 
         public Condition Condition { get; set; }
+        public List<Command> commandList { get; set; }
 
         public override void Execute(GameParamProvider provider)
         {
-            if(!Condition(provider));
-                provider.NoExecution(CommandCount);
-            provider.Execute(CommandCount);
+            if(Condition(provider));
         }
     }
 }
