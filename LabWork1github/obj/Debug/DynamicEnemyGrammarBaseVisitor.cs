@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\Dana\source\repos\LabWork1github\LabWork1github\DynamicTrap.g4 by ANTLR 4.6.6
+// Generated from C:\Users\Dana\source\repos\LabWork1github\LabWork1github\DynamicEnemyGrammar.g4 by ANTLR 4.6.6
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -26,16 +26,16 @@ using IToken = Antlr4.Runtime.IToken;
 using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 
 /// <summary>
-/// This class provides an empty implementation of <see cref="IDynamicTrapVisitor{Result}"/>,
+/// This class provides an empty implementation of <see cref="IDynamicEnemyGrammarVisitor{Result}"/>,
 /// which can be extended to create a visitor which only needs to handle a subset
 /// of the available methods.
 /// </summary>
 /// <typeparam name="Result">The return type of the visit operation.</typeparam>
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.6.6")]
 [System.CLSCompliant(false)]
-public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IDynamicTrapVisitor<Result> {
+public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IDynamicEnemyGrammarVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.definition"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.definition"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -43,10 +43,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDefinition([NotNull] DynamicTrapParser.DefinitionContext context) { return VisitChildren(context); }
+	public virtual Result VisitDefinition([NotNull] DynamicEnemyGrammarParser.DefinitionContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.name"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.name"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -54,10 +54,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitName([NotNull] DynamicTrapParser.NameContext context) { return VisitChildren(context); }
+	public virtual Result VisitName([NotNull] DynamicEnemyGrammarParser.NameContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.statementList"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.statementList"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -65,10 +65,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitStatementList([NotNull] DynamicTrapParser.StatementListContext context) { return VisitChildren(context); }
+	public virtual Result VisitStatementList([NotNull] DynamicEnemyGrammarParser.StatementListContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.statement"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -76,10 +76,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitStatement([NotNull] DynamicTrapParser.StatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitStatement([NotNull] DynamicEnemyGrammarParser.StatementContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.nameDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nameDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -87,10 +87,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitNameDeclaration([NotNull] DynamicEnemyGrammarParser.NameDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.damageAmountDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.healthDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -98,10 +98,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDamageAmountDeclaration([NotNull] DynamicTrapParser.DamageAmountDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitHealthDeclaration([NotNull] DynamicEnemyGrammarParser.HealthDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.healAmountDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.healAmountDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -109,10 +109,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitHealAmountDeclaration([NotNull] DynamicTrapParser.HealAmountDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitHealAmountDeclaration([NotNull] DynamicEnemyGrammarParser.HealAmountDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.damageAmountDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -120,10 +120,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitTeleportDeclare([NotNull] DynamicTrapParser.TeleportDeclareContext context) { return VisitChildren(context); }
+	public virtual Result VisitDamageAmountDeclaration([NotNull] DynamicEnemyGrammarParser.DamageAmountDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.spawnDeclare"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.teleportPointDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -131,10 +131,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSpawnDeclare([NotNull] DynamicTrapParser.SpawnDeclareContext context) { return VisitChildren(context); }
+	public virtual Result VisitTeleportPointDeclaration([NotNull] DynamicEnemyGrammarParser.TeleportPointDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.damageDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.spawnPointDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -142,10 +142,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDamageDeclaration([NotNull] DynamicTrapParser.DamageDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitSpawnPointDeclaration([NotNull] DynamicEnemyGrammarParser.SpawnPointDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.healDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.spawnTypeDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -153,10 +153,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitHealDeclaration([NotNull] DynamicTrapParser.HealDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitSpawnTypeDeclaration([NotNull] DynamicEnemyGrammarParser.SpawnTypeDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.spawnDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.distanceDeclare"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -164,10 +164,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSpawnDeclaration([NotNull] DynamicTrapParser.SpawnDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitDistanceDeclare([NotNull] DynamicEnemyGrammarParser.DistanceDeclareContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.teleport"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.moveDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -175,10 +175,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitTeleport([NotNull] DynamicTrapParser.TeleportContext context) { return VisitChildren(context); }
+	public virtual Result VisitMoveDeclaration([NotNull] DynamicEnemyGrammarParser.MoveDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.moveDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.shootDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -186,10 +186,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMoveDeclaration([NotNull] DynamicTrapParser.MoveDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitShootDeclaration([NotNull] DynamicEnemyGrammarParser.ShootDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.distanceDeclare"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.damageDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -197,10 +197,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDistanceDeclare([NotNull] DynamicTrapParser.DistanceDeclareContext context) { return VisitChildren(context); }
+	public virtual Result VisitDamageDeclaration([NotNull] DynamicEnemyGrammarParser.DamageDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.ifexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.healDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -208,10 +208,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIfexpression([NotNull] DynamicTrapParser.IfexpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitHealDeclaration([NotNull] DynamicEnemyGrammarParser.HealDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.whileexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.spawnDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -219,10 +219,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitWhileexpression([NotNull] DynamicTrapParser.WhileexpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitSpawnDeclaration([NotNull] DynamicEnemyGrammarParser.SpawnDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.block"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.teleportDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -230,10 +230,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBlock([NotNull] DynamicTrapParser.BlockContext context) { return VisitChildren(context); }
+	public virtual Result VisitTeleportDeclaration([NotNull] DynamicEnemyGrammarParser.TeleportDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.character"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifexpression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -241,10 +241,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitCharacter([NotNull] DynamicTrapParser.CharacterContext context) { return VisitChildren(context); }
+	public virtual Result VisitIfexpression([NotNull] DynamicEnemyGrammarParser.IfexpressionContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.possibleAttributes"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileexpression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -252,10 +252,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitPossibleAttributes([NotNull] DynamicTrapParser.PossibleAttributesContext context) { return VisitChildren(context); }
+	public virtual Result VisitWhileexpression([NotNull] DynamicEnemyGrammarParser.WhileexpressionContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.place"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.block"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -263,10 +263,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitPlace([NotNull] DynamicTrapParser.PlaceContext context) { return VisitChildren(context); }
+	public virtual Result VisitBlock([NotNull] DynamicEnemyGrammarParser.BlockContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.x"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.character"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -274,10 +274,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitX([NotNull] DynamicTrapParser.XContext context) { return VisitChildren(context); }
+	public virtual Result VisitCharacter([NotNull] DynamicEnemyGrammarParser.CharacterContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.y"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.possibleAttributes"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -285,10 +285,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitY([NotNull] DynamicTrapParser.YContext context) { return VisitChildren(context); }
+	public virtual Result VisitPossibleAttributes([NotNull] DynamicEnemyGrammarParser.PossibleAttributesContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.place"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -296,10 +296,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitExpression([NotNull] DynamicTrapParser.ExpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitPlace([NotNull] DynamicEnemyGrammarParser.PlaceContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.something"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.x"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -307,10 +307,10 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSomething([NotNull] DynamicTrapParser.SomethingContext context) { return VisitChildren(context); }
+	public virtual Result VisitX([NotNull] DynamicEnemyGrammarParser.XContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.operation"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.y"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -318,6 +318,39 @@ public partial class DynamicTrapBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitOperation([NotNull] DynamicTrapParser.OperationContext context) { return VisitChildren(context); }
+	public virtual Result VisitY([NotNull] DynamicEnemyGrammarParser.YContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.expression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitExpression([NotNull] DynamicEnemyGrammarParser.ExpressionContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.something"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitSomething([NotNull] DynamicEnemyGrammarParser.SomethingContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.operation"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitOperation([NotNull] DynamicEnemyGrammarParser.OperationContext context) { return VisitChildren(context); }
 }
 } // namespace LabWork1github

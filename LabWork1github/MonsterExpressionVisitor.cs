@@ -92,6 +92,7 @@ namespace LabWork1github
                 if (exp.something().ROUND() != null || exp.something().NUMBER() != null)
                     continue;
                 else
+                    if(exp.something().NOTHING() != null)
                     throw new ArgumentException("Not recognized option for NumberOperation!");
             }
         }

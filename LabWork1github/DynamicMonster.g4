@@ -24,8 +24,8 @@ whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block | WHIL
 
 block: BRACKETCLOSE statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
-possibleAttributes: HEALTH | PLACE_T ATTRIBUTE X | PLACE_T ATTRIBUTE Y | DAMAGE;
-
+possibleAttributes: name;
+//TODO: string for attributes
 
 place: x ',' y;
 x: NUMBER;
@@ -54,7 +54,7 @@ ME: 'me';
 IF: 'if';
 TO: 'to';
 WHILE: 'while';
-HEALTH: 'HP';
+HEALTH: 'health';
 ALIVE: 'alive';
 MOVE: 'move';
 SHOOT: 'shoot';
@@ -74,6 +74,6 @@ COLON: ':';
 SEMI: ';';
 COMMA: ',';
 ATTRIBUTE: '.';
-NUMBER: [0-9]+;
+NUMBER: [0-9]+ ('.'[0-9]+)?;
 ID: [a-zA-Z][a-zA-Z0-9_]* ;
 WS: (' ' | '\t' | '\n' | '\r') -> skip;

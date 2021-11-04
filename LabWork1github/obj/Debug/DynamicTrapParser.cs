@@ -41,7 +41,7 @@ public partial class DynamicTrapParser : Parser {
 		NOTHING=47, NUMCONNECTER=48, BOOLCONNECTER=49;
 	public const int
 		RULE_definition = 0, RULE_name = 1, RULE_statementList = 2, RULE_statement = 3, 
-		RULE_nameDeclaration = 4, RULE_damageDeclare = 5, RULE_healDeclare = 6, 
+		RULE_nameDeclaration = 4, RULE_damageAmountDeclaration = 5, RULE_healAmountDeclaration = 6, 
 		RULE_teleportDeclare = 7, RULE_spawnDeclare = 8, RULE_damageDeclaration = 9, 
 		RULE_healDeclaration = 10, RULE_spawnDeclaration = 11, RULE_teleport = 12, 
 		RULE_moveDeclaration = 13, RULE_distanceDeclare = 14, RULE_ifexpression = 15, 
@@ -50,10 +50,11 @@ public partial class DynamicTrapParser : Parser {
 		RULE_operation = 25;
 	public static readonly string[] ruleNames = {
 		"definition", "name", "statementList", "statement", "nameDeclaration", 
-		"damageDeclare", "healDeclare", "teleportDeclare", "spawnDeclare", "damageDeclaration", 
-		"healDeclaration", "spawnDeclaration", "teleport", "moveDeclaration", 
-		"distanceDeclare", "ifexpression", "whileexpression", "block", "character", 
-		"possibleAttributes", "place", "x", "y", "expression", "something", "operation"
+		"damageAmountDeclaration", "healAmountDeclaration", "teleportDeclare", 
+		"spawnDeclare", "damageDeclaration", "healDeclaration", "spawnDeclaration", 
+		"teleport", "moveDeclaration", "distanceDeclare", "ifexpression", "whileexpression", 
+		"block", "character", "possibleAttributes", "place", "x", "y", "expression", 
+		"something", "operation"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -305,11 +306,11 @@ public partial class DynamicTrapParser : Parser {
 		public WhileexpressionContext whileexpression() {
 			return GetRuleContext<WhileexpressionContext>(0);
 		}
-		public DamageDeclareContext damageDeclare() {
-			return GetRuleContext<DamageDeclareContext>(0);
+		public DamageAmountDeclarationContext damageAmountDeclaration() {
+			return GetRuleContext<DamageAmountDeclarationContext>(0);
 		}
-		public HealDeclareContext healDeclare() {
-			return GetRuleContext<HealDeclareContext>(0);
+		public HealAmountDeclarationContext healAmountDeclaration() {
+			return GetRuleContext<HealAmountDeclarationContext>(0);
 		}
 		public TeleportDeclareContext teleportDeclare() {
 			return GetRuleContext<TeleportDeclareContext>(0);
@@ -380,7 +381,7 @@ public partial class DynamicTrapParser : Parser {
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 79; damageDeclare();
+				State = 79; damageAmountDeclaration();
 				State = 80; Match(SEMI);
 				}
 				break;
@@ -388,7 +389,7 @@ public partial class DynamicTrapParser : Parser {
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 82; healDeclare();
+				State = 82; healAmountDeclaration();
 				State = 83; Match(SEMI);
 				}
 				break;
@@ -471,34 +472,34 @@ public partial class DynamicTrapParser : Parser {
 		return _localctx;
 	}
 
-	public partial class DamageDeclareContext : ParserRuleContext {
+	public partial class DamageAmountDeclarationContext : ParserRuleContext {
 		public ITerminalNode DAMAGE() { return GetToken(DynamicTrapParser.DAMAGE, 0); }
 		public ITerminalNode EQUALS() { return GetToken(DynamicTrapParser.EQUALS, 0); }
 		public ITerminalNode NUMBER() { return GetToken(DynamicTrapParser.NUMBER, 0); }
-		public DamageDeclareContext(ParserRuleContext parent, int invokingState)
+		public DamageAmountDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_damageDeclare; } }
+		public override int RuleIndex { get { return RULE_damageAmountDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
 			IDynamicTrapListener typedListener = listener as IDynamicTrapListener;
-			if (typedListener != null) typedListener.EnterDamageDeclare(this);
+			if (typedListener != null) typedListener.EnterDamageAmountDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			IDynamicTrapListener typedListener = listener as IDynamicTrapListener;
-			if (typedListener != null) typedListener.ExitDamageDeclare(this);
+			if (typedListener != null) typedListener.ExitDamageAmountDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IDynamicTrapVisitor<TResult> typedVisitor = visitor as IDynamicTrapVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDamageDeclare(this);
+			if (typedVisitor != null) return typedVisitor.VisitDamageAmountDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public DamageDeclareContext damageDeclare() {
-		DamageDeclareContext _localctx = new DamageDeclareContext(_ctx, State);
-		EnterRule(_localctx, 10, RULE_damageDeclare);
+	public DamageAmountDeclarationContext damageAmountDeclaration() {
+		DamageAmountDeclarationContext _localctx = new DamageAmountDeclarationContext(_ctx, State);
+		EnterRule(_localctx, 10, RULE_damageAmountDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -518,34 +519,34 @@ public partial class DynamicTrapParser : Parser {
 		return _localctx;
 	}
 
-	public partial class HealDeclareContext : ParserRuleContext {
+	public partial class HealAmountDeclarationContext : ParserRuleContext {
 		public ITerminalNode HEAL() { return GetToken(DynamicTrapParser.HEAL, 0); }
 		public ITerminalNode EQUALS() { return GetToken(DynamicTrapParser.EQUALS, 0); }
 		public ITerminalNode NUMBER() { return GetToken(DynamicTrapParser.NUMBER, 0); }
-		public HealDeclareContext(ParserRuleContext parent, int invokingState)
+		public HealAmountDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_healDeclare; } }
+		public override int RuleIndex { get { return RULE_healAmountDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
 			IDynamicTrapListener typedListener = listener as IDynamicTrapListener;
-			if (typedListener != null) typedListener.EnterHealDeclare(this);
+			if (typedListener != null) typedListener.EnterHealAmountDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			IDynamicTrapListener typedListener = listener as IDynamicTrapListener;
-			if (typedListener != null) typedListener.ExitHealDeclare(this);
+			if (typedListener != null) typedListener.ExitHealAmountDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IDynamicTrapVisitor<TResult> typedVisitor = visitor as IDynamicTrapVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitHealDeclare(this);
+			if (typedVisitor != null) return typedVisitor.VisitHealAmountDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public HealDeclareContext healDeclare() {
-		HealDeclareContext _localctx = new HealDeclareContext(_ctx, State);
-		EnterRule(_localctx, 12, RULE_healDeclare);
+	public HealAmountDeclarationContext healAmountDeclaration() {
+		HealAmountDeclarationContext _localctx = new HealAmountDeclarationContext(_ctx, State);
+		EnterRule(_localctx, 12, RULE_healAmountDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -666,8 +667,8 @@ public partial class DynamicTrapParser : Parser {
 	public partial class DamageDeclarationContext : ParserRuleContext {
 		public ITerminalNode DAMAGE() { return GetToken(DynamicTrapParser.DAMAGE, 0); }
 		public ITerminalNode DIRECTION() { return GetToken(DynamicTrapParser.DIRECTION, 0); }
-		public DamageDeclareContext damageDeclare() {
-			return GetRuleContext<DamageDeclareContext>(0);
+		public DamageAmountDeclarationContext damageAmountDeclaration() {
+			return GetRuleContext<DamageAmountDeclarationContext>(0);
 		}
 		public DistanceDeclareContext distanceDeclare() {
 			return GetRuleContext<DistanceDeclareContext>(0);
@@ -721,7 +722,7 @@ public partial class DynamicTrapParser : Parser {
 				{
 				State = 116; Match(DAMAGE);
 				State = 117; Match(DIRECTION);
-				State = 118; damageDeclare();
+				State = 118; damageAmountDeclaration();
 				}
 				break;
 
@@ -740,7 +741,7 @@ public partial class DynamicTrapParser : Parser {
 				State = 122; Match(DAMAGE);
 				State = 123; Match(DIRECTION);
 				State = 124; distanceDeclare();
-				State = 125; damageDeclare();
+				State = 125; damageAmountDeclaration();
 				}
 				break;
 
@@ -767,7 +768,7 @@ public partial class DynamicTrapParser : Parser {
 				State = 132; Match(DAMAGE);
 				State = 133; Match(TO);
 				State = 134; place();
-				State = 135; damageDeclare();
+				State = 135; damageAmountDeclaration();
 				}
 				break;
 
@@ -786,7 +787,7 @@ public partial class DynamicTrapParser : Parser {
 				State = 140; Match(DAMAGE);
 				State = 141; Match(TO);
 				State = 142; character();
-				State = 143; damageDeclare();
+				State = 143; damageAmountDeclaration();
 				}
 				break;
 			}
@@ -805,8 +806,8 @@ public partial class DynamicTrapParser : Parser {
 	public partial class HealDeclarationContext : ParserRuleContext {
 		public ITerminalNode HEAL() { return GetToken(DynamicTrapParser.HEAL, 0); }
 		public ITerminalNode DIRECTION() { return GetToken(DynamicTrapParser.DIRECTION, 0); }
-		public HealDeclareContext healDeclare() {
-			return GetRuleContext<HealDeclareContext>(0);
+		public HealAmountDeclarationContext healAmountDeclaration() {
+			return GetRuleContext<HealAmountDeclarationContext>(0);
 		}
 		public DistanceDeclareContext distanceDeclare() {
 			return GetRuleContext<DistanceDeclareContext>(0);
@@ -860,7 +861,7 @@ public partial class DynamicTrapParser : Parser {
 				{
 				State = 149; Match(HEAL);
 				State = 150; Match(DIRECTION);
-				State = 151; healDeclare();
+				State = 151; healAmountDeclaration();
 				}
 				break;
 
@@ -879,7 +880,7 @@ public partial class DynamicTrapParser : Parser {
 				State = 155; Match(HEAL);
 				State = 156; Match(DIRECTION);
 				State = 157; distanceDeclare();
-				State = 158; healDeclare();
+				State = 158; healAmountDeclaration();
 				}
 				break;
 
@@ -906,7 +907,7 @@ public partial class DynamicTrapParser : Parser {
 				State = 165; Match(HEAL);
 				State = 166; Match(TO);
 				State = 167; place();
-				State = 168; healDeclare();
+				State = 168; healAmountDeclaration();
 				}
 				break;
 
@@ -925,7 +926,7 @@ public partial class DynamicTrapParser : Parser {
 				State = 173; Match(HEAL);
 				State = 174; Match(TO);
 				State = 175; character();
-				State = 176; healDeclare();
+				State = 176; healAmountDeclaration();
 				}
 				break;
 			}

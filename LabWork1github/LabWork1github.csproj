@@ -59,6 +59,13 @@
     <Compile Include="BoolMethods.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Drawer.cs" />
+    <Compile Include="DynamicEnemyGrammar.g4.lexer.cs">
+      <DependentUpon>DynamicEnemyGrammar.g4</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicEnemyGrammar.g4.parser.cs">
+      <DependentUpon>DynamicEnemyGrammar.g4</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicEnemyGrammarVisitor.cs" />
     <Compile Include="DynamicMonster.g4.lexer.cs">
       <DependentUpon>DynamicMonster.g4</DependentUpon>
     </Compile>
@@ -78,6 +85,7 @@
     <Compile Include="IfCommand.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterAI.cs" />
+    <Compile Include="MonsterExpressionParserVisitor.cs" />
     <Compile Include="MonsterExpressionVisitor.cs" />
     <Compile Include="MonsterGrammar.g4.lexer.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
@@ -131,6 +139,10 @@
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
     <Antlr4 Include="DynamicTrap.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>LabWork1github</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="DynamicEnemyGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>

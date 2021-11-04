@@ -87,26 +87,26 @@ public interface IDynamicTrapListener : IParseTreeListener {
 	void ExitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.damageAmountDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
+	void EnterDamageAmountDeclaration([NotNull] DynamicTrapParser.DamageAmountDeclarationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.damageAmountDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
+	void ExitDamageAmountDeclaration([NotNull] DynamicTrapParser.DamageAmountDeclarationContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// Enter a parse tree produced by <see cref="DynamicTrapParser.healAmountDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
+	void EnterHealAmountDeclaration([NotNull] DynamicTrapParser.HealAmountDeclarationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// Exit a parse tree produced by <see cref="DynamicTrapParser.healAmountDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
+	void ExitHealAmountDeclaration([NotNull] DynamicTrapParser.HealAmountDeclarationContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.

@@ -68,18 +68,18 @@ public interface IDynamicTrapVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitNameDeclaration([NotNull] DynamicTrapParser.NameDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.damageDeclare"/>.
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.damageAmountDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDamageDeclare([NotNull] DynamicTrapParser.DamageDeclareContext context);
+	Result VisitDamageAmountDeclaration([NotNull] DynamicTrapParser.DamageAmountDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicTrapParser.healDeclare"/>.
+	/// Visit a parse tree produced by <see cref="DynamicTrapParser.healAmountDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitHealDeclare([NotNull] DynamicTrapParser.HealDeclareContext context);
+	Result VisitHealAmountDeclaration([NotNull] DynamicTrapParser.HealAmountDeclarationContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicTrapParser.teleportDeclare"/>.
