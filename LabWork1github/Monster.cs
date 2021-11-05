@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public class Monster
+    public class Monster 
     {
         public Monster(int hp, MonsterType type, Place place)
         {

@@ -80,6 +80,8 @@
       <DependentUpon>DynamicTrap.g4</DependentUpon>
     </Compile>
     <Compile Include="DynamicTrapVisitor.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyType.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameParamProvider.cs" />
     <Compile Include="IfCommand.cs" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public enum TrapEffect
+    public enum TrapEffect 
     {
         Damage,
         Heal,
@@ -14,7 +14,7 @@ namespace LabWork1github
         Spawner
     }
 
-    public class TrapType
+    public class TrapType : EnemyType
     {
         private string name = "";
         public TrapType(string _name)
@@ -56,6 +56,11 @@ namespace LabWork1github
                 if (EffectType == TrapEffect.Damage || EffectType == TrapEffect.Heal)
                     effectNumber = value;
             }
+        }
+
+        public override void Step()
+        {
+            throw new NotImplementedException();
         }
     }
 }

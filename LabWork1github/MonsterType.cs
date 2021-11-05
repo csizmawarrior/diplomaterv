@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public class MonsterType
+
+    public class MonsterType : EnemyType
     {
         private string name = "";
         public MonsterType(string _name)
@@ -34,5 +35,10 @@ namespace LabWork1github
         //TODO: get out, now only for old code
         public int MoveRound { get; set; }
         public int ShootRound { get; set; }
+
+        public override void Step()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
