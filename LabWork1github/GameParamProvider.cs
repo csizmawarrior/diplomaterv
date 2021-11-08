@@ -57,5 +57,6 @@ namespace LabWork1github
         {
             game.Repeat = commandCount;
         }
+
     }
 }

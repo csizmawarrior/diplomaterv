@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public class Player
+    public class Player : Character
     {
         public Player(Place p, int hp)
         {

@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="BoardGrammarVisitor.cs" />
     <Compile Include="BoolMethods.cs" />
+    <Compile Include="Character.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="DynamicEnemyGrammar.g4.lexer.cs">
@@ -113,7 +114,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShootCommand.cs" />
+    <Compile Include="SpawnCommand.cs" />
     <Compile Include="Symbol.cs" />
+    <Compile Include="TeleportCommand.cs" />
     <Compile Include="Trap.cs" />
     <Compile Include="TrapAI.cs" />
     <Compile Include="TrapExpressionVisitor.cs" />

@@ -24,17 +24,6 @@ namespace LabWork1github
         }
 
         public int Round { get; set; }
-        private int _damage = 10;
-
-        public int Damage
-        {
-            get { return _damage; }
-            set {
-                if(value<=0)
-                    throw new NotSupportedException("Negative or zero Distance is not supported!");
-                _damage = value;
-            }
-        }
 
         public Place targetPlace { get; set; }
         public string Direction { get; set; }

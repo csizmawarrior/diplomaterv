@@ -15,7 +15,7 @@ namespace LabWork1github
         public Place SpawnPlace { get; set; }
         public EnemyType SpawnType { get; set; }
         public string Name { get; set; }
-
+        public List<Command> Commands { get; set; }
 
 
         public abstract void Step();

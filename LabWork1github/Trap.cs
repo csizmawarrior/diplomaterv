@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public class Trap
+    public class Trap : Character
     {
         public Trap(TrapType type, Place place)
         {
