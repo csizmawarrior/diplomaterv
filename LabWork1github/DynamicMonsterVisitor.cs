@@ -35,7 +35,7 @@ namespace LabWork1github
         public override object VisitNameDeclaration([NotNull] NameDeclarationContext context)
         {
             typeName = context.name().GetText();
-            Program.monsterTypes.Add(new MonsterType(typeName));
+            Program.monsterTypes.Add(new MonsterType());
             return base.VisitNameDeclaration(context);
         }
 

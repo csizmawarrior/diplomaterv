@@ -9,22 +9,11 @@ namespace LabWork1github
 
     public class MonsterType : EnemyType
     {
-        private string name = "";
-        public MonsterType(string _name)
+        public string Name { get; set; }
+
+        public MonsterType(string name)
         {
-            Name = _name;
-        }
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                if (name.Equals(""))
-                    name = value;
-            }
+            base.Name = name;
         }
 
         public int Damage { get; set; }

@@ -25,6 +25,7 @@ statement: damageAmountDeclaration ';'
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
 trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
 monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
+
 healthDeclaration: HEALTH EQUALS NUMBER ;
 healAmountDeclaration: HEAL EQUALS NUMBER;
 damageAmountDeclaration: DAMAGE EQUALS NUMBER ;
@@ -55,7 +56,7 @@ y: NUMBER;
 
 expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE | ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
 something: character | NUMBER | ROUND | possibleAttributes | NOTHING;
-operation: ATTRIBUTE | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR;
+operation: ATTRIBUTE | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE;
 /*
  * Lexer Rules
  */
@@ -92,7 +93,8 @@ EQUALS: '=' ;
 ABSOLUTE: '|';
 NEGATE: '!';
 BOOLCONNECTER: '||' | '&&' ;
-COMPARE: '<' | '>' | '==' | '!=' ;
+COMPARE: '==' | '!=' ;
+NUMCOMPARE: '<' | '>' ;
 NUMCONNECTER: '+' | '-' | '*' | '/' | '%' ;
 PARENTHESISSTART: '(';
 PARENTHESISCLOSE: ')';

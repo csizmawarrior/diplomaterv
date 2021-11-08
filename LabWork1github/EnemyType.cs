@@ -16,10 +16,7 @@ namespace LabWork1github
         public EnemyType SpawnType { get; set; }
         public string Name { get; set; }
 
-        public EnemyType(string name)
-        {
-            Name = name;
-        }
+
 
         public abstract void Step();
     }

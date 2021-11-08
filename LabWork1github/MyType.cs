@@ -6,23 +6,30 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-   
-
-    public class MyType
+   public static class Types
     {
-        public static string TRAP = "trap";
-        public static string MONSTER = "monster";
+        public const string TRAP = "trap";
+        public const string MONSTER = "monster";
+        public const string PLAYER = "player";
+        public const string DAMAGE = "damage";
+        public const string HEAL = "heal";
+        public const string HEALTH = "health";
+        public const string TELEPORTPLACE = "teleport_place";
+        public const string SPAWNPLACE = "spawn_place";
+        public const string PLACE = "place";
+        public const string DOTX = ".x";
+        public const string DOTY = ".y";
+        public const string NUMBER = "number";
+    }
+
+    public abstract class MyType
+    {
 
 
-        public bool CompatibleCompare(string type)
-        {
-            return false;
-        }
+        public abstract bool CompatibleCompare(string type);
 
-        public bool CompatibleEquals(string type)
-        {
-            return false;
-        }
+
+        public abstract bool CompatibleEquals(string type);
 
     }
 }

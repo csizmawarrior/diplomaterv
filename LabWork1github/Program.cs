@@ -67,5 +67,12 @@ namespace LabWork1github
             TrapGrammarVisitor visitor = new TrapGrammarVisitor();
             visitor.Visit(chatContext);
         }
+        public static EnemyType GetEnemyType(string name)
+        {
+            if (EnemyTypes.FindAll(e => e.Name.Equals(name)).Count > 1 || EnemyTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
+                throw new ArgumentException("Not a valid enemyType name");
+            return EnemyTypes.Find(e => e.Name.Equals(name));
+                
+        }
     }
 }
