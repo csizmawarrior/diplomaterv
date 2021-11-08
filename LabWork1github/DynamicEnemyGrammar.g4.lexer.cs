@@ -2,5 +2,7 @@
 {
     partial class DynamicEnemyGrammarLexer
     {
+        private string enemyName = "";
+
     }
 }

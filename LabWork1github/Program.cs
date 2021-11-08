@@ -7,7 +7,7 @@ namespace LabWork1github
 {
     class Program
     {
-
+        public static List<EnemyType> EnemyTypes = new List<EnemyType>();
 
 
         public static Board Board = new Board();

@@ -22,7 +22,9 @@ statement: damageAmountDeclaration ';'
 		| spawnDeclaration ';'
         ;
 
-nameDeclaration: NAME_T EQUALS name ';' ;
+nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
+trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
+monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
 healthDeclaration: HEALTH EQUALS NUMBER ;
 healAmountDeclaration: HEAL EQUALS NUMBER;
 damageAmountDeclaration: DAMAGE EQUALS NUMBER ;

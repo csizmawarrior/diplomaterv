@@ -14,6 +14,12 @@ namespace LabWork1github
         public Place TeleportPlace { get; set; }
         public Place SpawnPlace { get; set; }
         public EnemyType SpawnType { get; set; }
+        public string Name { get; set; }
+
+        public EnemyType(string name)
+        {
+            Name = name;
+        }
 
         public abstract void Step();
     }
