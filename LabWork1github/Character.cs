@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public class Character
+    public abstract class Character
     {
         public Place Place { get; set; }
+
+        public abstract CharacterType GetType();
+
+        public abstract int GetHealth();
+
+        public abstract void Damage(int amount);
+
+        public abstract void Heal(int amount);
     }
 }

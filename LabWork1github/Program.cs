@@ -7,7 +7,7 @@ namespace LabWork1github
 {
     class Program
     {
-        public static List<EnemyType> EnemyTypes = new List<EnemyType>();
+        public static List<CharacterType> CharacterTypes = new List<CharacterType>();
 
 
         public static Board Board = new Board();
@@ -67,11 +67,11 @@ namespace LabWork1github
             TrapGrammarVisitor visitor = new TrapGrammarVisitor();
             visitor.Visit(chatContext);
         }
-        public static EnemyType GetEnemyType(string name)
+        public static CharacterType GetCharacterType(string name)
         {
-            if (EnemyTypes.FindAll(e => e.Name.Equals(name)).Count > 1 || EnemyTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
-                throw new ArgumentException("Not a valid enemyType name");
-            return EnemyTypes.Find(e => e.Name.Equals(name));
+            if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1 || CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
+                throw new ArgumentException("Not a valid CharacterType name");
+            return CharacterTypes.Find(e => e.Name.Equals(name));
                 
         }
     }

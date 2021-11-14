@@ -26,6 +26,8 @@ namespace LabWork1github
 
         public static PlayerMove move = new PlayerMove();
 
+        public static List<Character> characters = new List<Character>();
+
         public int Round { get; set; } = 0;
 
         public bool wrongMove = false;

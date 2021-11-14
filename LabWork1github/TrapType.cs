@@ -14,7 +14,7 @@ namespace LabWork1github
         Spawner
     }
 
-    public class TrapType : EnemyType
+    public class TrapType : CharacterType
     {
         private string name = "";
         public TrapType(string _name)
@@ -58,9 +58,9 @@ namespace LabWork1github
             }
         }
 
-        public override void Step()
+        public override void Step(GameParamProvider provider)
         {
-            throw new NotImplementedException();
+            Commands.ElementAt(provider.GetRound()).Execute(provider);
         }
     }
 }

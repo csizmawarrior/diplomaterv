@@ -16,11 +16,25 @@ namespace LabWork1github
         }
         public int Health { get; set; }
         public MonsterType Type { get; private set; }
-        public Place Place { get; set; }
 
-        public void Damage(int amount)
+        public override void Damage(int amount)
         {
             Health -= amount;
+        }
+
+        public override int GetHealth()
+        {
+            return Health;
+        }
+
+        public override CharacterType GetType()
+        {
+            return Type;
+        }
+
+        public override void Heal(int amount)
+        {
+            Health += amount;
         }
     }
 }

@@ -13,24 +13,33 @@ namespace LabWork1github
             Health = hp;
             Place = p;
         }
-        
-        public int Health { get; set; }
-        public Place Place { get; set; }
 
-        public void Damage(int amount)
+        public PlayerType Type { get; } = new PlayerType();
+
+        public int Health { get; set; }
+
+        public override void Damage(int amount)
         {
             Health -= amount;
         }
-        public void Heal(int amount)
+
+        public override int GetHealth()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override CharacterType GetType()
+        {
+            return Type;
+        }
+
+        public override void Heal(int amount)
         {
             Health += amount;
             if (Health > Program.starterHP)
                 Health = Program.starterHP;
         }
-        public void Teleport(Place newPlace)
-        {
-            Place = newPlace;
-        }
+
         public void Move(string direction)
         {
             switch (direction)

@@ -81,7 +81,7 @@
       <DependentUpon>DynamicTrap.g4</DependentUpon>
     </Compile>
     <Compile Include="DynamicTrapVisitor.cs" />
-    <Compile Include="EnemyType.cs" />
+    <Compile Include="CharacterType.cs" />
     <Compile Include="ExpressionVisitor.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameParamProvider.cs" />
@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="PlayerGrammarVisitor.cs" />
     <Compile Include="PlayerMove.cs" />
+    <Compile Include="PlayerType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShootCommand.cs" />

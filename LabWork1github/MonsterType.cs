@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LabWork1github
 {
 
-    public class MonsterType : EnemyType
+    public class MonsterType : CharacterType
     {
         public string Name { get; set; }
 
@@ -25,9 +25,9 @@ namespace LabWork1github
         public int MoveRound { get; set; }
         public int ShootRound { get; set; }
 
-        public override void Step()
+        public override void Step(GameParamProvider provider)
         {
-            throw new NotImplementedException();
+            Commands.ElementAt(provider.GetRound()).Execute(provider);
         }
     }
 }

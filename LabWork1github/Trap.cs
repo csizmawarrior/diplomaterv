@@ -14,6 +14,26 @@ namespace LabWork1github
             Place = place;
         }
         public TrapType Type { get; private set; }
-        public Place Place { get; set; }
+        public int Health { get; } = 1;
+
+        public override void Damage(int amount)
+        {
+            return;
+        }
+
+        public override int GetHealth()
+        {
+            return Health;
+        }
+
+        public override CharacterType GetType()
+        {
+            return Type;
+        }
+
+        public override void Heal(int amount)
+        {
+            return;
+        }
     }
 }
