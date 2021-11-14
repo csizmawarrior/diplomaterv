@@ -202,6 +202,8 @@ namespace LabWork1github
                     case "trap":
                         throw new ArrayTypeMismatchException("Traps can't be teleported.");
                     case "player":
+                        
+                        
                         break;
                         //TODO: reafactor program then return here
                 }
@@ -214,9 +216,9 @@ namespace LabWork1github
 
 
 
-        public void TeleportCharacter(GameParamProvider provider, TeleportCommand command)
+        public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
-
+            provider.GetPlayer().Place = command.TargetPlace;
         }
 
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
