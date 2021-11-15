@@ -259,7 +259,7 @@ namespace LabWork1github
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
             return base.VisitIfexpression(context);
         }
-
+        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
 
 
         //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
@@ -331,6 +331,7 @@ namespace LabWork1github
         }
         public void MoveToPlace(GameParamProvider provider, MoveCommand command)
         {
+
             provider.GetMonster().Place = command.targetPlace;
         }
         public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
