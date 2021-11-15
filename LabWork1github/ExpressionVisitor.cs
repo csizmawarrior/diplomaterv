@@ -27,7 +27,11 @@ namespace LabWork1github
                 ExpressionVisitor helperVisitor = new ExpressionVisitor(ExpressionContext.expression().ElementAt(0));
                 helperVisitor.CheckTypes();
             }
-            
+            if (ExpressionContext.operation() != null) 
+                if (ExpressionContext.operation().ALIVE() != null || ExpressionContext.operation().NEAR() != null)
+                    if (!(ExpressionContext.expression().ElementAt(1).something().NOTHING() != null))
+                        throw new ArgumentException("An operation has more arguments than exprected");
+                    
             VisitExpression(ExpressionContext);
         }
         public void CheckNumber(ExpressionContext context)
