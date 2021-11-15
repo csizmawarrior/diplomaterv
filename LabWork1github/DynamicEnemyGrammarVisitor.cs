@@ -199,26 +199,113 @@ namespace LabWork1github
             {
                 switch (context.character().GetText())
                 {
-                    case "trap":
-                        throw new ArrayTypeMismatchException("Traps can't be teleported.");
                     case "player":
-                        
-                        
+                        newCommand.TeleportDelegate = new TeleportDelegate(TeleportPlayer);
+                        Program.GetEnemyType(typeName).Commands.Add(newCommand);
                         break;
-                        //TODO: reafactor program then return here
+                    case "monster":
+                        newCommand.TeleportDelegate = new TeleportDelegate(TeleportMonster);
+                        Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                        break;
+                    case "trap":
+                        newCommand.TeleportDelegate = new TeleportDelegate(TeleportTrap);
+                        Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                        break;
+                    case "me":
+                        throw new ArgumentOutOfRangeException("You can't teleport yourself");
                 }
             }
-
-
             return base.VisitTeleportDeclaration(context);
+        }
+
+        public override object VisitSpawnDeclaration([NotNull] SpawnDeclarationContext context)
+        {
+            if (Program.GetEnemyType(typeName) == null)
+                throw new NullReferenceException("The type doesn't exist");
+
+            if (!type.Equals(Types.TRAP))
+                throw new ArrayTypeMismatchException("Monsters can't teleport");
+
+            SpawnCommand newCommand = new SpawnCommand();
+            if (context.place() != null)
+            {
+                newCommand.TargetPlace = new Place(uint.Parse(context.place().x().GetText()),
+                                                    uint.Parse(context.place().y().GetText()));
+            }
+            if (context.RANDOM() != null)
+            {
+                Random rand = new Random();
+                uint XPos = (uint)(rand.Next() % Program.Board.Height);
+                uint YPos = (uint)(rand.Next() % Program.Board.Width);
+                newCommand.TargetPlace = new Place(XPos, YPos);
+                if(context.MONSTER() == null)
+                {
+                    int monsterCount = (int)(rand.Next() % Program.monsterTypes.Count);
+                    newCommand.SpawnType = Program.monsterTypes.ElementAt(monsterCount);
+                }
+            }
+            if (context.MONSTER() != null)
+            {
+                if (Program.GetEnemyType(context.name().GetText()) == null)
+                    throw new ArgumentException("Monster type doesn't exist");
+                newCommand.SpawnType = Program.GetEnemyType(context.name().GetText()).SpawnType;
+            }
+            
+            return base.VisitSpawnDeclaration(context);
+        }
+
+        public override object VisitIfexpression([NotNull] IfexpressionContext context)
+        {
+
+            return base.VisitIfexpression(context);
         }
 
 
 
+        //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
+        //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
 
+
+        public void Spawn(GameParamProvider provider, SpawnCommand command)
+        {
+            foreach(Monster monster in provider.GetMonsters())
+            {
+                if (monster.Place.directionTo(command.TargetPlace).Equals("collision"))
+                    return;
+            }
+            foreach (Trap trap in provider.GetTraps())
+            {
+                if (trap.Place.directionTo(command.TargetPlace).Equals("collision"))
+                    return;
+            }
+            if (provider.GetPlayer().Place.directionTo(command.TargetPlace).Equals("collision"))
+                return;
+            Monster newMonster = new Monster(command.SpawnType.Health, (MonsterType)command.SpawnType, command.TargetPlace);
+            provider.GetMonsters().Add(newMonster);
+            provider.GetBoard().Monsters.Add(newMonster);
+            //TODO: check if it works
+        }
+
+        public void TeleportTrap(GameParamProvider provider, TeleportCommand command)
+        {
+            foreach (Trap Trap in provider.GetTraps())
+            {
+                if (Trap.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                    provider.GetPlayer().Place = command.TargetPlace;
+            }
+        }
+        public void TeleportMonster(GameParamProvider provider, TeleportCommand command)
+        {
+            foreach (Monster monster in provider.GetMonsters()) {
+                if (monster.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                    provider.GetPlayer().Place = command.TargetPlace;
+            }
+        }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
-            provider.GetPlayer().Place = command.TargetPlace;
+            if(provider.GetPlayer().Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                provider.GetPlayer().Place = command.TargetPlace;
+
         }
 
         public void MoveDirection(GameParamProvider provider, MoveCommand command)

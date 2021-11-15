@@ -42,8 +42,8 @@ damageDeclaration: DAMAGE DIRECTION | DAMAGE DIRECTION damageAmountDeclaration |
 					| DAMAGE RANDOM	| DAMAGE TO place | DAMAGE TO place damageAmountDeclaration | DAMAGE TO character | DAMAGE TO character damageAmountDeclaration ;
 healDeclaration: HEAL DIRECTION | HEAL DIRECTION healAmountDeclaration | HEAL DIRECTION distanceDeclare | HEAL DIRECTION distanceDeclare healAmountDeclaration
 					| HEAL RANDOM	| HEAL TO place | HEAL TO place healAmountDeclaration | HEAL TO character | HEAL TO character healAmountDeclaration ;
-spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN TO place | SPAWN;
-teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM | TELEPORT_T | TELEPORT_t TO place | TELEPORT_T RANDOM;
+spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN MONSTER name RANDOM | SPAWN TO place | SPAWN;
+teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM;
 ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block ;
 whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 

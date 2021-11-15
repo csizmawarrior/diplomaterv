@@ -14,6 +14,8 @@ namespace LabWork1github
 
         public int Round { get; set; }
 
+        public EnemyType SpawnType { get; set; }
+
         public SpawnDelegate SpawnDelegate { get; set; }
 
         public override void Execute(GameParamProvider provider)
