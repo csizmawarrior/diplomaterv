@@ -8,15 +8,15 @@ namespace LabWork1github
 {
     public class Place
     {
-        public Place(uint x, uint y)
+        public Place(int x, int y)
         {
             X = x;
             Y = y;
         }
         
-        public uint X { get; set; }
-        public uint Y { get; set; }
-        public string directionTo(Place otherPlace)
+        public int X { get; set; }
+        public int Y { get; set; }
+        public string DirectionTo(Place otherPlace)
         {
             if (otherPlace.X == X && otherPlace.Y == Y)
                 return "collision";

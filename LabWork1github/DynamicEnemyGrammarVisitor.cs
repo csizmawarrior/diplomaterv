@@ -50,14 +50,14 @@ namespace LabWork1github
         {
             if (type != Types.TRAP)
                 throw new ArrayTypeMismatchException("Traps don't have Health");
-            Program.GetCharacterType(typeName).TeleportPlace = new Place(uint.Parse(context.place().x().GetText()), uint.Parse(context.place().y().GetText()));
+            Program.GetCharacterType(typeName).TeleportPlace = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
             return base.VisitTeleportPointDeclaration(context);
         }
         public override object VisitSpawnPointDeclaration([NotNull] SpawnPointDeclarationContext context)
         {
             if (type != Types.TRAP)
                 throw new ArrayTypeMismatchException("Traps don't have Health");
-            Program.GetCharacterType(typeName).SpawnPlace = new Place(uint.Parse(context.place().x().GetText()), uint.Parse(context.place().y().GetText()));
+            Program.GetCharacterType(typeName).SpawnPlace = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
             return base.VisitSpawnPointDeclaration(context);
         }
         public override object VisitSpawnTypeDeclaration([NotNull] SpawnTypeDeclarationContext context)
@@ -88,8 +88,8 @@ namespace LabWork1github
             PlaceContext place = context.place();
             if (place != null)
             {
-                uint xPos = uint.Parse(place.x().GetText());
-                uint yPos = uint.Parse(place.y().GetText());
+                int xPos = int.Parse(place.x().GetText());
+                int yPos = int.Parse(place.y().GetText());
                 newCommand.targetPlace = new Place(xPos, yPos);
                 newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
                 Program.GetCharacterType(typeName).Commands.Add(newCommand);
@@ -106,8 +106,8 @@ namespace LabWork1github
             if (random != null)
             {
                 Random rand = new Random();
-                uint XPos = (uint)(rand.Next() % Program.Board.Height);
-                uint YPos = (uint)(rand.Next() % Program.Board.Width);
+                int XPos = (int)(rand.Next() % Program.Board.Height);
+                int YPos = (int)(rand.Next() % Program.Board.Width);
                 newCommand.targetPlace = new Place(XPos, YPos);
                 newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
                 Program.GetCharacterType(typeName).Commands.Add(newCommand);
@@ -142,8 +142,8 @@ namespace LabWork1github
             PlaceContext place = context.place();
             if (place != null)
             {
-                uint xPos = uint.Parse(place.x().GetText());
-                uint yPos = uint.Parse(place.y().GetText());
+                int xPos = int.Parse(place.x().GetText());
+                int yPos = int.Parse(place.y().GetText());
                 newCommand.targetPlace = new Place(xPos, yPos);
                 newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
                 Program.GetCharacterType(typeName).Commands.Add(newCommand);
@@ -161,8 +161,8 @@ namespace LabWork1github
             if (random != null)
             {
                 Random rand = new Random();
-                uint XPos = (uint)(rand.Next() % Program.Board.Height);
-                uint YPos = (uint)(rand.Next() % Program.Board.Width);
+                int XPos = (int)(rand.Next() % Program.Board.Height);
+                int YPos = (int)(rand.Next() % Program.Board.Width);
                 newCommand.targetPlace = new Place(XPos, YPos);
                 newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
                 Program.GetCharacterType(typeName).Commands.Add(newCommand);
@@ -183,14 +183,14 @@ namespace LabWork1github
             TeleportCommand newCommand = new TeleportCommand();
             if (context.place() != null)
             {
-                newCommand.TargetPlace = new Place(uint.Parse(context.place().x().GetText()),
-                                                    uint.Parse(context.place().y().GetText()));
+                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
+                                                    int.Parse(context.place().y().GetText()));
             }
             else if (context.RANDOM() != null)
             {
                 Random rand = new Random();
-                uint XPos = (uint)(rand.Next() % Program.Board.Height);
-                uint YPos = (uint)(rand.Next() % Program.Board.Width);
+                int XPos = (int)(rand.Next() % Program.Board.Height);
+                int YPos = (int)(rand.Next() % Program.Board.Width);
                 newCommand.TargetPlace = new Place(XPos, YPos);
             }
             else
@@ -228,17 +228,17 @@ namespace LabWork1github
             {
                 case "F":
                     if ((int)provider.GetMonster().Place.X - command.Distance >= 0)
-                        provider.GetMonster().Place.X -= (uint)command.Distance;
+                        provider.GetMonster().Place.X -= (int)command.Distance;
                     break;
                 case "B":
-                    provider.GetMonster().Place.X += (uint)command.Distance;
+                    provider.GetMonster().Place.X += (int)command.Distance;
                     break;
                 case "L":
                     if ((int)provider.GetMonster().Place.Y - command.Distance >= 0)
-                        provider.GetMonster().Place.Y -= (uint)command.Distance;
+                        provider.GetMonster().Place.Y -= (int)command.Distance;
                     break;
                 case "R":
-                    provider.GetMonster().Place.Y += (uint)command.Distance;
+                    provider.GetMonster().Place.Y += (int)command.Distance;
                     break;
             }
         }
@@ -273,7 +273,7 @@ namespace LabWork1github
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMonster().Place.X - i >= 0)
-                            if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X - (uint)command.Distance)
+                            if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X - (int)command.Distance)
                                 provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
@@ -282,7 +282,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X + (uint)command.Distance)
+                        if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X + (int)command.Distance)
                             provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
@@ -292,7 +292,7 @@ namespace LabWork1github
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMonster().Place.Y - i >= 0)
-                            if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y - (uint)command.Distance)
+                            if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y - (int)command.Distance)
                                 provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
@@ -301,7 +301,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y + (uint)command.Distance)
+                        if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y + (int)command.Distance)
                             provider.GetPlayer().Damage(command.Damage);
                     }
                     break;

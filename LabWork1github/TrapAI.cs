@@ -31,8 +31,8 @@ namespace LabWork1github
 
         private void moveTrap(Trap trap, Player player, double rand)
         {
-            uint XDistance = player.Place.X - trap.Place.X;
-            uint YDistance = player.Place.Y - trap.Place.Y;
+            int XDistance = player.Place.X - trap.Place.X;
+            int YDistance = player.Place.Y - trap.Place.Y;
             if (player.Place.Y < trap.Place.Y)
                 YDistance = trap.Place.Y - player.Place.Y;
             if (player.Place.X < trap.Place.X)
@@ -45,7 +45,7 @@ namespace LabWork1github
 
         private void AffectPlayer(Player player, Trap trap)
         {
-            if (trap.Place.directionTo(player.Place) == "collision")
+            if (trap.Place.DirectionTo(player.Place) == "collision")
             {
                 switch (trap.Type.EffectType)
                 {

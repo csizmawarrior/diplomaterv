@@ -80,12 +80,12 @@ namespace LabWork1github
 
                 foreach (Monster monster in Monsters)
                 {
-                    if (monster.Place.directionTo(Player.Place) == "collision")
+                    if (monster.Place.DirectionTo(Player.Place) == "collision")
                         throw new NullReferenceException("Player is on the same spot as a monster.");
-                    if (monster.Place.directionTo(Trap.Place) == "collision")
+                    if (monster.Place.DirectionTo(Trap.Place) == "collision")
                         throw new NullReferenceException("Monster spawned on a trap");
                 }
-                if (Trap.Place.directionTo(Player.Place) == "collision")
+                if (Trap.Place.DirectionTo(Player.Place) == "collision")
                     throw new NullReferenceException("Player spawned on a trap");
             }
             if (Player.Place.X > Board.Height || Player.Place.Y > Board.Width)
@@ -128,7 +128,7 @@ namespace LabWork1github
                     }
                     for (int i = 0; i < Monsters.Count; i++)
                     {
-                        if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) {
+                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction) {
                             drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again next turn!");
                             Player.Damage(25);
                             wrongMove = true;
@@ -141,7 +141,7 @@ namespace LabWork1github
                 case CommandType.shoot:
                     for (int i = 0; i < Monsters.Count; i++)
                     {
-                        if (Player.Place.directionTo(Monsters.ElementAt(i).Place) == move.Direction) {
+                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction) {
                             Monsters.ElementAt(i).Damage(50);
                         }
                     }
@@ -184,15 +184,15 @@ namespace LabWork1github
         {
             foreach(Trap trap in Traps)
             {
-                if (trap.Place.directionTo(spawnPoint) == "collision")
+                if (trap.Place.DirectionTo(spawnPoint) == "collision")
                     return false;
             }
             foreach (Monster monster in Monsters)
             {
-                if (monster.Place.directionTo(spawnPoint) == "collision")
+                if (monster.Place.DirectionTo(spawnPoint) == "collision")
                     return false;
             }
-            if (Player.Place.directionTo(spawnPoint) == "collision")
+            if (Player.Place.DirectionTo(spawnPoint) == "collision")
                 return false;
             return true;
         }
