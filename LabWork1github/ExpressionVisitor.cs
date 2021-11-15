@@ -7,7 +7,7 @@ using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
 {
-    class ExpressionVisitor : DynamicEnemyGrammarBaseVisitor<object>
+    public class ExpressionVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {
         public ExpressionContext ExpressionContext { get; set; }
 
@@ -19,7 +19,21 @@ namespace LabWork1github
 
         public void CheckTypes()
         {
+            if (ExpressionContext.ABSOLUTE() != null)
+                //TODO: check if it works this way or not
+                CheckNumber(ExpressionContext.expression().ElementAt(0));
+            if(ExpressionContext.PARENTHESISSTART() != null || ExpressionContext.NEGATE() != null)
+            {
+                ExpressionVisitor helperVisitor = new ExpressionVisitor(ExpressionContext.expression().ElementAt(0));
+                helperVisitor.CheckTypes();
+            }
+            
             VisitExpression(ExpressionContext);
         }
+        public void CheckNumber(ExpressionContext context)
+        {
+
+        }
+
     }
 }

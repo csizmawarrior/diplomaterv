@@ -256,7 +256,7 @@ namespace LabWork1github
 
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
         {
-
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
             return base.VisitIfexpression(context);
         }
 
