@@ -260,7 +260,7 @@ namespace LabWork1github
             return base.VisitIfexpression(context);
         }
         //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
-
+        //TODO: folders
 
         //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
         //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
