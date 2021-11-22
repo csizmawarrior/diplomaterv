@@ -62,5 +62,15 @@ namespace LabWork1github
         {
             Commands.ElementAt(provider.GetRound()).Execute(provider);
         }
+
+        public override bool CompatibleCompare(object param2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CompatibleEquals(object param2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

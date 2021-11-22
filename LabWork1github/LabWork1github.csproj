@@ -48,117 +48,117 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
-    <Compile Include="BoardGrammar.g4.lexer.cs">
+    <Compile Include="game field classes\Board.cs" />
+    <Compile Include="g4 files\BoardGrammar.g4.lexer.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="BoardGrammar.g4.parser.cs">
+    <Compile Include="g4 files\BoardGrammar.g4.parser.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="BoardGrammarVisitor.cs" />
+    <Compile Include="types\BoolType.cs" />
+    <Compile Include="types\NumberType.cs" />
+    <Compile Include="types\StringType.cs" />
+    <Compile Include="Visitors\BoardGrammarVisitor.cs" />
     <Compile Include="BoolMethods.cs" />
-    <Compile Include="Character.cs" />
-    <Compile Include="Command.cs" />
-    <Compile Include="Drawer.cs" />
-    <Compile Include="DynamicEnemyGrammar.g4.lexer.cs">
+    <Compile Include="characters\Character.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="game field classes\Drawer.cs" />
+    <Compile Include="g4 files\DynamicEnemyGrammar.g4.lexer.cs">
       <DependentUpon>DynamicEnemyGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="DynamicEnemyGrammar.g4.parser.cs">
+    <Compile Include="g4 files\DynamicEnemyGrammar.g4.parser.cs">
       <DependentUpon>DynamicEnemyGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="DynamicEnemyGrammarVisitor.cs" />
-    <Compile Include="DynamicMonster.g4.lexer.cs">
+    <Compile Include="Visitors\DynamicEnemyGrammarVisitor.cs" />
+    <Compile Include="g4 files\DynamicMonster.g4.lexer.cs">
       <DependentUpon>DynamicMonster.g4</DependentUpon>
     </Compile>
-    <Compile Include="DynamicMonster.g4.parser.cs">
+    <Compile Include="g4 files\DynamicMonster.g4.parser.cs">
       <DependentUpon>DynamicMonster.g4</DependentUpon>
     </Compile>
-    <Compile Include="DynamicMonsterVisitor.cs" />
-    <Compile Include="DynamicTrap.g4.lexer.cs">
+    <Compile Include="Visitors\DynamicMonsterVisitor.cs" />
+    <Compile Include="g4 files\DynamicTrap.g4.lexer.cs">
       <DependentUpon>DynamicTrap.g4</DependentUpon>
     </Compile>
-    <Compile Include="DynamicTrap.g4.parser.cs">
+    <Compile Include="g4 files\DynamicTrap.g4.parser.cs">
       <DependentUpon>DynamicTrap.g4</DependentUpon>
     </Compile>
-    <Compile Include="DynamicTrapVisitor.cs" />
-    <Compile Include="CharacterType.cs" />
-    <Compile Include="ExpressionVisitor.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GameParamProvider.cs" />
-    <Compile Include="IfCommand.cs" />
-    <Compile Include="Monster.cs" />
+    <Compile Include="Visitors\DynamicTrapVisitor.cs" />
+    <Compile Include="types\charactertypes\CharacterType.cs" />
+    <Compile Include="Visitors\ExpressionVisitor.cs" />
+    <Compile Include="game field classes\Game.cs" />
+    <Compile Include="game field classes\GameParamProvider.cs" />
+    <Compile Include="Commands\IfCommand.cs" />
+    <Compile Include="characters\Monster.cs" />
     <Compile Include="MonsterAI.cs" />
-    <Compile Include="MonsterExpressionParserVisitor.cs" />
-    <Compile Include="MonsterExpressionVisitor.cs" />
-    <Compile Include="MonsterGrammar.g4.lexer.cs">
+    <Compile Include="Visitors\MonsterExpressionParserVisitor.cs" />
+    <Compile Include="g4 files\MonsterGrammar.g4.lexer.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="MonsterGrammar.g4.parser.cs">
+    <Compile Include="g4 files\MonsterGrammar.g4.parser.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="MonsterGrammarVisitor.cs" />
-    <Compile Include="MonsterType.cs" />
-    <Compile Include="MoveCommand.cs" />
+    <Compile Include="Visitors\MonsterGrammarVisitor.cs" />
+    <Compile Include="types\charactertypes\MonsterType.cs" />
+    <Compile Include="Commands\MoveCommand.cs" />
     <Compile Include="MyType.cs" />
-    <Compile Include="Place.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerGrammar.g4.lexer.cs">
+    <Compile Include="game field classes\Place.cs" />
+    <Compile Include="characters\Player.cs" />
+    <Compile Include="g4 files\PlayerGrammar.g4.lexer.cs">
       <DependentUpon>PlayerGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="PlayerGrammar.g4.parser.cs">
+    <Compile Include="g4 files\PlayerGrammar.g4.parser.cs">
       <DependentUpon>PlayerGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="PlayerGrammarVisitor.cs" />
+    <Compile Include="Visitors\PlayerGrammarVisitor.cs" />
     <Compile Include="PlayerMove.cs" />
-    <Compile Include="PlayerType.cs" />
+    <Compile Include="types\charactertypes\PlayerType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShootCommand.cs" />
-    <Compile Include="SpawnCommand.cs" />
-    <Compile Include="Symbol.cs" />
-    <Compile Include="TeleportCommand.cs" />
-    <Compile Include="Trap.cs" />
+    <Compile Include="Commands\ShootCommand.cs" />
+    <Compile Include="Commands\SpawnCommand.cs" />
+    <Compile Include="Commands\TeleportCommand.cs" />
+    <Compile Include="characters\Trap.cs" />
     <Compile Include="TrapAI.cs" />
-    <Compile Include="TrapExpressionVisitor.cs" />
-    <Compile Include="TrapGrammar.g4.lexer.cs">
+    <Compile Include="g4 files\TrapGrammar.g4.lexer.cs">
       <DependentUpon>TrapGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="TrapGrammar.g4.parser.cs">
+    <Compile Include="g4 files\TrapGrammar.g4.parser.cs">
       <DependentUpon>TrapGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="TrapGrammarVisitor.cs" />
-    <Compile Include="TrapType.cs" />
-    <Compile Include="WhileCommand.cs" />
+    <Compile Include="Visitors\TrapGrammarVisitor.cs" />
+    <Compile Include="types\charactertypes\TrapType.cs" />
+    <Compile Include="Commands\WhileCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Antlr4 Include="BoardGrammar.g4">
+    <Antlr4 Include="g4 files\BoardGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
-    <Antlr4 Include="MonsterGrammar.g4">
+    <Antlr4 Include="g4 files\MonsterGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
     <None Include="ClassDiagram1.cd" />
-    <Antlr4 Include="DynamicMonster.g4">
+    <Antlr4 Include="g4 files\DynamicMonster.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
-    <Antlr4 Include="DynamicTrap.g4">
+    <Antlr4 Include="g4 files\DynamicTrap.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
-    <Antlr4 Include="DynamicEnemyGrammar.g4">
+    <Antlr4 Include="g4 files\DynamicEnemyGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
     <None Include="packages.config" />
-    <Antlr4 Include="PlayerGrammar.g4">
+    <Antlr4 Include="g4 files\PlayerGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
-    <Antlr4 Include="TrapGrammar.g4">
+    <Antlr4 Include="g4 files\TrapGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
