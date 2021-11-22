@@ -183,10 +183,7 @@ namespace LabWork1github
                     IfCommand newCommand = new IfCommand();
                     newCommand.CommandCount = context.block().ChildCount - 2;
 
-                    MonsterExpressionVisitor typeChecker = new MonsterExpressionVisitor(context.expression());
-                    typeChecker.CheckTypes();
-
-                    //TODO: condition handle
+                    
 
                     Program.monsterTypes.ElementAt(i).Commands.Add(newCommand);
                     return base.VisitIfexpression(context);

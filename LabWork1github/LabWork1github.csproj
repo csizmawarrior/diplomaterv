@@ -101,7 +101,7 @@
     <Compile Include="Visitors\MonsterGrammarVisitor.cs" />
     <Compile Include="types\charactertypes\MonsterType.cs" />
     <Compile Include="Commands\MoveCommand.cs" />
-    <Compile Include="MyType.cs" />
+    <Compile Include="types\MyType.cs" />
     <Compile Include="game field classes\Place.cs" />
     <Compile Include="characters\Player.cs" />
     <Compile Include="g4 files\PlayerGrammar.g4.lexer.cs">

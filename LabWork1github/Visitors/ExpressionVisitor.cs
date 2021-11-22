@@ -28,11 +28,10 @@ namespace LabWork1github
                 helperVisitor.CheckTypes();
             }
             if (ExpressionContext.operation() != null)
-                CheckOperation(ExpressionContext);C:\Users\Dana\Source\Repos\LabWork1github\LabWork1github\PlayerMove.cs
+                CheckOperation(ExpressionContext);
 
             VisitExpression(ExpressionContext);
         }
-
 
         public void CheckOperation(ExpressionContext context)
         {
@@ -57,12 +56,17 @@ namespace LabWork1github
             string attribute = ExpressionContext.expression().ElementAt(1).something().possibleAttributes().GetText();
             switch (attribute)
             {
-                //TODO: decide if how to deal with me.place.x case grammar changing?
+                //Player.X and Player.Y
             }
         }
 
         public void CheckNumber(ExpressionContext context)
         {
+            if(context.expression().Count() > 1)
+            {
+                CheckNumber(ExpressionContext.expression().ElementAt(0));
+                CheckNumber(ExpressionContext.expression().ElementAt(1));
+            }
 
         }
 

@@ -25,7 +25,6 @@ whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block | WHIL
 block: BRACKETCLOSE statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
 possibleAttributes: name;
-//TODO: string for attributes
 
 place: x ',' y;
 x: NUMBER;

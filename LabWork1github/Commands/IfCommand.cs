@@ -12,10 +12,6 @@ namespace LabWork1github
     {
         public int CommandCount { get; set; }
 
-
-        //TODO: need to find what is required so every condition can be decided
-        //can be done with config file? or a new type?
-
         public Condition Condition { get; set; }
         public List<Command> commandList { get; set; }
 
