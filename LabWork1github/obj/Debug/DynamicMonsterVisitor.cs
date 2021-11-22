@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\Dana\source\repos\LabWork1github\LabWork1github\DynamicMonster.g4 by ANTLR 4.6.6
+// Generated from C:\Users\Dana\Source\Repos\LabWork1github\LabWork1github\DynamicMonster.g4 by ANTLR 4.6.6
 
 // Unreachable code detected
 #pragma warning disable 0162
