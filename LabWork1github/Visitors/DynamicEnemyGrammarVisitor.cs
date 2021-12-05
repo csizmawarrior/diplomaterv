@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
+using LabWork1github.Visitors;
 using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
@@ -12,6 +13,8 @@ namespace LabWork1github
     {
         private string typeName = "";
         private string type = null;
+        private List<int> ConditionCount = new List<int>();
+        private List<Command> ConditionalCommands = new List<Command>();
 
         public override object VisitTrapNameDeclaration([NotNull] TrapNameDeclarationContext context)
         {
@@ -172,7 +175,7 @@ namespace LabWork1github
             return base.VisitShootDeclaration(context);
         }
 
-                public override object VisitTeleportDeclaration([NotNull] TeleportDeclarationContext context)
+        public override object VisitTeleportDeclaration([NotNull] TeleportDeclarationContext context)
         {
             if (Program.GetCharacterType(typeName) == null)
                 throw new NullReferenceException("The type doesn't exist");
@@ -258,7 +261,16 @@ namespace LabWork1github
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
             ConditionHelper.CheckBool(context.expression());
+            IfCommand newcommand = new IfCommand();
+            newcommand.MyContext = context.expression();
+            newcommand.Condition = (GetCondition);
             return base.VisitIfexpression(context);
+        }
+
+        public bool GetCondition(GameParamProvider provider, ExpressionContext context)
+        {
+            ConditionVisitor visitor = new ConditionVisitor(provider, context);
+            return visitor.CheckConditions();
         }
         //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
 

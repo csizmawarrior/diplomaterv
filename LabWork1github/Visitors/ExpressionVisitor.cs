@@ -21,14 +21,16 @@ namespace LabWork1github
         {
             try
             {
-                CheckBool(Excontext);
+                CheckBool(Excontext.expression().ElementAt(0));
+                CheckBool(Excontext.expression().ElementAt(1));
             }
             catch(Exception e){
                 if (!(e is InvalidOperationException || e is ArgumentException))
                     throw e;
                 try
                 {
-                    CheckNumber(Excontext);
+                    CheckNumber(Excontext.expression().ElementAt(0));
+                    CheckNumber(Excontext.expression().ElementAt(1));
                 }
                 catch(Exception e2)
                 {
@@ -43,19 +45,22 @@ namespace LabWork1github
                 throw new InvalidOperationException("bool expression expected, absolute found");
             if (context.PARENTHESISSTART() != null || context.NEGATE() != null)
             {
-                CheckBool(context);
+                CheckBool(context.expression().ElementAt(0));
             }
             if (context.operation() == null)
                 if (context.something() == null)
                     throw new InvalidOperationException("unexpted input");
                 else
-                    if (context.something().NOTHING() != null)
-                        return;
+                    throw new InvalidOperationException("unexpted input");
             if (context.operation().ALIVE() != null || context.operation().NEAR() != null)
             {
                 if ((context.expression().ElementAt(1).something().NOTHING() != null))
                     if (context.expression().ElementAt(0).something().character() != null)
                         return;
+                    else
+                        throw new InvalidOperationException("unexpted input");
+                else
+                    throw new InvalidOperationException("unexpted input");
             }
             if (context.operation().NUMCONNECTER() != null)
                 throw new InvalidOperationException("bool expected, number found!");
@@ -129,7 +134,7 @@ namespace LabWork1github
                 CheckNumber(context.expression().ElementAt(0));
             if (context.PARENTHESISSTART() != null)
             {
-                CheckNumber(context);
+                CheckNumber(context.expression().ElementAt(0));
             }
             if (context.NEGATE() != null)
                 throw new InvalidOperationException("Number exprected, bool found");
@@ -141,14 +146,21 @@ namespace LabWork1github
                     return;
                 throw new InvalidOperationException("unexpected expression");
             }
+            if(context.operation().BOOLCONNECTER() != null || context.operation().NEAR() != null || context.operation().ALIVE() != null
+                 || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
+            {
+                throw new InvalidOperationException("Number exprected, bool found");
+            }
             if (context.operation().ATTRIBUTE() != null)
                 CheckAttribute(context);
-            if(context.operation().NUMCONNECTER() != null || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
+            if (context.operation().NUMCONNECTER() != null)
                 if (context.expression().Count() > 1)
                 {
                     CheckNumber(context.expression().ElementAt(0));
                     CheckNumber(context.expression().ElementAt(1));
                 }
+                else
+                    throw new InvalidOperationException("invalid number of arguments");
         }
 
     }

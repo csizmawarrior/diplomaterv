@@ -21,6 +21,11 @@ namespace LabWork1github
         {
             return game.Board;
         }
+        //TODO: how to get current character
+        public Character GetMe()
+        {
+            throw new NotImplementedException();
+        }
         public Player GetPlayer()
         {
             return game.Player;
@@ -57,6 +62,5 @@ namespace LabWork1github
         {
             game.Repeat = commandCount;
         }
-
     }
 }

@@ -65,7 +65,7 @@ namespace LabWork1github
             return true;
         }
         
-        public static bool IsMonsterNear(GameParamProvider provider, IfCommand command)
+        public static bool IsMonsterNear(GameParamProvider provider)
         {
             foreach(Monster monster in provider.GetMonsters())
             {
@@ -94,7 +94,7 @@ namespace LabWork1github
             }
             return false;
         }
-        public static bool IsTrapNear(GameParamProvider provider, IfCommand command)
+        public static bool IsTrapNear(GameParamProvider provider)
         {
             foreach (Trap trap in provider.GetTraps())
             {
@@ -121,5 +121,6 @@ namespace LabWork1github
             }
             return false;
         }
+
     }
 }
