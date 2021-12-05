@@ -8,6 +8,7 @@ namespace LabWork1github
 {
     public abstract class Command
     {
+        public List<Command> CommandList { get; set; } 
         public abstract void Execute(GameParamProvider provider);
     }
 }

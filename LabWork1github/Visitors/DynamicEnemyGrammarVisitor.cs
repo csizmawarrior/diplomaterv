@@ -32,6 +32,7 @@ namespace LabWork1github
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
+            //TODO: create commands for these too
             if (type == Types.TRAP)
                 throw new ArrayTypeMismatchException("Traps don't have Health");
             Program.GetCharacterType(typeName).Health = int.Parse(context.NUMBER().GetText());
@@ -69,6 +70,7 @@ namespace LabWork1github
                 throw new ArrayTypeMismatchException("Traps don't have Health");
             Program.GetCharacterType(typeName).SpawnType = Program.GetCharacterType(context.name().GetText());
             return base.VisitSpawnTypeDeclaration(context);
+            //TODO: up to this
         }
         public override object VisitMoveDeclaration([NotNull] MoveDeclarationContext context)
         {
@@ -85,7 +87,7 @@ namespace LabWork1github
                     throw new NotSupportedException("Wrong direction in Monster commandlist");
                 newCommand.Direction = direction.GetText();
                 newCommand.MoveDelegate = new MoveDelegate(MoveDirection);
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
             PlaceContext place = context.place();
@@ -95,14 +97,14 @@ namespace LabWork1github
                 int yPos = int.Parse(place.y().GetText());
                 newCommand.targetPlace = new Place(xPos, yPos);
                 newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
             var helpPlayer = context.PLAYER();
             if (helpPlayer != null)
             {
                 newCommand.targetPlace = Program.Board.Player.Place;
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
             var random = context.RANDOM();
@@ -113,7 +115,7 @@ namespace LabWork1github
                 int YPos = (int)(rand.Next() % Program.Board.Width);
                 newCommand.targetPlace = new Place(XPos, YPos);
                 newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
 
             }
@@ -139,7 +141,7 @@ namespace LabWork1github
                     throw new NotSupportedException("Wrong direction in Monster commandlist");
                 newCommand.Direction = direction.GetText();
                 newCommand.ShootDelegate = new ShootDelegate(ShootDirection);
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitShootDeclaration(context);
             }
             PlaceContext place = context.place();
@@ -149,7 +151,7 @@ namespace LabWork1github
                 int yPos = int.Parse(place.y().GetText());
                 newCommand.targetPlace = new Place(xPos, yPos);
                 newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitShootDeclaration(context);
             }
             var helpPlayer = context.PLAYER();
@@ -157,7 +159,7 @@ namespace LabWork1github
             {
                 newCommand.targetPlace = Program.Board.Player.Place;
                 newCommand.ShootDelegate = new ShootDelegate(ShootToPlayer);
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitShootDeclaration(context);
             }
             var random = context.RANDOM();
@@ -168,7 +170,7 @@ namespace LabWork1github
                 int YPos = (int)(rand.Next() % Program.Board.Width);
                 newCommand.targetPlace = new Place(XPos, YPos);
                 newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitShootDeclaration(context);
             }
 
@@ -204,15 +206,15 @@ namespace LabWork1github
                 {
                     case "player":
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportPlayer);
-                        Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                        AddCommand(newCommand);
                         break;
                     case "monster":
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportMonster);
-                        Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                        AddCommand(newCommand);
                         break;
                     case "trap":
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportTrap);
-                        Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                        AddCommand(newCommand);
                         break;
                     case "me":
                         throw new ArgumentOutOfRangeException("You can't teleport yourself");
@@ -253,7 +255,8 @@ namespace LabWork1github
                     throw new ArgumentException("Monster type doesn't exist");
                 newCommand.TargetType = Program.GetCharacterType(context.name().GetText()).SpawnType;
             }
-            
+            newCommand.SpawnDelegate = new SpawnDelegate(Spawn);
+            AddCommand(newCommand);
             return base.VisitSpawnDeclaration(context);
         }
 
@@ -261,11 +264,47 @@ namespace LabWork1github
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
             ConditionHelper.CheckBool(context.expression());
-            IfCommand newcommand = new IfCommand();
-            newcommand.MyContext = context.expression();
-            newcommand.Condition = (GetCondition);
+            IfCommand newCommand = new IfCommand();
+            newCommand.MyContext = context.expression();
+            newCommand.Condition = (GetCondition);
+            this.ConditionalCommands.Add(newCommand);
+            this.ConditionCount.Add(context.block().ChildCount - 2);
+            if(context.block().ChildCount - 2 == 0)
+            {
+                this.ConditionalCommands.Remove(this.ConditionalCommands.ElementAt(this.ConditionalCommands.Count-1));
+                this.ConditionCount.Remove(this.ConditionCount.ElementAt(this.ConditionCount.Count-1));
+                AddCommand(newCommand);
+            }
             return base.VisitIfexpression(context);
         }
+
+        public override object VisitWhileexpression([NotNull] WhileexpressionContext context)
+        {
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
+            ConditionHelper.CheckBool(context.expression());
+            IfCommand newCommand = new IfCommand();
+            newCommand.MyContext = context.expression();
+            newCommand.Condition = (GetCondition);
+            this.ConditionalCommands.Add(newCommand);
+            this.ConditionCount.Add(context.block().ChildCount - 2);
+            if (context.block().ChildCount - 2 == 0)
+            {
+                this.ConditionalCommands.Remove(this.ConditionalCommands.ElementAt(this.ConditionalCommands.Count - 1));
+                this.ConditionCount.Remove(this.ConditionCount.ElementAt(this.ConditionCount.Count - 1));
+                AddCommand(newCommand);
+            }
+            return base.VisitWhileexpression(context);
+        }
+        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport.
+
+        //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
+        //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
+
+
+
+
+
+
 
         public bool GetCondition(GameParamProvider provider, ExpressionContext context)
         {
@@ -418,6 +457,24 @@ namespace LabWork1github
             provider.GetPlayer().Damage(command.Damage);
         }
 
-
+        public void AddCommand(Command newCommand)
+        {
+            if (ConditionCount.ElementAt(ConditionCount.Count - 1) > 0)
+            {
+                ConditionalCommands.ElementAt(ConditionalCommands.Count - 1).CommandList.Add(newCommand);
+                int helperCount = ConditionCount.ElementAt(ConditionCount.Count - 1);
+                ConditionCount.Remove(ConditionCount.ElementAt(ConditionCount.Count - 1));
+                if(helperCount-1 == 0)
+                {
+                    Command helperCommand = ConditionalCommands.ElementAt(ConditionalCommands.Count - 1);
+                    Program.GetCharacterType(typeName).Commands.Add(helperCommand);
+                    ConditionalCommands.Remove(ConditionalCommands.ElementAt(ConditionalCommands.Count - 1));
+                }
+                else
+                ConditionCount.Add(helperCount - 1);
+            }
+            else
+                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+        }
     }
 }

@@ -11,14 +11,16 @@ namespace LabWork1github
 
     public class IfCommand : Command
     {
-        public int CommandCount { get; set; }
         public ExpressionContext MyContext { get; set; }
         public Condition Condition { get; set; }
-        public List<Command> CommandList { get; set; }
 
         public override void Execute(GameParamProvider provider)
         {
-            if(Condition(provider, MyContext));
+            if(Condition(provider, MyContext))
+            {
+                foreach (Command command in CommandList)
+                    command.Execute(provider);
+            }
         }
     }
 }
