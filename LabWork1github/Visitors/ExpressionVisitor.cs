@@ -17,57 +17,138 @@ namespace LabWork1github
             ExpressionContext = context;
         }
 
-        public void CheckTypes()
+        public void CheckTypes(ExpressionContext Excontext)
         {
-            if (ExpressionContext.ABSOLUTE() != null)
-                //TODO: check if it works this way or not
-                CheckNumber(ExpressionContext.expression().ElementAt(0));
-            if (ExpressionContext.PARENTHESISSTART() != null || ExpressionContext.NEGATE() != null)
+            try
             {
-                ExpressionVisitor helperVisitor = new ExpressionVisitor(ExpressionContext.expression().ElementAt(0));
-                helperVisitor.CheckTypes();
+                CheckBool(Excontext);
             }
-            if (ExpressionContext.operation() != null)
-                CheckOperation(ExpressionContext);
-
-            VisitExpression(ExpressionContext);
+            catch(Exception e){
+                if (!(e is InvalidOperationException || e is ArgumentException))
+                    throw e;
+                try
+                {
+                    CheckNumber(Excontext);
+                }
+                catch(Exception e2)
+                {
+                    throw new InvalidOperationException("unexpected type");
+                }
+            }
         }
-
-        public void CheckOperation(ExpressionContext context)
+        //kb ez a jó de egy checkboolean-el talán érdemesebb kezdeni
+        public void CheckBool(ExpressionContext context)
         {
-            if (ExpressionContext.operation().ALIVE() != null || ExpressionContext.operation().NEAR() != null)
-                if (!(ExpressionContext.expression().ElementAt(1).something().NOTHING() != null))
-                    throw new ArgumentException("An operation has more arguments than exprected");
-            if (ExpressionContext.operation().NUMCOMPARE() != null || ExpressionContext.operation().NUMCONNECTER() != null)
+            if(context.ABSOLUTE() != null)
+                throw new InvalidOperationException("bool expression expected, absolute found");
+            if (context.PARENTHESISSTART() != null || context.NEGATE() != null)
             {
-                CheckNumber(ExpressionContext.expression().ElementAt(0));
-                CheckNumber(ExpressionContext.expression().ElementAt(1));
+                CheckBool(context);
             }
-            if (ExpressionContext.operation().ATTRIBUTE() != null)
+            if (context.operation() == null)
+                if (context.something() == null)
+                    throw new InvalidOperationException("unexpted input");
+                else
+                    if (context.something().NOTHING() != null)
+                        return;
+            if (context.operation().ALIVE() != null || context.operation().NEAR() != null)
             {
-                CheckAttribute(ExpressionContext);
+                if ((context.expression().ElementAt(1).something().NOTHING() != null))
+                    if (context.expression().ElementAt(0).something().character() != null)
+                        return;
             }
+            if (context.operation().NUMCONNECTER() != null)
+                throw new InvalidOperationException("bool expected, number found!");
+            if (context.operation().BOOLCONNECTER() != null)
+            {
+                CheckBool(context.expression().ElementAt(0));
+                CheckBool(context.expression().ElementAt(1));
+            }
+            if (context.operation().NUMCOMPARE() != null)
+            {
+                CheckNumber(context.expression().ElementAt(0));
+                CheckNumber(context.expression().ElementAt(1));
+            }
+            if (context.operation().ATTRIBUTE() != null)
+            {
+                throw new InvalidOperationException("bool expression expected, ATTRIBUTE found");
+            }
+            if (context.operation().COMPARE() != null)
+                CheckTypes(context);
         }
 
         private void CheckAttribute(ExpressionContext expressionContext)
         {
-            if (!(ExpressionContext.expression().ElementAt(0).something().character() != null && ExpressionContext.expression().ElementAt(1).something().possibleAttributes() != null))
+            if (!(expressionContext.expression().ElementAt(0).something().character() != null && expressionContext.expression().ElementAt(1).something().possibleAttributes() != null))
                 throw new ArgumentException("Attribute operation used incorrectly");
-            string attribute = ExpressionContext.expression().ElementAt(1).something().possibleAttributes().GetText();
+            string attribute = expressionContext.expression().ElementAt(1).something().possibleAttributes().GetText();
             switch (attribute)
             {
-                //Player.X and Player.Y
+                case "x":
+                    return;
+                case "y":
+                    return;
+                case "health":
+                    return;
+                case "heal":
+                    if(expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+                        return;
+                    else
+                        throw new ArgumentException("Attribute operation used incorrectly");
+                case "damage":
+                    return;
+                case "teleport.x":
+                    if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+                        return;
+                    else
+                        throw new ArgumentException("Attribute operation used incorrectly");
+                case "teleport.y":
+                    if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+                        return;
+                    else
+                        throw new ArgumentException("Attribute operation used incorrectly");
+                case "spawn.x":
+                    if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+                        return;
+                    else
+                        throw new ArgumentException("Attribute operation used incorrectly");
+                case "spawn.y":
+                    if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+                        return;
+                    else
+                        throw new ArgumentException("Attribute operation used incorrectly");
+                default:
+                    throw new ArgumentException("Attribute operation used incorrectly");
             }
         }
 
         public void CheckNumber(ExpressionContext context)
         {
-            if(context.expression().Count() > 1)
+            if (context.ABSOLUTE() != null)
+                //TODO: check if it works this way or not
+                CheckNumber(context.expression().ElementAt(0));
+            if (context.PARENTHESISSTART() != null)
             {
-                CheckNumber(ExpressionContext.expression().ElementAt(0));
-                CheckNumber(ExpressionContext.expression().ElementAt(1));
+                CheckNumber(context);
             }
-
+            if (context.NEGATE() != null)
+                throw new InvalidOperationException("Number exprected, bool found");
+            if(context.operation() == null && context.something() != null)
+            {
+                if (context.something().NUMBER() != null)
+                    return;
+                if (context.something().ROUND() != null)
+                    return;
+                throw new InvalidOperationException("unexpected expression");
+            }
+            if (context.operation().ATTRIBUTE() != null)
+                CheckAttribute(context);
+            if(context.operation().NUMCONNECTER() != null || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
+                if (context.expression().Count() > 1)
+                {
+                    CheckNumber(context.expression().ElementAt(0));
+                    CheckNumber(context.expression().ElementAt(1));
+                }
         }
 
     }
