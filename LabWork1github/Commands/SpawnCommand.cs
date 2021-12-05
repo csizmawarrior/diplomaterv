@@ -16,6 +16,8 @@ namespace LabWork1github
 
         public SpawnDelegate SpawnDelegate { get; set; }
 
+        public CharacterType TargetType { get; set; }
+
         public override void Execute(GameParamProvider provider)
         {
             SpawnDelegate(provider, this);

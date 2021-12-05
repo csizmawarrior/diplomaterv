@@ -172,7 +172,7 @@ namespace LabWork1github
             return base.VisitShootDeclaration(context);
         }
 
-        public override object VisitTeleportDeclaration([NotNull] TeleportDeclarationContext context)
+                public override object VisitTeleportDeclaration([NotNull] TeleportDeclarationContext context)
         {
             if (Program.GetCharacterType(typeName) == null)
                 throw new NullReferenceException("The type doesn't exist");
@@ -199,26 +199,113 @@ namespace LabWork1github
             {
                 switch (context.character().GetText())
                 {
-                    case "trap":
-                        throw new ArrayTypeMismatchException("Traps can't be teleported.");
                     case "player":
-                        
-                        
+                        newCommand.TeleportDelegate = new TeleportDelegate(TeleportPlayer);
+                        Program.GetCharacterType(typeName).Commands.Add(newCommand);
                         break;
-                        //TODO: reafactor program then return here
+                    case "monster":
+                        newCommand.TeleportDelegate = new TeleportDelegate(TeleportMonster);
+                        Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                        break;
+                    case "trap":
+                        newCommand.TeleportDelegate = new TeleportDelegate(TeleportTrap);
+                        Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                        break;
+                    case "me":
+                        throw new ArgumentOutOfRangeException("You can't teleport yourself");
                 }
             }
-
-
             return base.VisitTeleportDeclaration(context);
         }
 
+        public override object VisitSpawnDeclaration([NotNull] SpawnDeclarationContext context)
+        {
+            if (Program.GetCharacterType(typeName) == null)
+                throw new NullReferenceException("The type doesn't exist");
+
+            if (!type.Equals(Types.TRAP))
+                throw new ArrayTypeMismatchException("Monsters can't teleport");
+
+            SpawnCommand newCommand = new SpawnCommand();
+            if (context.place() != null)
+            {
+                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
+                                                    int.Parse(context.place().y().GetText()));
+            }
+            if (context.RANDOM() != null)
+            {
+                Random rand = new Random();
+                int XPos = (int)(rand.Next() % Program.Board.Height);
+                int YPos = (int)(rand.Next() % Program.Board.Width);
+                newCommand.TargetPlace = new Place(XPos, YPos);
+                if(context.MONSTER() == null)
+                {
+                    int monsterCount = (int)(rand.Next() % Program.monsterTypes.Count);
+                    newCommand.TargetType = Program.monsterTypes.ElementAt(monsterCount);
+                }
+            }
+            if (context.MONSTER() != null)
+            {
+                if (Program.GetCharacterType(context.name().GetText()) == null)
+                    throw new ArgumentException("Monster type doesn't exist");
+                newCommand.TargetType = Program.GetCharacterType(context.name().GetText()).SpawnType;
+            }
+            
+            return base.VisitSpawnDeclaration(context);
+        }
+
+        public override object VisitIfexpression([NotNull] IfexpressionContext context)
+        {
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
+            return base.VisitIfexpression(context);
+        }
+        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
+        //TODO: folders
+
+        //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
+        //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
 
 
+        public void Spawn(GameParamProvider provider, SpawnCommand command)
+        {
+            foreach(Monster monster in provider.GetMonsters())
+            {
+                if (monster.Place.directionTo(command.TargetPlace).Equals("collision"))
+                    return;
+            }
+            foreach (Trap trap in provider.GetTraps())
+            {
+                if (trap.Place.directionTo(command.TargetPlace).Equals("collision"))
+                    return;
+            }
+            if (provider.GetPlayer().Place.directionTo(command.TargetPlace).Equals("collision"))
+                return;
+            Monster newMonster = new Monster(command.TargetType.Health, (MonsterType)command.TargetType, command.TargetPlace);
+            provider.GetMonsters().Add(newMonster);
+            provider.GetBoard().Monsters.Add(newMonster);
+            //TODO: check if it works
+        }
 
+        public void TeleportTrap(GameParamProvider provider, TeleportCommand command)
+        {
+            foreach (Trap Trap in provider.GetTraps())
+            {
+                if (Trap.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                    provider.GetPlayer().Place = command.TargetPlace;
+            }
+        }
+        public void TeleportMonster(GameParamProvider provider, TeleportCommand command)
+        {
+            foreach (Monster monster in provider.GetMonsters()) {
+                if (monster.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                    provider.GetPlayer().Place = command.TargetPlace;
+            }
+        }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
-            provider.GetPlayer().Place = command.TargetPlace;
+            if(provider.GetPlayer().Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                provider.GetPlayer().Place = command.TargetPlace;
+
         }
 
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
