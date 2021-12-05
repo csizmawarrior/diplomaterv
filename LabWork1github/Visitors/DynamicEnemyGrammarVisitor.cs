@@ -257,10 +257,10 @@ namespace LabWork1github
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
+            ConditionHelper.CheckBool(context.expression());
             return base.VisitIfexpression(context);
         }
         //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
-        //TODO: folders
 
         //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
         //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
@@ -270,15 +270,15 @@ namespace LabWork1github
         {
             foreach(Monster monster in provider.GetMonsters())
             {
-                if (monster.Place.directionTo(command.TargetPlace).Equals("collision"))
+                if (monster.Place.DirectionTo(command.TargetPlace).Equals("collision"))
                     return;
             }
             foreach (Trap trap in provider.GetTraps())
             {
-                if (trap.Place.directionTo(command.TargetPlace).Equals("collision"))
+                if (trap.Place.DirectionTo(command.TargetPlace).Equals("collision"))
                     return;
             }
-            if (provider.GetPlayer().Place.directionTo(command.TargetPlace).Equals("collision"))
+            if (provider.GetPlayer().Place.DirectionTo(command.TargetPlace).Equals("collision"))
                 return;
             Monster newMonster = new Monster(command.TargetType.Health, (MonsterType)command.TargetType, command.TargetPlace);
             provider.GetMonsters().Add(newMonster);
@@ -290,20 +290,20 @@ namespace LabWork1github
         {
             foreach (Trap Trap in provider.GetTraps())
             {
-                if (Trap.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                if (Trap.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
                     provider.GetPlayer().Place = command.TargetPlace;
             }
         }
         public void TeleportMonster(GameParamProvider provider, TeleportCommand command)
         {
             foreach (Monster monster in provider.GetMonsters()) {
-                if (monster.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+                if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
                     provider.GetPlayer().Place = command.TargetPlace;
             }
         }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
-            if(provider.GetPlayer().Place.directionTo(provider.GetTrap().Place).Equals("collision"))
+            if(provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
                 provider.GetPlayer().Place = command.TargetPlace;
 
         }
