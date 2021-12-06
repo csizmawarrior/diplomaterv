@@ -41,7 +41,7 @@ namespace LabWork1github
         //kb ez a jó de egy checkboolean-el talán érdemesebb kezdeni
         public void CheckBool(ExpressionContext context)
         {
-            if(context.ABSOLUTE() != null)
+            if(context.ABSOLUTE().ToList().Count > 0)
                 throw new InvalidOperationException("bool expression expected, absolute found");
             if (context.PARENTHESISSTART() != null || context.NEGATE() != null)
             {

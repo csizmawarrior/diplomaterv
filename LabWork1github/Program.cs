@@ -70,11 +70,6 @@ namespace LabWork1github
         }
         public static CharacterType GetCharacterType(string name)
         {
-            foreach(CharacterType ct in CharacterTypes)
-            {
-                if(ct.Name.Equals(name))
-                    Console.WriteLine("found it");
-            }
             if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1)
                 throw new ArgumentException("Not a valid CharacterType name");
             else if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
