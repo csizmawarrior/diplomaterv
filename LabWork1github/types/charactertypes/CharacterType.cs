@@ -15,7 +15,7 @@ namespace LabWork1github
         public Place SpawnPlace { get; set; }
         public CharacterType SpawnType { get; set; }
         public string Name { get; set; }
-        public List<Command> Commands { get; set; }
+        public List<Command> Commands { get; set; } = new List<Command>();
 
 
         public abstract void Step(GameParamProvider provider);

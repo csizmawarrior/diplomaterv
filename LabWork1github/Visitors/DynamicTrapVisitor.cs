@@ -18,7 +18,7 @@ namespace LabWork1github
         public override object VisitNameDeclaration([NotNull] NameDeclarationContext context)
         {
             typeName = context.name().GetText();
-            Program.trapTypes.Add(new TrapType(typeName));
+          //  Program.trapTypes.Add(new TrapType(typeName));
             return base.VisitNameDeclaration(context);
         }
         public override object VisitDistanceDeclare([NotNull] DistanceDeclareContext context)

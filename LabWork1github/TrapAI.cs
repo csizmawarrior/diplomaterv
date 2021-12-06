@@ -56,7 +56,7 @@ namespace LabWork1github
                         player.Heal(trap.Type.EffectNumber);
                         break;
                     case TrapEffect.Teleport:
-                        player.Teleport(trap.Type.EffectPlace);
+                       // player.Teleport(trap.Type.EffectPlace);
                         break;
                     case TrapEffect.Spawner:
                         Spawning = true;

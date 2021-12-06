@@ -459,22 +459,23 @@ namespace LabWork1github
 
         public void AddCommand(Command newCommand)
         {
-            if (ConditionCount.ElementAt(ConditionCount.Count - 1) > 0)
-            {
-                ConditionalCommands.ElementAt(ConditionalCommands.Count - 1).CommandList.Add(newCommand);
-                int helperCount = ConditionCount.ElementAt(ConditionCount.Count - 1);
-                ConditionCount.Remove(ConditionCount.ElementAt(ConditionCount.Count - 1));
-                if(helperCount-1 == 0)
-                {
-                    Command helperCommand = ConditionalCommands.ElementAt(ConditionalCommands.Count - 1);
-                    Program.GetCharacterType(typeName).Commands.Add(helperCommand);
-                    ConditionalCommands.Remove(ConditionalCommands.ElementAt(ConditionalCommands.Count - 1));
-                }
-                else
-                ConditionCount.Add(helperCount - 1);
-            }
-            else
+            if(ConditionCount.Count == 0 || ConditionalCommands.Count==0)
                 Program.GetCharacterType(typeName).Commands.Add(newCommand);
+            else
+                if (ConditionCount.ElementAt(ConditionCount.Count - 1) > 0)
+                {
+                    ConditionalCommands.ElementAt(ConditionalCommands.Count - 1).CommandList.Add(newCommand);
+                    int helperCount = ConditionCount.ElementAt(ConditionCount.Count - 1);
+                    ConditionCount.Remove(ConditionCount.ElementAt(ConditionCount.Count - 1));
+                    if(helperCount-1 == 0)
+                    {
+                        Command helperCommand = ConditionalCommands.ElementAt(ConditionalCommands.Count - 1);
+                        Program.GetCharacterType(typeName).Commands.Add(helperCommand);
+                        ConditionalCommands.Remove(ConditionalCommands.ElementAt(ConditionalCommands.Count - 1));
+                    }
+                    else
+                    ConditionCount.Add(helperCount - 1);
+                }
         }
     }
 }

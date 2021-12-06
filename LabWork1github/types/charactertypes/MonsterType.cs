@@ -10,17 +10,13 @@ namespace LabWork1github
 
     public class MonsterType : CharacterType
     {
-        public string Name { get; set; }
+        
 
         public MonsterType(string name)
         {
-            base.Name = name;
+            this.Name = name;
         }
 
-        public int Damage { get; set; }
-        public int Health { get; set; }
-
-        public List<Command> Commands { get; set; }
 
         //TODO: get out, now only for old code
         public int MoveRound { get; set; }

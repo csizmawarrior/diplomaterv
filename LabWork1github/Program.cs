@@ -20,7 +20,8 @@ namespace LabWork1github
 
 
 
-            MonsterTypeLoader();
+            //  MonsterTypeLoader();
+            BoardLoader();
             TrapTypeLoader();
             BoardLoader();
 
@@ -58,19 +59,26 @@ namespace LabWork1github
 
         public static void TrapTypeLoader()
         {
-            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/TrapTypes.txt");
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/TestTypes.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
-            TrapGrammarLexer TrapGrammarLexer_ = new TrapGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(TrapGrammarLexer_);
-            TrapGrammarParser TrapGrammarParser = new TrapGrammarParser(commonTokenStream);
-            TrapGrammarParser.DefinitionContext chatContext = TrapGrammarParser.definition();
-            TrapGrammarVisitor visitor = new TrapGrammarVisitor();
+            DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
+            DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
+            DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
         }
         public static CharacterType GetCharacterType(string name)
         {
-            if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1 || CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
+            foreach(CharacterType ct in CharacterTypes)
+            {
+                if(ct.Name.Equals(name))
+                    Console.WriteLine("found it");
+            }
+            if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1)
                 throw new ArgumentException("Not a valid CharacterType name");
+            else if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
+                    throw new ArgumentException("Not a valid CharacterType name");
             return CharacterTypes.Find(e => e.Name.Equals(name));
                 
         }

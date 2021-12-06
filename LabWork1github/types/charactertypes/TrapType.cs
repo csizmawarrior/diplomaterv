@@ -17,22 +17,9 @@ namespace LabWork1github
 
     public class TrapType : CharacterType
     {
-        private string name = "";
         public TrapType(string _name)
         {
-            Name = _name;
-        }
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                if (name.Equals(""))
-                    name = value;
-            }
+            this.Name = _name;
         }
 
         public int MoveRound { get; set; }

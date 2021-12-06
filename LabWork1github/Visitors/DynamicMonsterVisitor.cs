@@ -181,7 +181,7 @@ namespace LabWork1github
                 if (Program.monsterTypes.ElementAt(i).Name.Equals(typeName))
                 {
                     IfCommand newCommand = new IfCommand();
-                    newCommand.CommandCount = context.block().ChildCount - 2;
+                   // newCommand.CommandCount = context.block().ChildCount - 2;
 
                     
 

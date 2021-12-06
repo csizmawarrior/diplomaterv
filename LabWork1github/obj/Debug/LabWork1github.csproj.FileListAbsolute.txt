@@ -45,3 +45,9 @@ C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapLi
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapBaseListener.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapVisitor.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicTrapBaseVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarLexer.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarParser.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarBaseListener.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarBaseVisitor.cs
