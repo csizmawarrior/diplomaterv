@@ -129,7 +129,7 @@ namespace LabWork1github
 
         public void CheckNumber(ExpressionContext context)
         {
-            if (context.ABSOLUTE() != null)
+            if (context.ABSOLUTE().ToList().Count > 0)
                 //TODO: check if it works this way or not
                 CheckNumber(context.expression().ElementAt(0));
             if (context.PARENTHESISSTART() != null)
@@ -146,6 +146,8 @@ namespace LabWork1github
                     return;
                 throw new InvalidOperationException("unexpected expression");
             }
+            if (context.operation() == null)
+                return;
             if(context.operation().BOOLCONNECTER() != null || context.operation().NEAR() != null || context.operation().ALIVE() != null
                  || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
             {

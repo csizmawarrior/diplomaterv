@@ -282,12 +282,12 @@ namespace LabWork1github
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
             ConditionHelper.CheckBool(context.expression());
-            IfCommand newCommand = new IfCommand();
+            WhileCommand newCommand = new WhileCommand();
             newCommand.MyContext = context.expression();
             newCommand.Condition = (GetCondition);
             this.ConditionalCommands.Add(newCommand);
-            this.ConditionCount.Add(context.block().ChildCount - 2);
-            if (context.block().ChildCount - 2 == 0)
+            this.ConditionCount.Add(context.block().ChildCount);
+            if (context.block().ChildCount == 0)
             {
                 this.ConditionalCommands.Remove(this.ConditionalCommands.ElementAt(this.ConditionalCommands.Count - 1));
                 this.ConditionCount.Remove(this.ConditionCount.ElementAt(this.ConditionCount.Count - 1));

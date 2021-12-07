@@ -142,7 +142,7 @@ namespace LabWork1github.Visitors
 
         public int CheckNumberExpression(ExpressionContext context)
         {
-            if (context.ABSOLUTE() != null)
+            if (context.ABSOLUTE().ToList().Count > 0)
                 return Math.Abs(CheckNumberExpression(context.expression().ElementAt(0)));
             if (context.PARENTHESISSTART() != null)
                 return CheckNumberExpression(context.expression().ElementAt(0));
