@@ -141,7 +141,6 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
-    <None Include="ClassDiagram1.cd" />
     <Antlr4 Include="g4 files\DynamicMonster.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
@@ -154,6 +153,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
+    <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
     <Antlr4 Include="g4 files\PlayerGrammar.g4">
       <Generator>MSBuild:Compile</Generator>
