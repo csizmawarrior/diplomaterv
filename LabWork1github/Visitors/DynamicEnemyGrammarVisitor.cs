@@ -70,7 +70,6 @@ namespace LabWork1github
                 throw new ArrayTypeMismatchException("Traps don't have Health");
             Program.GetCharacterType(typeName).SpawnType = Program.GetCharacterType(context.name().GetText());
             return base.VisitSpawnTypeDeclaration(context);
-            //TODO: up to this
         }
         public override object VisitMoveDeclaration([NotNull] MoveDeclarationContext context)
         {
@@ -295,10 +294,7 @@ namespace LabWork1github
             }
             return base.VisitWhileexpression(context);
         }
-        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport.
 
-        //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
-        //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
 
 
 
@@ -313,8 +309,7 @@ namespace LabWork1github
         }
         //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
 
-        //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
-        //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
+       
 
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)

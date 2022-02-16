@@ -11,6 +11,9 @@ namespace LabWork1github
     {
         public ExpressionContext ExpressionContext { get; set; }
 
+        public string ErrorList { get; set; } = "";
+        public bool BoolCompareFailed { get; set; } = false;
+        public bool NumberCompareFailed { get; set; } = false;
 
         public ExpressionVisitor(ExpressionContext context)
         {
@@ -19,37 +22,53 @@ namespace LabWork1github
 
         public void CheckTypes(ExpressionContext Excontext)
         {
-            try
-            {
+            //try
+            //{
+            BoolCompareFailed = false;
                 CheckBool(Excontext.expression().ElementAt(0));
+            if(!BoolCompareFailed)
                 CheckBool(Excontext.expression().ElementAt(1));
+            if (BoolCompareFailed)
+            {
+                CheckNumber(Excontext.expression().ElementAt(0));
+                if(!NumberCompareFailed)
+                CheckNumber(Excontext.expression().ElementAt(1));
             }
-            catch(Exception e){
-                if (!(e is InvalidOperationException || e is ArgumentException))
-                    throw e;
-                try
-                {
-                    CheckNumber(Excontext.expression().ElementAt(0));
-                    CheckNumber(Excontext.expression().ElementAt(1));
-                }
-                catch(Exception e2)
-                {
-                    throw new InvalidOperationException("unexpected type");
-                }
-            }
+            //}
+            //catch(Exception e){
+            //    if (!(e is InvalidOperationException || e is ArgumentException))
+            //        throw e;
+            //    try
+            //    {
+            //        CheckNumber(Excontext.expression().ElementAt(0));
+            //        CheckNumber(Excontext.expression().ElementAt(1));
+            //    }
+            //    catch(Exception e2)
+            //    {
+            //        ErrorList += "error on Both CheckNumber and on CheckBool";
+            //    }
+            //}
         }
-        //kb ez a jó de egy checkboolean-el talán érdemesebb kezdeni
+        
         public void CheckBool(ExpressionContext context)
         {
-            if(context.ABSOLUTE().ToList().Count > 0)
-                throw new InvalidOperationException("bool expression expected, absolute found");
+            if (context.ABSOLUTE().ToList().Count > 0)
+            {
+                ErrorList += "Absolute around bool expression:\n";
+                ErrorList += context.GetText();
+                BoolCompareFailed = true;
+            }
             if (context.PARENTHESISSTART() != null || context.NEGATE() != null)
             {
+                BoolCompareFailed = false;
                 CheckBool(context.expression().ElementAt(0));
             }
             if (context.operation() == null)
-                if (context.something() == null)
-                    throw new InvalidOperationException("unexpted input");
+                if (context.something() == null) {
+                    ErrorList += "Input not recognized as an expression:\n";
+                    ErrorList += context.GetText();
+                    BoolCompareFailed = true;
+                }
                 else
                     throw new InvalidOperationException("unexpted input");
             if (context.operation().ALIVE() != null || context.operation().NEAR() != null)
@@ -58,7 +77,7 @@ namespace LabWork1github
                     if (context.expression().ElementAt(0).something().character() != null)
                         return;
                     else
-                        throw new InvalidOperationException("unexpted input");
+                        throw new InvalidOperationException("unexpted input"); //TODO: operation about characters, without character
                 else
                     throw new InvalidOperationException("unexpted input");
             }
@@ -167,4 +186,3 @@ namespace LabWork1github
 
     }
 }
-//TODO: eloszor típus ellenorzes mindegyik expressionre a típust, majd megnézzük, hogy a konkrét expressionben mi van
