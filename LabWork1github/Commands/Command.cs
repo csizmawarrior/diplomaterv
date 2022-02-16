@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
+    
+
     public abstract class Command
     {
         public List<Command> CommandList { get; set; } = new List<Command>();

@@ -12,8 +12,8 @@ namespace LabWork1github
         public ExpressionContext ExpressionContext { get; set; }
 
         public string ErrorList { get; set; } = "";
-        public bool BoolCompareFailed { get; set; } = false;
-        public bool NumberCompareFailed { get; set; } = false;
+        public bool BoolCheckFailed { get; set; } = false;
+        public bool NumberCheckFailed { get; set; } = false;
 
         public ExpressionVisitor(ExpressionContext context)
         {
@@ -24,15 +24,22 @@ namespace LabWork1github
         {
             //try
             //{
-            BoolCompareFailed = false;
+            BoolCheckFailed = false;
                 CheckBool(Excontext.expression().ElementAt(0));
-            if(!BoolCompareFailed)
+            if(!BoolCheckFailed)
                 CheckBool(Excontext.expression().ElementAt(1));
-            if (BoolCompareFailed)
+            if (BoolCheckFailed)
             {
+                NumberCheckFailed = false;
                 CheckNumber(Excontext.expression().ElementAt(0));
-                if(!NumberCompareFailed)
-                CheckNumber(Excontext.expression().ElementAt(1));
+                if (!NumberCheckFailed)
+                    CheckNumber(Excontext.expression().ElementAt(1));
+                if(NumberCheckFailed)
+                {
+                    ErrorList += "Compare type check failed:\n";
+                    ErrorList += Excontext.GetText();
+                    return;
+                }
             }
             //}
             //catch(Exception e){
@@ -56,46 +63,93 @@ namespace LabWork1github
             {
                 ErrorList += "Absolute around bool expression:\n";
                 ErrorList += context.GetText();
-                BoolCompareFailed = true;
+                BoolCheckFailed = true; //TODO: return after comparedfailed set
+                return;
             }
             if (context.PARENTHESISSTART() != null || context.NEGATE() != null)
             {
-                BoolCompareFailed = false;
+                BoolCheckFailed = false;
                 CheckBool(context.expression().ElementAt(0));
+                if (BoolCheckFailed)
+                {
+                    ErrorList += "Bool expected, something else found:\n";
+                    ErrorList += context.GetText();
+                    return;
+                }
             }
             if (context.operation() == null)
-                if (context.something() == null) {
-                    ErrorList += "Input not recognized as an expression:\n";
-                    ErrorList += context.GetText();
-                    BoolCompareFailed = true;
-                }
-                else
-                    throw new InvalidOperationException("unexpted input");
+            {
+                ErrorList += "Input not recognized as an expression:\n";
+                ErrorList += context.GetText();
+                BoolCheckFailed = true;
+                return;
+            }
+            if (context.something() == null)
+            {
+                ErrorList += "Input not recognized as an expression:\n";
+                ErrorList += context.GetText();
+                BoolCheckFailed = true;
+                return;
+            }
             if (context.operation().ALIVE() != null || context.operation().NEAR() != null)
             {
                 if ((context.expression().ElementAt(1).something().NOTHING() != null))
                     if (context.expression().ElementAt(0).something().character() != null)
                         return;
                     else
-                        throw new InvalidOperationException("unexpted input"); //TODO: operation about characters, without character
+                    {
+                        ErrorList += "Character operation without character:\n";
+                        ErrorList += context.GetText();
+                        BoolCheckFailed = true;
+                        return;
+                    }                            //TODO: operation about characters, without character
                 else
-                    throw new InvalidOperationException("unexpted input");
+                {
+                    ErrorList += "Character operation with to many parameters:\n";
+                    ErrorList += context.GetText();
+                    BoolCheckFailed = true;
+                    return;
+                }
             }
             if (context.operation().NUMCONNECTER() != null)
-                throw new InvalidOperationException("bool expected, number found!");
+            {
+                ErrorList += "Number operation on bool value:\n";
+                ErrorList += context.GetText();
+                BoolCheckFailed = true;
+                return;
+            }
             if (context.operation().BOOLCONNECTER() != null)
             {
+                BoolCheckFailed = false;
                 CheckBool(context.expression().ElementAt(0));
+                if(!BoolCheckFailed)
                 CheckBool(context.expression().ElementAt(1));
+                if(BoolCheckFailed)
+                {
+                    ErrorList += "Bool connecter type check failed:\n";
+                    ErrorList += context.GetText();
+                    return;
+                }
             }
             if (context.operation().NUMCOMPARE() != null)
             {
+                NumberCheckFailed = false;
                 CheckNumber(context.expression().ElementAt(0));
-                CheckNumber(context.expression().ElementAt(1));
+                if (!NumberCheckFailed)
+                    CheckNumber(context.expression().ElementAt(1));
+                if(NumberCheckFailed)
+                {
+                    ErrorList += "Number Compare type check failed:\n";
+                    ErrorList += context.GetText();
+                    return;
+                }
             }
             if (context.operation().ATTRIBUTE() != null)
             {
-                throw new InvalidOperationException("bool expression expected, ATTRIBUTE found");
+                ErrorList += "Bool expected, attribute found:\n";
+                ErrorList += context.GetText();
+                BoolCheckFailed = true;
+                return;
             }
             if (context.operation().COMPARE() != null)
                 CheckTypes(context);
@@ -104,7 +158,12 @@ namespace LabWork1github
         private void CheckAttribute(ExpressionContext expressionContext)
         {
             if (!(expressionContext.expression().ElementAt(0).something().character() != null && expressionContext.expression().ElementAt(1).something().possibleAttributes() != null))
-                throw new ArgumentException("Attribute operation used incorrectly");
+            {
+                ErrorList += "not a valid attribute:\n";
+                ErrorList += expressionContext.GetText();
+                NumberCheckFailed = true;
+                return;
+            }
             string attribute = expressionContext.expression().ElementAt(1).something().possibleAttributes().GetText();
             switch (attribute)
             {
@@ -118,70 +177,151 @@ namespace LabWork1github
                     if(expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
                         return;
                     else
-                        throw new ArgumentException("Attribute operation used incorrectly");
+                    {
+                        ErrorList += "A non trap wants to heal:\n";
+                        ErrorList += expressionContext.GetText();
+                        NumberCheckFailed = true;
+                        return;
+                    }
                 case "damage":
                     return;
                 case "teleport.x":
                     if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
                         return;
                     else
-                        throw new ArgumentException("Attribute operation used incorrectly");
+                    {
+                        ErrorList += "A non trap wants to teleport:\n";
+                        ErrorList += expressionContext.GetText();
+                        NumberCheckFailed = true;
+                        return;
+                    }
                 case "teleport.y":
                     if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
                         return;
                     else
-                        throw new ArgumentException("Attribute operation used incorrectly");
+                    {
+                        ErrorList += "A non trap wants to teleport:\n";
+                        ErrorList += expressionContext.GetText();
+                        NumberCheckFailed = true;
+                        return;
+                    }
                 case "spawn.x":
                     if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
                         return;
                     else
-                        throw new ArgumentException("Attribute operation used incorrectly");
+                    {
+                        ErrorList += "A non trap wants to spawn:\n";
+                        ErrorList += expressionContext.GetText();
+                        NumberCheckFailed = true;
+                        return;
+                    }
                 case "spawn.y":
                     if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
                         return;
                     else
-                        throw new ArgumentException("Attribute operation used incorrectly");
+                    {
+                        ErrorList += "A non trap wants to spawn:\n";
+                        ErrorList += expressionContext.GetText();
+                        NumberCheckFailed = true;
+                        return;
+                    }
                 default:
-                    throw new ArgumentException("Attribute operation used incorrectly");
+                    {
+                        ErrorList += "Unrecognized attribute:\n";
+                        ErrorList += expressionContext.GetText();
+                        NumberCheckFailed = true;
+                        return;
+                    }
             }
         }
 
         public void CheckNumber(ExpressionContext context)
         {
             if (context.ABSOLUTE().ToList().Count > 0)
-                //TODO: check if it works this way or not
+            {
+                NumberCheckFailed = false;
                 CheckNumber(context.expression().ElementAt(0));
+                if(NumberCheckFailed)
+                {
+                    ErrorList += "Attribute used on a non Number:\n";
+                    ErrorList += context.GetText();
+                    return;
+                }
+            }
             if (context.PARENTHESISSTART() != null)
             {
+                NumberCheckFailed = false;
                 CheckNumber(context.expression().ElementAt(0));
+                if (NumberCheckFailed)
+                {
+                    ErrorList += "Attribute used on a non Number:\n";
+                    ErrorList += context.GetText();
+                    return;
+                }
             }
             if (context.NEGATE() != null)
-                throw new InvalidOperationException("Number exprected, bool found");
-            if(context.operation() == null && context.something() != null)
+            {
+                ErrorList += "Negating on a number:\n";
+                ErrorList += context.GetText();
+                NumberCheckFailed = true;
+                return;
+            }
+            if (context.operation() == null && context.something() != null)
             {
                 if (context.something().NUMBER() != null)
                     return;
                 if (context.something().ROUND() != null)
                     return;
-                throw new InvalidOperationException("unexpected expression");
+                {
+                    ErrorList += "A non number is being used as a number:\n";
+                    ErrorList += context.GetText();
+                    NumberCheckFailed = true;
+                    return;
+                }
             }
             if (context.operation() == null)
                 return;
             if(context.operation().BOOLCONNECTER() != null || context.operation().NEAR() != null || context.operation().ALIVE() != null
                  || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
             {
-                throw new InvalidOperationException("Number exprected, bool found");
+                ErrorList += "Bool value found, number expected, realized by operation:\n";
+                ErrorList += context.GetText();
+                NumberCheckFailed = true;
+                return;
             }
             if (context.operation().ATTRIBUTE() != null)
+            {
+                NumberCheckFailed = false;
                 CheckAttribute(context);
+                if(NumberCheckFailed)
+                {
+                    ErrorList += "Attribute is not valid:\n";
+                    ErrorList += context.GetText();
+                    NumberCheckFailed = true;
+                    return;
+                }
+            }
             if (context.operation().NUMCONNECTER() != null)
                 if (context.expression().Count() > 1)
                 {
+                    NumberCheckFailed = false;
                     CheckNumber(context.expression().ElementAt(0));
-                    CheckNumber(context.expression().ElementAt(1));
+                    if (!NumberCheckFailed)
+                        CheckNumber(context.expression().ElementAt(1));
+                    if(NumberCheckFailed)
+                    {
+                        ErrorList += "Number Connecter having non number parameter:\n";
+                        ErrorList += context.GetText();
+                        return;
+                    }
                 }
                 else
-                    throw new InvalidOperationException("invalid number of arguments");
+                {
+                    ErrorList += "Not enough parameter for numconnecter:\n";
+                    ErrorList += context.GetText();
+                    NumberCheckFailed = true;
+                    return;
+                }
         }
 
     }

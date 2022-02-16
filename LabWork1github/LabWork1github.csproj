@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DeclareCommand.cs" />
     <Compile Include="game field classes\Board.cs" />
     <Compile Include="g4 files\BoardGrammar.g4.lexer.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
