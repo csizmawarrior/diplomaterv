@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\DeclareCommand.cs" />
     <Compile Include="game field classes\Board.cs" />
     <Compile Include="g4 files\BoardGrammar.g4.lexer.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
@@ -165,9 +164,7 @@
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

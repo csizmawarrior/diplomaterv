@@ -33,6 +33,7 @@ namespace LabWork1github
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
             //TODO: create commands for these too
+            //TOOD: mindig az első egyébként warning összes declarationnél
             if (type == Types.TRAP)
                 throw new ArrayTypeMismatchException("Traps don't have Health");
             Program.GetCharacterType(typeName).Health = int.Parse(context.NUMBER().GetText());
