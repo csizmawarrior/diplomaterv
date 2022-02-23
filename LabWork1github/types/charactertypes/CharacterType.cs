@@ -8,12 +8,12 @@ namespace LabWork1github
 {
     public abstract class CharacterType : MyType
     {
-        public int Health { get; set; }
-        public int Heal { get; set; }
-        public int Damage { get; set; }
-        public Place TeleportPlace { get; set; }
-        public Place SpawnPlace { get; set; }
-        public CharacterType SpawnType { get; set; }
+        public int Health { get; set; } = -1;
+        public int Heal { get; set; } = -1;
+        public int Damage { get; set; } = -1;
+        public Place TeleportPlace { get; set; } = new Place(-1, -1);
+        public Place SpawnPlace { get; set; } = new Place(-1, -1);
+        public CharacterType SpawnType { get; set; } = Program.CharacterTypes.ElementAt(0);
         public string Name { get; set; }
         public List<Command> Commands { get; set; } = new List<Command>();
 

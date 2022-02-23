@@ -62,5 +62,9 @@ namespace LabWork1github
         {
             game.Repeat = commandCount;
         }
+        public bool OccupiedOrNot(Place p)
+        {
+            return game.IsOccupied(p);
+        }
     }
 }

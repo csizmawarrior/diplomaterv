@@ -220,5 +220,21 @@ namespace LabWork1github
                     return true;
                 return false;
         }
+        public bool IsOccupied(Place p)
+        {
+            foreach(Monster m in Monsters)
+            {
+                if (m.Place.DirectionTo(p) == "collision")
+                    return true;
+            }
+            foreach (Trap t in Traps)
+            {
+                if (t.Place.DirectionTo(p) == "collision")
+                    return true;
+            }
+            if (Player.Place.DirectionTo(p) == "collision")
+                return true;
+            return false;
+        }
     }
 }

@@ -67,6 +67,8 @@ namespace LabWork1github
             DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
+            if(visitor.ErrorFound)
+                Console.WriteLine(visitor.Error);
         }
         public static CharacterType GetCharacterType(string name)
         {
