@@ -41,8 +41,11 @@ namespace LabWork1github
             CommonTokenStream commonTokenStream = new CommonTokenStream(MonsterGrammarLexer_);
             MonsterGrammarParser MonsterGrammarParser = new MonsterGrammarParser(commonTokenStream);
             MonsterGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
-            MonsterGrammarVisitor visitor = new MonsterGrammarVisitor();
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
+            visitor.Visit(chatContext);
+            if (visitor.ErrorFound)
+                Console.WriteLine(visitor.Error);
         }
 
         public static void BoardLoader()
