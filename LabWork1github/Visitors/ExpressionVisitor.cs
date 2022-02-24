@@ -145,7 +145,7 @@ namespace LabWork1github
                     if (helpCheck)
                         NumberCheckFailed = true;
                 }
-                if (context.operation().ATTRIBUTE() != null)
+                if (context.operation().DOT() != null)
                 {
                     ErrorList += "Bool expected, attribute found:\n";
                     ErrorList += context.GetText() + "\n";
@@ -155,7 +155,7 @@ namespace LabWork1github
                     CheckTypes(context);
             }
         }
-
+        //TODO: rethink and redo attribute handling because of changes
         private void CheckAttribute(ExpressionContext expressionContext)
         {
             if (!(expressionContext.expression().ElementAt(0).something().character() != null && expressionContext.expression().ElementAt(1).something().possibleAttributes() != null))
@@ -298,7 +298,7 @@ namespace LabWork1github
                     ErrorList += context.GetText() + "\n";
                     NumberCheckFailed = true;
                 }
-                if (context.operation().ATTRIBUTE() != null)
+                if (context.operation().DOT() != null)
                 {
                     var helpCheck = false;
                     if (NumberCheckFailed)

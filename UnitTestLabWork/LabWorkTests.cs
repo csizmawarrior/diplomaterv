@@ -8,8 +8,9 @@ namespace UnitTestLabWork
     public class LabWorkTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void DoubleDeclareCheck()
         {
+            
         }
     }
 }

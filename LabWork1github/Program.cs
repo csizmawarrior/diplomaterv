@@ -86,4 +86,6 @@ namespace LabWork1github
                 
         }
     }
+
+    //TODO: functions that can be used for testing 
 }

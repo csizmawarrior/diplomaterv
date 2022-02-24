@@ -139,7 +139,7 @@ namespace LabWork1github.Visitors
                 }
             }
         }
-
+        //TODO: rethink and redo attribute handling because of changes
         public int CheckNumberExpression(ExpressionContext context)
         {
             if (context.ABSOLUTE().ToList().Count > 0)
@@ -152,7 +152,7 @@ namespace LabWork1github.Visitors
                     return int.Parse(context.something().NUMBER().GetText());
                 return int.Parse(context.something().ROUND().GetText());
             }
-            if (context.operation().ATTRIBUTE() != null)
+            if (context.operation().DOT() != null)
                 return this.CheckAttributeExpression(context);
             if(context.operation().NUMCONNECTER() != null)
             {

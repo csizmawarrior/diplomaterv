@@ -50,3 +50,4 @@ C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyG
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarBaseListener.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarVisitor.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarBaseVisitor.cs
+C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.csprojAssemblyReference.cache

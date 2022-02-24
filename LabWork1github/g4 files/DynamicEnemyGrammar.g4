@@ -50,7 +50,8 @@ whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
-possibleAttributes: name; //TODO: find a working solution instead of this
+possibleAttributes: name | TELEPOT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND | HEALTH | HEAL |
+						RANDOM | DAMAGE | NOTHING | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER; 
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
