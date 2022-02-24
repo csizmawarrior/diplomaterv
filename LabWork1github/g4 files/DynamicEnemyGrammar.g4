@@ -57,7 +57,7 @@ y: NUMBER;
 expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE |
 			ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
 something: character | NUMBER | ROUND | possibleAttributes | NOTHING;
-operation: ATTRIBUTE | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE;
+operation: DOT | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE;
 /*
  * Lexer Rules
  */

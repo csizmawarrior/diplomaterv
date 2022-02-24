@@ -37,7 +37,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		MOVE=23, ON=24, SHOOT=25, SPAWN=26, TELEPORT_T=27, HEAL=28, EQUALS=29, 
 		ABSOLUTE=30, NEGATE=31, BOOLCONNECTER=32, COMPARE=33, NUMCOMPARE=34, NUMCONNECTER=35, 
 		PARENTHESISSTART=36, PARENTHESISCLOSE=37, BRACKETCLOSE=38, BRACKETSTART=39, 
-		COLON=40, SEMI=41, COMMA=42, DOT=43, NUMBER=44, ID=45, WS=46, ATTRIBUTE=47;
+		COLON=40, SEMI=41, COMMA=42, DOT=43, NUMBER=44, ID=45, WS=46;
 	public const int
 		RULE_definition = 0, RULE_name = 1, RULE_statementList = 2, RULE_statement = 3, 
 		RULE_nameDeclaration = 4, RULE_trapNameDeclaration = 5, RULE_monsterNameDeclaration = 6, 
@@ -73,7 +73,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		"ALIVE", "MOVE", "ON", "SHOOT", "SPAWN", "TELEPORT_T", "HEAL", "EQUALS", 
 		"ABSOLUTE", "NEGATE", "BOOLCONNECTER", "COMPARE", "NUMCOMPARE", "NUMCONNECTER", 
 		"PARENTHESISSTART", "PARENTHESISCLOSE", "BRACKETCLOSE", "BRACKETSTART", 
-		"COLON", "SEMI", "COMMA", "DOT", "NUMBER", "ID", "WS", "ATTRIBUTE"
+		"COLON", "SEMI", "COMMA", "DOT", "NUMBER", "ID", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -2296,7 +2296,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	}
 
 	public partial class OperationContext : ParserRuleContext {
-		public ITerminalNode ATTRIBUTE() { return GetToken(DynamicEnemyGrammarParser.ATTRIBUTE, 0); }
+		public ITerminalNode DOT() { return GetToken(DynamicEnemyGrammarParser.DOT, 0); }
 		public ITerminalNode NUMCONNECTER() { return GetToken(DynamicEnemyGrammarParser.NUMCONNECTER, 0); }
 		public ITerminalNode BOOLCONNECTER() { return GetToken(DynamicEnemyGrammarParser.BOOLCONNECTER, 0); }
 		public ITerminalNode COMPARE() { return GetToken(DynamicEnemyGrammarParser.COMPARE, 0); }
@@ -2332,10 +2332,10 @@ public partial class DynamicEnemyGrammarParser : Parser {
 			State = 378;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
-			case ATTRIBUTE:
+			case DOT:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 370; Match(ATTRIBUTE);
+				State = 370; Match(DOT);
 				}
 				break;
 			case NUMCONNECTER:
@@ -2404,7 +2404,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\x31\x17F\x4\x2"+
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\x30\x17F\x4\x2"+
 		"\t\x2\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4"+
 		"\t\t\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10"+
 		"\t\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
@@ -2551,12 +2551,12 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		"\x2\x16E\x173\a.\x2\x2\x16F\x173\a\x10\x2\x2\x170\x173\x5\x32\x1A\x2\x171"+
 		"\x173\a\x6\x2\x2\x172\x16D\x3\x2\x2\x2\x172\x16E\x3\x2\x2\x2\x172\x16F"+
 		"\x3\x2\x2\x2\x172\x170\x3\x2\x2\x2\x172\x171\x3\x2\x2\x2\x173=\x3\x2\x2"+
-		"\x2\x174\x17D\a\x31\x2\x2\x175\x17D\a%\x2\x2\x176\x17D\a\"\x2\x2\x177"+
-		"\x17D\a#\x2\x2\x178\x17D\a\x18\x2\x2\x179\x17A\a\x12\x2\x2\x17A\x17D\a"+
-		"\x11\x2\x2\x17B\x17D\a$\x2\x2\x17C\x174\x3\x2\x2\x2\x17C\x175\x3\x2\x2"+
-		"\x2\x17C\x176\x3\x2\x2\x2\x17C\x177\x3\x2\x2\x2\x17C\x178\x3\x2\x2\x2"+
-		"\x17C\x179\x3\x2\x2\x2\x17C\x17B\x3\x2\x2\x2\x17D?\x3\x2\x2\x2\x11\x43"+
-		"Ly}\xB5\xD5\xF6\x117\x128\x133\x145\x162\x16A\x172\x17C";
+		"\x2\x174\x17D\a-\x2\x2\x175\x17D\a%\x2\x2\x176\x17D\a\"\x2\x2\x177\x17D"+
+		"\a#\x2\x2\x178\x17D\a\x18\x2\x2\x179\x17A\a\x12\x2\x2\x17A\x17D\a\x11"+
+		"\x2\x2\x17B\x17D\a$\x2\x2\x17C\x174\x3\x2\x2\x2\x17C\x175\x3\x2\x2\x2"+
+		"\x17C\x176\x3\x2\x2\x2\x17C\x177\x3\x2\x2\x2\x17C\x178\x3\x2\x2\x2\x17C"+
+		"\x179\x3\x2\x2\x2\x17C\x17B\x3\x2\x2\x2\x17D?\x3\x2\x2\x2\x11\x43Ly}\xB5"+
+		"\xD5\xF6\x117\x128\x133\x145\x162\x16A\x172\x17C";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }
