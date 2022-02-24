@@ -361,19 +361,6 @@ public partial class DynamicEnemyGrammarBaseListener : IDynamicEnemyGrammarListe
 	public virtual void ExitPossibleAttributes([NotNull] DynamicEnemyGrammarParser.PossibleAttributesContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.attributeReference"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAttributeReference([NotNull] DynamicEnemyGrammarParser.AttributeReferenceContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.attributeReference"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAttributeReference([NotNull] DynamicEnemyGrammarParser.AttributeReferenceContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.place"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

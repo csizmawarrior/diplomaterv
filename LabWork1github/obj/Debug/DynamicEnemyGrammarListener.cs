@@ -307,17 +307,6 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	void ExitPossibleAttributes([NotNull] DynamicEnemyGrammarParser.PossibleAttributesContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.attributeReference"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAttributeReference([NotNull] DynamicEnemyGrammarParser.AttributeReferenceContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.attributeReference"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAttributeReference([NotNull] DynamicEnemyGrammarParser.AttributeReferenceContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.place"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

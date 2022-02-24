@@ -51,15 +51,13 @@ whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
 possibleAttributes: name;
-attributeReference: character ATTRIBUTE possibleAttributes;
-
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
 expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE |
-			ABSOLUTE expression ABSOLUTE | something | NEGATE expression | attributeReference;
-something: character | NUMBER | ROUND | NOTHING;
-operation: NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE;
+			ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
+something: character | NUMBER | ROUND | possibleAttributes | NOTHING;
+operation: ATTRIBUTE | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE;
 /*
  * Lexer Rules
  */

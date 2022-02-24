@@ -208,13 +208,6 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitPossibleAttributes([NotNull] DynamicEnemyGrammarParser.PossibleAttributesContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.attributeReference"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAttributeReference([NotNull] DynamicEnemyGrammarParser.AttributeReferenceContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.place"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
