@@ -402,6 +402,7 @@ namespace LabWork1github
 
         public override object VisitWhileexpression([NotNull] WhileexpressionContext context)
         {
+            //It doesn't seem to contain the whole while expression, or doesn't recognize it
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
             ConditionHelper.CheckBool(context.expression());
             if (ConditionHelper.BoolCheckFailed || ConditionHelper.NumberCheckFailed)
