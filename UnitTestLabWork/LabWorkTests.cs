@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LabWork1github;
 
 namespace UnitTestLabWork
 {
     [TestClass]
-    public class UnitTest1
+    public class LabWorkTests
     {
         [TestMethod]
         public void TestMethod1()

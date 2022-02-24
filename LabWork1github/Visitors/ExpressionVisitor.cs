@@ -85,72 +85,75 @@ namespace LabWork1github
                 ErrorList += context.GetText();
                 BoolCheckFailed = true;
             }
-            if (context.operation().ALIVE() != null || context.operation().NEAR() != null)
+            if (context.operation() != null)
             {
-                if ((context.expression().ElementAt(1).something().NOTHING() != null))
-                    if (context.expression().ElementAt(0).something().character() != null)
-                    { }
+                if (context.operation().ALIVE() != null || context.operation().NEAR() != null)
+                {
+                    if ((context.expression().ElementAt(1).something().NOTHING() != null))
+                        if (context.expression().ElementAt(0).something().character() != null)
+                        { }
+                        else
+                        {
+                            ErrorList += "Character operation without character:\n";
+                            ErrorList += context.GetText();
+                            BoolCheckFailed = true;
+                        }
                     else
                     {
-                        ErrorList += "Character operation without character:\n";
+                        ErrorList += "Character operation with to many parameters:\n";
                         ErrorList += context.GetText();
                         BoolCheckFailed = true;
-                    }                            
-                else
+                    }
+                }
+                if (context.operation().NUMCONNECTER() != null)
                 {
-                    ErrorList += "Character operation with to many parameters:\n";
+                    ErrorList += "Number operation on bool value:\n";
                     ErrorList += context.GetText();
                     BoolCheckFailed = true;
                 }
-            }
-            if (context.operation().NUMCONNECTER() != null)
-            {
-                ErrorList += "Number operation on bool value:\n";
-                ErrorList += context.GetText();
-                BoolCheckFailed = true;
-            }
-            if (context.operation().BOOLCONNECTER() != null)
-            {
-                var helpCheck = false;
-                if (BoolCheckFailed)
-                    helpCheck = true;
-                BoolCheckFailed = false;
-                CheckBool(context.expression().ElementAt(0));
-                if(!BoolCheckFailed)
-                CheckBool(context.expression().ElementAt(1));
-                if(BoolCheckFailed)
+                if (context.operation().BOOLCONNECTER() != null)
                 {
-                    ErrorList += "Bool connecter type check failed:\n";
-                    ErrorList += context.GetText();
+                    var helpCheck = false;
+                    if (BoolCheckFailed)
+                        helpCheck = true;
+                    BoolCheckFailed = false;
+                    CheckBool(context.expression().ElementAt(0));
+                    if (!BoolCheckFailed)
+                        CheckBool(context.expression().ElementAt(1));
+                    if (BoolCheckFailed)
+                    {
+                        ErrorList += "Bool connecter type check failed:\n";
+                        ErrorList += context.GetText();
+                    }
+                    if (helpCheck)
+                        BoolCheckFailed = true;
                 }
-                if (helpCheck)
+                if (context.operation().NUMCOMPARE() != null)
+                {
+                    var helpCheck = false;
+                    if (NumberCheckFailed)
+                        helpCheck = true;
+                    NumberCheckFailed = false;
+                    CheckNumber(context.expression().ElementAt(0));
+                    if (!NumberCheckFailed)
+                        CheckNumber(context.expression().ElementAt(1));
+                    if (NumberCheckFailed)
+                    {
+                        ErrorList += "Number Compare type check failed:\n";
+                        ErrorList += context.GetText();
+                    }
+                    if (helpCheck)
+                        NumberCheckFailed = true;
+                }
+                if (context.operation().ATTRIBUTE() != null)
+                {
+                    ErrorList += "Bool expected, attribute found:\n";
+                    ErrorList += context.GetText();
                     BoolCheckFailed = true;
-            }
-            if (context.operation().NUMCOMPARE() != null)
-            {
-                var helpCheck = false;
-                if (NumberCheckFailed)
-                    helpCheck = true;
-                NumberCheckFailed = false;
-                CheckNumber(context.expression().ElementAt(0));
-                if (!NumberCheckFailed)
-                    CheckNumber(context.expression().ElementAt(1));
-                if(NumberCheckFailed)
-                {
-                    ErrorList += "Number Compare type check failed:\n";
-                    ErrorList += context.GetText();
                 }
-                if (helpCheck)
-                    NumberCheckFailed = true;
+                if (context.operation().COMPARE() != null)
+                    CheckTypes(context);
             }
-            if (context.operation().ATTRIBUTE() != null)
-            {
-                ErrorList += "Bool expected, attribute found:\n";
-                ErrorList += context.GetText();
-                BoolCheckFailed = true;
-            }
-            if (context.operation().COMPARE() != null)
-                CheckTypes(context);
         }
 
         private void CheckAttribute(ExpressionContext expressionContext)
@@ -286,53 +289,56 @@ namespace LabWork1github
                 ErrorList += context.GetText();
                 NumberCheckFailed = true;
             }
-            if (context.operation().BOOLCONNECTER() != null || context.operation().NEAR() != null || context.operation().ALIVE() != null
-                 || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
+            if (context.operation() != null)
             {
-                ErrorList += "Bool value found, number expected, realized by operation:\n";
-                ErrorList += context.GetText();
-                NumberCheckFailed = true;
-            }
-            if (context.operation().ATTRIBUTE() != null)
-            {
-                var helpCheck = false;
-                if (NumberCheckFailed)
-                    helpCheck = true;
-                NumberCheckFailed = false;
-                CheckAttribute(context);
-                if(NumberCheckFailed)
+                if (context.operation().BOOLCONNECTER() != null || context.operation().NEAR() != null || context.operation().ALIVE() != null
+                     || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
                 {
-                    ErrorList += "Attribute is not valid:\n";
+                    ErrorList += "Bool value found, number expected, realized by operation:\n";
                     ErrorList += context.GetText();
                     NumberCheckFailed = true;
                 }
-                if (helpCheck)
-                    NumberCheckFailed = true;
-            }
-            if (context.operation().NUMCONNECTER() != null)
-                if (context.expression().Count() > 1)
+                if (context.operation().ATTRIBUTE() != null)
                 {
                     var helpCheck = false;
                     if (NumberCheckFailed)
                         helpCheck = true;
                     NumberCheckFailed = false;
-                    CheckNumber(context.expression().ElementAt(0));
-                    if (!NumberCheckFailed)
-                        CheckNumber(context.expression().ElementAt(1));
-                    if(NumberCheckFailed)
+                    CheckAttribute(context);
+                    if (NumberCheckFailed)
                     {
-                        ErrorList += "Number Connecter having non number parameter:\n";
+                        ErrorList += "Attribute is not valid:\n";
                         ErrorList += context.GetText();
+                        NumberCheckFailed = true;
                     }
-                    if (helpCheck = true)
+                    if (helpCheck)
                         NumberCheckFailed = true;
                 }
-                else
-                {
-                    ErrorList += "Not enough parameter for numconnecter:\n";
-                    ErrorList += context.GetText();
-                    NumberCheckFailed = true;
-                }
+                if (context.operation().NUMCONNECTER() != null)
+                    if (context.expression().Count() > 1)
+                    {
+                        var helpCheck = false;
+                        if (NumberCheckFailed)
+                            helpCheck = true;
+                        NumberCheckFailed = false;
+                        CheckNumber(context.expression().ElementAt(0));
+                        if (!NumberCheckFailed)
+                            CheckNumber(context.expression().ElementAt(1));
+                        if (NumberCheckFailed)
+                        {
+                            ErrorList += "Number Connecter having non number parameter:\n";
+                            ErrorList += context.GetText();
+                        }
+                        if (helpCheck = true)
+                            NumberCheckFailed = true;
+                    }
+                    else
+                    {
+                        ErrorList += "Not enough parameter for numconnecter:\n";
+                        ErrorList += context.GetText();
+                        NumberCheckFailed = true;
+                    }
+            }
         }
 
     }
