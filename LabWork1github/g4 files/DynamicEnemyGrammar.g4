@@ -50,7 +50,7 @@ whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
-possibleAttributes: name;
+possibleAttributes: name; //TODO: find a working solution instead of this
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
