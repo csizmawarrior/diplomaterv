@@ -47,8 +47,6 @@ teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM
 ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block ;
 whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 
-ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block ;
-whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
 possibleAttributes: name;
