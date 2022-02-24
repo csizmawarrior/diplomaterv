@@ -50,13 +50,13 @@ namespace LabWork1github
             if (type == Types.TRAP)
             {
                 Error += "Trap doesn't have health:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else if (HealthDeclare)
             {
                 Error += "Health was already declared:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else
@@ -72,13 +72,13 @@ namespace LabWork1github
             if (type != Types.TRAP)
             {
                 Error += "A non Trap wants to heal:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else if (HealAmountDeclare)
             {
                 Error += "Heal amount was already declared:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else
@@ -93,7 +93,7 @@ namespace LabWork1github
             if (DamageAmountDeclare)
             {
                 Error += "Damage amount was already declared:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else
@@ -108,13 +108,13 @@ namespace LabWork1github
             if (type != Types.TRAP)
             {
                 Error += "A non Trap wants to teleport:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             if (TeleportPointDeclare)
             {
                 Error += "Teleport destination was already declared:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else
@@ -129,13 +129,13 @@ namespace LabWork1github
             if (type != Types.TRAP)
             {
                 Error += "A non Trap wants to spawn:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             if (SpawnPointDeclare)
             {
                 Error += "Spawn destination was already declared:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else
@@ -150,13 +150,13 @@ namespace LabWork1github
             if (type != Types.TRAP)
             {
                 Error += "A non Trap wants to spawn:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             if (SpawnTypeDeclare)
             {
                 Error += "Spawning enemy type has been already declared:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else
@@ -178,7 +178,7 @@ namespace LabWork1github
                 if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
                 {
                     Error += "Wrong direction used:\n";
-                    Error += context.GetText();
+                    Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
                     
@@ -224,7 +224,7 @@ namespace LabWork1github
             if (type.Equals(Types.TRAP))
             {
                 Error += "Trap wants to shoot:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             else
@@ -239,7 +239,7 @@ namespace LabWork1github
                     if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
                     {
                         Error += "Wrong direction used:\n";
-                        Error += context.GetText();
+                        Error += context.GetText() + "\n";
                         ErrorFound = true;
                     }
                     newCommand.Direction = direction.GetText();
@@ -285,7 +285,7 @@ namespace LabWork1github
             if (!type.Equals(Types.TRAP))
             {
                 Error += "A non trap wants to teleport:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
 
@@ -321,8 +321,8 @@ namespace LabWork1github
                         AddCommand(newCommand);
                         break;
                     case "me":
-                        Error += "You can't shoot yourself:\n";
-                        Error += context.GetText();
+                        Error += "You can't teleport yourself:\n";
+                        Error += context.GetText() + "\n";
                         ErrorFound = true;
                         break;
                 }
@@ -335,7 +335,7 @@ namespace LabWork1github
             if (!type.Equals(Types.TRAP))
             {
                 Error += "A non trap wants to spawn:\n";
-                Error += context.GetText();
+                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
 
@@ -362,7 +362,7 @@ namespace LabWork1github
                 if (Program.GetCharacterType(context.name().GetText()) == null)
                 {
                     Error += "No spawning type given:\n";
-                    Error += context.GetText();
+                    Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
                 else
@@ -380,6 +380,7 @@ namespace LabWork1github
             if (ConditionHelper.BoolCheckFailed || ConditionHelper.NumberCheckFailed)
             {
                 Error += "Condition check failed\n";
+                Error += ConditionHelper.ErrorList;
                 ErrorFound = true;
             }
             else
@@ -406,6 +407,7 @@ namespace LabWork1github
             if (ConditionHelper.BoolCheckFailed || ConditionHelper.NumberCheckFailed)
             {
                 Error += "Condition check failed\n";
+                Error += ConditionHelper.ErrorList;
                 ErrorFound = true;
             }
             else

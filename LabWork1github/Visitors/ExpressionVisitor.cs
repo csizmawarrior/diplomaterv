@@ -37,7 +37,7 @@ namespace LabWork1github
                 if(NumberCheckFailed)
                 {
                     ErrorList += "Compare type check failed:\n";
-                    ErrorList += Excontext.GetText();
+                    ErrorList += Excontext.GetText() + "\n";
                 }
             }
             //}
@@ -61,7 +61,7 @@ namespace LabWork1github
             if (context.ABSOLUTE().ToList().Count > 0)
             {
                 ErrorList += "Absolute around bool expression:\n";
-                ErrorList += context.GetText();
+                ErrorList += context.GetText() + "\n";
                 BoolCheckFailed = true;
             }
             if (context.PARENTHESISSTART() != null || context.NEGATE() != null)
@@ -74,15 +74,15 @@ namespace LabWork1github
                 if (BoolCheckFailed)
                 {
                     ErrorList += "Bool expected, something else found:\n";
-                    ErrorList += context.GetText();
+                    ErrorList += context.GetText() + "\n";
                 }
                 if (helpCheck)
                     BoolCheckFailed = true;
             }
-            if ((context.PARENTHESISSTART() == null && context.NEGATE() == null && context.ABSOLUTE().ToList().Count == 0) && (context.operation()==null || context.something() ==null))
+            if ((context.PARENTHESISSTART() == null && context.NEGATE() == null && context.ABSOLUTE().ToList().Count == 0) && (context.operation()==null && context.something() ==null))
             {
                 ErrorList += "Input not recognized as an expression:\n";
-                ErrorList += context.GetText();
+                ErrorList += context.GetText() + "\n";
                 BoolCheckFailed = true;
             }
             if (context.operation() != null)
@@ -95,20 +95,20 @@ namespace LabWork1github
                         else
                         {
                             ErrorList += "Character operation without character:\n";
-                            ErrorList += context.GetText();
+                            ErrorList += context.GetText() + "\n";
                             BoolCheckFailed = true;
                         }
                     else
                     {
                         ErrorList += "Character operation with to many parameters:\n";
-                        ErrorList += context.GetText();
+                        ErrorList += context.GetText() + "\n";
                         BoolCheckFailed = true;
                     }
                 }
                 if (context.operation().NUMCONNECTER() != null)
                 {
                     ErrorList += "Number operation on bool value:\n";
-                    ErrorList += context.GetText();
+                    ErrorList += context.GetText() + "\n";
                     BoolCheckFailed = true;
                 }
                 if (context.operation().BOOLCONNECTER() != null)
@@ -123,7 +123,7 @@ namespace LabWork1github
                     if (BoolCheckFailed)
                     {
                         ErrorList += "Bool connecter type check failed:\n";
-                        ErrorList += context.GetText();
+                        ErrorList += context.GetText() + "\n";
                     }
                     if (helpCheck)
                         BoolCheckFailed = true;
@@ -140,7 +140,7 @@ namespace LabWork1github
                     if (NumberCheckFailed)
                     {
                         ErrorList += "Number Compare type check failed:\n";
-                        ErrorList += context.GetText();
+                        ErrorList += context.GetText() + "\n";
                     }
                     if (helpCheck)
                         NumberCheckFailed = true;
@@ -148,7 +148,7 @@ namespace LabWork1github
                 if (context.operation().ATTRIBUTE() != null)
                 {
                     ErrorList += "Bool expected, attribute found:\n";
-                    ErrorList += context.GetText();
+                    ErrorList += context.GetText() + "\n";
                     BoolCheckFailed = true;
                 }
                 if (context.operation().COMPARE() != null)
@@ -161,11 +161,11 @@ namespace LabWork1github
             if (!(expressionContext.expression().ElementAt(0).something().character() != null && expressionContext.expression().ElementAt(1).something().possibleAttributes() != null))
             {
                 ErrorList += "not a valid attribute:\n";
-                ErrorList += expressionContext.GetText();
+                ErrorList += expressionContext.GetText() + "\n";
                 NumberCheckFailed = true;
                 return;
             }
-            string attribute = expressionContext.expression().ElementAt(1).something().possibleAttributes().GetText();
+            string attribute = expressionContext.expression().ElementAt(1).something().possibleAttributes().GetText() + "\n";
             switch (attribute)
             {
                 case "x":
@@ -180,7 +180,7 @@ namespace LabWork1github
                     else
                     {
                         ErrorList += "A non trap wants to heal:\n";
-                        ErrorList += expressionContext.GetText();
+                        ErrorList += expressionContext.GetText() + "\n";
                         NumberCheckFailed = true;
                         return;
                     }
@@ -192,7 +192,7 @@ namespace LabWork1github
                     else
                     {
                         ErrorList += "A non trap wants to teleport:\n";
-                        ErrorList += expressionContext.GetText();
+                        ErrorList += expressionContext.GetText() + "\n";
                         NumberCheckFailed = true;
                         return;
                     }
@@ -202,7 +202,7 @@ namespace LabWork1github
                     else
                     {
                         ErrorList += "A non trap wants to teleport:\n";
-                        ErrorList += expressionContext.GetText();
+                        ErrorList += expressionContext.GetText() + "\n";
                         NumberCheckFailed = true;
                         return;
                     }
@@ -212,7 +212,7 @@ namespace LabWork1github
                     else
                     {
                         ErrorList += "A non trap wants to spawn:\n";
-                        ErrorList += expressionContext.GetText();
+                        ErrorList += expressionContext.GetText() + "\n";
                         NumberCheckFailed = true;
                         return;
                     }
@@ -222,14 +222,14 @@ namespace LabWork1github
                     else
                     {
                         ErrorList += "A non trap wants to spawn:\n";
-                        ErrorList += expressionContext.GetText();
+                        ErrorList += expressionContext.GetText() + "\n";
                         NumberCheckFailed = true;
                         return;
                     }
                 default:
                     {
                         ErrorList += "Unrecognized attribute:\n";
-                        ErrorList += expressionContext.GetText();
+                        ErrorList += expressionContext.GetText() + "\n";
                         NumberCheckFailed = true;
                         return;
                     }
@@ -248,7 +248,7 @@ namespace LabWork1github
                 if(NumberCheckFailed)
                 {
                     ErrorList += "Attribute used on a non Number:\n";
-                    ErrorList += context.GetText();
+                    ErrorList += context.GetText() + "\n";
                 }
                 if (helpCheck)
                     NumberCheckFailed = true;
@@ -263,7 +263,7 @@ namespace LabWork1github
                 if (NumberCheckFailed)
                 {
                     ErrorList += "Attribute used on a non Number:\n";
-                    ErrorList += context.GetText();
+                    ErrorList += context.GetText() + "\n";
                 }
                 if (helpCheck)
                     NumberCheckFailed = true;
@@ -271,7 +271,7 @@ namespace LabWork1github
             if (context.NEGATE() != null)
             {
                 ErrorList += "Negating on a number:\n";
-                ErrorList += context.GetText();
+                ErrorList += context.GetText() + "\n";
                 NumberCheckFailed = true;
             }
             if (context.operation() == null && context.something() != null)
@@ -279,14 +279,14 @@ namespace LabWork1github
                 if (!(context.something().NUMBER() != null || context.something().ROUND() != null))
                 {
                     ErrorList += "A non number is being used as a number:\n";
-                    ErrorList += context.GetText();
+                    ErrorList += context.GetText() + "\n";
                     NumberCheckFailed = true;
                 }
             }
             if ((context.PARENTHESISSTART() == null && context.NEGATE() == null && context.ABSOLUTE().ToList().Count == 0) && (context.operation() == null && context.something() == null))
             {
                 ErrorList += "Not recognized number expression:\n";
-                ErrorList += context.GetText();
+                ErrorList += context.GetText() + "\n";
                 NumberCheckFailed = true;
             }
             if (context.operation() != null)
@@ -295,7 +295,7 @@ namespace LabWork1github
                      || context.operation().NUMCOMPARE() != null || context.operation().COMPARE() != null)
                 {
                     ErrorList += "Bool value found, number expected, realized by operation:\n";
-                    ErrorList += context.GetText();
+                    ErrorList += context.GetText() + "\n";
                     NumberCheckFailed = true;
                 }
                 if (context.operation().ATTRIBUTE() != null)
@@ -308,7 +308,7 @@ namespace LabWork1github
                     if (NumberCheckFailed)
                     {
                         ErrorList += "Attribute is not valid:\n";
-                        ErrorList += context.GetText();
+                        ErrorList += context.GetText() + "\n";
                         NumberCheckFailed = true;
                     }
                     if (helpCheck)
@@ -327,15 +327,15 @@ namespace LabWork1github
                         if (NumberCheckFailed)
                         {
                             ErrorList += "Number Connecter having non number parameter:\n";
-                            ErrorList += context.GetText();
+                            ErrorList += context.GetText() + "\n";
                         }
-                        if (helpCheck = true)
+                        if (helpCheck)
                             NumberCheckFailed = true;
                     }
                     else
                     {
                         ErrorList += "Not enough parameter for numconnecter:\n";
-                        ErrorList += context.GetText();
+                        ErrorList += context.GetText() + "\n";
                         NumberCheckFailed = true;
                     }
             }

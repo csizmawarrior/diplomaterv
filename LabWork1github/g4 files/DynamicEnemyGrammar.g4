@@ -49,7 +49,7 @@ whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
 
 ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block ;
 whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
-block: BRACKETCLOSE statement* BRACKETCLOSE;
+block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
 possibleAttributes: name;
 place: x ',' y;
