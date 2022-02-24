@@ -3,7 +3,6 @@ C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\LabWork1githu
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\LabWork1github.pdb
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\Antlr4.Runtime.dll
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\Antlr4.Runtime.xml
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.csprojAssemblyReference.cache
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarLexer.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarParser.cs
 C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarListener.cs
