@@ -155,7 +155,7 @@ namespace LabWork1github
                     CheckTypes(context);
             }
         }
-        //TODO: rethink and redo attribute handling because of changes
+        //TODO: rethink and redo attribute handling because of changes, 3. gyak
         private void CheckAttribute(ExpressionContext expressionContext)
         {
             if (!(expressionContext.expression().ElementAt(0).something().character() != null && expressionContext.expression().ElementAt(1).something().possibleAttributes() != null))

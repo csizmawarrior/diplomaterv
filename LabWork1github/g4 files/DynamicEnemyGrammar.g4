@@ -57,8 +57,9 @@ x: NUMBER;
 y: NUMBER;
 expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE |
 			ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
+boolexpression: boolexpression (BOOLCONNECTER boolexpression)* | expression;
 something: character | NUMBER | ROUND | possibleAttributes | NOTHING;
-operation: DOT | NUMCONNECTER | BOOLCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE;
+operation: DOT | NUMCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE; //TODO: mûveleti sorrend, check around how it is usually, might change exp operation exp
 /*
  * Lexer Rules
  */

@@ -87,5 +87,5 @@ namespace LabWork1github
         }
     }
 
-    //TODO: functions that can be used for testing 
+    //TODO: add antlr to test project
 }
