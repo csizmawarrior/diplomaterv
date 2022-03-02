@@ -45,21 +45,31 @@ healDeclaration: HEAL DIRECTION | HEAL DIRECTION healAmountDeclaration | HEAL DI
 					| HEAL RANDOM	| HEAL TO place | HEAL TO place healAmountDeclaration | HEAL TO character | HEAL TO character healAmountDeclaration ;
 spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN TO place | SPAWN;
 teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM;
-ifexpression: IF PARENTHESISSTART expression PARENTHESISCLOSE block ;
-whileexpression: WHILE PARENTHESISSTART expression PARENTHESISCLOSE block;
+ifexpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
+whileexpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
 
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
-possibleAttributes: name | TELEPOT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND | HEALTH | HEAL |
-						RANDOM | DAMAGE | NOTHING | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER; 
+
+possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPOT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
+                | HEALTH | HEAL | RANDOM | DAMAGE | NOTHING | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER;
+
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
-expression: expression operation expression | PARENTHESISSTART expression PARENTHESISCLOSE |
-			ABSOLUTE expression ABSOLUTE | something | NEGATE expression;
-boolexpression: boolexpression (BOOLCONNECTER boolexpression)* | expression;
-something: character | NUMBER | ROUND | possibleAttributes | NOTHING;
-operation: DOT | NUMCONNECTER | COMPARE | ALIVE | IS NEAR | NUMCOMPARE; //TODO: mûveleti sorrend, check around how it is usually, might change exp operation exp
+
+boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression* | NEGATE boolExpression nextBoolExpression*
+            | numberExpression (numToBoolOperation numberExpression)+ nextBoolExpression* | functionExpression nextBoolExpression*;
+nextBoolExpression: BOOLCONNECTER boolExpression (BOOLCONNECTER boolExpression)*;
+numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE nextNumberExpression*
+            | ABSOLUTE numberExpression ABSOLUTE nextNumberExpression* | something nextNumberExpression*;
+nextNumberExpression: NUMCONNECTER numberExpression (NUMCONNECTER numberExpression)*;
+functionExpression: character function;
+
+something: NUMBER | ROUND | attribute;
+attribute: character DOT possibleAttributes;
+numToBoolOperation: NUMCOMPARE | COMPARE;
+function: ALIVE | IS NEAR ; //TODO: mûveleti sorrend, check around how it is usually, might change exp operation exp
 /*
  * Lexer Rules
  */

@@ -340,15 +340,59 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	void ExitY([NotNull] DynamicEnemyGrammarParser.YContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterExpression([NotNull] DynamicEnemyGrammarParser.ExpressionContext context);
+	void EnterBoolExpression([NotNull] DynamicEnemyGrammarParser.BoolExpressionContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitExpression([NotNull] DynamicEnemyGrammarParser.ExpressionContext context);
+	void ExitBoolExpression([NotNull] DynamicEnemyGrammarParser.BoolExpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextBoolExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNextBoolExpression([NotNull] DynamicEnemyGrammarParser.NextBoolExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextBoolExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNextBoolExpression([NotNull] DynamicEnemyGrammarParser.NextBoolExpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNumberExpression([NotNull] DynamicEnemyGrammarParser.NumberExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNumberExpression([NotNull] DynamicEnemyGrammarParser.NumberExpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNextNumberExpression([NotNull] DynamicEnemyGrammarParser.NextNumberExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNextNumberExpression([NotNull] DynamicEnemyGrammarParser.NextNumberExpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.functionExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionExpression([NotNull] DynamicEnemyGrammarParser.FunctionExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.functionExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionExpression([NotNull] DynamicEnemyGrammarParser.FunctionExpressionContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.something"/>.
@@ -362,14 +406,36 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	void ExitSomething([NotNull] DynamicEnemyGrammarParser.SomethingContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.operation"/>.
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.attribute"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterOperation([NotNull] DynamicEnemyGrammarParser.OperationContext context);
+	void EnterAttribute([NotNull] DynamicEnemyGrammarParser.AttributeContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.operation"/>.
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.attribute"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitOperation([NotNull] DynamicEnemyGrammarParser.OperationContext context);
+	void ExitAttribute([NotNull] DynamicEnemyGrammarParser.AttributeContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.numToBoolOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNumToBoolOperation([NotNull] DynamicEnemyGrammarParser.NumToBoolOperationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numToBoolOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNumToBoolOperation([NotNull] DynamicEnemyGrammarParser.NumToBoolOperationContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.function"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunction([NotNull] DynamicEnemyGrammarParser.FunctionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.function"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunction([NotNull] DynamicEnemyGrammarParser.FunctionContext context);
 }
 } // namespace LabWork1github

@@ -343,7 +343,7 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitY([NotNull] DynamicEnemyGrammarParser.YContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -351,7 +351,51 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitExpression([NotNull] DynamicEnemyGrammarParser.ExpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitBoolExpression([NotNull] DynamicEnemyGrammarParser.BoolExpressionContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextBoolExpression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitNextBoolExpression([NotNull] DynamicEnemyGrammarParser.NextBoolExpressionContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberExpression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitNumberExpression([NotNull] DynamicEnemyGrammarParser.NumberExpressionContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberExpression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitNextNumberExpression([NotNull] DynamicEnemyGrammarParser.NextNumberExpressionContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.functionExpression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitFunctionExpression([NotNull] DynamicEnemyGrammarParser.FunctionExpressionContext context) { return VisitChildren(context); }
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.something"/>.
@@ -365,7 +409,7 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitSomething([NotNull] DynamicEnemyGrammarParser.SomethingContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.operation"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.attribute"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -373,6 +417,28 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitOperation([NotNull] DynamicEnemyGrammarParser.OperationContext context) { return VisitChildren(context); }
+	public virtual Result VisitAttribute([NotNull] DynamicEnemyGrammarParser.AttributeContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numToBoolOperation"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitNumToBoolOperation([NotNull] DynamicEnemyGrammarParser.NumToBoolOperationContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.function"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitFunction([NotNull] DynamicEnemyGrammarParser.FunctionContext context) { return VisitChildren(context); }
 }
 } // namespace LabWork1github
