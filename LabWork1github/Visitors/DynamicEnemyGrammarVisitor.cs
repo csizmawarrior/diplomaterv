@@ -375,8 +375,8 @@ namespace LabWork1github
 
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
         {
-            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
-            ConditionHelper.CheckBool(context.expression());
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression());
+            ConditionHelper.CheckBool(context.boolExpression());
             if (ConditionHelper.BoolCheckFailed || ConditionHelper.NumberCheckFailed)
             {
                 Error += "Condition check failed\n";
@@ -386,7 +386,7 @@ namespace LabWork1github
             else
             {
                 IfCommand newCommand = new IfCommand();
-                newCommand.MyContext = context.expression();
+                newCommand.MyContext = context.boolExpression();
                 newCommand.Condition = (GetCondition);
                 this.ConditionalCommands.Add(newCommand);
                 this.ConditionCount.Add(context.block().ChildCount - 2);
@@ -403,8 +403,8 @@ namespace LabWork1github
         public override object VisitWhileexpression([NotNull] WhileexpressionContext context)
         {
             //It doesn't seem to contain the whole while expression, or doesn't recognize it
-            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
-            ConditionHelper.CheckBool(context.expression());
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression());
+            ConditionHelper.CheckBool(context.boolExpression());
             if (ConditionHelper.BoolCheckFailed || ConditionHelper.NumberCheckFailed)
             {
                 Error += "Condition check failed\n";
@@ -414,7 +414,7 @@ namespace LabWork1github
             else
             {
                 WhileCommand newCommand = new WhileCommand();
-                newCommand.MyContext = context.expression();
+                newCommand.MyContext = context.boolExpression();
                 newCommand.Condition = (GetCondition);
                 this.ConditionalCommands.Add(newCommand);
                 this.ConditionCount.Add(context.block().ChildCount);
@@ -435,7 +435,7 @@ namespace LabWork1github
 
 
 
-        public bool GetCondition(GameParamProvider provider, ExpressionContext context)
+        public bool GetCondition(GameParamProvider provider, BoolExpressionContext context)
         {
             ConditionVisitor visitor = new ConditionVisitor(provider, context);
             return visitor.CheckConditions();

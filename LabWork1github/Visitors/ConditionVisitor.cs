@@ -9,28 +9,28 @@ namespace LabWork1github.Visitors
 {
     class ConditionVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {
-        public ExpressionContext ExpressionContext { get; set; }
+        public BoolExpressionContext BoolExpressionContext { get; set; }
 
         public GameParamProvider provider { get; set; }
 
-        public ConditionVisitor(GameParamProvider provider, ExpressionContext context)
+        public ConditionVisitor(GameParamProvider provider, BoolExpressionContext context)
         {
-            this.ExpressionContext = context;
+            this.BoolExpressionContext = context;
             this.provider = provider;
         }
         public bool CheckConditions()
         {
-            return CheckBoolExpression(ExpressionContext);
+            return CheckBoolExpression(BoolExpressionContext);
         }
-        public bool CheckBoolExpression(ExpressionContext context)
+        public bool CheckBoolExpression(BoolExpressionContext context)
         {
             if (context.PARENTHESISSTART() != null)
             {
-                return CheckBoolExpression(context.expression().ElementAt(0));
+                return CheckBoolExpression(context.boolExpression().ElementAt(0));
             }
             if (context.NEGATE() != null)
             {
-                return !CheckBoolExpression(context.expression().ElementAt(0));
+                return !CheckBoolExpression(context.boolExpression().ElementAt(0));
             }
             if (context.operation().ALIVE() != null) 
             {
@@ -109,7 +109,7 @@ namespace LabWork1github.Visitors
             }
             throw new InvalidOperationException();
         }
-        public bool CheckCompareExpression(ExpressionContext Excontext)
+        public bool CheckCompareExpression(BoolExpressionContext Excontext)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace LabWork1github.Visitors
             }
         }
         //TODO: rethink and redo attribute handling because of changes
-        public int CheckNumberExpression(ExpressionContext context)
+        public int CheckNumberExpression(BoolExpressionContext context)
         {
             if (context.ABSOLUTE().ToList().Count > 0)
                 return Math.Abs(CheckNumberExpression(context.expression().ElementAt(0)));
@@ -173,7 +173,7 @@ namespace LabWork1github.Visitors
             }
             throw new InvalidOperationException("type check failed at Number check");
         }
-        public int CheckAttributeExpression(ExpressionContext context)
+        public int CheckAttributeExpression(BoolExpressionContext context)
         {
             string attribute = context.expression().ElementAt(1).something().possibleAttributes().GetText();
             if(context.expression().ElementAt(0).something().character().PLAYER() != null)

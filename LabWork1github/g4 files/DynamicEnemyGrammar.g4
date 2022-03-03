@@ -59,7 +59,7 @@ x: NUMBER;
 y: NUMBER;
 
 boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression* | NEGATE boolExpression nextBoolExpression*
-            | numberExpression (numToBoolOperation numberExpression)+ nextBoolExpression* | functionExpression nextBoolExpression*;
+            | numberExpression numToBoolOperation numberExpression nextBoolExpression* | functionExpression nextBoolExpression*;
 nextBoolExpression: BOOLCONNECTER boolExpression (BOOLCONNECTER boolExpression)*;
 numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE nextNumberExpression*
             | ABSOLUTE numberExpression ABSOLUTE nextNumberExpression* | something nextNumberExpression*;
@@ -69,7 +69,7 @@ functionExpression: character function;
 something: NUMBER | ROUND | attribute;
 attribute: character DOT possibleAttributes;
 numToBoolOperation: NUMCOMPARE | COMPARE;
-function: ALIVE | IS NEAR ; //TODO: mûveleti sorrend, check around how it is usually, might change exp operation exp
+function: IS ALIVE | IS NEAR ; //TODO: mûveleti sorrend, check around how it is usually, might change exp operation exp
 /*
  * Lexer Rules
  */

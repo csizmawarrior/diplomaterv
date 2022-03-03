@@ -9,18 +9,19 @@ namespace LabWork1github
 {
     public class ExpressionVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {
-        public ExpressionContext ExpressionContext { get; set; }
+
+        public BoolExpressionContext BoolExpressionContext { get; set; }
 
         public string ErrorList { get; set; } = "";
         public bool BoolCheckFailed { get; set; } = false;
         public bool NumberCheckFailed { get; set; } = false;
 
-        public ExpressionVisitor(ExpressionContext context)
+        public ExpressionVisitor(BoolExpressionContext context)
         {
-            ExpressionContext = context;
+            BoolExpressionContext = context;
         }
 
-        public void CheckTypes(ExpressionContext Excontext)
+        public void CheckTypes(BoolExpressionContext Excontext)
         {
             //try
             //{
@@ -56,7 +57,7 @@ namespace LabWork1github
             //}
         }
         
-        public void CheckBool(ExpressionContext context)
+        public void CheckBool(BoolExpressionContext context)
         {
             if (context.ABSOLUTE().ToList().Count > 0)
             {
@@ -341,5 +342,9 @@ namespace LabWork1github
             }
         }
 
+        internal void CheckBool(BoolExpressionContext boolExpressionContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
