@@ -18,9 +18,9 @@ namespace LabWork1github
         static void Main(string[] args)
         {
 
-            CharacterTypes.Add(new MonsterType("Default Monster"));
-            GetCharacterType("Default Monster").Damage = 50;
-            GetCharacterType("Default Monster").Health = 200;
+            CharacterTypes.Add(new MonsterType("DefaultMonster"));
+            GetCharacterType("DefaultMonster").Damage = 50;
+            GetCharacterType("DefaultMonster").Health = 200;
 
 
             //  MonsterTypeLoader();

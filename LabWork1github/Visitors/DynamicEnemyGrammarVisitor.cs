@@ -34,6 +34,7 @@ namespace LabWork1github
         {
             type = Types.MONSTER;
             Program.CharacterTypes.Add(new MonsterType(context.name().GetText()));
+            //TODO: ask if it's okay to have no parametered monster/trap, default things, or forbid it completely?
             typeName = context.name().GetText();
             HealthDeclare = false;
             HealAmountDeclare = false;
@@ -46,7 +47,6 @@ namespace LabWork1github
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
-            //TOOD: mindig az első egyébként warning összes declarationnél
             if (type == Types.TRAP)
             {
                 Error += "Trap doesn't have health:\n";
@@ -387,7 +387,7 @@ namespace LabWork1github
             {
                 IfCommand newCommand = new IfCommand();
                 newCommand.MyContext = context.boolExpression();
-                newCommand.Condition = (GetCondition);
+               // newCommand.Condition = (GetCondition);
                 this.ConditionalCommands.Add(newCommand);
                 this.ConditionCount.Add(context.block().ChildCount - 2);
                 if (context.block().ChildCount - 2 == 0)
@@ -415,7 +415,7 @@ namespace LabWork1github
             {
                 WhileCommand newCommand = new WhileCommand();
                 newCommand.MyContext = context.boolExpression();
-                newCommand.Condition = (GetCondition);
+              //  newCommand.Condition = (GetCondition);
                 this.ConditionalCommands.Add(newCommand);
                 this.ConditionCount.Add(context.block().ChildCount);
                 if (context.block().ChildCount == 0)

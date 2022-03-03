@@ -26,13 +26,17 @@ namespace LabWork1github.Visitors
         {
             if (context.PARENTHESISSTART() != null)
             {
-                return CheckBoolExpression(context.boolExpression().ElementAt(0));
+                return CheckBoolExpression(context.boolExpression());
             }
             if (context.NEGATE() != null)
             {
-                return !CheckBoolExpression(context.boolExpression().ElementAt(0));
+                return !CheckBoolExpression(context.boolExpression());
             }
-            if (context.operation().ALIVE() != null) 
+            if(context.nextBoolExpression().Length > 0)
+            {
+
+            }
+            if (context.functionExpression() != null) 
             {
                 if (context.expression().ElementAt(0).something().character().ME() != null)
                     return provider.GetMe().GetHealth() > 0;

@@ -7,11 +7,11 @@ using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
 {
-    public delegate bool Condition(GameParamProvider provider, ExpressionContext context);
+    public delegate bool Condition(GameParamProvider provider, BoolExpressionContext context);
 
     public class IfCommand : Command
     {
-        public ExpressionContext MyContext { get; set; }
+        public BoolExpressionContext MyContext { get; set; }
         public Condition Condition { get; set; }
 
         public override void Execute(GameParamProvider provider)

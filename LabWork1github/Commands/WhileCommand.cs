@@ -11,7 +11,7 @@ namespace LabWork1github
     public class WhileCommand : Command
     {
         public Condition Condition { get; set; }
-        public ExpressionContext MyContext { get; set; }
+        public BoolExpressionContext MyContext { get; set; }
 
         public override void Execute(GameParamProvider provider)
         {
