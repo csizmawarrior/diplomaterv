@@ -377,7 +377,7 @@ namespace LabWork1github
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression());
             ConditionHelper.CheckBool(context.boolExpression());
-            if (ConditionHelper.BoolCheckFailed || ConditionHelper.NumberCheckFailed)
+            if (ConditionHelper.CheckFailed)
             {
                 Error += "Condition check failed\n";
                 Error += ConditionHelper.ErrorList;
@@ -405,7 +405,7 @@ namespace LabWork1github
             //It doesn't seem to contain the whole while expression, or doesn't recognize it
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression());
             ConditionHelper.CheckBool(context.boolExpression());
-            if (ConditionHelper.BoolCheckFailed || ConditionHelper.NumberCheckFailed)
+            if (ConditionHelper.CheckFailed)
             {
                 Error += "Condition check failed\n";
                 Error += ConditionHelper.ErrorList;
