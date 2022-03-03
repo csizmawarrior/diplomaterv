@@ -115,7 +115,7 @@ namespace LabWork1github
 
 
 
-        //TODO: rethink and redo attribute handling because of changes, 3. gyak
+
         private void CheckAttribute(BoolExpressionContext expressionContext)
         {
             //if (!(expressionContext.boolExpression().ElementAt(0).something().character() != null && expressionContext.boolExpression().ElementAt(1).something().possibleAttributes() != null))

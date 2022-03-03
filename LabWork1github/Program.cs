@@ -86,6 +86,4 @@ namespace LabWork1github
                 
         }
     }
-
-    //TODO: add antlr to test project
 }
