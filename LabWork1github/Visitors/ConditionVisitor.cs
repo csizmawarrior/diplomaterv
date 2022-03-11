@@ -68,6 +68,7 @@ namespace LabWork1github.Visitors
                     }
                     return false;
                 }
+
                 if (context.expression().ElementAt(0).something().character().PLAYER() != null)
                 {
                     if (Math.Abs(this.Provider.GetMe().Place.X - this.Provider.GetPlayer().Place.X) <= this.Provider.getNear())
