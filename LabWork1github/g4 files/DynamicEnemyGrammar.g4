@@ -69,7 +69,7 @@ functionExpression: character function;
 something: NUMBER | ROUND | attribute;
 attribute: character DOT possibleAttributes;
 numToBoolOperation: NUMCOMPARE | COMPARE;
-function: IS ALIVE | IS NEAR ; //TODO: ask if name should be possible for attribue, might bring back expression operation expression
+function: IS ALIVE | IS NEAR ;
 /*
  * Lexer Rules
  */

@@ -157,7 +157,7 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_type=DefaultMonster;" + "\n");
         }
-        //[TestMethod]    TODO: This will throw an error this way
+        //[TestMethod]    TODO: This will throw an error this way, it shouldn't
         //public void DoubleCheckDifferentAmountSpawnType()
         //{
         //    string text = System.IO.File.ReadAllText("trap name = teszttrap ; spawn_type=DefaultMonster;spawn_type=TestType;");
@@ -237,4 +237,5 @@ namespace UnitTestLabWork
             Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_type=DefaultMonster;" + "\n");
         }
     }
+    //TODO: pozitív tesztek, condition visitor, think about the ways to bring it forward, move tesztek
 }

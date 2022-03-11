@@ -80,16 +80,6 @@ namespace LabWork1github
                             CheckFailed = true;
                         }
 
-                    //TODO: ask if we need this, because it needs more check
-                    //if (context.possibleAttributes().GetText().Equals("type") || context.possibleAttributes().GetText().Equals("spawn_type"))
-                    //    if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("name")))
-                    //        {
-                    //        ErrorList += "Type doesn't have other attributes:\n";
-                    //        ErrorList += context.GetText() + "\n";
-                    //        CheckFailed = true;
-                    //    }
-
-
                 }
                 return base.VisitAttribute(context);
         }
