@@ -16,8 +16,8 @@ statement: damageAmountDeclaration ';'
 		| healDeclaration ';'
         | moveDeclaration ';'
         | shootDeclaration ';'
-		| ifexpression ';'
-		| whileexpression ';'
+		| ifexpression 
+		| whileexpression 
 		| damageDeclaration ';'
 		| teleportDeclaration ';'
 		| spawnDeclaration ';'
@@ -51,19 +51,23 @@ whileexpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
 
-possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPOT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
+possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPORT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
                 | HEALTH | HEAL | RANDOM | DAMAGE | NOTHING | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER;
 
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
 
-boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression* | NEGATE boolExpression nextBoolExpression*
-            | numberExpression numToBoolOperation numberExpression nextBoolExpression* | functionExpression nextBoolExpression*;
-nextBoolExpression: BOOLCONNECTER boolExpression nextBoolExpression*;
-numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE nextNumberExpression*
-            | ABSOLUTE numberExpression ABSOLUTE nextNumberExpression* | something nextNumberExpression*;
-nextNumberExpression: NUMCONNECTER numberExpression nextNumberExpression*;
+boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression? | NEGATE boolExpression nextBoolExpression?
+            | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression?;
+nextBoolExpression: BOOLCONNECTER boolExpression;
+//numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE nextNumberExpression?
+//            | ABSOLUTE numberExpression ABSOLUTE nextNumberExpression? | nextNumberMultiExpression nextNumberExpression | something nextNumberExpression?;
+//nextNumberExpression: NUMCONNECTERADD numberExpression;
+//nextNumberMultiExpression: NUMCONNECTERMULTIP numberExpression;
+numberExpression: numberMultipExpression (NUMCONNECTERADD numberMultipExpression)*;
+numberMultipExpression: numberFirstExpression (NUMCONNECTERMULTIP numberFirstExpression)*;
+numberFirstExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTE numberExpression ABSOLUTE | something;
 functionExpression: character function;
 
 something: NUMBER | ROUND | attribute;
@@ -108,7 +112,8 @@ NEGATE: '!';
 BOOLCONNECTER: '||' | '&&' ;
 COMPARE: '==' | '!=' ;
 NUMCOMPARE: '<' | '>' ;
-NUMCONNECTER: '+' | '-' | '*' | '/' | '%' ;
+NUMCONNECTERMULTIP: '*' | '/' | '%' ;
+NUMCONNECTERADD: '+' | '-' ;
 PARENTHESISSTART: '(';
 PARENTHESISCLOSE: ')';
 BRACKETCLOSE: '}';
@@ -116,7 +121,7 @@ BRACKETSTART: '{';
 COLON: ':';
 SEMI: ';';
 COMMA: ',';
+NUMBER: [0-9]+ (DOT[0-9]+)?;
 DOT: '.';
-NUMBER: [0-9]+ ('.'[0-9]+)?;
 ID: [a-zA-Z][a-zA-Z0-9_]* ;
 WS: (' ' | '\t' | '\n' | '\r') -> skip;

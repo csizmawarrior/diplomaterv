@@ -24,78 +24,49 @@ namespace LabWork1github.Visitors
         }
         public bool CheckBoolExpression(BoolExpressionContext context)
         {
-            if (context.nextBoolExpression().Length > 0)
-            {
-                CheckNextBoolExpression(context);
-            }
+            bool expressionValue = false;
+
             if (context.PARENTHESISSTART() != null)
             {
-                return CheckBoolExpression(context.boolExpression());
+                expressionValue = CheckBoolExpression(context.boolExpression());
             }
             if (context.NEGATE() != null)
             {
-                return !CheckBoolExpression(context.boolExpression());
+                expressionValue = !CheckBoolExpression(context.boolExpression());
             }
             if (context.functionExpression() != null) 
             {
-                return CheckFunctionExpression(context.functionExpression());
+                expressionValue = CheckFunctionExpression(context.functionExpression());
             }
-            if(context.numberExpression().Length > 0)
+            if(context.numToBoolOperation() != null)
             {
-                return CheckNumberExpression(context);
-            }
-            if (context.operation().NEAR() != null)
-            {
-                if (context.expression().ElementAt(0).something().character().ME() != null)
-                    return true;
-                if (context.expression().ElementAt(0).something().character().MONSTER() != null)
-                {
-                    foreach (Monster monster in this.Provider.GetMonsters())
-                    {
-                        if (Math.Abs(this.Provider.GetMe().Place.X - monster.Place.X) <= this.Provider.getNear())
-                            if (Math.Abs(this.Provider.GetMe().Place.Y - monster.Place.Y) <= this.Provider.getNear())
-                                return true;
-                    }
-                    return false;
-                }
-                if (context.expression().ElementAt(0).something().character().TRAP() != null)
-                {
-                    foreach (Trap trap in this.Provider.GetTraps())
-                    {
-                        if (Math.Abs(this.Provider.GetMe().Place.X - trap.Place.X) <= this.Provider.getNear())
-                            if (Math.Abs(this.Provider.GetMe().Place.Y - trap.Place.Y) <= this.Provider.getNear())
-                                return true;
-                    }
-                    return false;
-                }
+                if (context.numToBoolOperation().NUMCOMPARE() != null)
+                    expressionValue = CheckNumCompareExpression(context);
+                if (context.numToBoolOperation().COMPARE() != null)
+                    expressionValue = CheckCompareExpression(context);
 
-                if (context.expression().ElementAt(0).something().character().PLAYER() != null)
-                {
-                    if (Math.Abs(this.Provider.GetMe().Place.X - this.Provider.GetPlayer().Place.X) <= this.Provider.getNear())
-                        if (Math.Abs(this.Provider.GetMe().Place.Y - this.Provider.GetPlayer().Place.Y) <= this.Provider.getNear())
-                            return true;
-                    return false;
-                }     
             }
-            if(context.operation().BOOLCONNECTER() != null)
+            if (context.nextBoolExpression() != null)
             {
-                if (context.operation().BOOLCONNECTER().GetText().Equals("||"))
-                    return CheckBoolExpression(context.expression().ElementAt(0)) || CheckBoolExpression(context.expression().ElementAt(1));
-                else
-                    return CheckBoolExpression(context.expression().ElementAt(0)) || CheckBoolExpression(context.expression().ElementAt(1));
+                expressionValue = CheckNextBoolExpression(expressionValue, context.nextBoolExpression());
             }
-            if (context.operation().NUMCOMPARE() != null)
-            {
-                if(context.operation().NUMCOMPARE().GetText().Equals(">"))
-                    return CheckNumberExpression(context.expression().ElementAt(0)) > CheckNumberExpression(context.expression().ElementAt(1));
-                else
-                    return CheckNumberExpression(context.expression().ElementAt(0)) < CheckNumberExpression(context.expression().ElementAt(1));
-            }
-            if(context.operation().COMPARE() != null)
-            {
-                return CheckCompareExpression(context);
-            }
-            throw new InvalidOperationException();
+            return expressionValue;
+        }
+
+        private bool CheckNumCompareExpression(BoolExpressionContext context)
+        {
+            if (context.numToBoolOperation().NUMCOMPARE().Equals("<"))
+                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) < CheckNumberAddExpression(context.numberExpression().ElementAt(1));
+            else
+                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) > CheckNumberAddExpression(context.numberExpression().ElementAt(1));
+        }
+
+        public bool CheckCompareExpression(BoolExpressionContext context)
+        {
+            if (context.numToBoolOperation().COMPARE().Equals("!="))
+                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) != CheckNumberAddExpression(context.numberExpression().ElementAt(1));
+            else
+                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) == CheckNumberAddExpression(context.numberExpression().ElementAt(1));
         }
 
         private bool CheckFunctionExpression(FunctionExpressionContext functionExpressionContext)
@@ -134,75 +105,70 @@ namespace LabWork1github.Visitors
             return false;
         }
 
-        public bool CheckNextBoolExpression(BoolExpressionContext context)
+        public bool CheckNextBoolExpression(bool boolExp, NextBoolExpressionContext context)
         {
-            
+            if (context.BOOLCONNECTER().Equals("||"))
+                return boolExp || CheckBoolExpression(context.boolExpression());
+            else
+                return boolExp && CheckBoolExpression(context.boolExpression());
         }
-        public bool CheckCompareExpression(BoolExpressionContext Excontext)
-        {
-            try
-            {
-                bool helper1 = CheckBoolExpression(Excontext.expression().ElementAt(0));
-                bool helper2 = CheckBoolExpression(Excontext.expression().ElementAt(1));
-                if (Excontext.operation().COMPARE().GetText().Equals("=="))
-                    return helper1 == helper2;
-                else
-                    return helper1 != helper2;
-            }
-            catch (Exception e)
-            {
-                if (!(e is InvalidOperationException || e is ArgumentException))
-                    throw e;
-                try
-                {
-                    int helper1 = CheckNumberExpression(Excontext.expression().ElementAt(0));
-                    int helper2 = CheckNumberExpression(Excontext.expression().ElementAt(1));
-                    if (Excontext.operation().COMPARE().GetText().Equals("=="))
-                        return helper1 == helper2;
-                    else
-                        return helper1 != helper2;
-                }
-                catch (Exception e2)
-                {
-                    throw new InvalidOperationException("type check failed for compare");
-                }
-            }
-        }
+
         //TODO: rethink and redo attribute handling because of changes
-        public int CheckNumberExpression(BoolExpressionContext context)
+        public double CheckNumberAddExpression(NumberExpressionContext context)
         {
-            if (context.ABSOLUTE().ToList().Count > 0)
-                return Math.Abs(CheckNumberExpression(context.expression().ElementAt(0)));
-            if (context.PARENTHESISSTART() != null)
-                return CheckNumberExpression(context.expression().ElementAt(0));
-            if(context.something() != null)
+            double expressionValue = CheckNumberMultipExpression(context.numberMultipExpression().ElementAt(0));
+
+            if(context.NUMCONNECTERADD().Length > 0)
             {
-                if (context.something().NUMBER() != null)
-                    return int.Parse(context.something().NUMBER().GetText());
-                return int.Parse(context.something().ROUND().GetText());
-            }
-            if (context.operation().DOT() != null)
-                return this.CheckAttributeExpression(context);
-            if(context.operation().NUMCONNECTER() != null)
-            {
-                string connecter = context.operation().NUMCONNECTER().GetText();
-                switch (connecter)
+                for(int i=0; i<context.NUMCONNECTERADD().Length; i++)
                 {
-                    case "+":
-                        return CheckNumberExpression(context.expression().ElementAt(0)) + CheckNumberExpression(context.expression().ElementAt(1));
-                    case "-":
-                        return CheckNumberExpression(context.expression().ElementAt(0)) - CheckNumberExpression(context.expression().ElementAt(1));
-                    case "*":
-                        return CheckNumberExpression(context.expression().ElementAt(0)) * CheckNumberExpression(context.expression().ElementAt(1));
-                    case "/":
-                        return CheckNumberExpression(context.expression().ElementAt(0)) / CheckNumberExpression(context.expression().ElementAt(1));
-                    case "%":
-                        return CheckNumberExpression(context.expression().ElementAt(0)) % CheckNumberExpression(context.expression().ElementAt(1));
+                    if (context.NUMCONNECTERADD().Equals("+"))
+                        expressionValue += CheckNumberMultipExpression(context.numberMultipExpression().ElementAt(1));
+                    if (context.NUMCONNECTERADD().Equals("-"))
+                        expressionValue -= CheckNumberMultipExpression(context.numberMultipExpression().ElementAt(1));
                 }
             }
-            throw new InvalidOperationException("type check failed at Number check");
+
+            return expressionValue;
         }
-        public int CheckAttributeExpression(BoolExpressionContext context)
+
+        private double CheckNumberMultipExpression(NumberMultipExpressionContext context)
+        {
+            double expressionValue = CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(0));
+
+            if (context.NUMCONNECTERMULTIP().Length > 0)
+            {
+                for (int i = 0; i < context.NUMCONNECTERMULTIP().Length; i++)
+                {
+                    if (context.NUMCONNECTERMULTIP().Equals("/"))
+                        expressionValue /= CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(1));
+                    if (context.NUMCONNECTERMULTIP().Equals("*"))
+                        expressionValue *= CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(1));
+                    if (context.NUMCONNECTERMULTIP().Equals("%"))
+                        expressionValue %= CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(1));
+                }
+            }
+
+            return expressionValue;
+        }
+
+        private double CheckNumberFirstExpression(NumberFirstExpressionContext context)
+        {
+            if (context.PARENTHESISCLOSE() != null)
+                return CheckNumberAddExpression(context.numberExpression());
+            if (context.ABSOLUTE().Length > 0)
+                return Math.Abs(CheckNumberAddExpression(context.numberExpression()));
+            if (context.something().ROUND() != null)
+                return Provider.GetRound();
+            if (context.something().NUMBER() != null)
+                return Double.Parse(context.something().NUMBER().GetText());
+            if (context.something().attribute() != null)
+                return CheckAttributeExpression(context.something().attribute());
+
+            throw new ArgumentException("Unrecognized number expression");
+        }
+
+        public double CheckAttributeExpression(AttributeContext context)
         {
             string attribute = context.expression().ElementAt(1).something().possibleAttributes().GetText();
             if(context.expression().ElementAt(0).something().character().PLAYER() != null)

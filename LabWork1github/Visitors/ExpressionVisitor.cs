@@ -66,20 +66,31 @@ namespace LabWork1github
                     CheckFailed = true;
                 }
             }
-            //TODO: check for ME when processing
             if (context.possibleAttributes() != null)
                 if (context.possibleAttributes().possibleAttributes().Length > 0)
                 {
                     if (context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("teleport_place") ||
                         context.possibleAttributes().GetText().Equals("spawn_place"))
+                    {
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x") ||
-                                context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x")))
+                                context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("y")))
                         {
                             ErrorList += "Place doesn't have other attributes:\n";
                             ErrorList += context.GetText() + "\n";
                             CheckFailed = true;
                         }
-
+                    }
+                    else
+                    if (context.possibleAttributes().GetText().Equals("spawn_type") || context.possibleAttributes().GetText().Equals("type"))
+                    {
+                        if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health") ||
+                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage")))
+                        {
+                            ErrorList += "Monster not having this attribute:\n";
+                            ErrorList += context.GetText() + "\n";
+                            CheckFailed = true;
+                        }
+                    }
                 }
                 return base.VisitAttribute(context);
         }
@@ -106,85 +117,85 @@ namespace LabWork1github
 
 
 
-        private void CheckAttribute(BoolExpressionContext expressionContext)
-        {
-            //if (!(expressionContext.boolExpression().ElementAt(0).something().character() != null && expressionContext.boolExpression().ElementAt(1).something().possibleAttributes() != null))
-            //{
-            //    ErrorList += "not a valid attribute:\n";
-            //    ErrorList += expressionContext.GetText() + "\n";
-            //    NumberCheckFailed = true;
-            //    return;
-            //}
-            //string attribute = expressionContext.expression().ElementAt(1).something().possibleAttributes().GetText() + "\n";
-            //switch (attribute)
-            //{
-            //    case "x":
-            //        return;
-            //    case "y":
-            //        return;
-            //    case "health":
-            //        return;
-            //    case "heal":
-            //        if(expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
-            //            return;
-            //        else
-            //        {
-            //            ErrorList += "A non trap wants to heal:\n";
-            //            ErrorList += expressionContext.GetText() + "\n";
-            //            NumberCheckFailed = true;
-            //            return;
-            //        }
-            //    case "damage":
-            //        return;
-            //    case "teleport.x":
-            //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
-            //            return;
-            //        else
-            //        {
-            //            ErrorList += "A non trap wants to teleport:\n";
-            //            ErrorList += expressionContext.GetText() + "\n";
-            //            NumberCheckFailed = true;
-            //            return;
-            //        }
-            //    case "teleport.y":
-            //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
-            //            return;
-            //        else
-            //        {
-            //            ErrorList += "A non trap wants to teleport:\n";
-            //            ErrorList += expressionContext.GetText() + "\n";
-            //            NumberCheckFailed = true;
-            //            return;
-            //        }
-            //    case "spawn.x":
-            //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
-            //            return;
-            //        else
-            //        {
-            //            ErrorList += "A non trap wants to spawn:\n";
-            //            ErrorList += expressionContext.GetText() + "\n";
-            //            NumberCheckFailed = true;
-            //            return;
-            //        }
-            //    case "spawn.y":
-            //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
-            //            return;
-            //        else
-            //        {
-            //            ErrorList += "A non trap wants to spawn:\n";
-            //            ErrorList += expressionContext.GetText() + "\n";
-            //            NumberCheckFailed = true;
-            //            return;
-            //        }
-            //    default:
-            //        {
-            //            ErrorList += "Unrecognized attribute:\n";
-            //            ErrorList += expressionContext.GetText() + "\n";
-            //            NumberCheckFailed = true;
-            //            return;
-            //        }
-            //}
-        }
+        //private void CheckAttribute(BoolExpressionContext expressionContext)
+        //{
+        //    //if (!(expressionContext.boolExpression().ElementAt(0).something().character() != null && expressionContext.boolExpression().ElementAt(1).something().possibleAttributes() != null))
+        //    //{
+        //    //    ErrorList += "not a valid attribute:\n";
+        //    //    ErrorList += expressionContext.GetText() + "\n";
+        //    //    NumberCheckFailed = true;
+        //    //    return;
+        //    //}
+        //    //string attribute = expressionContext.expression().ElementAt(1).something().possibleAttributes().GetText() + "\n";
+        //    //switch (attribute)
+        //    //{
+        //    //    case "x":
+        //    //        return;
+        //    //    case "y":
+        //    //        return;
+        //    //    case "health":
+        //    //        return;
+        //    //    case "heal":
+        //    //        if(expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+        //    //            return;
+        //    //        else
+        //    //        {
+        //    //            ErrorList += "A non trap wants to heal:\n";
+        //    //            ErrorList += expressionContext.GetText() + "\n";
+        //    //            NumberCheckFailed = true;
+        //    //            return;
+        //    //        }
+        //    //    case "damage":
+        //    //        return;
+        //    //    case "teleport.x":
+        //    //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+        //    //            return;
+        //    //        else
+        //    //        {
+        //    //            ErrorList += "A non trap wants to teleport:\n";
+        //    //            ErrorList += expressionContext.GetText() + "\n";
+        //    //            NumberCheckFailed = true;
+        //    //            return;
+        //    //        }
+        //    //    case "teleport.y":
+        //    //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+        //    //            return;
+        //    //        else
+        //    //        {
+        //    //            ErrorList += "A non trap wants to teleport:\n";
+        //    //            ErrorList += expressionContext.GetText() + "\n";
+        //    //            NumberCheckFailed = true;
+        //    //            return;
+        //    //        }
+        //    //    case "spawn.x":
+        //    //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+        //    //            return;
+        //    //        else
+        //    //        {
+        //    //            ErrorList += "A non trap wants to spawn:\n";
+        //    //            ErrorList += expressionContext.GetText() + "\n";
+        //    //            NumberCheckFailed = true;
+        //    //            return;
+        //    //        }
+        //    //    case "spawn.y":
+        //    //        if (expressionContext.expression().ElementAt(0).something().character().TRAP() != null)
+        //    //            return;
+        //    //        else
+        //    //        {
+        //    //            ErrorList += "A non trap wants to spawn:\n";
+        //    //            ErrorList += expressionContext.GetText() + "\n";
+        //    //            NumberCheckFailed = true;
+        //    //            return;
+        //    //        }
+        //    //    default:
+        //    //        {
+        //    //            ErrorList += "Unrecognized attribute:\n";
+        //    //            ErrorList += expressionContext.GetText() + "\n";
+        //    //            NumberCheckFailed = true;
+        //    //            return;
+        //    //        }
+        //    //}
+        //}
 
         public void CheckNumber(BoolExpressionContext context)
         {
