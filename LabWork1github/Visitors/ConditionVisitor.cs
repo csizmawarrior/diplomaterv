@@ -46,6 +46,8 @@ namespace LabWork1github.Visitors
                     expressionValue = CheckCompareExpression(context);
 
             }
+            if (context.attribute().Length > 1)
+                expressionValue = CheckBoolAttributeExpression(context);
             if (context.nextBoolExpression() != null)
             {
                 expressionValue = CheckNextBoolExpression(expressionValue, context.nextBoolExpression());
@@ -163,106 +165,130 @@ namespace LabWork1github.Visitors
             if (context.something().NUMBER() != null)
                 return Double.Parse(context.something().NUMBER().GetText());
             if (context.something().attribute() != null)
-                return CheckAttributeExpression(context.something().attribute());
+                return CheckNumberAttributeExpression(context.something().attribute());
 
             throw new ArgumentException("Unrecognized number expression");
         }
 
-        public double CheckAttributeExpression(AttributeContext context)
+        public double CheckNumberAttributeExpression(AttributeContext context)
         {
-            string attribute = context.expression().ElementAt(1).something().possibleAttributes().GetText();
-            if(context.expression().ElementAt(0).something().character().PLAYER() != null)
+            if (context.character().PLAYER() != null)
             {
-                switch (attribute)
+                //context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
+                //context.possibleAttributes().GetText().Equals("damage")))
+                if (context.possibleAttributes().GetText().Equals("damage"))
+                    return Provider.GetPlayer().GetType().Damage;
+                if (context.possibleAttributes().GetText().Equals("health"))
+                    return Provider.GetPlayer().GetHealth();
+                if (context.possibleAttributes().GetText().Equals("place"))
                 {
-                    case "x":
-                        return this.Provider.GetPlayer().Place.X;
-                    case "y":
-                        return this.Provider.GetPlayer().Place.Y;
-                    case "health":
-                        return this.Provider.GetPlayer().GetHealth();
-                    case "damage":
-                        return this.Provider.GetPlayer().Type.Damage;
-                }
-            }
-            if (context.expression().ElementAt(0).something().character().MONSTER() != null)
-            {
-                switch (attribute)
-                {
-                    case "x":
-                        return this.Provider.GetMonster().Place.X;
-                    case "y":
-                        return this.Provider.GetMonster().Place.Y;
-                    case "health":
-                        return this.Provider.GetMonster().GetHealth();
-                    case "damage":
-                        return this.Provider.GetMonster().Type.Damage;
-                }
-            }
-            if (context.expression().ElementAt(0).something().character().TRAP() != null)
-            {
-                switch (attribute)
-                {
-                    case "x":
-                        return this.Provider.GetTrap().Place.X;
-                    case "y":
-                        return this.Provider.GetTrap().Place.Y;
-                    case "health":
-                        return this.Provider.GetTrap().GetHealth();
-                    case "damage":
-                        return this.Provider.GetTrap().Type.Damage;
-                    case "heal":
-                        return this.Provider.GetTrap().Type.Heal;
-                    case "teleport.x":
-                        return this.Provider.GetTrap().Type.TeleportPlace.X;
-                    case "teleport.y":
-                        return this.Provider.GetTrap().Type.TeleportPlace.Y;
-                    case "spawn.x":
-                        return this.Provider.GetTrap().Type.SpawnPlace.X;
-                    case "spawn.y":
-                        return this.Provider.GetTrap().Type.SpawnPlace.Y;
-                }
-            }
-            if(context.expression().ElementAt(0).something().character().ME() != null)
-            {
-                if(Provider.GetMe() is Trap)
-                {
-                    switch (attribute)
+                    if (context.possibleAttributes().possibleAttributes().Length > 0)
                     {
-                        case "x":
-                            return this.Provider.GetMe().Place.X;
-                        case "y":
-                            return this.Provider.GetMe().Place.Y;
-                        case "health":
-                            return this.Provider.GetMe().GetHealth();
-                        case "damage":
-                            return this.Provider.GetMe().GetType().Damage;
-                        case "heal":
-                            return this.Provider.GetMe().GetType().Heal;
-                        case "teleport.x":
-                            return this.Provider.GetMe().GetType().TeleportPlace.X;
-                        case "teleport.y":
-                            return this.Provider.GetMe().GetType().TeleportPlace.Y;
-                        case "spawn.x":
-                            return this.Provider.GetMe().GetType().SpawnPlace.X;
-                        case "spawn.y":
-                            return this.Provider.GetMe().GetType().SpawnPlace.Y;
+                        //TODO: befejez attribute kifejezések vizsgálata  
                     }
+                    //return Provider.GetPlayer().Place;
                 }
-                else
-                    switch (attribute)
-                    {
-                        case "x":
-                            return this.Provider.GetMe().Place.X;
-                        case "y":
-                            return this.Provider.GetMe().Place.Y;
-                        case "health":
-                            return this.Provider.GetMe().GetHealth();
-                        case "damage":
-                            return this.Provider.GetMe().GetType().Damage;
-                    }
             }
-            throw new InvalidOperationException("type check failed in attribute");
         }
-    }
+
+            public bool CheckBoolAttributeExpression(BoolExpressionContext context)
+            {
+                throw new NotImplementedException();
+            }
+
+            //    string attribute = context.expression().ElementAt(1).something().possibleAttributes().GetText();
+            //    if(context.expression().ElementAt(0).something().character().PLAYER() != null)
+            //    {
+            //        switch (attribute)
+            //        {
+            //            case "x":
+            //                return this.Provider.GetPlayer().Place.X;
+            //            case "y":
+            //                return this.Provider.GetPlayer().Place.Y;
+            //            case "health":
+            //                return this.Provider.GetPlayer().GetHealth();
+            //            case "damage":
+            //                return this.Provider.GetPlayer().Type.Damage;
+            //        }
+            //    }
+            //    if (context.expression().ElementAt(0).something().character().MONSTER() != null)
+            //    {
+            //        switch (attribute)
+            //        {
+            //            case "x":
+            //                return this.Provider.GetMonster().Place.X;
+            //            case "y":
+            //                return this.Provider.GetMonster().Place.Y;
+            //            case "health":
+            //                return this.Provider.GetMonster().GetHealth();
+            //            case "damage":
+            //                return this.Provider.GetMonster().Type.Damage;
+            //        }
+            //    }
+            //    if (context.expression().ElementAt(0).something().character().TRAP() != null)
+            //    {
+            //        switch (attribute)
+            //        {
+            //            case "x":
+            //                return this.Provider.GetTrap().Place.X;
+            //            case "y":
+            //                return this.Provider.GetTrap().Place.Y;
+            //            case "health":
+            //                return this.Provider.GetTrap().GetHealth();
+            //            case "damage":
+            //                return this.Provider.GetTrap().Type.Damage;
+            //            case "heal":
+            //                return this.Provider.GetTrap().Type.Heal;
+            //            case "teleport.x":
+            //                return this.Provider.GetTrap().Type.TeleportPlace.X;
+            //            case "teleport.y":
+            //                return this.Provider.GetTrap().Type.TeleportPlace.Y;
+            //            case "spawn.x":
+            //                return this.Provider.GetTrap().Type.SpawnPlace.X;
+            //            case "spawn.y":
+            //                return this.Provider.GetTrap().Type.SpawnPlace.Y;
+            //        }
+            //    }
+            //    if(context.something().ElementAt(0).something().character().ME() != null)
+            //    {
+            //        if(Provider.GetMe() is Trap)
+            //        {
+            //            switch (attribute)
+            //            {
+            //                case "x":
+            //                    return this.Provider.GetMe().Place.X;
+            //                case "y":
+            //                    return this.Provider.GetMe().Place.Y;
+            //                case "health":
+            //                    return this.Provider.GetMe().GetHealth();
+            //                case "damage":
+            //                    return this.Provider.GetMe().GetType().Damage;
+            //                case "heal":
+            //                    return this.Provider.GetMe().GetType().Heal;
+            //                case "teleport.x":
+            //                    return this.Provider.GetMe().GetType().TeleportPlace.X;
+            //                case "teleport.y":
+            //                    return this.Provider.GetMe().GetType().TeleportPlace.Y;
+            //                case "spawn.x":
+            //                    return this.Provider.GetMe().GetType().SpawnPlace.X;
+            //                case "spawn.y":
+            //                    return this.Provider.GetMe().GetType().SpawnPlace.Y;
+            //            }
+            //        }
+            //        else
+            //            switch (attribute)
+            //            {
+            //                case "x":
+            //                    return this.Provider.GetMe().Place.X;
+            //                case "y":
+            //                    return this.Provider.GetMe().Place.Y;
+            //                case "health":
+            //                    return this.Provider.GetMe().GetHealth();
+            //                case "damage":
+            //                    return this.Provider.GetMe().GetType().Damage;
+            //            }
+            //    }
+            //    throw new InvalidOperationException("type check failed in attribute");
+            //}
+        }
 }

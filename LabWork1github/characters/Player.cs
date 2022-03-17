@@ -10,22 +10,22 @@ namespace LabWork1github
     {
         public Player(Place p, int hp)
         {
-            Health = hp;
+            health = hp;
             Place = p;
         }
 
         public PlayerType Type { get; } = new PlayerType();
 
-        public int Health { get; set; }
+        private int health = 0;
 
         public override void Damage(int amount)
         {
-            Health -= amount;
+            health -= amount;
         }
 
         public override int GetHealth()
         {
-            throw new NotImplementedException();
+            return health;
         }
 
         public override CharacterType GetType()
@@ -35,9 +35,9 @@ namespace LabWork1github
 
         public override void Heal(int amount)
         {
-            Health += amount;
-            if (Health > Program.starterHP)
-                Health = Program.starterHP;
+            health += amount;
+            if (health > Program.starterHP)
+                health = Program.starterHP;
         }
 
         public void Move(string direction)

@@ -32,6 +32,56 @@ namespace LabWork1github
             this.Visit(context);
         }
 
+        public override object VisitBoolExpression([NotNull] BoolExpressionContext context)
+        {
+            if(context.attribute().Length > 1)
+            {
+                if((context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") ||
+                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_type")) 
+                    && context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
+                    if (!((context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type") ||
+                    context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_type"))
+                    && context.attribute().ElementAt(1).possibleAttributes().possibleAttributes().Length == 0))
+                    {
+                        ErrorList += "Type compared with a different type of attribue:\n";
+                        ErrorList += context.GetText() + "\n";
+                        CheckFailed = true;
+                    }
+                if ((context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") ||
+                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("teleport_place") ||
+                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_place"))
+                    && context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
+                    if (!((context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place") ||
+                        context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("teleport_type") ||
+                    context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
+                    && context.attribute().ElementAt(1).possibleAttributes().possibleAttributes().Length == 0))
+                    {
+                        ErrorList += "Place compared with a different type of attribue:\n";
+                        ErrorList += context.GetText() + "\n";
+                        CheckFailed = true;
+                    }
+            }
+            return base.VisitBoolExpression(context);
+        }
+
+        public override object VisitNumberFirstExpression([NotNull] NumberFirstExpressionContext context)
+        {
+            if(context.something() == null || context.something().attribute() == null)
+                return base.VisitNumberFirstExpression(context);
+            if (context.something().attribute().possibleAttributes().GetText().Equals("type") ||
+                context.something().attribute().possibleAttributes().GetText().Equals("spwan_type") ||
+                context.something().attribute().possibleAttributes().GetText().Equals("place") ||
+                context.something().attribute().possibleAttributes().GetText().Equals("spawn_place") ||
+                context.something().attribute().possibleAttributes().GetText().Equals("teleport_place"))
+                    if(context.something().attribute().possibleAttributes().possibleAttributes().Length < 2)
+                {
+                    ErrorList += "Place or type in iself is not a number:\n";
+                    ErrorList += context.GetText() + "\n";
+                    CheckFailed = true;
+                }
+            return base.VisitNumberFirstExpression(context);
+        }
+
         public override object VisitAttribute([NotNull] AttributeContext context)
         {
             if (context.character().GetText().Equals("monster"))
@@ -67,17 +117,17 @@ namespace LabWork1github
                 }
             }
             if (context.possibleAttributes() != null)
-                if (context.possibleAttributes().possibleAttributes().Length > 0)
+                if (context.possibleAttributes().possibleAttributes().Length > 1)
                 {
                     if (context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("teleport_place") ||
                         context.possibleAttributes().GetText().Equals("spawn_place"))
                     {
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x") ||
-                                context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("y")))
+                                    context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("y")))
                         {
-                            ErrorList += "Place doesn't have other attributes:\n";
-                            ErrorList += context.GetText() + "\n";
-                            CheckFailed = true;
+                                ErrorList += "Place doesn't have other attributes:\n";
+                                ErrorList += context.GetText() + "\n";
+                                CheckFailed = true;
                         }
                     }
                     else

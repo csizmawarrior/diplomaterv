@@ -59,7 +59,7 @@ x: NUMBER;
 y: NUMBER;
 
 boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression? | NEGATE boolExpression nextBoolExpression?
-            | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression?;
+            | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression? | attribute COMPARE attribute nextBoolExpression?;
 nextBoolExpression: BOOLCONNECTER boolExpression;
 //numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE nextNumberExpression?
 //            | ABSOLUTE numberExpression ABSOLUTE nextNumberExpression? | nextNumberMultiExpression nextNumberExpression | something nextNumberExpression?;
