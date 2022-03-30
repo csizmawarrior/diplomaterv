@@ -24,8 +24,5 @@ namespace LabWork1github
         public abstract bool CompatibleIsNear(object param2);
         public abstract bool CompatibleAbsolue(object param2);
         public abstract bool CompatibleNegate(object param2);
-        
-        
-
     }
 }

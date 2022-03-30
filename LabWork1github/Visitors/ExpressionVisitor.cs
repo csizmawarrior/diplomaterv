@@ -36,9 +36,11 @@ namespace LabWork1github
         {
             if(context.attribute().Length > 1)
             {
+                //this way they can only be compared if both of them are a charactertype
                 if((context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") ||
                     context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_type")) 
                     && context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
+
                     if (!((context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type") ||
                     context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_type"))
                     && context.attribute().ElementAt(1).possibleAttributes().possibleAttributes().Length == 0))
@@ -47,6 +49,7 @@ namespace LabWork1github
                         ErrorList += context.GetText() + "\n";
                         CheckFailed = true;
                     }
+                //this way they can only be compared if both of them are a place
                 if ((context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") ||
                     context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("teleport_place") ||
                     context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_place"))
@@ -106,10 +109,10 @@ namespace LabWork1github
             }
             if (context.character().GetText().Equals("trap"))
             {
-                if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
-                    context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("type") ||
-                    context.possibleAttributes().GetText().Equals("teleport_place") || context.possibleAttributes().GetText().Equals("spawn_place") ||
-                    context.possibleAttributes().GetText().Equals("spawn_type") || context.possibleAttributes().GetText().Equals("heal")))
+                if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("damage") || 
+                    context.possibleAttributes().GetText().Equals("type") || context.possibleAttributes().GetText().Equals("teleport_place") || 
+                    context.possibleAttributes().GetText().Equals("spawn_place") ||  context.possibleAttributes().GetText().Equals("spawn_type") ||
+                    context.possibleAttributes().GetText().Equals("heal")))
                 {
                     ErrorList += "Trap not having this attribute:\n";
                     ErrorList += context.GetText() + "\n";
@@ -117,7 +120,7 @@ namespace LabWork1github
                 }
             }
             if (context.possibleAttributes() != null)
-                if (context.possibleAttributes().possibleAttributes().Length > 1)
+                if (context.possibleAttributes().possibleAttributes().Length > 0)
                 {
                     if (context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("teleport_place") ||
                         context.possibleAttributes().GetText().Equals("spawn_place"))
@@ -131,9 +134,11 @@ namespace LabWork1github
                         }
                     }
                     else
+        //we can't ensure now that it will be a trap or a monster referred to under type, or a player, so the error for this can only be provided in runtime
                     if (context.possibleAttributes().GetText().Equals("spawn_type") || context.possibleAttributes().GetText().Equals("type"))
                     {
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health") ||
+                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage")))
                         {
                             ErrorList += "Monster not having this attribute:\n";
@@ -141,6 +146,7 @@ namespace LabWork1github
                             CheckFailed = true;
                         }
                     }
+        
                 }
                 return base.VisitAttribute(context);
         }

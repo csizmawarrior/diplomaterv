@@ -17,11 +17,6 @@ namespace LabWork1github
             this.Name = name;
         }
 
-
-        //TODO: get out, now only for old code
-        public int MoveRound { get; set; }
-        public int ShootRound { get; set; }
-
         public override void Step(GameParamProvider provider)
         {
             Commands.ElementAt(provider.GetRound()).Execute(provider);
@@ -79,5 +74,10 @@ namespace LabWork1github
         {
             return false;
         }
+
+
+        //TODO: get out, now only for old code
+        public int MoveRound { get; set; }
+        public int ShootRound { get; set; }
     }
 }

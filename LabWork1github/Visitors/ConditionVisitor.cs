@@ -174,20 +174,51 @@ namespace LabWork1github.Visitors
         {
             if (context.character().PLAYER() != null)
             {
-                //context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
-                //context.possibleAttributes().GetText().Equals("damage")))
                 if (context.possibleAttributes().GetText().Equals("damage"))
                     return Provider.GetPlayer().GetType().Damage;
                 if (context.possibleAttributes().GetText().Equals("health"))
                     return Provider.GetPlayer().GetHealth();
                 if (context.possibleAttributes().GetText().Equals("place"))
                 {
-                    if (context.possibleAttributes().possibleAttributes().Length > 0)
-                    {
-                        //TODO: befejez attribute kifejezések vizsgálata  
-                    }
-                    //return Provider.GetPlayer().Place;
+                        if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                            return Provider.GetPlayer().Place.X;
+                        else
+                            return Provider.GetPlayer().Place.Y;
                 }
+            }
+            if (context.character().MONSTER() != null)
+            {
+                if (context.possibleAttributes().GetText().Equals("damage"))
+                    return Provider.GetMonster().GetType().Damage;
+                if (context.possibleAttributes().GetText().Equals("health"))
+                    return Provider.GetMonster().GetHealth();
+                if (context.possibleAttributes().GetText().Equals("place"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetMonster().Place.X;
+                    else
+                        return Provider.GetMonster().Place.Y;
+                }
+                if (context.possibleAttributes().GetText().Equals("type"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                        return Provider.GetMonster().GetType().Damage;
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                        return Provider.GetMonster().GetHealth();
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("type"))
+                    {
+                        Console.WriteLine("ERROR: A monster can't heal!\n");
+                        Console.WriteLine("in place: \n");
+                        Console.WriteLine(context.GetText()+"\n");
+                    }
+                }
+            }
+            if(context.character().TRAP() != null)
+            {
+                if (context.possibleAttributes().GetText().Equals("damage"))
+                    return Provider.GetMonster().GetType().Damage;
+                if (context.possibleAttributes().GetText().Equals("health"))
+                    return Provider.GetMonster().GetHealth();
             }
         }
 
