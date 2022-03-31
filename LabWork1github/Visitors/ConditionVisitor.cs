@@ -13,13 +13,19 @@ namespace LabWork1github.Visitors
 
         public GameParamProvider Provider { get; set; }
 
+        public string ErrorList { get; set; }
+
+        public bool ErrorFound { get; set; }
+
         public ConditionVisitor(GameParamProvider provider, BoolExpressionContext context)
-        {
+        { 
             this.BoolExpressionContext = context;
             this.Provider = provider;
         }
         public bool CheckConditions()
         {
+            ErrorList = "";
+            ErrorFound = false;
             return CheckBoolExpression(BoolExpressionContext);
         }
         public bool CheckBoolExpression(BoolExpressionContext context)
@@ -174,58 +180,274 @@ namespace LabWork1github.Visitors
         {
             if (context.character().PLAYER() != null)
             {
-                if (context.possibleAttributes().GetText().Equals("damage"))
-                    return Provider.GetPlayer().GetType().Damage;
-                if (context.possibleAttributes().GetText().Equals("health"))
-                    return Provider.GetPlayer().GetHealth();
-                if (context.possibleAttributes().GetText().Equals("place"))
-                {
-                        if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                            return Provider.GetPlayer().Place.X;
-                        else
-                            return Provider.GetPlayer().Place.Y;
-                }
+                return PlayerAttribute(context);
             }
             if (context.character().MONSTER() != null)
             {
-                if (context.possibleAttributes().GetText().Equals("damage"))
-                    return Provider.GetMonster().GetType().Damage;
-                if (context.possibleAttributes().GetText().Equals("health"))
-                    return Provider.GetMonster().GetHealth();
-                if (context.possibleAttributes().GetText().Equals("place"))
-                {
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                        return Provider.GetMonster().Place.X;
-                    else
-                        return Provider.GetMonster().Place.Y;
-                }
-                if (context.possibleAttributes().GetText().Equals("type"))
-                {
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
-                        return Provider.GetMonster().GetType().Damage;
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
-                        return Provider.GetMonster().GetHealth();
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("type"))
-                    {
-                        Console.WriteLine("ERROR: A monster can't heal!\n");
-                        Console.WriteLine("in place: \n");
-                        Console.WriteLine(context.GetText()+"\n");
-                    }
-                }
+                return MonsterAttribute(context);
             }
             if(context.character().TRAP() != null)
             {
-                if (context.possibleAttributes().GetText().Equals("damage"))
-                    return Provider.GetMonster().GetType().Damage;
-                if (context.possibleAttributes().GetText().Equals("health"))
-                    return Provider.GetMonster().GetHealth();
+                return TrapAttribute(context);
             }
+            if(context.character().ME() != null)
+            {
+                //although it is unlikely for a player to become ME in this context
+                if(Provider.GetMe().GetType() is PlayerType)
+                {
+                    return PlayerAttribute(context);
+                }
+
+                if(Provider.GetMe().GetType() is MonsterType)
+                {
+                    return MonsterAttribute(context);
+                }
+                if (Provider.GetMe().GetType() is TrapType)
+                {
+                    return TrapAttribute(context);
+                }
+            }
+            ErrorList += ("ERROR: An attribute caused error!\n");
+            ErrorList += ("in place: \n");
+            ErrorList += (context.GetText() + "\n");
+            ErrorFound = true;
+            return -1;
         }
 
-            public bool CheckBoolAttributeExpression(BoolExpressionContext context)
+        public bool CheckBoolAttributeExpression(BoolExpressionContext context)
+        {
+            if(context.attribute().ElementAt(0).character().MONSTER() != null || 
+                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is MonsterType))
             {
-                throw new NotImplementedException();
+                if(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") && 
+                    context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
+                {
+                    if (context.attribute().ElementAt(1).character().TRAP() != null)
+                    {
+                        if (context.attribute().ElementAt(0).character().MONSTER() != null)
+                        {
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetMonster().GetType() == Provider.GetTrap().GetType().SpawnType;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetMonster().GetType() != Provider.GetTrap().GetType().SpawnType;
+                        }
+                        else
+                        {
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetMe().GetType() == Provider.GetTrap().GetType().SpawnType;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetMe().GetType() != Provider.GetTrap().GetType().SpawnType;
+                        }
+                    }
+                    if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    {
+                        if (context.attribute().ElementAt(0).character().MONSTER() != null)
+                        {
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetMonster().GetType() == Provider.GetMe().GetType().SpawnType;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetMonster().GetType() != Provider.GetMe().GetType().SpawnType;
+                        }
+                        else
+                        {
+                            ErrorList += ("ERROR: Me can't be both monster and trap!\n");
+                            ErrorList += ("in place: \n");
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return false;
+                        }
+                    }
+                }
+                if(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") &&
+                    context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
+                {
+
+                }
+                else
+                {
+                    if (context.COMPARE().GetText().Equals("=="))
+                        return CheckNumberAttributeExpression(context.attribute().ElementAt(0)) == CheckNumberAttributeExpression(context.attribute().ElementAt(1));
+                    if (context.COMPARE().GetText().Equals("!="))
+                        return CheckNumberAttributeExpression(context.attribute().ElementAt(0)) != CheckNumberAttributeExpression(context.attribute().ElementAt(1));
+                }
             }
+            
+        }
+
+        public double PlayerAttribute(AttributeContext context)
+        {
+            if (context.possibleAttributes().GetText().Equals("damage"))
+                return Provider.GetPlayer().GetType().Damage;
+            if (context.possibleAttributes().GetText().Equals("health"))
+                return Provider.GetPlayer().GetHealth();
+            if (context.possibleAttributes().GetText().Equals("place"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetPlayer().Place.X;
+                else
+                    return Provider.GetPlayer().Place.Y;
+            }
+            ErrorList += ("ERROR: A player caused error!\n");
+            ErrorList += ("in place: \n");
+            ErrorList += (context.GetText() + "\n");
+            ErrorFound = true;
+            return -1;
+        }
+
+        public double TrapAttribute(AttributeContext context)
+        {
+            if (context.possibleAttributes().GetText().Equals("damage"))
+            {
+                if (Provider.GetTrap().GetType().Damage == -1)
+                    return 0;
+                return Provider.GetTrap().GetType().Damage;
+            }
+            if (context.possibleAttributes().GetText().Equals("health"))
+            {
+                ErrorList += ("ERROR: A trap doesn't have health!\n");
+                ErrorList += ("in place: \n");
+                ErrorList += (context.GetText() + "\n");
+                ErrorFound = true;
+                return -1;
+            }
+            //assuming that traps return a default 0 for heal or damage when e.g. they only teleport
+            if (context.possibleAttributes().GetText().Equals("heal"))
+            {
+                if (Provider.GetTrap().GetType().Heal == -1)
+                    return 0;
+                return Provider.GetTrap().GetType().Heal;
+            }
+            if (context.possibleAttributes().GetText().Equals("place"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetTrap().Place.X;
+                else
+                    return Provider.GetTrap().Place.Y;
+            }
+            if (context.possibleAttributes().GetText().Equals("teleport_place"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetTrap().GetType().TeleportPlace.X;
+                else
+                    return Provider.GetTrap().GetType().TeleportPlace.Y;
+            }
+            if (context.possibleAttributes().GetText().Equals("spawn_place"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetTrap().GetType().SpawnPlace.X;
+                else
+                    return Provider.GetTrap().GetType().SpawnPlace.Y;
+            }
+            if (context.possibleAttributes().GetText().Equals("type"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                {
+                    if (Provider.GetTrap().GetType().Damage == -1)
+                    {
+                        return 0;
+                    }
+                    return Provider.GetTrap().GetType().Damage;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                {
+                    ErrorList += ("ERROR: A trap doesn't have health!\n");
+                    ErrorList += ("in place: \n");
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
+                {
+                    if (Provider.GetTrap().GetType().Heal == -1)
+                    {
+                        return 0;
+                    }
+                    return Provider.GetTrap().GetType().Heal;
+                }
+            }
+            if (context.possibleAttributes().GetText().Equals("spawn_type"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                {
+                    if (Provider.GetTrap().GetType().SpawnType.Damage == -1)
+                    {
+                        ErrorList += ("ERROR: A monster needs damage!\n");
+                        ErrorList += ("in place: \n");
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Provider.GetTrap().GetType().SpawnType.Damage;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                    return Provider.GetTrap().GetType().SpawnType.Health;
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
+                {
+                    ErrorList += ("ERROR: A monster can't heal!\n");
+                    ErrorList += ("in place: \n");
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+            }
+            ErrorList += ("ERROR: A trap caused error!\n");
+            ErrorList += ("in place: \n");
+            ErrorList += (context.GetText() + "\n");
+            ErrorFound = true;
+            return -1;
+        }
+
+        public double MonsterAttribute(AttributeContext context)
+        {
+            if (context.possibleAttributes().GetText().Equals("damage"))
+                if (Provider.GetMonster().GetType().Damage == -1)
+                {
+                    ErrorList += ("ERROR: A monster needs damage!\n");
+                    ErrorList += ("in place: \n");
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+            if (context.possibleAttributes().GetText().Equals("health"))
+                return Provider.GetMonster().GetHealth();
+            if (context.possibleAttributes().GetText().Equals("place"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetMonster().Place.X;
+                else
+                    return Provider.GetMonster().Place.Y;
+            }
+            if (context.possibleAttributes().GetText().Equals("type"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                {
+                    if (Provider.GetMonster().GetType().Damage == -1)
+                    {
+                        ErrorList += ("ERROR: A monster needs damage!\n");
+                        ErrorList += ("in place: \n");
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Provider.GetMonster().GetType().Damage;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                    return Provider.GetMonster().GetHealth();
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
+                {
+                    ErrorList += ("ERROR: A monster can't heal!\n");
+                    ErrorList += ("in place: \n");
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+            }
+            ErrorList += ("ERROR: A monster caused unexpected error!\n");
+            ErrorList += ("in place: \n");
+            ErrorList += (context.GetText() + "\n");
+            ErrorFound = true;
+            return -1;
+        }
 
             //    string attribute = context.expression().ElementAt(1).something().possibleAttributes().GetText();
             //    if(context.expression().ElementAt(0).something().character().PLAYER() != null)
