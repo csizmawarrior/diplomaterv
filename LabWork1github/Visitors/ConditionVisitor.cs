@@ -219,16 +219,6 @@ namespace LabWork1github.Visitors
             if(context.attribute().ElementAt(0).character().MONSTER() != null || 
                 (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is MonsterType))
             {
-                //have to check, if ME has correct attributes referenced when it's a monster
-                if (!(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") ||
-                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("health") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("damage")))
-                {
-                    ErrorList += ("ERROR: Monster does not have that attribue!\n");
-                    ErrorList += ("in place: \n");
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return false;
-                }
                 if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") && 
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
                 {
@@ -417,12 +407,14 @@ namespace LabWork1github.Visitors
                 }
             }
             //if the firt character is trap
-            if (context.attribute().ElementAt(0).character().MONSTER() != null ||
-                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is MonsterType))
+            if (context.attribute().ElementAt(0).character().TRAP() != null ||
+                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is TrapType))
             {
-                //have to check, if ME has correct attributes referenced when it's a monster
+                //TODO: delete this if, only here so I know what attributes to check
                 if (!(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") ||
-                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("health") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("damage")))
+                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("heal") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("damage") ||
+                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_type") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_place") ||
+                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("teleport_place") ))
                 {
                     ErrorList += ("ERROR: Monster does not have that attribue!\n");
                     ErrorList += ("in place: \n");
@@ -435,27 +427,19 @@ namespace LabWork1github.Visitors
                 {
                     if (context.attribute().ElementAt(1).character().TRAP() != null)
                     {
-                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
-                        {
-                            ErrorList += ("ERROR: Trap type can't be compared with MonsterType!\n");
-                            ErrorList += ("in place: \n");
-                            ErrorList += (context.GetText() + "\n");
-                            ErrorFound = true;
-                            return false;
-                        }
-                        if (context.attribute().ElementAt(0).character().MONSTER() != null)
+                        if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMonster().GetType() == Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetTrap().GetType() == Provider.GetTrap().GetType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMonster().GetType() != Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetTrap().GetType() != Provider.GetTrap().GetType();
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType() == Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMe().GetType() == Provider.GetTrap().GetType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType() != Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMe().GetType() != Provider.GetTrap().GetType();
                         }
                     }
                     if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
