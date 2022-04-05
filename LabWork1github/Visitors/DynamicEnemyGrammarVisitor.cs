@@ -308,15 +308,15 @@ namespace LabWork1github
             {
                 switch (context.character().GetText())
                 {
-                    case "player":
+                    case Types.PLAYER:
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportPlayer);
                         AddCommand(newCommand);
                         break;
-                    case "monster":
+                    case Types.MONSTER:
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportMonster);
                         AddCommand(newCommand);
                         break;
-                    case "trap":
+                    case Types.TRAP:
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportTrap);
                         AddCommand(newCommand);
                         break;
@@ -375,7 +375,7 @@ namespace LabWork1github
 
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
         {
-            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression());
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
             ConditionHelper.CheckBool(context.boolExpression());
             if (ConditionHelper.CheckFailed)
             {
@@ -403,7 +403,7 @@ namespace LabWork1github
         public override object VisitWhileexpression([NotNull] WhileexpressionContext context)
         {
             //It doesn't seem to contain the whole while expression, or doesn't recognize it
-            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression());
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
             ConditionHelper.CheckBool(context.boolExpression());
             if (ConditionHelper.CheckFailed)
             {

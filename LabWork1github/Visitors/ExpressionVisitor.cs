@@ -16,10 +16,12 @@ namespace LabWork1github
         public string ErrorList { get; set; } = "";
         public bool CheckFailed { get; set; } = false;
         public bool NumberCheckFailed { get; set; } = false;
+        public string characterType { get; set; }
 
-        public ExpressionVisitor(BoolExpressionContext context)
+        public ExpressionVisitor(BoolExpressionContext context, string myType)
         {
             BoolExpressionContext = context;
+            characterType = myType;
         }
 
         public void CheckTypes(BoolExpressionContext Excontext)
@@ -87,7 +89,7 @@ namespace LabWork1github
 
         public override object VisitAttribute([NotNull] AttributeContext context)
         {
-            if (context.character().GetText().Equals("monster"))
+            if (context.character().GetText().Equals(Types.MONSTER) || characterType.Equals(Types.MONSTER))
             {
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
                     context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("type")))
@@ -97,7 +99,7 @@ namespace LabWork1github
                     CheckFailed = true;
                 }
             }
-            if (context.character().GetText().Equals("player"))
+            if (context.character().GetText().Equals(Types.PLAYER))
             {
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
                     context.possibleAttributes().GetText().Equals("damage")))
@@ -107,7 +109,7 @@ namespace LabWork1github
                     CheckFailed = true;
                 }
             }
-            if (context.character().GetText().Equals("trap"))
+            if (context.character().GetText().Equals(Types.TRAP) || characterType.Equals(Types.TRAP))
             {
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("damage") || 
                     context.possibleAttributes().GetText().Equals("type") || context.possibleAttributes().GetText().Equals("teleport_place") || 

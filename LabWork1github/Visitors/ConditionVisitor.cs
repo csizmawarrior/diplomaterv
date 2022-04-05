@@ -219,11 +219,29 @@ namespace LabWork1github.Visitors
             if(context.attribute().ElementAt(0).character().MONSTER() != null || 
                 (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is MonsterType))
             {
-                if(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") && 
+                //have to check, if ME has correct attributes referenced when it's a monster
+                if (!(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") ||
+                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("health") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("damage")))
+                {
+                    ErrorList += ("ERROR: Monster does not have that attribue!\n");
+                    ErrorList += ("in place: \n");
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return false;
+                }
+                if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") && 
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
                 {
                     if (context.attribute().ElementAt(1).character().TRAP() != null)
                     {
+                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
+                        {
+                            ErrorList += ("ERROR: Trap type can't be compared with MonsterType!\n");
+                            ErrorList += ("in place: \n");
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return false;
+                        }
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
@@ -241,6 +259,14 @@ namespace LabWork1github.Visitors
                     }
                     if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
                     {
+                        if(context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
+                        {
+                            ErrorList += ("ERROR: Trap type can't be compared with MonsterType!\n");
+                            ErrorList += ("in place: \n");
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return false;
+                        }
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
