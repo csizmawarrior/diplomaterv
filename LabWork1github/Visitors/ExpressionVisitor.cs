@@ -143,7 +143,7 @@ namespace LabWork1github
                             context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage")))
                         {
-                            ErrorList += "Monster not having this attribute:\n";
+                            ErrorList += "Enemy types do not have this attribute:\n";
                             ErrorList += context.GetText() + "\n";
                             CheckFailed = true;
                         }
