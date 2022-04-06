@@ -52,7 +52,7 @@ block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
 
 possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPORT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
-                | HEALTH | HEAL | RANDOM | DAMAGE | NOTHING | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER;
+                | HEALTH | HEAL | RANDOM | DAMAGE | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER;
 
 place: x ',' y;
 x: NUMBER;
@@ -77,7 +77,6 @@ function: IS ALIVE | IS NEAR ;
 TELEPORT_PLACE: 'teleport_place';
 SPAWN_PLACE: 'spawn_place';
 SPAWN_TYPE: 'spawn_type';
-NOTHING: 'nothing';
 RANDOM: 'random';
 DISTANCE: 'distance';
 DAMAGE: 'damage';
