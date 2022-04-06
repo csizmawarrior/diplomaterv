@@ -1190,9 +1190,10 @@ namespace LabWork1github.Visitors
                         return CheckNumberAttributeExpression(context.attribute().ElementAt(0)) != CheckNumberAttributeExpression(context.attribute().ElementAt(1));
                 }
             }
+            return false;
         }
 
-
+        //if the ME is a player, that can't theoretically happen, then, since only 1 player exists, this still does the same
         public double PlayerAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("damage"))
@@ -1217,6 +1218,12 @@ namespace LabWork1github.Visitors
         {
             if (context.possibleAttributes().GetText().Equals("damage"))
             {
+                if(context.character().ME() != null)
+                {
+                    if (Provider.GetMe().GetType().Damage == -1)
+                        return 0;
+                    return Provider.GetMe().GetType().Damage;
+                }
                 if (Provider.GetTrap().GetType().Damage == -1)
                     return 0;
                 return Provider.GetTrap().GetType().Damage;
@@ -1225,12 +1232,25 @@ namespace LabWork1github.Visitors
             //TODO: clarify this, and make changes if necessary
             if (context.possibleAttributes().GetText().Equals("heal"))
             {
+                if(context.character().ME() != null)
+                {
+                    if (Provider.GetMe().GetType().Heal == -1)
+                        return 0;
+                    return Provider.GetMe().GetType().Heal;
+                }
                 if (Provider.GetTrap().GetType().Heal == -1)
                     return 0;
                 return Provider.GetTrap().GetType().Heal;
             }
             if (context.possibleAttributes().GetText().Equals("place"))
             {
+                if(context.character().ME() != null)
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetMe().Place.X;
+                    else
+                        return Provider.GetMe().Place.Y;
+                }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                     return Provider.GetTrap().Place.X;
                 else
@@ -1238,6 +1258,14 @@ namespace LabWork1github.Visitors
             }
             if (context.possibleAttributes().GetText().Equals("teleport_place"))
             {
+                if(context.character().ME() != null)
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetMe().GetType().TeleportPlace.X;
+                    else
+                        return Provider.GetMe().GetType().TeleportPlace.Y;
+                }
+
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                     return Provider.GetTrap().GetType().TeleportPlace.X;
                 else
@@ -1245,6 +1273,14 @@ namespace LabWork1github.Visitors
             }
             if (context.possibleAttributes().GetText().Equals("spawn_place"))
             {
+                if(context.character().ME() != null)
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetMe().GetType().SpawnPlace.X;
+                    else
+                        return Provider.GetMe().GetType().SpawnPlace.Y;
+                }
+
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                     return Provider.GetTrap().GetType().SpawnPlace.X;
                 else
@@ -1254,6 +1290,15 @@ namespace LabWork1github.Visitors
             {
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
                 {
+                    if(context.character().ME() != null)
+                    {
+                        if (Provider.GetMe().GetType().Damage == -1)
+                        {
+                            return 0;
+                        }
+                        return Provider.GetMe().GetType().Damage;
+                    }
+
                     if (Provider.GetTrap().GetType().Damage == -1)
                     {
                         return 0;
@@ -1270,6 +1315,15 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
+                    if(context.character().ME() != null)
+                    {
+                        if (Provider.GetMe().GetType().Heal == -1)
+                        {
+                            return 0;
+                        }
+                        return Provider.GetMe().GetType().Heal;
+                    }
+
                     if (Provider.GetTrap().GetType().Heal == -1)
                     {
                         return 0;
@@ -1281,6 +1335,19 @@ namespace LabWork1github.Visitors
             {
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
                 {
+                    if(context.character().ME() != null)
+                    {
+                        if (Provider.GetMe().GetType().SpawnType.Damage == -1)
+                        {
+                            ErrorList += ("ERROR: A monster needs damage!\n");
+                            ErrorList += ("in place: \n");
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetMe().GetType().SpawnType.Damage;
+                    }
+
                     if (Provider.GetTrap().GetType().SpawnType.Damage == -1)
                     {
                         ErrorList += ("ERROR: A monster needs damage!\n");
@@ -1292,7 +1359,12 @@ namespace LabWork1github.Visitors
                     return Provider.GetTrap().GetType().SpawnType.Damage;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                {
+                    if (context.character().ME() != null)
+                        return Provider.GetMe().GetType().SpawnType.Health;
+
                     return Provider.GetTrap().GetType().SpawnType.Health;
+                }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
                     ErrorList += ("ERROR: A monster can't heal!\n");
@@ -1302,7 +1374,8 @@ namespace LabWork1github.Visitors
                     return -1;
                 }
             }
-            ErrorList += ("ERROR: A trap caused error with spawn type's attributes!\n");
+
+            ErrorList += ("ERROR: A trap caused error with attributes!\n");
             ErrorList += ("in place: \n");
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;
@@ -1312,6 +1385,21 @@ namespace LabWork1github.Visitors
         public double MonsterAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("damage")) {
+
+                if(context.character().ME() != null)
+                {
+                    if (Provider.GetMe().GetType().Damage == -1)
+                    {
+                        ErrorList += ("ERROR: A monster needs damage!\n");
+                        ErrorList += ("in place: \n");
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    else
+                        return Provider.GetMe().GetType().Damage;
+                }
+
                 if (Provider.GetMonster().GetType().Damage == -1)
                 {
                     ErrorList += ("ERROR: A monster needs damage!\n");
@@ -1324,9 +1412,22 @@ namespace LabWork1github.Visitors
                     return Provider.GetMonster().GetType().Damage;
             }
             if (context.possibleAttributes().GetText().Equals("health"))
+            {
+                if (context.character().ME() != null)
+                    return Provider.GetMe().GetHealth();
+
                 return Provider.GetMonster().GetHealth();
+            }
             if (context.possibleAttributes().GetText().Equals("place"))
             {
+                if(context.character().ME() != null)
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetMe().Place.X;
+                    else
+                        return Provider.GetMe().Place.Y;
+                }
+
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                     return Provider.GetMonster().Place.X;
                 else
@@ -1336,6 +1437,20 @@ namespace LabWork1github.Visitors
             {
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
                 {
+                    if(context.character().ME() != null)
+                    {
+                        if (Provider.GetMe().GetType().Damage == -1)
+                        {
+                            ErrorList += ("ERROR: A monster needs damage!\n");
+                            ErrorList += ("in place: \n");
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetMe().GetType().Damage;
+                    }
+
+
                     if (Provider.GetMonster().GetType().Damage == -1)
                     {
                         ErrorList += ("ERROR: A monster needs damage!\n");
@@ -1347,7 +1462,12 @@ namespace LabWork1github.Visitors
                     return Provider.GetMonster().GetType().Damage;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
-                    return Provider.GetMonster().GetHealth();
+                {
+                    if(context.character().ME() != null)
+                        return Provider.GetMe().GetType().Health;
+
+                    return Provider.GetMonster().GetType().Health;
+                }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
                     ErrorList += ("ERROR: A monster can't heal!\n");
@@ -1357,7 +1477,8 @@ namespace LabWork1github.Visitors
                     return -1;
                 }
             }
-            ErrorList += ("ERROR: A monster caused unexpected error!\n");
+
+            ErrorList += ("ERROR: A monster attribute caused unexpected error!\n");
             ErrorList += ("in place: \n");
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;
