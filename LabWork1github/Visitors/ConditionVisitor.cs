@@ -192,16 +192,16 @@ namespace LabWork1github.Visitors
             if(context.character().ME() != null)
             {
                 //although it is unlikely for a player to become ME in this context
-                if(Provider.GetMe().GetType() is PlayerType)
+                if(Provider.GetMe().GetCharacterType() is PlayerType)
                 {
                     return PlayerAttribute(context);
                 }
 
-                if(Provider.GetMe().GetType() is MonsterType)
+                if(Provider.GetMe().GetCharacterType() is MonsterType)
                 {
                     return MonsterAttribute(context);
                 }
-                if (Provider.GetMe().GetType() is TrapType)
+                if (Provider.GetMe().GetCharacterType() is TrapType)
                 {
                     return TrapAttribute(context);
                 }
@@ -217,7 +217,7 @@ namespace LabWork1github.Visitors
         {
             //monster is the first character
             if(context.attribute().ElementAt(0).character().MONSTER() != null || 
-                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is MonsterType))
+                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType))
             {
                 //monster is the first character type is the attribute
                 if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") && 
@@ -236,19 +236,19 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMonster().GetType() == Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMonster().GetCharacterType() == Provider.GetTrap().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMonster().GetType() != Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMonster().GetCharacterType() != Provider.GetTrap().GetCharacterType().SpawnType;
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType() == Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMe().GetCharacterType() == Provider.GetTrap().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType() != Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMe().GetCharacterType() != Provider.GetTrap().GetCharacterType().SpawnType;
                         }
                     }
-                    if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if(context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
                         {
@@ -261,9 +261,9 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMonster().GetType() == Provider.GetMe().GetType().SpawnType;
+                                return Provider.GetMonster().GetCharacterType() == Provider.GetMe().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMonster().GetType() != Provider.GetMe().GetType().SpawnType;
+                                return Provider.GetMonster().GetCharacterType() != Provider.GetMe().GetCharacterType().SpawnType;
                         }
                         else
                         {
@@ -279,33 +279,33 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMonster().GetType() == Provider.GetMonster().GetType();
+                                return Provider.GetMonster().GetCharacterType() == Provider.GetMonster().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMonster().GetType() != Provider.GetMonster().GetType();
+                                return Provider.GetMonster().GetCharacterType() != Provider.GetMonster().GetCharacterType();
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType() == Provider.GetMonster().GetType();
+                                return Provider.GetMe().GetCharacterType() == Provider.GetMonster().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType() != Provider.GetMonster().GetType();
+                                return Provider.GetMe().GetCharacterType() != Provider.GetMonster().GetCharacterType();
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                     {
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMonster().GetType() == Provider.GetMe().GetType();
+                                return Provider.GetMonster().GetCharacterType() == Provider.GetMe().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMonster().GetType() != Provider.GetMe().GetType();
+                                return Provider.GetMonster().GetCharacterType() != Provider.GetMe().GetCharacterType();
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType() == Provider.GetMe().GetType();
+                                return Provider.GetMe().GetCharacterType() == Provider.GetMe().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType() != Provider.GetMe().GetType();
+                                return Provider.GetMe().GetCharacterType() != Provider.GetMe().GetCharacterType();
                         }
                     }
                 }
@@ -354,16 +354,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().MONSTER() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMonster().Place == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMonster().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMonster().Place != Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMonster().Place != Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -371,20 +371,20 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().MONSTER() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMonster().Place == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMonster().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMonster().Place != Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMonster().Place != Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
-                    if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place")) { 
                             if (context.attribute().ElementAt(0).character().MONSTER() != null)
@@ -400,9 +400,9 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().MONSTER() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMonster().Place == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMonster().Place == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMonster().Place != Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMonster().Place != Provider.GetMe().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -410,9 +410,9 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().MONSTER() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMonster().Place == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMonster().Place == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMonster().Place != Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMonster().Place != Provider.GetMe().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
@@ -433,7 +433,7 @@ namespace LabWork1github.Visitors
                                 return Provider.GetMe().Place == Provider.GetMonster().Place;
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                     {
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
@@ -462,7 +462,7 @@ namespace LabWork1github.Visitors
             }
             //if the firt character is trap
             if (context.attribute().ElementAt(0).character().TRAP() != null ||
-                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is TrapType))
+                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType))
             {
                 //first character is trap and the attribute is type
                 if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") &&
@@ -481,37 +481,37 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType() == Provider.GetTrap().GetType();
+                                return Provider.GetTrap().GetCharacterType() == Provider.GetTrap().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType() != Provider.GetTrap().GetType();
+                                return Provider.GetTrap().GetCharacterType() != Provider.GetTrap().GetCharacterType();
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType() == Provider.GetTrap().GetType();
+                                return Provider.GetMe().GetCharacterType() == Provider.GetTrap().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType() != Provider.GetTrap().GetType();
+                                return Provider.GetMe().GetCharacterType() != Provider.GetTrap().GetCharacterType();
                         }
                     }
                     else
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType() == Provider.GetMe().GetType();
+                                return Provider.GetTrap().GetCharacterType() == Provider.GetMe().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType() != Provider.GetMe().GetType();
+                                return Provider.GetTrap().GetCharacterType() != Provider.GetMe().GetCharacterType();
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType() == Provider.GetMe().GetType();
+                                return Provider.GetMe().GetCharacterType() == Provider.GetMe().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType() != Provider.GetMe().GetType();
+                                return Provider.GetMe().GetCharacterType() != Provider.GetMe().GetCharacterType();
                         }
                     }
-                    if ((context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType) ||
+                    if ((context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType) ||
                         context.attribute().ElementAt(1).character().MONSTER() != null)
                     {
                             ErrorList += ("ERROR: Trap type can't be compared with MonsterType!\n");
@@ -538,20 +538,20 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnType == Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetTrap().GetCharacterType().SpawnType == Provider.GetTrap().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnType != Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetTrap().GetCharacterType().SpawnType != Provider.GetTrap().GetCharacterType().SpawnType;
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType().SpawnType == Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMe().GetCharacterType().SpawnType == Provider.GetTrap().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType().SpawnType != Provider.GetTrap().GetType().SpawnType;
+                                return Provider.GetMe().GetCharacterType().SpawnType != Provider.GetTrap().GetCharacterType().SpawnType;
                         }
                     }
                     else
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
                         {
@@ -564,16 +564,16 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnType == Provider.GetMe().GetType().SpawnType;
+                                return Provider.GetTrap().GetCharacterType().SpawnType == Provider.GetMe().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnType != Provider.GetMe().GetType().SpawnType;
+                                return Provider.GetTrap().GetCharacterType().SpawnType != Provider.GetMe().GetCharacterType().SpawnType;
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType().SpawnType == Provider.GetMe().GetType().SpawnType;
+                                return Provider.GetMe().GetCharacterType().SpawnType == Provider.GetMe().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType().SpawnType != Provider.GetMe().GetType().SpawnType;
+                                return Provider.GetMe().GetCharacterType().SpawnType != Provider.GetMe().GetCharacterType().SpawnType;
                         }
                     }
                     if (context.attribute().ElementAt(1).character().MONSTER() != null)
@@ -581,33 +581,33 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnType == Provider.GetMonster().GetType();
+                                return Provider.GetTrap().GetCharacterType().SpawnType == Provider.GetMonster().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnType != Provider.GetMonster().GetType();
+                                return Provider.GetTrap().GetCharacterType().SpawnType != Provider.GetMonster().GetCharacterType();
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnType == Provider.GetMonster().GetType();
+                                return Provider.GetTrap().GetCharacterType().SpawnType == Provider.GetMonster().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnType != Provider.GetMonster().GetType();
+                                return Provider.GetTrap().GetCharacterType().SpawnType != Provider.GetMonster().GetCharacterType();
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                     {
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnType == Provider.GetMe().GetType();
+                                return Provider.GetTrap().GetCharacterType().SpawnType == Provider.GetMe().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnType != Provider.GetMe().GetType();
+                                return Provider.GetTrap().GetCharacterType().SpawnType != Provider.GetMe().GetCharacterType();
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType().SpawnType == Provider.GetMe().GetType();
+                                return Provider.GetMe().GetCharacterType().SpawnType == Provider.GetMe().GetCharacterType();
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType().SpawnType != Provider.GetMe().GetType();
+                                return Provider.GetMe().GetCharacterType().SpawnType != Provider.GetMe().GetCharacterType();
                         }
                     }
                 }
@@ -656,16 +656,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().Place == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetTrap().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().Place != Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetTrap().Place != Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -673,20 +673,20 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().Place == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetTrap().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().Place != Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetTrap().Place != Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().Place == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
                         {
@@ -710,16 +710,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().Place == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetTrap().Place == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().Place != Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetTrap().Place != Provider.GetMe().GetCharacterType().TeleportPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().Place == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMe().Place == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().Place == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMe().Place == Provider.GetMe().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -727,16 +727,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().Place == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetTrap().Place == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().Place != Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetTrap().Place != Provider.GetMe().GetCharacterType().SpawnPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().Place == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMe().Place == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().Place == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMe().Place == Provider.GetMe().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
@@ -757,7 +757,7 @@ namespace LabWork1github.Visitors
                                 return Provider.GetMe().Place == Provider.GetMonster().Place;
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                     {
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
@@ -777,16 +777,16 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().TeleportPlace == Provider.GetPlayer().Place;
+                                return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetPlayer().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().TeleportPlace != Provider.GetPlayer().Place;
+                                return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetPlayer().Place;
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType().TeleportPlace == Provider.GetPlayer().Place;
+                                return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetPlayer().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType().TeleportPlace == Provider.GetPlayer().Place;
+                                return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetPlayer().Place;
                         }
                     }
                     if (context.attribute().ElementAt(1).character().TRAP() != null)
@@ -796,16 +796,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().TeleportPlace == Provider.GetTrap().Place;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetTrap().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().TeleportPlace != Provider.GetTrap().Place;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetTrap().Place;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetTrap().Place;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetTrap().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetTrap().Place;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetTrap().Place;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -813,16 +813,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().TeleportPlace == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().TeleportPlace != Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -830,36 +830,36 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().TeleportPlace == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().TeleportPlace != Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
                         {
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().TeleportPlace == Provider.GetMe().Place;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetMe().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().TeleportPlace != Provider.GetMe().Place;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetMe().Place;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetMe().Place;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMe().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetMe().Place;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMe().Place;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -867,16 +867,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().TeleportPlace == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().TeleportPlace != Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetMe().GetCharacterType().TeleportPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMe().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -884,16 +884,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().TeleportPlace == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().TeleportPlace != Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetMe().GetCharacterType().SpawnPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().TeleportPlace == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMe().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
@@ -902,26 +902,26 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().TeleportPlace == Provider.GetMonster().Place;
+                                return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetMonster().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().TeleportPlace != Provider.GetMonster().Place;
+                                return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetMonster().Place;
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType().TeleportPlace == Provider.GetMonster().Place;
+                                return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMonster().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType().TeleportPlace == Provider.GetMonster().Place;
+                                return Provider.GetMe().GetCharacterType().TeleportPlace == Provider.GetMonster().Place;
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                     {
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().TeleportPlace == Provider.GetMe().Place;
+                                return Provider.GetTrap().GetCharacterType().TeleportPlace == Provider.GetMe().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().TeleportPlace != Provider.GetMe().Place;
+                                return Provider.GetTrap().GetCharacterType().TeleportPlace != Provider.GetMe().Place;
                         }
                     }
                 }
@@ -934,16 +934,16 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnPlace == Provider.GetPlayer().Place;
+                                return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetPlayer().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnPlace != Provider.GetPlayer().Place;
+                                return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetPlayer().Place;
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType().SpawnPlace == Provider.GetPlayer().Place;
+                                return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetPlayer().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType().SpawnPlace == Provider.GetPlayer().Place;
+                                return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetPlayer().Place;
                         }
                     }
                     if (context.attribute().ElementAt(1).character().TRAP() != null)
@@ -953,16 +953,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().SpawnPlace == Provider.GetTrap().Place;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetTrap().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().SpawnPlace != Provider.GetTrap().Place;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetTrap().Place;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetTrap().Place;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetTrap().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetTrap().Place;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetTrap().Place;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -970,16 +970,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().SpawnPlace == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().SpawnPlace != Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetTrap().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -987,36 +987,36 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().SpawnPlace == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().SpawnPlace != Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetTrap().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
                         {
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().SpawnPlace == Provider.GetMe().Place;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetMe().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().SpawnPlace != Provider.GetMe().Place;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetMe().Place;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetMe().Place;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMe().Place;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetMe().Place;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMe().Place;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -1024,16 +1024,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().SpawnPlace == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().SpawnPlace != Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetMe().GetCharacterType().TeleportPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMe().GetCharacterType().TeleportPlace;
                             }
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
@@ -1041,16 +1041,16 @@ namespace LabWork1github.Visitors
                             if (context.attribute().ElementAt(0).character().TRAP() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetTrap().GetType().SpawnPlace == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetTrap().GetType().SpawnPlace != Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetMe().GetCharacterType().SpawnPlace;
                             }
                             else
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetMe().GetType().SpawnPlace == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMe().GetCharacterType().SpawnPlace;
                             }
                         }
                     }
@@ -1059,26 +1059,26 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnPlace == Provider.GetMonster().Place;
+                                return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetMonster().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnPlace != Provider.GetMonster().Place;
+                                return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetMonster().Place;
                         }
                         else
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetMe().GetType().SpawnPlace == Provider.GetMonster().Place;
+                                return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMonster().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetMe().GetType().SpawnPlace == Provider.GetMonster().Place;
+                                return Provider.GetMe().GetCharacterType().SpawnPlace == Provider.GetMonster().Place;
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                     {
                         if (context.attribute().ElementAt(0).character().TRAP() != null)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetTrap().GetType().SpawnPlace == Provider.GetMe().Place;
+                                return Provider.GetTrap().GetCharacterType().SpawnPlace == Provider.GetMe().Place;
                             if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetTrap().GetType().SpawnPlace != Provider.GetMe().Place;
+                                return Provider.GetTrap().GetCharacterType().SpawnPlace != Provider.GetMe().Place;
                         }
                     }
                 }
@@ -1117,19 +1117,19 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("teleport_place"))
                         {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetPlayer().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetTrap().GetType().TeleportPlace;
+                                    return Provider.GetPlayer().Place != Provider.GetTrap().GetCharacterType().TeleportPlace;
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
                         {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetPlayer().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetTrap().GetType().SpawnPlace;
+                                    return Provider.GetPlayer().Place != Provider.GetTrap().GetCharacterType().SpawnPlace;
                         }
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
                         {
@@ -1141,16 +1141,16 @@ namespace LabWork1github.Visitors
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("teleport_place"))
                         {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetPlayer().Place == Provider.GetMe().GetCharacterType().TeleportPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetMe().GetType().TeleportPlace;
+                                    return Provider.GetPlayer().Place != Provider.GetMe().GetCharacterType().TeleportPlace;
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
                         {
                                 if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetPlayer().Place == Provider.GetMe().GetCharacterType().SpawnPlace;
                                 if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetMe().GetType().SpawnPlace;
+                                    return Provider.GetPlayer().Place != Provider.GetMe().GetCharacterType().SpawnPlace;
                         }
                     }
                     if (context.attribute().ElementAt(1).character().MONSTER() != null)
@@ -1160,7 +1160,7 @@ namespace LabWork1github.Visitors
                             if (context.COMPARE().GetText().Equals("!="))
                                 return Provider.GetPlayer().Place != Provider.GetMonster().Place;
                     }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetType() is MonsterType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                     {
                             if (context.COMPARE().GetText().Equals("=="))
                                 return Provider.GetPlayer().Place == Provider.GetMe().Place;
@@ -1184,7 +1184,7 @@ namespace LabWork1github.Visitors
         public double PlayerAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("damage"))
-                return Provider.GetPlayer().GetType().Damage;
+                return Provider.GetPlayer().GetCharacterType().Damage;
             if (context.possibleAttributes().GetText().Equals("health"))
                 return Provider.GetPlayer().GetHealth();
             if (context.possibleAttributes().GetText().Equals("place"))
@@ -1207,13 +1207,13 @@ namespace LabWork1github.Visitors
             {
                 if(context.character().ME() != null)
                 {
-                    if (Provider.GetMe().GetType().Damage == -1)
+                    if (Provider.GetMe().GetCharacterType().Damage == -1)
                         return 0;
-                    return Provider.GetMe().GetType().Damage;
+                    return Provider.GetMe().GetCharacterType().Damage;
                 }
-                if (Provider.GetTrap().GetType().Damage == -1)
+                if (Provider.GetTrap().GetCharacterType().Damage == -1)
                     return 0;
-                return Provider.GetTrap().GetType().Damage;
+                return Provider.GetTrap().GetCharacterType().Damage;
             }
             //assuming that traps return a default 0 for heal or damage when e.g. they only teleport
             //TODO: clarify this, and make changes if necessary, seems logical, but ask just in case
@@ -1221,13 +1221,13 @@ namespace LabWork1github.Visitors
             {
                 if(context.character().ME() != null)
                 {
-                    if (Provider.GetMe().GetType().Heal == -1)
+                    if (Provider.GetMe().GetCharacterType().Heal == -1)
                         return 0;
-                    return Provider.GetMe().GetType().Heal;
+                    return Provider.GetMe().GetCharacterType().Heal;
                 }
-                if (Provider.GetTrap().GetType().Heal == -1)
+                if (Provider.GetTrap().GetCharacterType().Heal == -1)
                     return 0;
-                return Provider.GetTrap().GetType().Heal;
+                return Provider.GetTrap().GetCharacterType().Heal;
             }
             if (context.possibleAttributes().GetText().Equals("place"))
             {
@@ -1248,30 +1248,30 @@ namespace LabWork1github.Visitors
                 if(context.character().ME() != null)
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                        return Provider.GetMe().GetType().TeleportPlace.X;
+                        return Provider.GetMe().GetCharacterType().TeleportPlace.X;
                     else
-                        return Provider.GetMe().GetType().TeleportPlace.Y;
+                        return Provider.GetMe().GetCharacterType().TeleportPlace.Y;
                 }
 
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                    return Provider.GetTrap().GetType().TeleportPlace.X;
+                    return Provider.GetTrap().GetCharacterType().TeleportPlace.X;
                 else
-                    return Provider.GetTrap().GetType().TeleportPlace.Y;
+                    return Provider.GetTrap().GetCharacterType().TeleportPlace.Y;
             }
             if (context.possibleAttributes().GetText().Equals("spawn_place"))
             {
                 if(context.character().ME() != null)
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                        return Provider.GetMe().GetType().SpawnPlace.X;
+                        return Provider.GetMe().GetCharacterType().SpawnPlace.X;
                     else
-                        return Provider.GetMe().GetType().SpawnPlace.Y;
+                        return Provider.GetMe().GetCharacterType().SpawnPlace.Y;
                 }
 
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                    return Provider.GetTrap().GetType().SpawnPlace.X;
+                    return Provider.GetTrap().GetCharacterType().SpawnPlace.X;
                 else
-                    return Provider.GetTrap().GetType().SpawnPlace.Y;
+                    return Provider.GetTrap().GetCharacterType().SpawnPlace.Y;
             }
             if (context.possibleAttributes().GetText().Equals("type"))
             {
@@ -1279,18 +1279,18 @@ namespace LabWork1github.Visitors
                 {
                     if(context.character().ME() != null)
                     {
-                        if (Provider.GetMe().GetType().Damage == -1)
+                        if (Provider.GetMe().GetCharacterType().Damage == -1)
                         {
                             return 0;
                         }
-                        return Provider.GetMe().GetType().Damage;
+                        return Provider.GetMe().GetCharacterType().Damage;
                     }
 
-                    if (Provider.GetTrap().GetType().Damage == -1)
+                    if (Provider.GetTrap().GetCharacterType().Damage == -1)
                     {
                         return 0;
                     }
-                    return Provider.GetTrap().GetType().Damage;
+                    return Provider.GetTrap().GetCharacterType().Damage;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
                 {
@@ -1304,18 +1304,18 @@ namespace LabWork1github.Visitors
                 {
                     if(context.character().ME() != null)
                     {
-                        if (Provider.GetMe().GetType().Heal == -1)
+                        if (Provider.GetMe().GetCharacterType().Heal == -1)
                         {
                             return 0;
                         }
-                        return Provider.GetMe().GetType().Heal;
+                        return Provider.GetMe().GetCharacterType().Heal;
                     }
 
-                    if (Provider.GetTrap().GetType().Heal == -1)
+                    if (Provider.GetTrap().GetCharacterType().Heal == -1)
                     {
                         return 0;
                     }
-                    return Provider.GetTrap().GetType().Heal;
+                    return Provider.GetTrap().GetCharacterType().Heal;
                 }
             }
             if (context.possibleAttributes().GetText().Equals("spawn_type"))
@@ -1324,7 +1324,7 @@ namespace LabWork1github.Visitors
                 {
                     if(context.character().ME() != null)
                     {
-                        if (Provider.GetMe().GetType().SpawnType.Damage == -1)
+                        if (Provider.GetMe().GetCharacterType().SpawnType.Damage == -1)
                         {
                             ErrorList += ("ERROR: A monster needs damage!\n");
                             ErrorList += ("in place: \n");
@@ -1332,10 +1332,10 @@ namespace LabWork1github.Visitors
                             ErrorFound = true;
                             return -1;
                         }
-                        return Provider.GetMe().GetType().SpawnType.Damage;
+                        return Provider.GetMe().GetCharacterType().SpawnType.Damage;
                     }
 
-                    if (Provider.GetTrap().GetType().SpawnType.Damage == -1)
+                    if (Provider.GetTrap().GetCharacterType().SpawnType.Damage == -1)
                     {
                         ErrorList += ("ERROR: A monster needs damage!\n");
                         ErrorList += ("in place: \n");
@@ -1343,14 +1343,14 @@ namespace LabWork1github.Visitors
                         ErrorFound = true;
                         return -1;
                     }
-                    return Provider.GetTrap().GetType().SpawnType.Damage;
+                    return Provider.GetTrap().GetCharacterType().SpawnType.Damage;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
                 {
                     if (context.character().ME() != null)
-                        return Provider.GetMe().GetType().SpawnType.Health;
+                        return Provider.GetMe().GetCharacterType().SpawnType.Health;
 
-                    return Provider.GetTrap().GetType().SpawnType.Health;
+                    return Provider.GetTrap().GetCharacterType().SpawnType.Health;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
@@ -1375,7 +1375,7 @@ namespace LabWork1github.Visitors
 
                 if(context.character().ME() != null)
                 {
-                    if (Provider.GetMe().GetType().Damage == -1)
+                    if (Provider.GetMe().GetCharacterType().Damage == -1)
                     {
                         ErrorList += ("ERROR: A monster needs damage!\n");
                         ErrorList += ("in place: \n");
@@ -1384,10 +1384,10 @@ namespace LabWork1github.Visitors
                         return -1;
                     }
                     else
-                        return Provider.GetMe().GetType().Damage;
+                        return Provider.GetMe().GetCharacterType().Damage;
                 }
 
-                if (Provider.GetMonster().GetType().Damage == -1)
+                if (Provider.GetMonster().GetCharacterType().Damage == -1)
                 {
                     ErrorList += ("ERROR: A monster needs damage!\n");
                     ErrorList += ("in place: \n");
@@ -1396,7 +1396,7 @@ namespace LabWork1github.Visitors
                     return -1;
                 }
                 else
-                    return Provider.GetMonster().GetType().Damage;
+                    return Provider.GetMonster().GetCharacterType().Damage;
             }
             if (context.possibleAttributes().GetText().Equals("health"))
             {
@@ -1426,7 +1426,7 @@ namespace LabWork1github.Visitors
                 {
                     if(context.character().ME() != null)
                     {
-                        if (Provider.GetMe().GetType().Damage == -1)
+                        if (Provider.GetMe().GetCharacterType().Damage == -1)
                         {
                             ErrorList += ("ERROR: A monster needs damage!\n");
                             ErrorList += ("in place: \n");
@@ -1434,11 +1434,11 @@ namespace LabWork1github.Visitors
                             ErrorFound = true;
                             return -1;
                         }
-                        return Provider.GetMe().GetType().Damage;
+                        return Provider.GetMe().GetCharacterType().Damage;
                     }
 
 
-                    if (Provider.GetMonster().GetType().Damage == -1)
+                    if (Provider.GetMonster().GetCharacterType().Damage == -1)
                     {
                         ErrorList += ("ERROR: A monster needs damage!\n");
                         ErrorList += ("in place: \n");
@@ -1446,14 +1446,14 @@ namespace LabWork1github.Visitors
                         ErrorFound = true;
                         return -1;
                     }
-                    return Provider.GetMonster().GetType().Damage;
+                    return Provider.GetMonster().GetCharacterType().Damage;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
                 {
                     if(context.character().ME() != null)
-                        return Provider.GetMe().GetType().Health;
+                        return Provider.GetMe().GetCharacterType().Health;
 
-                    return Provider.GetMonster().GetType().Health;
+                    return Provider.GetMonster().GetCharacterType().Health;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
@@ -1540,17 +1540,17 @@ namespace LabWork1github.Visitors
             //                case "health":
             //                    return this.Provider.GetMe().GetHealth();
             //                case "damage":
-            //                    return this.Provider.GetMe().GetType().Damage;
+            //                    return this.Provider.GetMe().GetCharacterType().Damage;
             //                case "heal":
-            //                    return this.Provider.GetMe().GetType().Heal;
+            //                    return this.Provider.GetMe().GetCharacterType().Heal;
             //                case "teleport.x":
-            //                    return this.Provider.GetMe().GetType().TeleportPlace.X;
+            //                    return this.Provider.GetMe().GetCharacterType().TeleportPlace.X;
             //                case "teleport.y":
-            //                    return this.Provider.GetMe().GetType().TeleportPlace.Y;
+            //                    return this.Provider.GetMe().GetCharacterType().TeleportPlace.Y;
             //                case "spawn.x":
-            //                    return this.Provider.GetMe().GetType().SpawnPlace.X;
+            //                    return this.Provider.GetMe().GetCharacterType().SpawnPlace.X;
             //                case "spawn.y":
-            //                    return this.Provider.GetMe().GetType().SpawnPlace.Y;
+            //                    return this.Provider.GetMe().GetCharacterType().SpawnPlace.Y;
             //            }
             //        }
             //        else
@@ -1563,7 +1563,7 @@ namespace LabWork1github.Visitors
             //                case "health":
             //                    return this.Provider.GetMe().GetHealth();
             //                case "damage":
-            //                    return this.Provider.GetMe().GetType().Damage;
+            //                    return this.Provider.GetMe().GetCharacterType().Damage;
             //            }
             //    }
             //    throw new InvalidOperationException("type check failed in attribute");

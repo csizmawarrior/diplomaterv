@@ -10,7 +10,7 @@ namespace LabWork1github
     {
         public Place Place { get; set; }
 
-        public abstract CharacterType GetType();
+        public abstract CharacterType GetCharacterType();
 
         public abstract int GetHealth();
 

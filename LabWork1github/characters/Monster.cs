@@ -27,7 +27,7 @@ namespace LabWork1github
             return Health;
         }
 
-        public override CharacterType GetType()
+        public override CharacterType GetCharacterType()
         {
             return Type;
         }

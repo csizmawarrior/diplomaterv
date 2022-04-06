@@ -55,11 +55,7 @@
     <Compile Include="g4 files\BoardGrammar.g4.parser.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="types\BoolType.cs" />
-    <Compile Include="types\NumberType.cs" />
-    <Compile Include="types\StringType.cs" />
     <Compile Include="Visitors\BoardGrammarVisitor.cs" />
-    <Compile Include="BoolMethods.cs" />
     <Compile Include="characters\Character.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="game field classes\Drawer.cs" />
@@ -77,32 +73,27 @@
     <Compile Include="g4 files\DynamicMonster.g4.parser.cs">
       <DependentUpon>DynamicMonster.g4</DependentUpon>
     </Compile>
-    <Compile Include="Visitors\DynamicMonsterVisitor.cs" />
     <Compile Include="g4 files\DynamicTrap.g4.lexer.cs">
       <DependentUpon>DynamicTrap.g4</DependentUpon>
     </Compile>
     <Compile Include="g4 files\DynamicTrap.g4.parser.cs">
       <DependentUpon>DynamicTrap.g4</DependentUpon>
     </Compile>
-    <Compile Include="Visitors\DynamicTrapVisitor.cs" />
     <Compile Include="types\charactertypes\CharacterType.cs" />
     <Compile Include="Visitors\ExpressionVisitor.cs" />
     <Compile Include="game field classes\Game.cs" />
     <Compile Include="game field classes\GameParamProvider.cs" />
     <Compile Include="Commands\IfCommand.cs" />
     <Compile Include="characters\Monster.cs" />
-    <Compile Include="MonsterAI.cs" />
-    <Compile Include="Visitors\MonsterExpressionParserVisitor.cs" />
     <Compile Include="g4 files\MonsterGrammar.g4.lexer.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
     </Compile>
     <Compile Include="g4 files\MonsterGrammar.g4.parser.cs">
       <DependentUpon>MonsterGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="Visitors\MonsterGrammarVisitor.cs" />
     <Compile Include="types\charactertypes\MonsterType.cs" />
     <Compile Include="Commands\MoveCommand.cs" />
-    <Compile Include="types\MyType.cs" />
+    <Compile Include="types\MyTypes.cs" />
     <Compile Include="game field classes\Place.cs" />
     <Compile Include="characters\Player.cs" />
     <Compile Include="g4 files\PlayerGrammar.g4.lexer.cs">
@@ -120,14 +111,12 @@
     <Compile Include="Commands\SpawnCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
     <Compile Include="characters\Trap.cs" />
-    <Compile Include="TrapAI.cs" />
     <Compile Include="g4 files\TrapGrammar.g4.lexer.cs">
       <DependentUpon>TrapGrammar.g4</DependentUpon>
     </Compile>
     <Compile Include="g4 files\TrapGrammar.g4.parser.cs">
       <DependentUpon>TrapGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="Visitors\TrapGrammarVisitor.cs" />
     <Compile Include="types\charactertypes\TrapType.cs" />
     <Compile Include="Commands\WhileCommand.cs" />
   </ItemGroup>

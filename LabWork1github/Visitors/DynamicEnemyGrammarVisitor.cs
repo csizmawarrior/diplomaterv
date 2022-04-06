@@ -386,7 +386,7 @@ namespace LabWork1github
                 if(context.MONSTER() == null)
                 {
                     int monsterCount = (int)(rand.Next() % Program.monsterTypes.Count);
-                    newCommand.TargetType = Program.monsterTypes.ElementAt(monsterCount);
+                    newCommand.TarGetCharacterType = Program.monsterTypes.ElementAt(monsterCount);
                 }
             }
             if (context.MONSTER() != null)
@@ -398,7 +398,7 @@ namespace LabWork1github
                     ErrorFound = true;
                 }
                 else
-                newCommand.TargetType = Program.GetCharacterType(context.name().GetText()).SpawnType;
+                newCommand.TarGetCharacterType = Program.GetCharacterType(context.name().GetText()).SpawnType;
             }
             newCommand.SpawnDelegate = new SpawnDelegate(Spawn);
             AddCommand(newCommand);
@@ -495,7 +495,7 @@ namespace LabWork1github
             }
             if (provider.GetPlayer().Place.DirectionTo(command.TargetPlace).Equals("collision"))
                 return;
-            Monster newMonster = new Monster(command.TargetType.Health, (MonsterType)command.TargetType, command.TargetPlace);
+            Monster newMonster = new Monster(command.TarGetCharacterType.Health, (MonsterType)command.TarGetCharacterType, command.TargetPlace);
             provider.GetMonsters().Add(newMonster);
             provider.GetBoard().Monsters.Add(newMonster);
             //TODO: check if it works

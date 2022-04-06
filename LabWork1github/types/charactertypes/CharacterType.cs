@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public abstract class CharacterType : MyType
+    public abstract class CharacterType
     {
         public int Health { get; set; } = -1;
         public int Heal { get; set; } = -1;

@@ -20,10 +20,6 @@ namespace LabWork1github
 
         public List<Trap> Traps { get; set; }
 
-        private MonsterAI monsterAI;
-
-        private TrapAI trapAI;
-
         public static PlayerMove move = new PlayerMove();
 
         public static List<Character> characters = new List<Character>();
@@ -46,8 +42,6 @@ namespace LabWork1github
 
         public void Init()
         {
-            monsterAI = new MonsterAI();
-            trapAI = new TrapAI();
             drawer = new Drawer();
             Board = Program.Board;
             Monsters = Board.Monsters;
@@ -67,15 +61,6 @@ namespace LabWork1github
                 {
                     Traps.Remove(Trap);
                     drawer.writeCommand("A trap was out of bounds, so it got deleted");
-                }
-
-                if (Trap.Type.EffectPlace != null)
-                {
-                    if (Trap.Type.EffectPlace.X > Board.Height || Trap.Type.EffectPlace.Y > Board.Width)
-                    {
-                        Traps.Remove(Trap);
-                        drawer.writeCommand("A trap's effect place was out of bounds, so it got deleted");
-                    }
                 }
 
                 foreach (Monster monster in Monsters)
@@ -159,7 +144,6 @@ namespace LabWork1github
             if (wrongMove)
                 return;
 
-            trapAI.Step(Round, Player, Traps);
 
             foreach (Monster monster in Monsters)
             {
@@ -168,12 +152,6 @@ namespace LabWork1github
                     Monsters.Remove(monster);
                     break;
                 }
-            }
-
-            monsterAI.Step(Round, Player, Monsters);
-            if (trapAI.Spawning) { 
-                if(checkSpawn(trapAI.spawnPoint))
-                    Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(0), trapAI.spawnPoint));
             }
 
             drawer.drawBoard(Board, Player, Monsters, Traps);
