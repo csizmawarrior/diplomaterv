@@ -66,5 +66,9 @@ namespace LabWork1github
         {
             return game.IsOccupied(p);
         }
+        public void PlayerCommand()
+        {
+//TODO: call the game's function, that takes care of the player's movement and the interaction with the player.
+        }
     }
 }

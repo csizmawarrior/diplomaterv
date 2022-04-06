@@ -23,6 +23,9 @@ namespace LabWork1github
         }
 
         public int MoveRound { get; set; }
+
+
+        
         public TrapEffect EffectType { get; set; }
         private Place effectPlace;
         public Place EffectPlace

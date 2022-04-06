@@ -95,14 +95,14 @@ namespace LabWork1github
         public void Start()
         {
             drawer.drawBoard(Board, Player, Monsters, Traps);
-            while (Player.Health > 0 && Monsters.Count > 0)
+            while (Player.GetHealth() > 0 && Monsters.Count > 0)
             {
 
                 if(!wrongMove)
                     Round++;
                 Step();
             }
-            if (Player.Health <= 0)
+            if (Player.GetHealth() <= 0)
                 drawer.writeCommand("You died!");
             else
                 drawer.writeCommand("You WON!");
@@ -117,7 +117,7 @@ namespace LabWork1github
             switch (move.CommandType)
             {
                 case CommandType.health:
-                    drawer.writeCommand("The payer's health is: " + Player.Health);
+                    drawer.writeCommand("The payer's health is: " + Player.GetHealth());
                     break;
                 case CommandType.move:
                     if (fallingCheck(Player, move))

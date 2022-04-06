@@ -10,7 +10,7 @@ namespace LabWork1github
     {
         public static bool IsPlayerAlive(GameParamProvider provider, IfCommand command)
         {
-            return provider.GetPlayer().Health > 0;
+            return provider.GetPlayer().GetHealth() > 0;
         }
 
         public static bool IsTrapAlive(GameParamProvider provider, IfCommand command)

@@ -23,6 +23,39 @@ namespace LabWork1github
         private bool SpawnPointDeclare { get; set; } = false;
         public string Error = "";
         public bool ErrorFound = false;
+        public override object VisitDefinition([NotNull] DefinitionContext context)
+        {
+            foreach(var child in context.statementList())
+            {
+                typeName = "";
+                type = null;
+                ConditionCount = new List<int>();
+                ConditionalCommands = new List<Command>();
+                HealthDeclare = false;
+                HealAmountDeclare = false;
+                DamageAmountDeclare = false;
+                TeleportPointDeclare = false;
+                SpawnTypeDeclare = false;
+                SpawnPointDeclare = false;
+                Error = "";
+                ErrorFound = false;
+
+                VisitStatementList(child);
+
+                if(type.Equals(Types.MONSTER) && (!HealthDeclare || !DamageAmountDeclare))
+                {
+                    if (!HealthDeclare)
+                        Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Health;
+                    if (!DamageAmountDeclare)
+                        Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Damage;
+                }
+                if (type.Equals(Types.TRAP) && !HealAmountDeclare && !DamageAmountDeclare && (!SpawnPointDeclare || !SpawnTypeDeclare) && !TeleportPointDeclare) {
+                    Program.GetCharacterType(typeName).Damage = Program.GetCharacterType("DefaultTrap").Damage;
+                }
+            }
+            //since I manually visit every children of the definition, no need to return the base visit function, only a null
+            return null;
+        }
         public override object VisitTrapNameDeclaration([NotNull] TrapNameDeclarationContext context)
         {
             type = Types.TRAP;
@@ -34,7 +67,6 @@ namespace LabWork1github
         {
             type = Types.MONSTER;
             Program.CharacterTypes.Add(new MonsterType(context.name().GetText()));
-            //TODO: ask if it's okay to have no parametered monster/trap, default things, or forbid it completely?
             typeName = context.name().GetText();
             HealthDeclare = false;
             HealAmountDeclare = false;
@@ -385,9 +417,11 @@ namespace LabWork1github
             }
             else
             {
-                IfCommand newCommand = new IfCommand();
-                newCommand.MyContext = context.boolExpression();
-               // newCommand.Condition = (GetCondition);
+                IfCommand newCommand = new IfCommand
+                {
+                    MyContext = context.boolExpression(),
+                    Condition = (GetCondition)
+                };
                 this.ConditionalCommands.Add(newCommand);
                 this.ConditionCount.Add(context.block().ChildCount - 2);
                 if (context.block().ChildCount - 2 == 0)
@@ -413,9 +447,11 @@ namespace LabWork1github
             }
             else
             {
-                WhileCommand newCommand = new WhileCommand();
-                newCommand.MyContext = context.boolExpression();
-              //  newCommand.Condition = (GetCondition);
+                WhileCommand newCommand = new WhileCommand
+                {
+                    MyContext = context.boolExpression(),
+                    Condition = (GetCondition)
+                };
                 this.ConditionalCommands.Add(newCommand);
                 this.ConditionCount.Add(context.block().ChildCount);
                 if (context.block().ChildCount == 0)
@@ -440,9 +476,9 @@ namespace LabWork1github
             ConditionVisitor visitor = new ConditionVisitor(provider, context);
             return visitor.CheckConditions();
         }
-        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
 
-       
+
+        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
 
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)

@@ -64,7 +64,7 @@ namespace LabWork1github
 
         public override void Step(GameParamProvider provider)
         {
-            //TODO: implement player asking logic here, or at least the function call for it
+            provider.PlayerCommand();
         }
     }
 }

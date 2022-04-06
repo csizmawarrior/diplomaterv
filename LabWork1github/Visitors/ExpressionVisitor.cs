@@ -137,6 +137,7 @@ namespace LabWork1github
                     }
                     else
         //by this we rerstrict the deepness of the reference for types, no need for further levels, the same things can be represented like this as well
+        //and it'd look weird to have e.g. type.type.type, or spawn_type.type they return the same type as the first one
         //we can't ensure now that it will be a trap or a monster referred to under type, or a player, so the error for this can only be provided in runtime
                     if (context.possibleAttributes().GetText().Equals("spawn_type") || context.possibleAttributes().GetText().Equals("type"))
                     {

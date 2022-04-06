@@ -157,20 +157,20 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_type=DefaultMonster;" + "\n");
         }
-        //[TestMethod]    TODO: This will throw an error this way, it shouldn't
-        //public void DoubleCheckDifferentAmountSpawnType()
-        //{
-        //    string text = System.IO.File.ReadAllText("trap name = teszttrap ; spawn_type=DefaultMonster;spawn_type=TestType;");
-        //    AntlrInputStream inputStream = new AntlrInputStream(text);
-        //    BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
-        //    CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
-        //    BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
-        //    BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
-        //    LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
-        //    visitor.Visit(chatContext);
-        //    Assert.IsTrue(visitor.ErrorFound);
-        //    Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_place=2,2;" + "\n");
-        //}
+        [TestMethod]
+        public void DoubleCheckDifferentAmountSpawnType()
+        {
+            string text = System.IO.File.ReadAllText("trap name = teszttrap ; spawn_type=DefaultMonster;spawn_type=TestType;");
+            AntlrInputStream inputStream = new AntlrInputStream(text);
+            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
+            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
+            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(chatContext);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_place=2,2;" + "\n");
+        }
         public void AssigningTrapsHealth()
         {
             string text = System.IO.File.ReadAllText("trap name = teszttrap ; health=20;");

@@ -121,7 +121,6 @@ namespace LabWork1github.Visitors
                 return boolExp && CheckBoolExpression(context.boolExpression());
         }
 
-        //TODO: rethink and redo attribute handling because of changes
         public double CheckNumberAddExpression(NumberExpressionContext context)
         {
             double expressionValue = CheckNumberMultipExpression(context.numberMultipExpression().ElementAt(0));
@@ -465,18 +464,6 @@ namespace LabWork1github.Visitors
             if (context.attribute().ElementAt(0).character().TRAP() != null ||
                 (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetType() is TrapType))
             {
-                //TODO: delete this if, only here so I know what attributes to check
-                if (!(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") ||
-                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("heal") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("damage") ||
-                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_type") || context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("spawn_place") ||
-                    context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("teleport_place") ))
-                {
-                    ErrorList += ("ERROR: Monster does not have that attribue!\n");
-                    ErrorList += ("in place: \n");
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return false;
-                }
                 //first character is trap and the attribute is type
                 if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") &&
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
@@ -1229,7 +1216,7 @@ namespace LabWork1github.Visitors
                 return Provider.GetTrap().GetType().Damage;
             }
             //assuming that traps return a default 0 for heal or damage when e.g. they only teleport
-            //TODO: clarify this, and make changes if necessary
+            //TODO: clarify this, and make changes if necessary, seems logical, but ask just in case
             if (context.possibleAttributes().GetText().Equals("heal"))
             {
                 if(context.character().ME() != null)
