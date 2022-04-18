@@ -327,6 +327,7 @@ public partial class BoardGrammarParser : Parser {
 		public XContext x() {
 			return GetRuleContext<XContext>(0);
 		}
+		public ITerminalNode COMMA() { return GetToken(BoardGrammarParser.COMMA, 0); }
 		public YContext y() {
 			return GetRuleContext<YContext>(0);
 		}
@@ -464,6 +465,7 @@ public partial class BoardGrammarParser : Parser {
 		public PlaceContext place() {
 			return GetRuleContext<PlaceContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
 		public BoardCreationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -512,6 +514,7 @@ public partial class BoardGrammarParser : Parser {
 		public PlaceContext place() {
 			return GetRuleContext<PlaceContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
 		public PlayerPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -560,9 +563,11 @@ public partial class BoardGrammarParser : Parser {
 		public PlaceContext place() {
 			return GetRuleContext<PlaceContext>(0);
 		}
+		public ITerminalNode COMMA() { return GetToken(BoardGrammarParser.COMMA, 0); }
 		public TypeNameContext typeName() {
 			return GetRuleContext<TypeNameContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
 		public MonsterPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -613,9 +618,11 @@ public partial class BoardGrammarParser : Parser {
 		public PlaceContext place() {
 			return GetRuleContext<PlaceContext>(0);
 		}
+		public ITerminalNode COMMA() { return GetToken(BoardGrammarParser.COMMA, 0); }
 		public TypeNameContext typeName() {
 			return GetRuleContext<TypeNameContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
 		public TrapPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{

@@ -191,6 +191,12 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
+            if(Program.GetCharacterType(context.name().GetText()) == null)
+            {
+                Error += "Spawning enemy type doesn't exist at place:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
             else
             {
                 Program.GetCharacterType(typeName).SpawnType = Program.GetCharacterType(context.name().GetText());
@@ -385,15 +391,31 @@ namespace LabWork1github
                 newCommand.TargetPlace = new Place(XPos, YPos);
                 if(context.MONSTER() == null)
                 {
-                    int monsterCount = (int)(rand.Next() % Program.monsterTypes.Count);
-                    newCommand.TarGetCharacterType = Program.monsterTypes.ElementAt(monsterCount);
+                    //here we count how many monster types are there to do a random choice out of them
+                    int count = 0;
+                    foreach(CharacterType ct in Program.CharacterTypes)
+                    {
+                        if (ct is MonsterType)
+                            count++;
+                    }
+
+                    int monsterCount = (int)(rand.Next() % count);
+                    count = 0;
+                    foreach (CharacterType ct in Program.CharacterTypes)
+                    {
+                        if(count == monsterCount)
+                            newCommand.TarGetCharacterType = ct;
+                        if (ct is MonsterType)
+                            count++;
+                    }
+                    
                 }
             }
             if (context.MONSTER() != null)
             {
                 if (Program.GetCharacterType(context.name().GetText()) == null)
                 {
-                    Error += "No spawning type given:\n";
+                    Error += "No existing spawning type given:\n";
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }

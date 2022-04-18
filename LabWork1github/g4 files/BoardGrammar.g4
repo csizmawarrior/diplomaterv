@@ -8,14 +8,14 @@ statement: playerPlacement
          ;
 
 typeName: ID;
-place: x ',' y;
+place: x COMMA y;
 
 x: COORDINATE;
 y: COORDINATE;
-boardCreation: BOARD  place ';';
-playerPlacement: PLAYER place ';' ;
-monsterPlacement: MONSTER place ',' typeName ';' ;
-trapPlacement: TRAP place ',' typeName ';' ;
+boardCreation: BOARD  place SEMI;
+playerPlacement: PLAYER place SEMI ;
+monsterPlacement: MONSTER place COMMA typeName SEMI ;
+trapPlacement: TRAP place COMMA typeName SEMI ;
 
 SEMI: ';';
 COMMA: ',';

@@ -68,7 +68,7 @@ namespace LabWork1github
         }
         public void PlayerCommand()
         {
-//TODO: call the game's function, that takes care of the player's movement and the interaction with the player.
+            game.PlayerCommand();
         }
     }
 }

@@ -1216,7 +1216,6 @@ namespace LabWork1github.Visitors
                 return Provider.GetTrap().GetCharacterType().Damage;
             }
             //assuming that traps return a default 0 for heal or damage when e.g. they only teleport
-            //TODO: clarify this, and make changes if necessary, seems logical, but ask just in case
             if (context.possibleAttributes().GetText().Equals("heal"))
             {
                 if(context.character().ME() != null)

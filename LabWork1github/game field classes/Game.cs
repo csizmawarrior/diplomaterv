@@ -22,13 +22,13 @@ namespace LabWork1github
 
         public static PlayerMove move = new PlayerMove();
 
-        public static List<Character> characters = new List<Character>();
+        public static List<Character> Characters = new List<Character>();
 
         public int Round { get; set; } = 0;
 
         public bool wrongMove = false;
 
-        public Drawer drawer;
+        public Drawer Drawer;
 
         public Monster ActualMonster { get; set; }
 
@@ -40,9 +40,12 @@ namespace LabWork1github
 
         public int Repeat { get; set; } = 0;
 
+        private GameParamProvider Provider;
+
         public void Init()
         {
-            drawer = new Drawer();
+            Drawer = new Drawer();
+            Provider = new GameParamProvider(this);
             Board = Program.Board;
             Monsters = Board.Monsters;
             Traps = Board.Traps;
@@ -52,7 +55,7 @@ namespace LabWork1github
                 if (monster.Place.X > Board.Height || monster.Place.Y > Board.Width)
                 {
                     Monsters.Remove(monster);
-                    drawer.writeCommand("A monster was out of bounds, so it got deleted");
+                    Drawer.WriteCommand("A monster was out of bounds, so it got deleted");
                 }
             }
             foreach (Trap Trap in Traps)
@@ -60,7 +63,7 @@ namespace LabWork1github
                 if (Trap.Place.X > Board.Height || Trap.Place.Y > Board.Width)
                 {
                     Traps.Remove(Trap);
-                    drawer.writeCommand("A trap was out of bounds, so it got deleted");
+                    Drawer.WriteCommand("A trap was out of bounds, so it got deleted");
                 }
 
                 foreach (Monster monster in Monsters)
@@ -76,69 +79,30 @@ namespace LabWork1github
             if (Player.Place.X > Board.Height || Player.Place.Y > Board.Width)
                 throw new NullReferenceException("Player is not on the board");
         }
+        //hmm these checks might be able to go into the board visitor
+
 
         public void Start()
         {
-            drawer.drawBoard(Board, Player, Monsters, Traps);
+            Drawer.DrawBoard(Board, Player, Monsters, Traps);
             while (Player.GetHealth() > 0 && Monsters.Count > 0)
             {
-
-                if(!wrongMove)
-                    Round++;
+                Round++;
                 Step();
             }
             if (Player.GetHealth() <= 0)
-                drawer.writeCommand("You died!");
+                Drawer.WriteCommand("You died!");
             else
-                drawer.writeCommand("You WON!");
+                Drawer.WriteCommand("You WON!");
         }
 
         public void Step()
         {
             wrongMove = false;
-            drawer.writeCommand("Give a command!");
-            string inputLine = Console.ReadLine();
-            commandProcess(inputLine);
-            switch (move.CommandType)
+            
+            foreach(Character character in Characters)
             {
-                case CommandType.health:
-                    drawer.writeCommand("The payer's health is: " + Player.GetHealth());
-                    break;
-                case CommandType.move:
-                    if (fallingCheck(Player, move))
-                    {
-                        drawer.writeCommand("Invalid move, falling off the board, try again next turn!");
-                        wrongMove = true;
-                        break;
-                    }
-                    for (int i = 0; i < Monsters.Count; i++)
-                    {
-                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction) {
-                            drawer.writeCommand("Invalid move, bumping into Monster, you damaged yourself, try again next turn!");
-                            Player.Damage(25);
-                            wrongMove = true;
-                            break;
-                        }
-                    }
-                    if (!wrongMove)
-                        Player.Move(move.Direction);
-                    break;
-                case CommandType.shoot:
-                    for (int i = 0; i < Monsters.Count; i++)
-                    {
-                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction) {
-                            Monsters.ElementAt(i).Damage(50);
-                        }
-                    }
-                    break;
-                case CommandType.help:
-                    wrongMove = true;
-                    drawer.writeHelp();
-                    break;
-                default:
-                    drawer.writeCommand("Invalid command! Try again!");
-                    wrongMove = true;
-                    break;
+                character.GetCharacterType().Step(Provider);
             }
 
             if (wrongMove)
@@ -154,7 +118,7 @@ namespace LabWork1github
                 }
             }
 
-            drawer.drawBoard(Board, Player, Monsters, Traps);
+            Drawer.DrawBoard(Board, Player, Monsters, Traps);
             move = new PlayerMove();
         }
 
@@ -175,7 +139,7 @@ namespace LabWork1github
             return true;
         }
 
-        private void commandProcess(string inputCommand)
+        private void CommandProcess(string inputCommand)
         {
                 AntlrInputStream inputStream = new AntlrInputStream(inputCommand);
                 PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
@@ -198,6 +162,58 @@ namespace LabWork1github
                     return true;
                 return false;
         }
+
+        public void PlayerCommand()
+        {
+            Drawer.WriteCommand("Give a command!");
+            string inputLine = Console.ReadLine();
+            CommandProcess(inputLine);
+            switch (move.CommandType)
+            {
+                case CommandType.health:
+                    Drawer.WriteCommand("The payer's health is: " + Player.GetHealth());
+                    break;
+                case CommandType.move:
+                    if (fallingCheck(Player, move))
+                    {
+                        Drawer.WriteCommand("Invalid move, falling off the board, try again next turn!");
+                        wrongMove = true;
+                        break;
+                    }
+                    for (int i = 0; i < Monsters.Count; i++)
+                    {
+                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
+                        {
+                            Drawer.WriteCommand("Invalid move, bumping into Monster, you damaged yourself, try again next turn!");
+                            Player.Damage(25);
+                            wrongMove = true;
+                            break;
+                        }
+                    }
+                    if (!wrongMove)
+                        //TODO: ask if this is good, or should the game move the player
+                        Player.Move(move.Direction);
+                    break;
+                case CommandType.shoot:
+                    for (int i = 0; i < Monsters.Count; i++)
+                    {
+                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
+                        {
+                            Monsters.ElementAt(i).Damage(Player.Type.Damage);
+                        }
+                    }
+                    break;
+                case CommandType.help:
+                    wrongMove = true;
+                    Drawer.writeHelp();
+                    break;
+                default:
+                    Drawer.WriteCommand("Invalid command! Try again! Try the help command");
+                    wrongMove = true;
+                    break;
+            }
+        }
+
         public bool IsOccupied(Place p)
         {
             foreach(Monster m in Monsters)

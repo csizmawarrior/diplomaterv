@@ -6,13 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static LabWork1github.BoardGrammarParser;
-using LabWork1github;
-using LabWork1github;
 
 namespace LabWork1github
 {
     class BoardGrammarVisitor : BoardGrammarBaseVisitor<object>
     {
+        public bool ErrorFound { get; set; }
+
+        public string ErrorList { get; set; } = "";
+
         public override object Visit([NotNull] IParseTree tree)
         {
             return base.Visit(tree);
@@ -46,6 +48,7 @@ namespace LabWork1github
             int xPos = int.Parse(place.x().GetText());
             int yPos = int.Parse(place.y().GetText());
             Program.Board.Player = new Player(new Place(xPos-1, yPos-1), Program.starterHP);
+            Program.Characters.Add(Program.Board.Player);
             return base.VisitPlayerPlacement(context);
         }
         public override object VisitMonsterPlacement([NotNull] MonsterPlacementContext context)
@@ -54,15 +57,16 @@ namespace LabWork1github
             int xPos = int.Parse(place.x().GetText());
             int yPos = int.Parse(place.y().GetText());
             string typeName = context.typeName().GetText();
-            for(int i = 0; i < Program.monsterTypes.Count; i++)
-            {
-                if(typeName == Program.monsterTypes.ElementAt(i).Name)
-                {
-                    Program.Board.Monsters.Add(new Monster(Program.starterHP, Program.monsterTypes.ElementAt(i), new Place(xPos-1, yPos-1)));
-                    return base.VisitMonsterPlacement(context);
-                }
-
+            if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is MonsterType) {
+                Monster m = new Monster(Program.starterHP, (MonsterType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+                Program.Board.Monsters.Add(m);
+                Program.Characters.Add(m);
+                return base.VisitMonsterPlacement(context);
             }
+            ErrorFound = true;
+            ErrorList += "The monster type is incorrect at place:\n";
+            ErrorList += context.GetText() + "\n";
+           
             
             return base.VisitMonsterPlacement(context);
         }
@@ -72,15 +76,16 @@ namespace LabWork1github
             int xPos = int.Parse(place.x().GetText());
             int yPos = int.Parse(place.y().GetText());
             string typeName = context.typeName().GetText();
-            for (int i = 0; i < Program.trapTypes.Count; i++)
+            if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is TrapType)
             {
-                if (typeName == Program.trapTypes.ElementAt(i).Name)
-                {
-                    Program.Board.Traps.Add(new Trap(Program.trapTypes.ElementAt(i), new Place(xPos-1, yPos-1)));
-                    return base.VisitTrapPlacement(context);
-                }
-
+                Trap t = new Trap((TrapType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+                Program.Board.Traps.Add(t);
+                Program.Characters.Add(t);
+                return base.VisitTrapPlacement(context);
             }
+            ErrorFound = true;
+            ErrorList += "The trap type is incorrect at place:\n";
+            ErrorList += context.GetText() + "\n";
 
             return base.VisitTrapPlacement(context);
         }

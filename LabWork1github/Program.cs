@@ -8,11 +8,10 @@ namespace LabWork1github
     class Program
     {
         public static List<CharacterType> CharacterTypes = new List<CharacterType>();
-
+        public static List<Character> Characters = new List<Character>();
 
         public static Board Board = new Board();
-        public static List<MonsterType> monsterTypes = new List<MonsterType>();
-        public static List<TrapType> trapTypes = new List<TrapType>();
+        
         public static int starterHP = 300;
 
         static void Main(string[] args)
@@ -42,10 +41,10 @@ namespace LabWork1github
         {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/MonsterTypes.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
-            MonsterGrammarLexer MonsterGrammarLexer_ = new MonsterGrammarLexer(inputStream);
+            DynamicEnemyGrammarLexer MonsterGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(MonsterGrammarLexer_);
-            MonsterGrammarParser MonsterGrammarParser = new MonsterGrammarParser(commonTokenStream);
-            MonsterGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
+            DynamicEnemyGrammarParser MonsterGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
+            DynamicEnemyGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
             visitor.Visit(chatContext);
@@ -78,12 +77,19 @@ namespace LabWork1github
             if(visitor.ErrorFound)
                 Console.WriteLine(visitor.Error);
         }
+
         public static CharacterType GetCharacterType(string name)
         {
             if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1)
-                throw new ArgumentException("Not a valid CharacterType name");
+            {
+                Console.WriteLine("The type "+name+" does not exist");
+                return null;
+            }   
             else if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
-                    throw new ArgumentException("Not a valid CharacterType name");
+            {
+                Console.WriteLine("The type " + name + " does not exist");
+                return null;
+            }
             return CharacterTypes.Find(e => e.Name.Equals(name));
                 
         }

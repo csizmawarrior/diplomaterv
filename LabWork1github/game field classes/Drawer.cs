@@ -12,11 +12,11 @@ namespace LabWork1github
         bool trapOccupied = false;
         bool found = false;
 
-        public void writeCommand(string message)
+        public void WriteCommand(string message)
         {
             Console.WriteLine(message);
         }
-        public void drawBoard(Board board, Player player, List<Monster> monsters, List<Trap> traps)
+        public void DrawBoard(Board board, Player player, List<Monster> monsters, List<Trap> traps)
         {
             List<Place> places = new List<Place>();
             places.Add(player.Place);
