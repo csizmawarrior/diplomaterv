@@ -2,6 +2,7 @@ using Antlr4.Runtime;
 using LabWork1github;
 using System;
 using System.Collections.Generic;
+using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
 {
@@ -17,17 +18,18 @@ namespace LabWork1github
         static void Main(string[] args)
         {
             //we hand in a default type for a monster and a trap, so when nothing is given, the trap or monster will get these ones' attributes
-            CharacterTypes.Add(new MonsterType("DefaultMonster"));
-            GetCharacterType("DefaultMonster").Damage = 50;
-            GetCharacterType("DefaultMonster").Health = 200;
+            //CharacterTypes.Add(new MonsterType("DefaultMonster"));
+            //GetCharacterType("DefaultMonster").Damage = 50;
+            //GetCharacterType("DefaultMonster").Health = 200;
 
-            CharacterTypes.Add(new TrapType("DefaultTrap"));
-            GetCharacterType("DefaultTrap").Damage = 50;
+            //CharacterTypes.Add(new TrapType("DefaultTrap"));
+            //GetCharacterType("DefaultTrap").Damage = 50;
+
 
             //  MonsterTypeLoader();
             BoardLoader();
             TrapTypeLoader();
-            BoardLoader();
+            MonsterTypeLoader();
 
             Game theGame = new Game();
             theGame.Init();
@@ -39,7 +41,7 @@ namespace LabWork1github
 
         private static void MonsterTypeLoader()
         {
-            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/MonsterTypes.txt");
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/DefaultMonster.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
             DynamicEnemyGrammarLexer MonsterGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(MonsterGrammarLexer_);
@@ -66,7 +68,7 @@ namespace LabWork1github
 
         public static void TrapTypeLoader()
         {
-            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/TestTypes.txt");
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/DefaultTrap.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
             DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);

@@ -37,8 +37,8 @@ spawnTypeDeclaration: SPAWN_TYPE EQUALS name;
 distanceDeclare: DISTANCE EQUALS NUMBER;
 
 moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION distanceDeclare | MOVE TO PLAYER | MOVE TO RANDOM ;
-shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION distanceDeclare | SHOOT DIRECTION damageDeclaration | SHOOT RANDOM
-                | SHOOT TO PLAYER | SHOOT TO PLAYER damageDeclaration | SHOOT DIRECTION distanceDeclare damageDeclaration | SHOOT TO place damageDeclaration ;
+shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION distanceDeclare | SHOOT DIRECTION damageAmountDeclaration | SHOOT RANDOM
+                | SHOOT TO PLAYER | SHOOT TO PLAYER damageAmountDeclaration | SHOOT DIRECTION distanceDeclare damageAmountDeclaration | SHOOT TO place damageAmountDeclaration ;
 damageDeclaration: DAMAGE DIRECTION | DAMAGE DIRECTION damageAmountDeclaration | DAMAGE DIRECTION distanceDeclare | DAMAGE DIRECTION distanceDeclare damageAmountDeclaration
 					| DAMAGE RANDOM	| DAMAGE TO place | DAMAGE TO place damageAmountDeclaration | DAMAGE TO character | DAMAGE TO character damageAmountDeclaration ;
 healDeclaration: HEAL DIRECTION | HEAL DIRECTION healAmountDeclaration | HEAL DIRECTION distanceDeclare | HEAL DIRECTION distanceDeclare healAmountDeclaration

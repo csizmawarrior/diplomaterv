@@ -1101,8 +1101,8 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public DistanceDeclareContext distanceDeclare() {
 			return GetRuleContext<DistanceDeclareContext>(0);
 		}
-		public DamageDeclarationContext damageDeclaration() {
-			return GetRuleContext<DamageDeclarationContext>(0);
+		public DamageAmountDeclarationContext damageAmountDeclaration() {
+			return GetRuleContext<DamageAmountDeclarationContext>(0);
 		}
 		public ITerminalNode RANDOM() { return GetToken(DynamicEnemyGrammarParser.RANDOM, 0); }
 		public ITerminalNode PLAYER() { return GetToken(DynamicEnemyGrammarParser.PLAYER, 0); }
@@ -1165,7 +1165,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 				{
 				State = 199; Match(SHOOT);
 				State = 200; Match(DIRECTION);
-				State = 201; damageDeclaration();
+				State = 201; damageAmountDeclaration();
 				}
 				break;
 
@@ -1192,7 +1192,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 				State = 207; Match(SHOOT);
 				State = 208; Match(TO);
 				State = 209; Match(PLAYER);
-				State = 210; damageDeclaration();
+				State = 210; damageAmountDeclaration();
 				}
 				break;
 
@@ -1202,7 +1202,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 				State = 211; Match(SHOOT);
 				State = 212; Match(DIRECTION);
 				State = 213; distanceDeclare();
-				State = 214; damageDeclaration();
+				State = 214; damageAmountDeclaration();
 				}
 				break;
 
@@ -1212,7 +1212,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 				State = 216; Match(SHOOT);
 				State = 217; Match(TO);
 				State = 218; place();
-				State = 219; damageDeclaration();
+				State = 219; damageAmountDeclaration();
 				}
 				break;
 			}
@@ -3035,12 +3035,12 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		"\xB9\x3\x2\x2\x2\xBF\xBC\x3\x2\x2\x2\xC0\x1F\x3\x2\x2\x2\xC1\xC2\a\x1A"+
 		"\x2\x2\xC2\xE0\a\t\x2\x2\xC3\xC4\a\x1A\x2\x2\xC4\xC5\a\x14\x2\x2\xC5\xE0"+
 		"\x5\x34\x1B\x2\xC6\xC7\a\x1A\x2\x2\xC7\xC8\a\t\x2\x2\xC8\xE0\x5\x1C\xF"+
-		"\x2\xC9\xCA\a\x1A\x2\x2\xCA\xCB\a\t\x2\x2\xCB\xE0\x5\"\x12\x2\xCC\xCD"+
+		"\x2\xC9\xCA\a\x1A\x2\x2\xCA\xCB\a\t\x2\x2\xCB\xE0\x5\x14\v\x2\xCC\xCD"+
 		"\a\x1A\x2\x2\xCD\xE0\a\x6\x2\x2\xCE\xCF\a\x1A\x2\x2\xCF\xD0\a\x14\x2\x2"+
 		"\xD0\xE0\a\r\x2\x2\xD1\xD2\a\x1A\x2\x2\xD2\xD3\a\x14\x2\x2\xD3\xD4\a\r"+
-		"\x2\x2\xD4\xE0\x5\"\x12\x2\xD5\xD6\a\x1A\x2\x2\xD6\xD7\a\t\x2\x2\xD7\xD8"+
-		"\x5\x1C\xF\x2\xD8\xD9\x5\"\x12\x2\xD9\xE0\x3\x2\x2\x2\xDA\xDB\a\x1A\x2"+
-		"\x2\xDB\xDC\a\x14\x2\x2\xDC\xDD\x5\x34\x1B\x2\xDD\xDE\x5\"\x12\x2\xDE"+
+		"\x2\x2\xD4\xE0\x5\x14\v\x2\xD5\xD6\a\x1A\x2\x2\xD6\xD7\a\t\x2\x2\xD7\xD8"+
+		"\x5\x1C\xF\x2\xD8\xD9\x5\x14\v\x2\xD9\xE0\x3\x2\x2\x2\xDA\xDB\a\x1A\x2"+
+		"\x2\xDB\xDC\a\x14\x2\x2\xDC\xDD\x5\x34\x1B\x2\xDD\xDE\x5\x14\v\x2\xDE"+
 		"\xE0\x3\x2\x2\x2\xDF\xC1\x3\x2\x2\x2\xDF\xC3\x3\x2\x2\x2\xDF\xC6\x3\x2"+
 		"\x2\x2\xDF\xC9\x3\x2\x2\x2\xDF\xCC\x3\x2\x2\x2\xDF\xCE\x3\x2\x2\x2\xDF"+
 		"\xD1\x3\x2\x2\x2\xDF\xD5\x3\x2\x2\x2\xDF\xDA\x3\x2\x2\x2\xE0!\x3\x2\x2"+

@@ -49,6 +49,7 @@ namespace LabWork1github
             Board = Program.Board;
             Monsters = Board.Monsters;
             Traps = Board.Traps;
+            move = new PlayerMove();
             Player = Board.Player;
             foreach (Monster monster in Monsters)
             {
@@ -99,8 +100,9 @@ namespace LabWork1github
         public void Step()
         {
             wrongMove = false;
-            
-            foreach(Character character in Characters)
+            move = new PlayerMove();
+
+            foreach (Character character in Characters)
             {
                 character.GetCharacterType().Step(Provider);
             }
@@ -119,10 +121,10 @@ namespace LabWork1github
             }
 
             Drawer.DrawBoard(Board, Player, Monsters, Traps);
-            move = new PlayerMove();
+
         }
 
-        private bool checkSpawn(Place spawnPoint)
+        private bool CheckSpawn(Place spawnPoint)
         {
             foreach(Trap trap in Traps)
             {

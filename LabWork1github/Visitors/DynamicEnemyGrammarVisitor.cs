@@ -427,6 +427,13 @@ namespace LabWork1github
             return base.VisitSpawnDeclaration(context);
         }
 
+        public override object VisitDamageDeclaration([NotNull] DamageDeclarationContext context)
+        {
+
+
+            return base.VisitDamageDeclaration(context);
+        }
+
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
@@ -643,6 +650,63 @@ namespace LabWork1github
         }
 
         public void ShootToPlayer(GameParamProvider provider, ShootCommand command)
+        {
+            provider.GetPlayer().Damage(command.Damage);
+        }
+
+
+        public void ShootDirection(GameParamProvider provider, ShootCommand command)
+        {
+            switch (command.Direction)
+            {
+                case "F":
+                    if (provider.GetPlayer().Place.Y != provider.GetMonster().Place.Y)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMonster().Place.X - i >= 0)
+                            if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X - (int)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
+                    }
+                    break;
+                case "B":
+                    if (provider.GetPlayer().Place.Y != provider.GetMonster().Place.Y)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X + (int)command.Distance)
+                            provider.GetPlayer().Damage(command.Damage);
+                    }
+                    break;
+                case "L":
+                    if (provider.GetPlayer().Place.X != provider.GetMonster().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMonster().Place.Y - i >= 0)
+                            if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y - (int)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
+                    }
+                    break;
+                case "R":
+                    if (provider.GetPlayer().Place.X != provider.GetMonster().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y + (int)command.Distance)
+                            provider.GetPlayer().Damage(command.Damage);
+                    }
+                    break;
+            }
+        }
+
+        public void ShootToPlace(GameParamProvider provider, ShootCommand command)
+        {
+            if (provider.GetPlayer().Place.Equals(command.targetPlace))
+                provider.GetPlayer().Damage(command.Damage);
+        }
+
+        public void DamageToCharacter(GameParamProvider provider, ShootCommand command)
         {
             provider.GetPlayer().Damage(command.Damage);
         }
