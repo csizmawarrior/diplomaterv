@@ -25,7 +25,7 @@ namespace LabWork1github
 
         public int Round { get; set; }
 
-        public Place targetPlace { get; set; }
+        public Place TargetPlace { get; set; }
         public string Direction { get; set; }
 
         public MoveDelegate MoveDelegate { get; set; }

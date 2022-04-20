@@ -4,23 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LabWork1github
+namespace LabWork1github.Commands
 {
-    public delegate void ShootDelegate(GameParamProvider provider, ShootCommand command);
+    public delegate void DamageDelegate(GameParamProvider provider, DamageCommand command);
 
-    public class ShootCommand : Command
+    public class DamageCommand : Command
     {
         public int Distance { get; set; } = 1;
         public string Direction { get; set; }
         public Place TargetPlace { get; set; }
         public int Damage { get; set; } = 50;
 
-        public ShootDelegate ShootDelegate { get; set; }
+        public DamageDelegate DamageDelegate { get; set; }
 
         public override void Execute(GameParamProvider provider)
         {
-            ShootDelegate(provider, this);
+            DamageDelegate(provider, this);
         }
-
     }
 }

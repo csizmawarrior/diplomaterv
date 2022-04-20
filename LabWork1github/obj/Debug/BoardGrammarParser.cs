@@ -560,13 +560,13 @@ public partial class BoardGrammarParser : Parser {
 
 	public partial class MonsterPlacementContext : ParserRuleContext {
 		public ITerminalNode MONSTER() { return GetToken(BoardGrammarParser.MONSTER, 0); }
+		public TypeNameContext typeName() {
+			return GetRuleContext<TypeNameContext>(0);
+		}
 		public PlaceContext place() {
 			return GetRuleContext<PlaceContext>(0);
 		}
 		public ITerminalNode COMMA() { return GetToken(BoardGrammarParser.COMMA, 0); }
-		public TypeNameContext typeName() {
-			return GetRuleContext<TypeNameContext>(0);
-		}
 		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
 		public MonsterPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -596,9 +596,9 @@ public partial class BoardGrammarParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 54; Match(MONSTER);
-			State = 55; place();
-			State = 56; Match(COMMA);
-			State = 57; typeName();
+			State = 55; typeName();
+			State = 56; place();
+			State = 57; Match(COMMA);
 			State = 58; Match(SEMI);
 			}
 		}
@@ -615,13 +615,13 @@ public partial class BoardGrammarParser : Parser {
 
 	public partial class TrapPlacementContext : ParserRuleContext {
 		public ITerminalNode TRAP() { return GetToken(BoardGrammarParser.TRAP, 0); }
+		public TypeNameContext typeName() {
+			return GetRuleContext<TypeNameContext>(0);
+		}
 		public PlaceContext place() {
 			return GetRuleContext<PlaceContext>(0);
 		}
 		public ITerminalNode COMMA() { return GetToken(BoardGrammarParser.COMMA, 0); }
-		public TypeNameContext typeName() {
-			return GetRuleContext<TypeNameContext>(0);
-		}
 		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
 		public TrapPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -651,9 +651,9 @@ public partial class BoardGrammarParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 60; Match(TRAP);
-			State = 61; place();
-			State = 62; Match(COMMA);
-			State = 63; typeName();
+			State = 61; typeName();
+			State = 62; place();
+			State = 63; Match(COMMA);
 			State = 64; Match(SEMI);
 			}
 		}
@@ -687,10 +687,10 @@ public partial class BoardGrammarParser : Parser {
 		"+\v\x3\x2\x2\x2,-\a\x5\x2\x2-\r\x3\x2\x2\x2./\a\x5\x2\x2/\xF\x3\x2\x2"+
 		"\x2\x30\x31\a\x6\x2\x2\x31\x32\x5\n\x6\x2\x32\x33\a\x3\x2\x2\x33\x11\x3"+
 		"\x2\x2\x2\x34\x35\a\a\x2\x2\x35\x36\x5\n\x6\x2\x36\x37\a\x3\x2\x2\x37"+
-		"\x13\x3\x2\x2\x2\x38\x39\a\b\x2\x2\x39:\x5\n\x6\x2:;\a\x4\x2\x2;<\x5\b"+
-		"\x5\x2<=\a\x3\x2\x2=\x15\x3\x2\x2\x2>?\a\t\x2\x2?@\x5\n\x6\x2@\x41\a\x4"+
-		"\x2\x2\x41\x42\x5\b\x5\x2\x42\x43\a\x3\x2\x2\x43\x17\x3\x2\x2\x2\x4\x1E"+
-		"$";
+		"\x13\x3\x2\x2\x2\x38\x39\a\b\x2\x2\x39:\x5\b\x5\x2:;\x5\n\x6\x2;<\a\x4"+
+		"\x2\x2<=\a\x3\x2\x2=\x15\x3\x2\x2\x2>?\a\t\x2\x2?@\x5\b\x5\x2@\x41\x5"+
+		"\n\x6\x2\x41\x42\a\x4\x2\x2\x42\x43\a\x3\x2\x2\x43\x17\x3\x2\x2\x2\x4"+
+		"\x1E$";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

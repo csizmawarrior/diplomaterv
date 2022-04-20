@@ -30,6 +30,8 @@ namespace LabWork1github
 
         public Drawer Drawer;
 
+        public Character ActualCharacter { get; set; }
+
         public Monster ActualMonster { get; set; }
 
         public Trap ActualTrap { get; set; }
@@ -104,6 +106,7 @@ namespace LabWork1github
 
             foreach (Character character in Characters)
             {
+                ActualCharacter = character;
                 character.GetCharacterType().Step(Provider);
             }
 

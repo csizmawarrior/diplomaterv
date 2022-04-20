@@ -49,7 +49,6 @@ namespace LabWork1github
             DynamicEnemyGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
-            visitor.Visit(chatContext);
             if (visitor.ErrorFound)
                 Console.WriteLine(visitor.Error);
         }
