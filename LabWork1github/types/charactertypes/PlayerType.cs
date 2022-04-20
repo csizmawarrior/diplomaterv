@@ -9,6 +9,10 @@ namespace LabWork1github
 {
     public class PlayerType : CharacterType
     {
+        public PlayerType()
+        {
+            this.Damage = 50;
+        }
 
         public override void Step(GameParamProvider provider)
         {

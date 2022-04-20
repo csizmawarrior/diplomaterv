@@ -27,9 +27,10 @@ namespace LabWork1github
 
 
             //  MonsterTypeLoader();
-            BoardLoader();
             TrapTypeLoader();
             MonsterTypeLoader();
+            BoardLoader();
+
 
             Game theGame = new Game();
             theGame.Init();

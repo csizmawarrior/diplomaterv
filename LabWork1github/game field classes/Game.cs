@@ -50,6 +50,7 @@ namespace LabWork1github
             Provider = new GameParamProvider(this);
             Board = Program.Board;
             Monsters = Board.Monsters;
+            Characters = Program.Characters;
             Traps = Board.Traps;
             move = new PlayerMove();
             Player = Board.Player;
