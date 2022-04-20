@@ -254,6 +254,7 @@ namespace LabWork1github
                 AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
+            //TODO: this needs rework
             var helpPlayer = context.PLAYER();
             if (helpPlayer != null)
             {
@@ -261,6 +262,8 @@ namespace LabWork1github
                 AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
+
+
             var random = context.RANDOM();
             if (random != null)
             {
@@ -319,14 +322,16 @@ namespace LabWork1github
                     AddCommand(newCommand);
                     return base.VisitShootDeclaration(context);
                 }
+
                 var helpPlayer = context.PLAYER();
                 if (helpPlayer != null)
                 {
-                    newCommand.TargetPlace = Program.Board.Player.Place;
                     newCommand.ShootDelegate = new ShootDelegate(ShootToPlayer);
                     AddCommand(newCommand);
                     return base.VisitShootDeclaration(context);
                 }
+
+                //TODO: make it not depending on board
                 var random = context.RANDOM();
                 if (random != null)
                 {
@@ -503,7 +508,6 @@ namespace LabWork1github
                 var helpPlayer = context.character().PLAYER();
                 if (helpPlayer != null)
                 {
-                    newCommand.TargetPlace = Program.Board.Player.Place;
                     newCommand.DamageDelegate = new DamageDelegate(DamageToPlayer);
                     AddCommand(newCommand);
                     return base.VisitDamageDeclaration(context);
@@ -511,7 +515,6 @@ namespace LabWork1github
                 var helpMonster = context.character().MONSTER();
                 if (helpPlayer != null)
                 {
-                    newCommand.TargetPlace = Program.Board.Player.Place;
                     newCommand.DamageDelegate = new DamageDelegate(DamageToMonster);
                     AddCommand(newCommand);
                     return base.VisitDamageDeclaration(context);
