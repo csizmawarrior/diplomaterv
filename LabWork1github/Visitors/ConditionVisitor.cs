@@ -85,21 +85,29 @@ namespace LabWork1github.Visitors
                     return true;
                 if (functionExpressionContext.character().MONSTER() != null)
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetMonster().Place.X) <= Provider.getNear() || Math.Abs(Provider.GetMonster().Place.X - Provider.GetMe().Place.X) <= Provider.getNear())
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetMonster().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetMonster().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
                     {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetMonster().Place.Y) <= Provider.getNear() || Math.Abs(Provider.GetMonster().Place.Y - Provider.GetMe().Place.Y) <= Provider.getNear())
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetMonster().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetMonster().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
                             return true;
                     }
                 }
                 if (functionExpressionContext.character().TRAP() != null)
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetTrap().Place.X) <= Provider.getNear() || Math.Abs(Provider.GetTrap().Place.X - Provider.GetMe().Place.X) <= Provider.getNear())
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetTrap().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetTrap().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
                     {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetTrap().Place.Y) <= Provider.getNear() || Math.Abs(Provider.GetTrap().Place.Y - Provider.GetMe().Place.Y) <= Provider.getNear())
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetTrap().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetTrap().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
                             return true;
                     }
                 }
-   
+                if (functionExpressionContext.character().PLAYER() != null)
+                {
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPlayer().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetPlayer().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
+                    {
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPlayer().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetPlayer().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
+                            return true;
+                    }
+                }
+
             }
             if(functionExpressionContext.function().ALIVE() != null)
             {

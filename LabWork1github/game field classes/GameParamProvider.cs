@@ -9,9 +9,9 @@ namespace LabWork1github
     public class GameParamProvider
     {
         Game game;
-        public int getNear()
+        public int GetNear()
         {
-            return 3;
+            return 2;
         }
         public GameParamProvider(Game g)
         {
