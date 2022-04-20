@@ -254,24 +254,18 @@ namespace LabWork1github
                 AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
-            //TODO: this needs rework
             var helpPlayer = context.PLAYER();
             if (helpPlayer != null)
             {
-                newCommand.TargetPlace = Program.Board.Player.Place;
+                newCommand.MoveDelegate = new MoveDelegate(MoveToPlayer);
                 AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
 
-
             var random = context.RANDOM();
             if (random != null)
             {
-                Random rand = new Random();
-                int XPos = (int)(rand.Next() % Program.Board.Height);
-                int YPos = (int)(rand.Next() % Program.Board.Width);
-                newCommand.TargetPlace = new Place(XPos, YPos);
-                newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
+                newCommand.MoveDelegate = new MoveDelegate(MoveRandom);
                 AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
 
@@ -331,15 +325,10 @@ namespace LabWork1github
                     return base.VisitShootDeclaration(context);
                 }
 
-                //TODO: make it not depending on board
                 var random = context.RANDOM();
                 if (random != null)
                 {
-                    Random rand = new Random();
-                    int XPos = (int)(rand.Next() % Program.Board.Height);
-                    int YPos = (int)(rand.Next() % Program.Board.Width);
-                    newCommand.TargetPlace = new Place(XPos, YPos);
-                    newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
+                    newCommand.ShootDelegate = new ShootDelegate(ShootRandom);
                     AddCommand(newCommand);
                     return base.VisitShootDeclaration(context);
                 }
@@ -361,13 +350,6 @@ namespace LabWork1github
             {
                 newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
                                                     int.Parse(context.place().y().GetText()));
-            }
-            else if (context.RANDOM() != null)
-            {
-                Random rand = new Random();
-                int XPos = (int)(rand.Next() % Program.Board.Height);
-                int YPos = (int)(rand.Next() % Program.Board.Width);
-                newCommand.TargetPlace = new Place(XPos, YPos);
             }
             else
                 newCommand.TargetPlace = Program.GetCharacterType(typeName).TeleportPlace;
@@ -394,6 +376,10 @@ namespace LabWork1github
                         break;
                 }
             }
+            if (context.RANDOM() != null)
+            {
+                newCommand.Random = true;
+            }
             return base.VisitTeleportDeclaration(context);
         }
 
@@ -407,39 +393,24 @@ namespace LabWork1github
             }
 
             SpawnCommand newCommand = new SpawnCommand();
+            if (context.RANDOM() != null)
+            {
+                newCommand.SpawnDelegate = new SpawnDelegate(SpawnRandom);
+                AddCommand(newCommand);
+                return base.VisitSpawnDeclaration(context);
+            }
             if (context.place() != null)
             {
                 newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
                                                     int.Parse(context.place().y().GetText()));
             }
-            if (context.RANDOM() != null)
+            else if (!SpawnPointDeclare)
             {
-                Random rand = new Random();
-                int XPos = (int)(rand.Next() % Program.Board.Height);
-                int YPos = (int)(rand.Next() % Program.Board.Width);
-                newCommand.TargetPlace = new Place(XPos, YPos);
-                if(context.MONSTER() == null)
-                {
-                    //here we count how many monster types are there to do a random choice out of them
-                    int count = 0;
-                    foreach(CharacterType ct in Program.CharacterTypes)
-                    {
-                        if (ct is MonsterType)
-                            count++;
-                    }
-
-                    int monsterCount = (int)(rand.Next() % count);
-                    count = 0;
-                    foreach (CharacterType ct in Program.CharacterTypes)
-                    {
-                        if(count == monsterCount)
-                            newCommand.TarGetCharacterType = ct;
-                        if (ct is MonsterType)
-                            count++;
-                    }
-                    
-                }
+                Error += "Spawning point not given:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
             }
+
             if (context.MONSTER() != null)
             {
                 if (Program.GetCharacterType(context.name().GetText()) == null)
@@ -449,7 +420,13 @@ namespace LabWork1github
                     ErrorFound = true;
                 }
                 else
-                newCommand.TarGetCharacterType = Program.GetCharacterType(context.name().GetText()).SpawnType;
+                newCommand.TargetCharacterType = Program.GetCharacterType(context.name().GetText()).SpawnType;
+            }
+            else if (!SpawnTypeDeclare)
+            {
+                Error += "Spawning type not given:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
             }
             newCommand.SpawnDelegate = new SpawnDelegate(Spawn);
             AddCommand(newCommand);
@@ -522,11 +499,7 @@ namespace LabWork1github
                 var random = context.RANDOM();
                 if (random != null)
                 {
-                    Random rand = new Random();
-                    int XPos = (int)(rand.Next() % Program.Board.Height);
-                    int YPos = (int)(rand.Next() % Program.Board.Width);
-                    newCommand.TargetPlace = new Place(XPos, YPos);
-                    newCommand.DamageDelegate = new DamageDelegate(DamageToPlace);
+                    newCommand.DamageDelegate = new DamageDelegate(DamageRandom);
                     AddCommand(newCommand);
                     return base.VisitDamageDeclaration(context);
                 }
@@ -613,22 +586,33 @@ namespace LabWork1github
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)
         {
-            foreach(Monster monster in provider.GetMonsters())
-            {
-                if (monster.Place.DirectionTo(command.TargetPlace).Equals("collision"))
-                    return;
-            }
-            foreach (Trap trap in provider.GetTraps())
-            {
-                if (trap.Place.DirectionTo(command.TargetPlace).Equals("collision"))
-                    return;
-            }
-            if (provider.GetPlayer().Place.DirectionTo(command.TargetPlace).Equals("collision"))
+
+            if (provider.OccupiedOrNot(command.TargetPlace))
                 return;
-            Monster newMonster = new Monster(command.TarGetCharacterType.Health, (MonsterType)command.TarGetCharacterType, command.TargetPlace);
+            Monster newMonster = new Monster(command.TargetCharacterType.Health, (MonsterType)command.TargetCharacterType, command.TargetPlace);
             provider.GetMonsters().Add(newMonster);
             provider.GetBoard().Monsters.Add(newMonster);
             //TODO: check if it works
+        }
+
+        public void SpawnRandom(GameParamProvider provider, SpawnCommand command)
+        {
+            Random rand = new Random();
+                int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                command.TargetPlace = new Place(XPos, YPos);
+            
+                bool found = false;
+                while (!found)
+                {
+                    int index = (int)(rand.Next() % Program.CharacterTypes.Count);
+                    if(Program.CharacterTypes.ElementAt(index) is MonsterType)
+                    {
+                        command.TargetCharacterType = Program.CharacterTypes.ElementAt(index);
+                        found = true;
+                    }
+                }
+            Spawn(provider, command);
         }
 
 
@@ -637,25 +621,53 @@ namespace LabWork1github
             foreach (Trap Trap in provider.GetTraps())
             {
                 if (Trap.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
-                    if(!provider.OccupiedOrNot(command.TargetPlace))
-                        provider.GetPlayer().Place = command.TargetPlace;
+                {
+                    if (command.Random)
+                    {
+                        Random rand = new Random();
+                        int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                        int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                        command.TargetPlace = new Place(XPos, YPos);
+                    }
+                    if (!provider.OccupiedOrNot(command.TargetPlace))
+                        Trap.Place = command.TargetPlace;
+                }
             }
         }
         public void TeleportMonster(GameParamProvider provider, TeleportCommand command)
         {
             foreach (Monster monster in provider.GetMonsters()) {
                 if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+                {
+                    if (command.Random)
+                    {
+                        Random rand = new Random();
+                        int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                        int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                        command.TargetPlace = new Place(XPos, YPos);
+                    }
                     if (!provider.OccupiedOrNot(command.TargetPlace))
-                        provider.GetPlayer().Place = command.TargetPlace;
+                        monster.Place = command.TargetPlace;
+                }
             }
         }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
-            if(provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+            if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+            {
+                if (command.Random)
+                {
+                    Random rand = new Random();
+                    int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                    int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                    command.TargetPlace = new Place(XPos, YPos);
+                }
                 if (!provider.OccupiedOrNot(command.TargetPlace))
                     provider.GetPlayer().Place = command.TargetPlace;
+            }
 
         }
+
 
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
@@ -680,7 +692,7 @@ namespace LabWork1github
         }
         public void MoveToPlace(GameParamProvider provider, MoveCommand command)
         {
-            provider.GetMonster().Place = command.TargetPlace;
+            provider.GetMe().Place = command.TargetPlace;
         }
         public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
         {
@@ -697,6 +709,14 @@ namespace LabWork1github
             else
                 provider.GetMonster().Place.Y = provider.GetPlayer().Place.Y - 1;
 
+        }
+        public void MoveRandom(GameParamProvider provider, MoveCommand command)
+        {
+            Random rand = new Random();
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.TargetPlace = new Place(XPos, YPos);
+            MoveToPlace(provider, command);
         }
 
         public void ShootDirection(GameParamProvider provider, ShootCommand command)
@@ -754,6 +774,18 @@ namespace LabWork1github
         {
             provider.GetPlayer().Damage(command.Damage);
         }
+
+        public void ShootRandom(GameParamProvider provider, ShootCommand command)
+        {
+            Random rand = new Random();
+            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.Damage = damage;
+            command.TargetPlace = new Place(XPos, YPos);
+            ShootToPlace(provider, command);
+        }
+
 
 
         public void DamageDirection(GameParamProvider provider, DamageCommand command)
@@ -858,6 +890,17 @@ namespace LabWork1github
         {
             provider.GetMonster().Damage(command.Damage);
         }
+        public void DamageRandom(GameParamProvider provider, DamageCommand command)
+        {
+            Random rand = new Random();
+            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.Damage = damage;
+            command.TargetPlace = new Place(XPos, YPos);
+            DamageToPlace(provider, command);
+        }
+
 
         public void AddCommand(Command newCommand)
         {

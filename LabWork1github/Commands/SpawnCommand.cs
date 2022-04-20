@@ -10,13 +10,13 @@ namespace LabWork1github
 
     public class SpawnCommand : Command
     {
-        public Place TargetPlace { get; set; }
+        public Place TargetPlace { get; set; } = new Place(-1, -1);
 
         public int Round { get; set; }
 
         public SpawnDelegate SpawnDelegate { get; set; }
 
-        public CharacterType TarGetCharacterType { get; set; }
+        public CharacterType TargetCharacterType { get; set; } = null;
 
         public override void Execute(GameParamProvider provider)
         {

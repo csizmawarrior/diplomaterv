@@ -21,10 +21,9 @@ namespace LabWork1github
         {
             return game.Board;
         }
-        //TODO: how to get current character
         public Character GetMe()
         {
-            throw new NotImplementedException();
+            return game.ActualCharacter;
         }
         public Player GetPlayer()
         {

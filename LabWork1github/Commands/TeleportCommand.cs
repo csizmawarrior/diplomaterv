@@ -10,9 +10,11 @@ namespace LabWork1github
 
     public class TeleportCommand : Command
     {
-        public Place TargetPlace { get; set; }
+        public Place TargetPlace { get; set; } = new Place(-1, -1);
 
         public int Round { get; set; }
+
+        public bool Random { get; set; } 
 
         public Character Character { get; set; }
 

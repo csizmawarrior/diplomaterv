@@ -44,6 +44,7 @@ damageDeclaration: DAMAGE DIRECTION | DAMAGE DIRECTION damageAmountDeclaration |
 healDeclaration: HEAL DIRECTION | HEAL DIRECTION healAmountDeclaration | HEAL DIRECTION distanceDeclare | HEAL DIRECTION distanceDeclare healAmountDeclaration
 					| HEAL RANDOM	| HEAL TO place | HEAL TO place healAmountDeclaration | HEAL TO character | HEAL TO character healAmountDeclaration ;
 spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN TO place | SPAWN;
+//TODO: teleport without place given, because it can be set to the type
 teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM;
 ifexpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
 whileexpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
