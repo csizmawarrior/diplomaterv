@@ -141,6 +141,7 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_place=2,2;" + "\n");
         }
+        [TestMethod]
         public void AssigningTrapsHealth()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; health=20;");
@@ -149,6 +150,7 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "Trap doesn't have health:" + "\n" + "health=20;" + "\n");
         }
+        [TestMethod]
         public void AssigningMonsterHeal()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; heal=20;");
@@ -157,6 +159,7 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "A non Trap wants to heal:" + "\n" + "heal=20;" + "\n");
         }
+        [TestMethod]
         public void AssigningMonsterTeleportPoint()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; teleport_place=1,1;");
@@ -165,6 +168,7 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "A non Trap wants to teleport:" + "\n" + "teleport_place=1,1;" + "\n");
         }
+        [TestMethod]
         public void AssigningMonsterSpawnPoint()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; spawn_place=1,1;");
@@ -173,6 +177,7 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_place=1,1;" + "\n");
         }
+        [TestMethod]
         public void AssigningMonsterSpawnType()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; spawn_type=DefaultMonster;");
