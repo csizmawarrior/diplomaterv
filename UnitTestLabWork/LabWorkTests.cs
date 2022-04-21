@@ -10,6 +10,8 @@ namespace UnitTestLabWork
     {
         public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
         {
+            LabWork1github.Program program = new Program(); 
+
             string text = System.IO.File.ReadAllText(fileText);
             AntlrInputStream inputStream = new AntlrInputStream(text);
             DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
@@ -20,6 +22,10 @@ namespace UnitTestLabWork
         }
         public BoardGrammarParser.ProgramContext PreparingBoardGrammar(string fileText)
         {
+            LabWork1github.Program program = new Program();
+            Program.TrapTypeLoader();
+            Program.MonsterTypeLoader();
+
             string text = System.IO.File.ReadAllText(fileText);
             AntlrInputStream inputStream = new AntlrInputStream(text);
             BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
@@ -30,6 +36,8 @@ namespace UnitTestLabWork
         }
         public PlayerGrammarParser.StatementContext PreparingPlayerGrammar(string fileText)
         {
+            LabWork1github.Program program = new Program();
+
             AntlrInputStream inputStream = new AntlrInputStream(fileText);
             PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(PlayerGrammarLexer_);

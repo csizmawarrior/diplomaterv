@@ -6,7 +6,7 @@ using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
 {
-    class Program
+    public class Program
     {
         public static List<CharacterType> CharacterTypes = new List<CharacterType>();
         public static List<Character> Characters = new List<Character>();
@@ -40,7 +40,7 @@ namespace LabWork1github
 
         }
 
-        private static void MonsterTypeLoader()
+        public static void MonsterTypeLoader()
         {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/DefaultMonster.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
