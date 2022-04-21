@@ -10,10 +10,13 @@ namespace UnitTestLabWork
     {
         public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
         {
-            LabWork1github.Program program = new Program(); 
+            Program.Characters.Clear();
+            Program.CharacterTypes.Clear();
+            Program.Board = new Board();
+            Program.TrapTypeLoader();
+            Program.MonsterTypeLoader();
 
-            string text = System.IO.File.ReadAllText(fileText);
-            AntlrInputStream inputStream = new AntlrInputStream(text);
+            AntlrInputStream inputStream = new AntlrInputStream(fileText);
             DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
             DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
@@ -22,12 +25,13 @@ namespace UnitTestLabWork
         }
         public BoardGrammarParser.ProgramContext PreparingBoardGrammar(string fileText)
         {
-            LabWork1github.Program program = new Program();
+            Program.Characters.Clear();
+            Program.CharacterTypes.Clear();
+            Program.Board = new Board();
             Program.TrapTypeLoader();
             Program.MonsterTypeLoader();
 
-            string text = System.IO.File.ReadAllText(fileText);
-            AntlrInputStream inputStream = new AntlrInputStream(text);
+            AntlrInputStream inputStream = new AntlrInputStream(fileText);
             BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
             BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
@@ -53,7 +57,7 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Heal amount was already declared:" + "\n" + "heal=20;" + "\n");
+            Assert.AreEqual(visitor.Error, "Heal amount was already declared:" + "\n" + "heal=20" + "\n");
         }
         [TestMethod]
         public void DoubleCheckDifferentAmountHeal()
@@ -62,15 +66,16 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Heal amount was already declared:" + "\n" + "heal=50;" + "\n");
+            Assert.AreEqual(visitor.Error, "Heal amount was already declared:" + "\n" + "heal=50" + "\n");
         }
+        [TestMethod]
         public void DoubleDeclareCheckSameAmountHealth()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = teszttrap ; health=20;health=20;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Health amount was already declared:" + "\n" + "health=20;" + "\n");
+            Assert.AreEqual(visitor.Error, "Health amount was already declared:" + "\n" + "health=20" + "\n");
         }
         [TestMethod]
         public void DoubleCheckDifferentAmountHealth()
@@ -79,15 +84,16 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Health amount was already declared:" + "\n" + "health=50;" + "\n");
+            Assert.AreEqual(visitor.Error, "Health amount was already declared:" + "\n" + "health=50" + "\n");
         }
+        [TestMethod]
         public void DoubleDeclareCheckSameAmountDamage()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; damage=20;damage=20;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Damage amount was already declared:" + "\n" + "damage=20;" + "\n");
+            Assert.AreEqual(visitor.Error, "Damage amount was already declared:" + "\n" + "damage=20" + "\n");
         }
         [TestMethod]
         public void DoubleCheckDifferentAmountDamage()
@@ -96,15 +102,16 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Damage amount was already declared:" + "\n" + "damage=50;" + "\n");
+            Assert.AreEqual(visitor.Error, "Damage amount was already declared:" + "\n" + "damage=50" + "\n");
         }
+        [TestMethod]
         public void DoubleDeclareCheckSameAmountTeleportPoint()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport_place=1,1;teleport_place=1,1;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Teleport destination was already declared:" + "\n" + "teleport_place=1,1;" + "\n");
+            Assert.AreEqual(visitor.Error, "Teleport destination was already declared:" + "\n" + "teleport_place=1,1" + "\n");
         }
         [TestMethod]
         public void DoubleCheckDifferentAmountTeleportPoint()
@@ -113,15 +120,16 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Teleport destination was already declared:" + "\n" + "teleport_place=2,2;" + "\n");
+            Assert.AreEqual(visitor.Error, "Teleport destination was already declared:" + "\n" + "teleport_place=2,2" + "\n");
         }
+        [TestMethod]
         public void DoubleDeclareCheckSameAmountSpawnPoint()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; spawn_place=1,1;spawn_place=1,1;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Spawn destination was already declared:" + "\n" + "spawn_place=1,1;" + "\n");
+            Assert.AreEqual(visitor.Error, "Spawn destination was already declared:" + "\n" + "spawn_place=1,1" + "\n");
         }
         [TestMethod]
         public void DoubleCheckDifferentAmountSpawnPoint()
@@ -130,15 +138,16 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Spawn destination was already declared:" + "\n" + "spawn_place=2,2;" + "\n");
+            Assert.AreEqual(visitor.Error, "Spawn destination was already declared:" + "\n" + "spawn_place=2,2" + "\n");
         }
+        [TestMethod]
         public void DoubleDeclareCheckSameAmountSpawnType()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; spawn_type=DefaultMonster;spawn_type=DefaultMonster;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_type=DefaultMonster;" + "\n");
+            Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_type=DefaultMonster" + "\n");
         }
         [TestMethod]
         public void DoubleCheckDifferentAmountSpawnType()
@@ -147,7 +156,8 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_place=2,2;" + "\n");
+            Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_type=TestType" + "\n" +
+                                        "Spawning enemy type doesn't exist at place:" + "\n" + "spawn_type=TestType" + "\n");
         }
         [TestMethod]
         public void AssigningTrapsHealth()
@@ -156,7 +166,7 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Trap doesn't have health:" + "\n" + "health=20;" + "\n");
+            Assert.AreEqual(visitor.Error, "Trap doesn't have health:" + "\n" + "health=20" + "\n");
         }
         [TestMethod]
         public void AssigningMonsterHeal()
@@ -165,7 +175,7 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "A non Trap wants to heal:" + "\n" + "heal=20;" + "\n");
+            Assert.AreEqual(visitor.Error, "A non Trap wants to heal:" + "\n" + "heal=20" + "\n");
         }
         [TestMethod]
         public void AssigningMonsterTeleportPoint()
@@ -174,7 +184,7 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "A non Trap wants to teleport:" + "\n" + "teleport_place=1,1;" + "\n");
+            Assert.AreEqual(visitor.Error, "A non Trap wants to teleport:" + "\n" + "teleport_place=1,1" + "\n");
         }
         [TestMethod]
         public void AssigningMonsterSpawnPoint()
@@ -183,7 +193,7 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_place=1,1;" + "\n");
+            Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_place=1,1" + "\n");
         }
         [TestMethod]
         public void AssigningMonsterSpawnType()
@@ -192,7 +202,7 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_type=DefaultMonster;" + "\n");
+            Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_type=DefaultMonster" + "\n");
         }
     }
     //TODO: pozitív tesztek, condition visitor, think about the ways to bring it forward, move tesztek

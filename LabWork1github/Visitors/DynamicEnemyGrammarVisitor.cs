@@ -26,7 +26,7 @@ namespace LabWork1github
         public bool ErrorFound = false;
         public override object VisitDefinition([NotNull] DefinitionContext context)
         {
-            foreach(var child in context.statementList())
+            foreach (var child in context.statementList())
             {
                 typeName = "";
                 type = null;
@@ -42,7 +42,7 @@ namespace LabWork1github
                 ErrorFound = false;
 
                 VisitStatementList(child);
-
+            }
                 if(type.Equals(Types.MONSTER) && (!HealthDeclare || !DamageAmountDeclare))
                 {
                     if (!HealthDeclare)
@@ -53,7 +53,7 @@ namespace LabWork1github
                 if (type.Equals(Types.TRAP) && !HealAmountDeclare && !DamageAmountDeclare && (!SpawnPointDeclare || !SpawnTypeDeclare) && !TeleportPointDeclare) {
                     Program.GetCharacterType(typeName).Damage = Program.GetCharacterType("DefaultTrap").Damage;
                 }
-            }
+
             //since I manually visit every children of the definition, no need to return the base visit function, only a null
             return null;
         }
@@ -61,7 +61,7 @@ namespace LabWork1github
         {
             if (Program.GetCharacterType(typeName) != null)
             {
-                Error += "Traő with this type already exists:\n";
+                Error += "Trap with this type already exists:\n";
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -106,7 +106,7 @@ namespace LabWork1github
             }
             else if (HealthDeclare)
             {
-                Error += "Health was already declared:\n";
+                Error += "Health amount was already declared:\n";
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
