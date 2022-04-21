@@ -204,6 +204,46 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_type=DefaultMonster" + "\n");
         }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to player;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandDirectionOnly()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move F;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandDirectionAndDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move F distance = 5;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to random;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move 1,1;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+        }
     }
-    //TODO: pozitív tesztek, condition visitor, think about the ways to bring it forward, move tesztek
+    //TODO: pozitív tesztek, condition visitor, think about the ways to bring it forward
 }
