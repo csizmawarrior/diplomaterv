@@ -671,7 +671,7 @@ namespace LabWork1github
 
         }
 
-
+        //TODO: fall check, and occupationCheck
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
 
