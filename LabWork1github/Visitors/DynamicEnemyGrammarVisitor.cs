@@ -232,7 +232,8 @@ namespace LabWork1github
             var direction = context.DIRECTION();
             if (direction != null)
             {
-                if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
+                if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") || direction.GetText().Equals("B") ||
+                    direction.GetText().Equals("R")))
                 {
                     Error += "Wrong direction used:\n";
                     Error += context.GetText() + "\n";
@@ -295,7 +296,8 @@ namespace LabWork1github
                 var direction = context.DIRECTION();
                 if (direction != null)
                 {
-                    if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
+                    if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
+                        direction.GetText().Equals("B") || direction.GetText().Equals("R")))
                     {
                         Error += "Wrong direction used:\n";
                         Error += context.GetText() + "\n";
@@ -461,7 +463,8 @@ namespace LabWork1github
                 var direction = context.DIRECTION();
                 if (direction != null)
                 {
-                    if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
+                    if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
+                        direction.GetText().Equals("B") || direction.GetText().Equals("R")))
                     {
                         Error += "Wrong direction used:\n";
                         Error += context.GetText() + "\n";
