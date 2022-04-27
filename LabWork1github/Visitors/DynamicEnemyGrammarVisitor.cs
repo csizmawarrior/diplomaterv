@@ -454,6 +454,12 @@ namespace LabWork1github
                 DamageCommand newCommand = new DamageCommand();
                 if (context.distanceDeclare() != null)
                     newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+                if(newCommand.Distance > 1)
+                {
+                    Error += "Can't damage further than 1:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
 
                 if(context.damageAmountDeclaration() != null)
                 {
@@ -509,6 +515,82 @@ namespace LabWork1github
             }
 
             return base.VisitDamageDeclaration(context);
+        }
+
+        public override object VisitHealDeclaration([NotNull] HealDeclarationContext context)
+        {
+            if (type.Equals(Types.MONSTER))
+            {
+                Error += "Monster wants to Heal:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.character().TRAP() != null)
+            {
+                Error += "Can't heal trap:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                HealCommand newCommand = new HealCommand();
+                if (context.distanceDeclare() != null)
+                    newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+
+                if (context.healAmountDeclaration() != null)
+                {
+                    newCommand.Heal = int.Parse(context.healAmountDeclaration().NUMBER().GetText());
+                }
+
+                var direction = context.DIRECTION();
+                if (direction != null)
+                {
+                    if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
+                        direction.GetText().Equals("B") || direction.GetText().Equals("R")))
+                    {
+                        Error += "Wrong direction used:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    newCommand.Direction = direction.GetText();
+                    newCommand.HealDelegate = new HealDelegate(HealDirection);
+                    AddCommand(newCommand);
+                    return base.VisitHealDeclaration(context);
+                }
+                PlaceContext place = context.place();
+                if (place != null)
+                {
+                    int xPos = int.Parse(place.x().GetText());
+                    int yPos = int.Parse(place.y().GetText());
+                    newCommand.TargetPlace = new Place(xPos, yPos);
+                    newCommand.HealDelegate = new HealDelegate(HealToPlace);
+                    AddCommand(newCommand);
+                    return base.VisitHealDeclaration(context);
+                }
+                var helpPlayer = context.character().PLAYER();
+                if (helpPlayer != null)
+                {
+                    newCommand.HealDelegate = new HealDelegate(HealToPlayer);
+                    AddCommand(newCommand);
+                    return base.VisitHealDeclaration(context);
+                }
+                var helpMonster = context.character().MONSTER();
+                if (helpPlayer != null)
+                {
+                    newCommand.HealDelegate = new HealDelegate(HealToMonster);
+                    AddCommand(newCommand);
+                    return base.VisitHealDeclaration(context);
+                }
+                var random = context.RANDOM();
+                if (random != null)
+                {
+                    newCommand.HealDelegate = new HealDelegate(HealRandom);
+                    AddCommand(newCommand);
+                    return base.VisitHealDeclaration(context);
+                }
+            }
+
+            return base.VisitHealDeclaration(context);
         }
 
         public override object VisitIfexpression([NotNull] IfexpressionContext context)
@@ -671,7 +753,7 @@ namespace LabWork1github
 
         }
 
-        //TODO: fall check, and occupationCheck
+        //TODO: check if fall check this way okay or not
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
 
@@ -682,14 +764,16 @@ namespace LabWork1github
                         provider.GetMonster().Place.X -= (int)command.Distance;
                     break;
                 case "B":
-                    provider.GetMonster().Place.X += (int)command.Distance;
+                    if ((int)provider.GetMonster().Place.X + command.Distance <= provider.GetBoard().Height)
+                        provider.GetMonster().Place.X += (int)command.Distance;
                     break;
                 case "L":
                     if ((int)provider.GetMonster().Place.Y - command.Distance >= 0)
                         provider.GetMonster().Place.Y -= (int)command.Distance;
                     break;
                 case "R":
-                    provider.GetMonster().Place.Y += (int)command.Distance;
+                    if ((int)provider.GetMonster().Place.Y + command.Distance <= provider.GetBoard().Width)
+                        provider.GetMonster().Place.Y += (int)command.Distance;
                     break;
             }
         }
@@ -741,8 +825,9 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + (int)command.Distance)
-                            provider.GetPlayer().Damage(command.Damage);
+                        if((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + (int)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
                 case "L":
@@ -760,8 +845,9 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
-                            provider.GetPlayer().Damage(command.Damage);
+                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
+                                provider.GetPlayer().Damage(command.Damage);
                     }
                     break;
             }
@@ -802,17 +888,15 @@ namespace LabWork1github
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.X - i >= 0)
-                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - (int)command.Distance)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
                                 provider.GetPlayer().Damage(command.Damage);
                     }
                     foreach(Monster monster in provider.GetMonsters())
                     {
-                        if (monster.Place.Y != provider.GetMe().Place.Y)
-                            break;
                         for (int i = 0; i < command.Distance; i++)
                         {
                             if ((int)provider.GetMe().Place.X - i >= 0)
-                                if (monster.Place.X == provider.GetMe().Place.X - (int)command.Distance)
+                                if (monster.Place.X == provider.GetMe().Place.X - i)
                                     monster.Damage(command.Damage);
                         }
                     }
@@ -822,15 +906,18 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + (int)command.Distance)
-                            provider.GetPlayer().Damage(command.Damage);
+                        if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
+                                provider.GetPlayer().Damage(command.Damage);
                     }
                     foreach(Monster monster in provider.GetMonsters())
                     {
-                        if (monster.Place.Y != provider.GetMe().Place.Y)
-                            break;
-                        if (monster.Place.X == provider.GetMe().Place.X + (int)command.Distance)
-                            monster.Damage(command.Damage);
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                                if (monster.Place.X == provider.GetMe().Place.X + i)
+                                    monster.Damage(command.Damage);
+                        }
                     }
                     break;
                 case "L":
@@ -839,17 +926,15 @@ namespace LabWork1github
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.Y - i >= 0)
-                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - (int)command.Distance)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
                                 provider.GetPlayer().Damage(command.Damage);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
-                        if (monster.Place.X != provider.GetMe().Place.X)
-                            break;
                         for (int i = 0; i < command.Distance; i++)
                         {
                             if ((int)provider.GetMe().Place.Y - i >= 0)
-                                if (monster.Place.Y == provider.GetMe().Place.Y - (int)command.Distance)
+                                if (monster.Place.Y == provider.GetMe().Place.Y - i)
                                     monster.Damage(command.Damage);
                         }
                     }
@@ -859,15 +944,18 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
-                            provider.GetPlayer().Damage(command.Damage);
+                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
+                                provider.GetPlayer().Damage(command.Damage);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
-                        if (monster.Place.X != provider.GetMe().Place.X)
-                            break;
-                        if (monster.Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
-                            monster.Damage(command.Damage);
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                                if (monster.Place.Y == provider.GetMe().Place.Y + i)
+                                monster.Damage(command.Damage);
+                        }
                     }
                     break;
             }
@@ -902,6 +990,121 @@ namespace LabWork1github
             command.Damage = damage;
             command.TargetPlace = new Place(XPos, YPos);
             DamageToPlace(provider, command);
+        }
+
+        public void HealDirection(GameParamProvider provider, HealCommand command)
+        {
+            switch (command.Direction)
+            {
+                case "F":
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
+                        break;
+                    //distance is 1 as default value
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.X - i >= 0)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
+                                provider.GetPlayer().Heal(command.Heal);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.X - i >= 0)
+                                if (monster.Place.X == provider.GetMe().Place.X - i)
+                                    monster.Heal(command.Heal);
+                        }
+                    }
+                    break;
+                case "B":
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
+                                provider.GetPlayer().Heal(command.Heal);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                                if (monster.Place.X == provider.GetMe().Place.X + i)
+                                    monster.Heal(command.Heal);
+                        }
+                    }
+                    break;
+                case "L":
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.Y - i >= 0)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
+                                provider.GetPlayer().Heal(command.Heal);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.Y - i >= 0)
+                                if (monster.Place.Y == provider.GetMe().Place.Y - i)
+                                    monster.Heal(command.Heal);
+                        }
+                    }
+                    break;
+                case "R":
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
+                                provider.GetPlayer().Heal(command.Heal);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                                if (monster.Place.Y == provider.GetMe().Place.Y + i)
+                                    monster.Heal(command.Heal);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        public void HealToPlace(GameParamProvider provider, HealCommand command)
+        {
+            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+                provider.GetPlayer().Heal(command.Heal);
+            foreach (Monster monster in provider.GetMonsters())
+            {
+                if (monster.Place.Equals(command.TargetPlace))
+                    monster.Heal(command.Heal);
+            }
+        }
+
+        public void HealToPlayer(GameParamProvider provider, HealCommand command)
+        {
+            provider.GetPlayer().Heal(command.Heal);
+        }
+
+        public void HealToMonster(GameParamProvider provider, HealCommand command)
+        {
+            provider.GetMonster().Heal(command.Heal);
+        }
+        public void HealRandom(GameParamProvider provider, HealCommand command)
+        {
+            Random rand = new Random();
+            int Heal = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 5);
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.Heal = Heal;
+            command.TargetPlace = new Place(XPos, YPos);
+            HealToPlace(provider, command);
         }
 
 

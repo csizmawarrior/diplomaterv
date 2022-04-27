@@ -50,6 +50,8 @@ namespace UnitTestLabWork
             return chatContext;
         }
 
+        //Declaration tests: To see that declaring works as they should
+
         [TestMethod]
         public void DoubleDeclareCheckSameAmountHeal()
         {
@@ -211,6 +213,8 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlayer))) != null);
         }
         [TestMethod]
         public void AssignMonsterMoveCommandDirectionOnly()
@@ -219,6 +223,9 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveDirection)) &&
+                 ((MoveCommand)x).Distance == 1 ) != null);
         }
         [TestMethod]
         public void AssignMonsterMoveCommandDirectionAndDistance()
@@ -227,6 +234,9 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveDirection)) &&
+                 ((MoveCommand)x).Distance == 5) != null);
         }
         [TestMethod]
         public void AssignMonsterMoveCommandRandom()
@@ -235,14 +245,118 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveRandom))) != null);
         }
         [TestMethod]
         public void AssignMonsterMoveCommandToPlace()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move 1,1;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2 ) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignMonsterMoveCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
+                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
         }
     }
     //TODO: pozitív tesztek, condition visitor, think about the ways to bring it forward
