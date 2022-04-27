@@ -460,8 +460,7 @@ namespace LabWork1github
                     ErrorFound = true;
                 }
             }
-            if(!ErrorFound)
-            {
+
                 DamageCommand newCommand = new DamageCommand();
                 if (context.distanceDeclare() != null)
                     newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
@@ -526,7 +525,6 @@ namespace LabWork1github
                     AddCommand(newCommand);
                     return base.VisitDamageDeclaration(context);
                 }
-            }
 
             return base.VisitDamageDeclaration(context);
         }
@@ -539,14 +537,14 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
+            if(context.character() != null)
             if (context.character().TRAP() != null)
             {
                 Error += "Can't heal trap:\n";
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else
-            {
+
                 HealCommand newCommand = new HealCommand();
                 if (context.distanceDeclare() != null)
                     newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
@@ -581,19 +579,22 @@ namespace LabWork1github
                     AddCommand(newCommand);
                     return base.VisitHealDeclaration(context);
                 }
-                var helpPlayer = context.character().PLAYER();
-                if (helpPlayer != null)
+                if (context.character() != null)
                 {
-                    newCommand.HealDelegate = new HealDelegate(HealToPlayer);
-                    AddCommand(newCommand);
-                    return base.VisitHealDeclaration(context);
-                }
-                var helpMonster = context.character().MONSTER();
-                if (helpPlayer != null)
-                {
-                    newCommand.HealDelegate = new HealDelegate(HealToMonster);
-                    AddCommand(newCommand);
-                    return base.VisitHealDeclaration(context);
+                    var helpPlayer = context.character().PLAYER();
+                    if (helpPlayer != null)
+                    {
+                        newCommand.HealDelegate = new HealDelegate(HealToPlayer);
+                        AddCommand(newCommand);
+                        return base.VisitHealDeclaration(context);
+                    }
+                    var helpMonster = context.character().MONSTER();
+                    if (helpPlayer != null)
+                    {
+                        newCommand.HealDelegate = new HealDelegate(HealToMonster);
+                        AddCommand(newCommand);
+                        return base.VisitHealDeclaration(context);
+                    }
                 }
                 var random = context.RANDOM();
                 if (random != null)
@@ -602,7 +603,6 @@ namespace LabWork1github
                     AddCommand(newCommand);
                     return base.VisitHealDeclaration(context);
                 }
-            }
 
             return base.VisitHealDeclaration(context);
         }
