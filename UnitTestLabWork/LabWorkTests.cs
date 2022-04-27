@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LabWork1github;
 using Antlr4.Runtime;
+using LabWork1github.Commands;
 
 namespace UnitTestLabWork
 {
@@ -207,7 +208,7 @@ namespace UnitTestLabWork
             Assert.AreEqual(visitor.Error, "A non Trap wants to spawn:" + "\n" + "spawn_type=DefaultMonster" + "\n");
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlayer()
+        public void AssignMonMoveCommandToPlayer()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to player;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
@@ -217,29 +218,29 @@ namespace UnitTestLabWork
                 .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlayer))) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandDirectionOnly()
+        public void AssignMonMoveCommandDirectionOnly()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move F;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move B;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveDirection)) &&
-                 ((MoveCommand)x).Distance == 1 ) != null);
+                 ((MoveCommand)x).Direction.Equals("B") && ((MoveCommand)x).Distance == 1 ) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandDirectionAndDistance()
+        public void AssignMonMoveCommandDirectionAndDistance()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move F distance = 5;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move R distance = 5;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveDirection)) &&
-                 ((MoveCommand)x).Distance == 5) != null);
+                ((MoveCommand)x).Direction.Equals("R") && ((MoveCommand)x).Distance == 5) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandRandom()
+        public void AssignMonMoveCommandRandom()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to random;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
@@ -249,7 +250,7 @@ namespace UnitTestLabWork
                 .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveRandom))) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonMoveCommandToPlace()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
@@ -260,104 +261,201 @@ namespace UnitTestLabWork
                  ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2 ) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandDirectionOnly()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot F;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
+                 ((ShootCommand)x).Direction.Equals("F") && ((ShootCommand)x).Distance == 1) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandToPlace()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot to 1,2;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootToPlace)) &&
+                 ((ShootCommand)x).TargetPlace.X == 1 && ((ShootCommand)x).TargetPlace.Y == 2) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandDirAndDist()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot L distance = 4;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
+                 ((ShootCommand)x).Direction.Equals("L") && ((ShootCommand)x).Distance == 4) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootDirAndDam()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot L damage = 40;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
+                 ((ShootCommand)x).Direction.Equals("L") && ((ShootCommand)x).Damage == 40) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandRandom()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot random;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                 .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootRandom))) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandToPlayer()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot to player;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootToPlayer))) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandToPlayerAndDam()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot to player damage = 55;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootToPlayer)) &&
+                ((ShootCommand)x).Damage == 55 ) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandDirAndDistAndDam()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot F distance = 5 damage = 70;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
+                 ((ShootCommand)x).Direction.Equals("F") && ((ShootCommand)x).Damage == 70 && ((ShootCommand)x).Distance == 5 ) != null);
         }
         [TestMethod]
-        public void AssignMonsterMoveCommandToPlace()
+        public void AssignMonShootCommandToPlaceAndDam()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; move to 1,2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot to 3,1 damage = 100;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveToPlace)) &&
-                 ((MoveCommand)x).TargetPlace.X == 1 && ((MoveCommand)x).TargetPlace.Y == 2) != null);
+                .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootToPlace)) &&
+                 ((ShootCommand)x).TargetPlace.X == 3 && ((ShootCommand)x).TargetPlace.Y == 1 && ((ShootCommand)x).Damage == 100 ) != null);
         }
+        [TestMethod]
+        public void AssignTrapDamageCommandDirectionOnly()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage F;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
+                 ((DamageCommand)x).Direction.Equals("F") && ((DamageCommand)x).Distance == 1) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageToPlace)) &&
+                 ((DamageCommand)x).TargetPlace.X == 1 && ((DamageCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageCommandDirAndDist()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage L distance = 0;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
+                 ((DamageCommand)x).Direction.Equals("L") && ((DamageCommand)x).Distance == 0) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageDirAndDam()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage L damage = 40;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
+                 ((DamageCommand)x).Direction.Equals("L") && ((DamageCommand)x).Damage == 40) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageCommandRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage random;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                 .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageRandom))) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageCommandToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage to player;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageToPlayer))) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageCommandToPlayerAndDam()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage to player damage = 55;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageToPlayer)) &&
+                ((DamageCommand)x).Damage == 55) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageCommandDirAndDistAndDam()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage F distance = 0 damage = 70;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
+                 ((DamageCommand)x).Direction.Equals("F") && ((DamageCommand)x).Damage == 70 && ((DamageCommand)x).Distance == 0) != null);
+        }
+        [TestMethod]
+        public void AssignTrapDamageCommandToPlaceAndDam()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ;   damage to 3,1 damage = 100;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageToPlace)) &&
+                 ((DamageCommand)x).TargetPlace.X == 3 && ((DamageCommand)x).TargetPlace.Y == 1 && ((DamageCommand)x).Damage == 100) != null);
+        }
+
+
     }
     //TODO: pozitív tesztek, condition visitor, think about the ways to bring it forward
     //TODO: test case bonyolult eseménykezelő: "feliratkozás szörny mozgásra, pl. ha ő mozgott én is"

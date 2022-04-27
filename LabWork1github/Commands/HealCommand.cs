@@ -13,7 +13,7 @@ namespace LabWork1github.Commands
         public int Distance { get; set; } = 1;
         public string Direction { get; set; }
         public Place TargetPlace { get; set; }
-        public int Heal { get; set; } = 50;
+        public int HealAmount { get; set; } = 50;
 
         public HealDelegate HealDelegate { get; set; }
 

@@ -13,6 +13,10 @@ namespace LabWork1github
         {
             return 2;
         }
+        public Drawer GetDrawer()
+        {
+            return game.Drawer;
+        }
         public GameParamProvider(Game g)
         {
             game = g;
