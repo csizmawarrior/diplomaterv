@@ -511,7 +511,7 @@ namespace LabWork1github
                         return base.VisitDamageDeclaration(context);
                     }
                     var helpMonster = context.character().MONSTER();
-                    if (helpPlayer != null)
+                    if (helpMonster != null)
                     {
                         newCommand.DamageDelegate = new DamageDelegate(DamageToMonster);
                         AddCommand(newCommand);
@@ -589,7 +589,7 @@ namespace LabWork1github
                         return base.VisitHealDeclaration(context);
                     }
                     var helpMonster = context.character().MONSTER();
-                    if (helpPlayer != null)
+                    if (helpMonster != null)
                     {
                         newCommand.HealDelegate = new HealDelegate(HealToMonster);
                         AddCommand(newCommand);
