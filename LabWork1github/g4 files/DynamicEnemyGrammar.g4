@@ -27,6 +27,7 @@ statement: damageAmountDeclaration ';'
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
 trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
 monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
+//TODO: szimbólumtábla
 partnerDeclaration: PARTNER (TRAP | MONSTER) NAME_T EQUALS name ';';
 
 healthDeclaration: HEALTH EQUALS NUMBER ;
