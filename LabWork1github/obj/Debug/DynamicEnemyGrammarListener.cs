@@ -109,6 +109,17 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	void ExitMonsterNameDeclaration([NotNull] DynamicEnemyGrammarParser.MonsterNameDeclarationContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.partnerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPartnerDeclaration([NotNull] DynamicEnemyGrammarParser.PartnerDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.partnerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPartnerDeclaration([NotNull] DynamicEnemyGrammarParser.PartnerDeclarationContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.healthDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

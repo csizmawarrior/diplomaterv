@@ -9,6 +9,7 @@ name: ID;
 statementList: nameDeclaration statement*;
 statement: damageAmountDeclaration ';'
 		| healAmountDeclaration ';'
+		| partnerDeclaration
 		| teleportPointDeclaration ';'
 		| spawnPointDeclaration ';'
 		| spawnTypeDeclaration ';'
@@ -26,6 +27,7 @@ statement: damageAmountDeclaration ';'
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
 trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
 monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
+partnerDeclaration: PARTNER (TRAP | MONSTER) NAME_T EQUALS name ';';
 
 healthDeclaration: HEALTH EQUALS NUMBER ;
 healAmountDeclaration: HEAL EQUALS NUMBER;
@@ -52,7 +54,7 @@ block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
 
 possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPORT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
-                | HEALTH | HEAL | RANDOM | DAMAGE | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER;
+                | HEALTH | HEAL | RANDOM | DAMAGE | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER | PARTNER;
 
 place: x ',' y;
 x: NUMBER;
@@ -100,6 +102,7 @@ ON:'on';
 SHOOT: 'shoot';
 SPAWN: 'spawn';
 TELEPORT_T: 'teleport';
+PARTNER: 'partner';
 HEAL: 'heal';
 
 EQUALS: '=' ;

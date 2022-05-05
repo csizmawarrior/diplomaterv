@@ -573,8 +573,11 @@ namespace UnitTestLabWork
         }
 
 
+
     }
     //TODO: pozitív tesztek, condition visitor, think about the ways to bring it forward
-    //TODO: test case bonyolult eseménykezelő: "feliratkozás szörny mozgásra, pl. ha ő mozgott én is"
+    //TODO: test case bonyolult eseménykezelő: "feliratkozás szörny mozgásra, pl. ha ő mozgott én is"    !!!!!!!!!!!
+    //TODO: példa leírása hogyan lehetne leírni hogyan érdemes megoldani !!!!!!!!!
     //TODO: ID szörnyeknek és referálni rá hogy legyen társa
+    //TODO: tartalomjegyzék egyes fejezetekhez leírni hogy mi lesz benne
 }

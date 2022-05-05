@@ -12,6 +12,8 @@ namespace LabWork1github
 
         public abstract CharacterType GetCharacterType();
 
+        public string Name { get; set; }
+
         public abstract int GetHealth();
 
         public abstract void Damage(int amount);

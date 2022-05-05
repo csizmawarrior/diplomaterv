@@ -11,6 +11,7 @@ namespace LabWork1github
 
     public class Game
     {
+        public static int CharacterNameCount = 0;
 
         public Board Board { get; set; }
 
