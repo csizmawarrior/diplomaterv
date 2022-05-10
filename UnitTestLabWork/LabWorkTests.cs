@@ -571,6 +571,105 @@ namespace UnitTestLabWork
                 .Find(x => x is HealCommand && ((HealCommand)x).HealDelegate.Equals(new HealDelegate(visitor.HealToPlace)) &&
                  ((HealCommand)x).TargetPlace.X == 3 && ((HealCommand)x).TargetPlace.Y == 1 && ((HealCommand)x).HealAmount == 100) != null);
         }
+        [TestMethod]
+        public void AssignTrapTeleportCommandPlayerOnly()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport_place = 3,1 teleport player;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportPlayer)) &&
+                 ((TeleportCommand)x).TargetPlace.X == 3 && ((TeleportCommand)x).TargetPlace.Y == 1) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandMonsterOnly()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport_place = 2,4 teleport monster;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportMonster)) &&
+                 ((TeleportCommand)x).TargetPlace.X == 2 && ((TeleportCommand)x).TargetPlace.Y == 4) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandTrapOnly()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport_place = 3,1 teleport trap;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportTrap)) &&
+                 ((TeleportCommand)x).TargetPlace.X == 3 && ((TeleportCommand)x).TargetPlace.Y == 1) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandPlayerRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport player random;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportPlayer)) &&
+                 ((TeleportCommand)x).Random) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandMonsterRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport monster random;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportMonster)) &&
+                 ((TeleportCommand)x).Random) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandTrapRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport trap random;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportTrap)) &&
+                 ((TeleportCommand)x).Random) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandPlayerToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport player to 3,1;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportPlayer)) &&
+                 ((TeleportCommand)x).TargetPlace.X == 3 && ((TeleportCommand)x).TargetPlace.Y == 1) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandMonsterToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport monster to 1,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportMonster)) &&
+                 ((TeleportCommand)x).TargetPlace.X == 1 && ((TeleportCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [TestMethod]
+        public void AssignTrapTeleportCommandTrapToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; teleport trap to 3,3;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportTrap)) &&
+                 ((TeleportCommand)x).TargetPlace.X == 3 && ((TeleportCommand)x).TargetPlace.Y == 3) != null);
+        }
 
 
 

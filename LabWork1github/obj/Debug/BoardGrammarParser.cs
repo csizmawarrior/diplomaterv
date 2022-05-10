@@ -31,8 +31,8 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 [System.CLSCompliant(false)]
 public partial class BoardGrammarParser : Parser {
 	public const int
-		SEMI=1, COMMA=2, COORDINATE=3, BOARD=4, PLAYER=5, MONSTER=6, TRAP=7, ID=8, 
-		WS=9;
+		SEMI=1, COMMA=2, COORDINATE=3, BOARD=4, PLAYER=5, NAME_T=6, MONSTER=7, 
+		TRAP=8, EQUALS=9, ID=10, WS=11;
 	public const int
 		RULE_program = 0, RULE_statementList = 1, RULE_statement = 2, RULE_typeName = 3, 
 		RULE_place = 4, RULE_x = 5, RULE_y = 6, RULE_boardCreation = 7, RULE_playerPlacement = 8, 
@@ -43,11 +43,12 @@ public partial class BoardGrammarParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "';'", "','", null, "'board'", "'player'", "'monster'", "'trap'"
+		null, "';'", "','", null, "'board'", "'player'", "'name'", "'monster'", 
+		"'trap'", "'='"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "SEMI", "COMMA", "COORDINATE", "BOARD", "PLAYER", "MONSTER", "TRAP", 
-		"ID", "WS"
+		null, "SEMI", "COMMA", "COORDINATE", "BOARD", "PLAYER", "NAME_T", "MONSTER", 
+		"TRAP", "EQUALS", "ID", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -186,7 +187,7 @@ public partial class BoardGrammarParser : Parser {
 			State = 28;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PLAYER) | (1L << MONSTER) | (1L << TRAP))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOARD) | (1L << PLAYER) | (1L << MONSTER) | (1L << TRAP))) != 0)) {
 				{
 				{
 				State = 25; statement();
@@ -246,27 +247,27 @@ public partial class BoardGrammarParser : Parser {
 		try {
 			State = 34;
 			_errHandler.Sync(this);
-			switch (_input.La(1)) {
-			case PLAYER:
+			switch ( Interpreter.AdaptivePredict(_input,1,_ctx) ) {
+			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 31; playerPlacement();
 				}
 				break;
-			case MONSTER:
+
+			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 32; monsterPlacement();
 				}
 				break;
-			case TRAP:
+
+			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
 				State = 33; trapPlacement();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -515,6 +516,9 @@ public partial class BoardGrammarParser : Parser {
 			return GetRuleContext<PlaceContext>(0);
 		}
 		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
+		public ITerminalNode NAME_T() { return GetToken(BoardGrammarParser.NAME_T, 0); }
+		public ITerminalNode EQUALS() { return GetToken(BoardGrammarParser.EQUALS, 0); }
+		public ITerminalNode ID() { return GetToken(BoardGrammarParser.ID, 0); }
 		public PlayerPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -540,11 +544,29 @@ public partial class BoardGrammarParser : Parser {
 		PlayerPlacementContext _localctx = new PlayerPlacementContext(_ctx, State);
 		EnterRule(_localctx, 16, RULE_playerPlacement);
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 50; Match(PLAYER);
-			State = 51; place();
-			State = 52; Match(SEMI);
+			State = 61;
+			_errHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(_input,2,_ctx) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 50; Match(PLAYER);
+				State = 51; place();
+				State = 52; Match(SEMI);
+				}
+				break;
+
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 54; Match(PLAYER);
+				State = 55; Match(NAME_T);
+				State = 56; Match(EQUALS);
+				State = 57; Match(ID);
+				State = 58; place();
+				State = 59; Match(SEMI);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -568,6 +590,10 @@ public partial class BoardGrammarParser : Parser {
 		}
 		public ITerminalNode COMMA() { return GetToken(BoardGrammarParser.COMMA, 0); }
 		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
+		public ITerminalNode BOARD() { return GetToken(BoardGrammarParser.BOARD, 0); }
+		public ITerminalNode NAME_T() { return GetToken(BoardGrammarParser.NAME_T, 0); }
+		public ITerminalNode EQUALS() { return GetToken(BoardGrammarParser.EQUALS, 0); }
+		public ITerminalNode ID() { return GetToken(BoardGrammarParser.ID, 0); }
 		public MonsterPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -593,13 +619,33 @@ public partial class BoardGrammarParser : Parser {
 		MonsterPlacementContext _localctx = new MonsterPlacementContext(_ctx, State);
 		EnterRule(_localctx, 18, RULE_monsterPlacement);
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 54; Match(MONSTER);
-			State = 55; typeName();
-			State = 56; place();
-			State = 57; Match(COMMA);
-			State = 58; Match(SEMI);
+			State = 77;
+			_errHandler.Sync(this);
+			switch (_input.La(1)) {
+			case MONSTER:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 63; Match(MONSTER);
+				State = 64; typeName();
+				State = 65; place();
+				State = 66; Match(COMMA);
+				State = 67; Match(SEMI);
+				}
+				break;
+			case BOARD:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 69; Match(BOARD);
+				State = 70; typeName();
+				State = 71; Match(NAME_T);
+				State = 72; Match(EQUALS);
+				State = 73; Match(ID);
+				State = 74; Match(SEMI);
+				State = 75; place();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -623,6 +669,10 @@ public partial class BoardGrammarParser : Parser {
 		}
 		public ITerminalNode COMMA() { return GetToken(BoardGrammarParser.COMMA, 0); }
 		public ITerminalNode SEMI() { return GetToken(BoardGrammarParser.SEMI, 0); }
+		public ITerminalNode BOARD() { return GetToken(BoardGrammarParser.BOARD, 0); }
+		public ITerminalNode NAME_T() { return GetToken(BoardGrammarParser.NAME_T, 0); }
+		public ITerminalNode EQUALS() { return GetToken(BoardGrammarParser.EQUALS, 0); }
+		public ITerminalNode ID() { return GetToken(BoardGrammarParser.ID, 0); }
 		public TrapPlacementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -648,13 +698,33 @@ public partial class BoardGrammarParser : Parser {
 		TrapPlacementContext _localctx = new TrapPlacementContext(_ctx, State);
 		EnterRule(_localctx, 20, RULE_trapPlacement);
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 60; Match(TRAP);
-			State = 61; typeName();
-			State = 62; place();
-			State = 63; Match(COMMA);
-			State = 64; Match(SEMI);
+			State = 93;
+			_errHandler.Sync(this);
+			switch (_input.La(1)) {
+			case TRAP:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 79; Match(TRAP);
+				State = 80; typeName();
+				State = 81; place();
+				State = 82; Match(COMMA);
+				State = 83; Match(SEMI);
+				}
+				break;
+			case BOARD:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 85; Match(BOARD);
+				State = 86; typeName();
+				State = 87; Match(NAME_T);
+				State = 88; Match(EQUALS);
+				State = 89; Match(ID);
+				State = 90; place();
+				State = 91; Match(SEMI);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -669,28 +739,36 @@ public partial class BoardGrammarParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\v\x45\x4\x2\t\x2"+
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\r\x62\x4\x2\t\x2"+
 		"\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t\t"+
 		"\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x3\x2\x3\x2\x3\x3\x3\x3\a\x3\x1D\n\x3\f"+
 		"\x3\xE\x3 \v\x3\x3\x4\x3\x4\x3\x4\x5\x4%\n\x4\x3\x5\x3\x5\x3\x6\x3\x6"+
 		"\x3\x6\x3\x6\x3\a\x3\a\x3\b\x3\b\x3\t\x3\t\x3\t\x3\t\x3\n\x3\n\x3\n\x3"+
-		"\n\x3\v\x3\v\x3\v\x3\v\x3\v\x3\v\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x2"+
-		"\x2\x2\r\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE\x2\x10\x2\x12\x2\x14\x2\x16"+
-		"\x2\x2\x2<\x2\x18\x3\x2\x2\x2\x4\x1A\x3\x2\x2\x2\x6$\x3\x2\x2\x2\b&\x3"+
-		"\x2\x2\x2\n(\x3\x2\x2\x2\f,\x3\x2\x2\x2\xE.\x3\x2\x2\x2\x10\x30\x3\x2"+
-		"\x2\x2\x12\x34\x3\x2\x2\x2\x14\x38\x3\x2\x2\x2\x16>\x3\x2\x2\x2\x18\x19"+
+		"\n\x3\n\x3\n\x3\n\x3\n\x3\n\x3\n\x3\n\x5\n@\n\n\x3\v\x3\v\x3\v\x3\v\x3"+
+		"\v\x3\v\x3\v\x3\v\x3\v\x3\v\x3\v\x3\v\x3\v\x3\v\x5\vP\n\v\x3\f\x3\f\x3"+
+		"\f\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x3\f\x5\f`\n\f\x3"+
+		"\f\x2\x2\x2\r\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE\x2\x10\x2\x12\x2\x14"+
+		"\x2\x16\x2\x2\x2\\\x2\x18\x3\x2\x2\x2\x4\x1A\x3\x2\x2\x2\x6$\x3\x2\x2"+
+		"\x2\b&\x3\x2\x2\x2\n(\x3\x2\x2\x2\f,\x3\x2\x2\x2\xE.\x3\x2\x2\x2\x10\x30"+
+		"\x3\x2\x2\x2\x12?\x3\x2\x2\x2\x14O\x3\x2\x2\x2\x16_\x3\x2\x2\x2\x18\x19"+
 		"\x5\x4\x3\x2\x19\x3\x3\x2\x2\x2\x1A\x1E\x5\x10\t\x2\x1B\x1D\x5\x6\x4\x2"+
 		"\x1C\x1B\x3\x2\x2\x2\x1D \x3\x2\x2\x2\x1E\x1C\x3\x2\x2\x2\x1E\x1F\x3\x2"+
 		"\x2\x2\x1F\x5\x3\x2\x2\x2 \x1E\x3\x2\x2\x2!%\x5\x12\n\x2\"%\x5\x14\v\x2"+
 		"#%\x5\x16\f\x2$!\x3\x2\x2\x2$\"\x3\x2\x2\x2$#\x3\x2\x2\x2%\a\x3\x2\x2"+
-		"\x2&\'\a\n\x2\x2\'\t\x3\x2\x2\x2()\x5\f\a\x2)*\a\x4\x2\x2*+\x5\xE\b\x2"+
+		"\x2&\'\a\f\x2\x2\'\t\x3\x2\x2\x2()\x5\f\a\x2)*\a\x4\x2\x2*+\x5\xE\b\x2"+
 		"+\v\x3\x2\x2\x2,-\a\x5\x2\x2-\r\x3\x2\x2\x2./\a\x5\x2\x2/\xF\x3\x2\x2"+
 		"\x2\x30\x31\a\x6\x2\x2\x31\x32\x5\n\x6\x2\x32\x33\a\x3\x2\x2\x33\x11\x3"+
 		"\x2\x2\x2\x34\x35\a\a\x2\x2\x35\x36\x5\n\x6\x2\x36\x37\a\x3\x2\x2\x37"+
-		"\x13\x3\x2\x2\x2\x38\x39\a\b\x2\x2\x39:\x5\b\x5\x2:;\x5\n\x6\x2;<\a\x4"+
-		"\x2\x2<=\a\x3\x2\x2=\x15\x3\x2\x2\x2>?\a\t\x2\x2?@\x5\b\x5\x2@\x41\x5"+
-		"\n\x6\x2\x41\x42\a\x4\x2\x2\x42\x43\a\x3\x2\x2\x43\x17\x3\x2\x2\x2\x4"+
-		"\x1E$";
+		"@\x3\x2\x2\x2\x38\x39\a\a\x2\x2\x39:\a\b\x2\x2:;\a\v\x2\x2;<\a\f\x2\x2"+
+		"<=\x5\n\x6\x2=>\a\x3\x2\x2>@\x3\x2\x2\x2?\x34\x3\x2\x2\x2?\x38\x3\x2\x2"+
+		"\x2@\x13\x3\x2\x2\x2\x41\x42\a\t\x2\x2\x42\x43\x5\b\x5\x2\x43\x44\x5\n"+
+		"\x6\x2\x44\x45\a\x4\x2\x2\x45\x46\a\x3\x2\x2\x46P\x3\x2\x2\x2GH\a\x6\x2"+
+		"\x2HI\x5\b\x5\x2IJ\a\b\x2\x2JK\a\v\x2\x2KL\a\f\x2\x2LM\a\x3\x2\x2MN\x5"+
+		"\n\x6\x2NP\x3\x2\x2\x2O\x41\x3\x2\x2\x2OG\x3\x2\x2\x2P\x15\x3\x2\x2\x2"+
+		"QR\a\n\x2\x2RS\x5\b\x5\x2ST\x5\n\x6\x2TU\a\x4\x2\x2UV\a\x3\x2\x2V`\x3"+
+		"\x2\x2\x2WX\a\x6\x2\x2XY\x5\b\x5\x2YZ\a\b\x2\x2Z[\a\v\x2\x2[\\\a\f\x2"+
+		"\x2\\]\x5\n\x6\x2]^\a\x3\x2\x2^`\x3\x2\x2\x2_Q\x3\x2\x2\x2_W\x3\x2\x2"+
+		"\x2`\x17\x3\x2\x2\x2\a\x1E$?O_";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

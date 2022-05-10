@@ -14,8 +14,8 @@ x: COORDINATE;
 y: COORDINATE;
 boardCreation: BOARD place SEMI ;
 playerPlacement: PLAYER place SEMI | PLAYER NAME_T EQUALS ID place SEMI ;
-monsterPlacement: MONSTER typeName  place COMMA SEMI | BOARD typename NAME_T EQUALS ID SEMI place;
-trapPlacement: TRAP typeName  place COMMA SEMI | BOARD typename NAME_T EQUALS ID place SEMI;
+monsterPlacement: MONSTER typeName  place COMMA SEMI | BOARD typeName NAME_T EQUALS ID SEMI place;
+trapPlacement: TRAP typeName  place COMMA SEMI | BOARD typeName NAME_T EQUALS ID place SEMI;
 
 SEMI: ';';
 COMMA: ',';
