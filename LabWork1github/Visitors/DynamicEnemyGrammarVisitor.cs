@@ -664,6 +664,12 @@ namespace LabWork1github
             return base.VisitWhileExpression(context);
         }
 
+        public override object VisitWhenExpression([NotNull] WhenExpressionContext context)
+        {
+
+            return base.VisitWhenExpression(context);
+        }
+
 
 
 

@@ -12,7 +12,7 @@ namespace LabWork1github.Commands
     public class WhenCommand : Command
     {
         public WhenDelegate WhenDelegate { get; set; }
-        public Event TriggerEvent { get; set; }
+        public List<Event> TriggerEventList { get; set; }
 
         public override void Execute(GameParamProvider provider)
         {

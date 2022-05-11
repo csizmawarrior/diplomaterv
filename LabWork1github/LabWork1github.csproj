@@ -52,6 +52,7 @@
     <Compile Include="Commands\HealCommand.cs" />
     <Compile Include="Commands\WhenCommand.cs" />
     <Compile Include="EventHandling\Event.cs" />
+    <Compile Include="EventHandling\EventEnums.cs" />
     <Compile Include="game field classes\Board.cs" />
     <Compile Include="g4 files\BoardGrammar.g4.lexer.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>

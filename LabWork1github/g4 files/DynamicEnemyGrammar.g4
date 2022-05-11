@@ -51,8 +51,11 @@ spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER nam
 teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM | TELEPORT_T character;
 ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
 whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
-whenExpression:  WHEN event;
-event: PLAYER MOVE;
+whenExpression:  WHEN PARENTHESISSTART event PARENTHESISCLOSE block;
+event: character action | PLAYER HEALTH_CHECK;
+
+action: MOVE (FROM place)? TO place | DIE | STAY AT place | shoot NUMBER TO (character | place) | damage NUMBER TO (character | place) | 
+			heal NUMBER TO (character | place) | teleport character TO place | spawn character TO place; 
 
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
@@ -86,6 +89,7 @@ SPAWN_TYPE: 'spawn_type';
 RANDOM: 'random';
 DISTANCE: 'distance';
 DAMAGE: 'damage';
+HEALTH_CHECK: 'health_check';
 DIRECTION: 'F' | 'L' | 'R' | 'B';
 NAME_T: 'name';
 TRAP: 'trap';
@@ -108,7 +112,11 @@ SPAWN: 'spawn';
 TELEPORT_T: 'teleport';
 PARTNER: 'partner';
 HEAL: 'heal';
+FROM: 'from';
 WHEN: 'when';
+DIE: 'die';
+STAY: 'stay';
+AT: 'at';
 
 EQUALS: '=' ;
 ABSOLUTE: '|';
