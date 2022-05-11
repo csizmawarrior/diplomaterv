@@ -180,18 +180,32 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitTeleportDeclaration([NotNull] DynamicEnemyGrammarParser.TeleportDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIfexpression([NotNull] DynamicEnemyGrammarParser.IfexpressionContext context);
+	Result VisitIfExpression([NotNull] DynamicEnemyGrammarParser.IfExpressionContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitWhileexpression([NotNull] DynamicEnemyGrammarParser.WhileexpressionContext context);
+	Result VisitWhileExpression([NotNull] DynamicEnemyGrammarParser.WhileExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whenExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.block"/>.

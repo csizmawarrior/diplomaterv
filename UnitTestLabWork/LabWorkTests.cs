@@ -159,8 +159,7 @@ namespace UnitTestLabWork
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
-            Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_type=TestType" + "\n" +
-                                        "Spawning enemy type doesn't exist at place:" + "\n" + "spawn_type=TestType" + "\n");
+            Assert.AreEqual(visitor.Error, "Spawning enemy type has been already declared:" + "\n" + "spawn_type=TestType" + "\n");
         }
         [TestMethod]
         public void AssigningTrapsHealth()
@@ -670,6 +669,65 @@ namespace UnitTestLabWork
                 .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(visitor.TeleportTrap)) &&
                  ((TeleportCommand)x).TargetPlace.X == 3 && ((TeleportCommand)x).TargetPlace.Y == 3) != null);
         }
+        [TestMethod]
+        public void AssignTrapSpawnCommandTypeToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; spawn monster DefaultMonster to 2,3;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(visitor.Spawn)) &&
+                 ((SpawnCommand)x).TargetPlace.X == 2 && ((SpawnCommand)x).TargetPlace.Y == 3 && 
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("DefaultMonster")) != null);
+        }
+        [TestMethod]
+        public void AssignTrapSpawnCommandRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; spawn random;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(visitor.SpawnRandom)) ) != null);
+        }
+        [TestMethod]
+        public void AssignTrapSpawnCommandOnlyType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; spawn_place = 1,2 ; spawn monster FutureMonster;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(visitor.Spawn)) &&
+                 ((SpawnCommand)x).TargetPlace.X == 1 && ((SpawnCommand)x).TargetPlace.Y == 2 &&
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("FutureMonster")) != null);
+        }
+        [TestMethod]
+        public void AssignTrapSpawnCommandOnlyPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; spawn_type = UnrealMonster ; spawn to 2,2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(visitor.Spawn)) &&
+                 ((SpawnCommand)x).TargetPlace.X == 2 && ((SpawnCommand)x).TargetPlace.Y == 2 &&
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("UnrealMonster")) != null);
+        }
+        [TestMethod]
+        public void AssignTrapSpawnCommandOnly()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; spawn_place = 4,1 spawn_type = UnrealMonster ; spawn");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(visitor.Spawn)) &&
+                 ((SpawnCommand)x).TargetPlace.X == 4 && ((SpawnCommand)x).TargetPlace.Y == 1 &&
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("UnrealMonster")) != null);
+        }
+
 
 
 

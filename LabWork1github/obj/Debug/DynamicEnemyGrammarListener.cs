@@ -263,26 +263,48 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	void ExitTeleportDeclaration([NotNull] DynamicEnemyGrammarParser.TeleportDeclarationContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifexpression"/>.
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIfexpression([NotNull] DynamicEnemyGrammarParser.IfexpressionContext context);
+	void EnterIfExpression([NotNull] DynamicEnemyGrammarParser.IfExpressionContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifexpression"/>.
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIfexpression([NotNull] DynamicEnemyGrammarParser.IfexpressionContext context);
+	void ExitIfExpression([NotNull] DynamicEnemyGrammarParser.IfExpressionContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileexpression"/>.
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterWhileexpression([NotNull] DynamicEnemyGrammarParser.WhileexpressionContext context);
+	void EnterWhileExpression([NotNull] DynamicEnemyGrammarParser.WhileExpressionContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileexpression"/>.
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitWhileexpression([NotNull] DynamicEnemyGrammarParser.WhileexpressionContext context);
+	void ExitWhileExpression([NotNull] DynamicEnemyGrammarParser.WhileExpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.whenExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whenExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.block"/>.

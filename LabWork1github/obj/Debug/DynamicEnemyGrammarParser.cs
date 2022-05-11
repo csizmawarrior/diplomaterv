@@ -34,11 +34,11 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		TELEPORT_PLACE=1, SPAWN_PLACE=2, SPAWN_TYPE=3, RANDOM=4, DISTANCE=5, DAMAGE=6, 
 		DIRECTION=7, NAME_T=8, TRAP=9, MONSTER=10, PLAYER=11, PLACE_T=12, ROUND=13, 
 		NEAR=14, IS=15, ME=16, IF=17, TO=18, WHILE=19, HEALTH=20, ALIVE=21, MOVE=22, 
-		ON=23, SHOOT=24, SPAWN=25, TELEPORT_T=26, PARTNER=27, HEAL=28, EQUALS=29, 
-		ABSOLUTE=30, NEGATE=31, BOOLCONNECTER=32, COMPARE=33, NUMCOMPARE=34, NUMCONNECTERMULTIP=35, 
-		NUMCONNECTERADD=36, PARENTHESISSTART=37, PARENTHESISCLOSE=38, BRACKETCLOSE=39, 
-		BRACKETSTART=40, COLON=41, SEMI=42, COMMA=43, NUMBER=44, DOT=45, ID=46, 
-		WS=47;
+		ON=23, SHOOT=24, SPAWN=25, TELEPORT_T=26, PARTNER=27, HEAL=28, WHEN=29, 
+		EQUALS=30, ABSOLUTE=31, NEGATE=32, BOOLCONNECTER=33, COMPARE=34, NUMCOMPARE=35, 
+		NUMCONNECTERMULTIP=36, NUMCONNECTERADD=37, PARENTHESISSTART=38, PARENTHESISCLOSE=39, 
+		BRACKETCLOSE=40, BRACKETSTART=41, COLON=42, SEMI=43, COMMA=44, NUMBER=45, 
+		DOT=46, ID=47, WS=48;
 	public const int
 		RULE_definition = 0, RULE_name = 1, RULE_statementList = 2, RULE_statement = 3, 
 		RULE_nameDeclaration = 4, RULE_trapNameDeclaration = 5, RULE_monsterNameDeclaration = 6, 
@@ -47,21 +47,21 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		RULE_spawnPointDeclaration = 12, RULE_spawnTypeDeclaration = 13, RULE_distanceDeclare = 14, 
 		RULE_moveDeclaration = 15, RULE_shootDeclaration = 16, RULE_damageDeclaration = 17, 
 		RULE_healDeclaration = 18, RULE_spawnDeclaration = 19, RULE_teleportDeclaration = 20, 
-		RULE_ifexpression = 21, RULE_whileexpression = 22, RULE_block = 23, RULE_character = 24, 
-		RULE_possibleAttributes = 25, RULE_place = 26, RULE_x = 27, RULE_y = 28, 
-		RULE_boolExpression = 29, RULE_nextBoolExpression = 30, RULE_numberExpression = 31, 
-		RULE_numberMultipExpression = 32, RULE_numberFirstExpression = 33, RULE_functionExpression = 34, 
-		RULE_something = 35, RULE_attribute = 36, RULE_numToBoolOperation = 37, 
-		RULE_function = 38;
+		RULE_ifExpression = 21, RULE_whileExpression = 22, RULE_whenExpression = 23, 
+		RULE_event = 24, RULE_block = 25, RULE_character = 26, RULE_possibleAttributes = 27, 
+		RULE_place = 28, RULE_x = 29, RULE_y = 30, RULE_boolExpression = 31, RULE_nextBoolExpression = 32, 
+		RULE_numberExpression = 33, RULE_numberMultipExpression = 34, RULE_numberFirstExpression = 35, 
+		RULE_functionExpression = 36, RULE_something = 37, RULE_attribute = 38, 
+		RULE_numToBoolOperation = 39, RULE_function = 40;
 	public static readonly string[] ruleNames = {
 		"definition", "name", "statementList", "statement", "nameDeclaration", 
 		"trapNameDeclaration", "monsterNameDeclaration", "partnerDeclaration", 
 		"healthDeclaration", "healAmountDeclaration", "damageAmountDeclaration", 
 		"teleportPointDeclaration", "spawnPointDeclaration", "spawnTypeDeclaration", 
 		"distanceDeclare", "moveDeclaration", "shootDeclaration", "damageDeclaration", 
-		"healDeclaration", "spawnDeclaration", "teleportDeclaration", "ifexpression", 
-		"whileexpression", "block", "character", "possibleAttributes", "place", 
-		"x", "y", "boolExpression", "nextBoolExpression", "numberExpression", 
+		"healDeclaration", "spawnDeclaration", "teleportDeclaration", "ifExpression", 
+		"whileExpression", "whenExpression", "event", "block", "character", "possibleAttributes", 
+		"place", "x", "y", "boolExpression", "nextBoolExpression", "numberExpression", 
 		"numberMultipExpression", "numberFirstExpression", "functionExpression", 
 		"something", "attribute", "numToBoolOperation", "function"
 	};
@@ -71,15 +71,15 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		"'distance'", "'damage'", null, "'name'", "'trap'", "'monster'", "'player'", 
 		"'place'", "'round'", "'near'", "'is'", "'me'", "'if'", "'to'", "'while'", 
 		"'health'", "'alive'", "'move'", "'on'", "'shoot'", "'spawn'", "'teleport'", 
-		"'partner'", "'heal'", "'='", "'|'", "'!'", null, null, null, null, null, 
-		"'('", "')'", "'}'", "'{'", "':'", "';'", "','", null, "'.'"
+		"'partner'", "'heal'", "'when'", "'='", "'|'", "'!'", null, null, null, 
+		null, null, "'('", "')'", "'}'", "'{'", "':'", "';'", "','", null, "'.'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "TELEPORT_PLACE", "SPAWN_PLACE", "SPAWN_TYPE", "RANDOM", "DISTANCE", 
 		"DAMAGE", "DIRECTION", "NAME_T", "TRAP", "MONSTER", "PLAYER", "PLACE_T", 
 		"ROUND", "NEAR", "IS", "ME", "IF", "TO", "WHILE", "HEALTH", "ALIVE", "MOVE", 
-		"ON", "SHOOT", "SPAWN", "TELEPORT_T", "PARTNER", "HEAL", "EQUALS", "ABSOLUTE", 
-		"NEGATE", "BOOLCONNECTER", "COMPARE", "NUMCOMPARE", "NUMCONNECTERMULTIP", 
+		"ON", "SHOOT", "SPAWN", "TELEPORT_T", "PARTNER", "HEAL", "WHEN", "EQUALS", 
+		"ABSOLUTE", "NEGATE", "BOOLCONNECTER", "COMPARE", "NUMCOMPARE", "NUMCONNECTERMULTIP", 
 		"NUMCONNECTERADD", "PARENTHESISSTART", "PARENTHESISCLOSE", "BRACKETCLOSE", 
 		"BRACKETSTART", "COLON", "SEMI", "COMMA", "NUMBER", "DOT", "ID", "WS"
 	};
@@ -168,16 +168,16 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 81;
+			State = 85;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TRAP || _la==MONSTER) {
 				{
 				{
-				State = 78; statementList();
+				State = 82; statementList();
 				}
 				}
-				State = 83;
+				State = 87;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -223,7 +223,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 84; Match(ID);
+			State = 88; Match(ID);
 			}
 		}
 		catch (RecognitionException re) {
@@ -275,17 +275,17 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 86; nameDeclaration();
-			State = 90;
+			State = 90; nameDeclaration();
+			State = 94;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TELEPORT_PLACE) | (1L << SPAWN_PLACE) | (1L << SPAWN_TYPE) | (1L << DAMAGE) | (1L << IF) | (1L << WHILE) | (1L << HEALTH) | (1L << MOVE) | (1L << SHOOT) | (1L << SPAWN) | (1L << TELEPORT_T) | (1L << PARTNER) | (1L << HEAL))) != 0)) {
 				{
 				{
-				State = 87; statement();
+				State = 91; statement();
 				}
 				}
-				State = 92;
+				State = 96;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -333,11 +333,11 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public ShootDeclarationContext shootDeclaration() {
 			return GetRuleContext<ShootDeclarationContext>(0);
 		}
-		public IfexpressionContext ifexpression() {
-			return GetRuleContext<IfexpressionContext>(0);
+		public IfExpressionContext ifExpression() {
+			return GetRuleContext<IfExpressionContext>(0);
 		}
-		public WhileexpressionContext whileexpression() {
-			return GetRuleContext<WhileexpressionContext>(0);
+		public WhileExpressionContext whileExpression() {
+			return GetRuleContext<WhileExpressionContext>(0);
 		}
 		public DamageDeclarationContext damageDeclaration() {
 			return GetRuleContext<DamageDeclarationContext>(0);
@@ -373,123 +373,123 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		StatementContext _localctx = new StatementContext(_ctx, State);
 		EnterRule(_localctx, 6, RULE_statement);
 		try {
-			State = 132;
+			State = 136;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 93; damageAmountDeclaration();
-				State = 94; Match(SEMI);
+				State = 97; damageAmountDeclaration();
+				State = 98; Match(SEMI);
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 96; healAmountDeclaration();
-				State = 97; Match(SEMI);
+				State = 100; healAmountDeclaration();
+				State = 101; Match(SEMI);
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 99; partnerDeclaration();
+				State = 103; partnerDeclaration();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 100; teleportPointDeclaration();
-				State = 101; Match(SEMI);
+				State = 104; teleportPointDeclaration();
+				State = 105; Match(SEMI);
 				}
 				break;
 
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 103; spawnPointDeclaration();
-				State = 104; Match(SEMI);
+				State = 107; spawnPointDeclaration();
+				State = 108; Match(SEMI);
 				}
 				break;
 
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 106; spawnTypeDeclaration();
-				State = 107; Match(SEMI);
+				State = 110; spawnTypeDeclaration();
+				State = 111; Match(SEMI);
 				}
 				break;
 
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 109; healthDeclaration();
-				State = 110; Match(SEMI);
+				State = 113; healthDeclaration();
+				State = 114; Match(SEMI);
 				}
 				break;
 
 			case 8:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 112; healDeclaration();
-				State = 113; Match(SEMI);
+				State = 116; healDeclaration();
+				State = 117; Match(SEMI);
 				}
 				break;
 
 			case 9:
 				EnterOuterAlt(_localctx, 9);
 				{
-				State = 115; moveDeclaration();
-				State = 116; Match(SEMI);
+				State = 119; moveDeclaration();
+				State = 120; Match(SEMI);
 				}
 				break;
 
 			case 10:
 				EnterOuterAlt(_localctx, 10);
 				{
-				State = 118; shootDeclaration();
-				State = 119; Match(SEMI);
+				State = 122; shootDeclaration();
+				State = 123; Match(SEMI);
 				}
 				break;
 
 			case 11:
 				EnterOuterAlt(_localctx, 11);
 				{
-				State = 121; ifexpression();
+				State = 125; ifExpression();
 				}
 				break;
 
 			case 12:
 				EnterOuterAlt(_localctx, 12);
 				{
-				State = 122; whileexpression();
+				State = 126; whileExpression();
 				}
 				break;
 
 			case 13:
 				EnterOuterAlt(_localctx, 13);
 				{
-				State = 123; damageDeclaration();
-				State = 124; Match(SEMI);
+				State = 127; damageDeclaration();
+				State = 128; Match(SEMI);
 				}
 				break;
 
 			case 14:
 				EnterOuterAlt(_localctx, 14);
 				{
-				State = 126; teleportDeclaration();
-				State = 127; Match(SEMI);
+				State = 130; teleportDeclaration();
+				State = 131; Match(SEMI);
 				}
 				break;
 
 			case 15:
 				EnterOuterAlt(_localctx, 15);
 				{
-				State = 129; spawnDeclaration();
-				State = 130; Match(SEMI);
+				State = 133; spawnDeclaration();
+				State = 134; Match(SEMI);
 				}
 				break;
 			}
@@ -537,19 +537,19 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		NameDeclarationContext _localctx = new NameDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 8, RULE_nameDeclaration);
 		try {
-			State = 136;
+			State = 140;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case TRAP:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 134; trapNameDeclaration();
+				State = 138; trapNameDeclaration();
 				}
 				break;
 			case MONSTER:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 135; monsterNameDeclaration();
+				State = 139; monsterNameDeclaration();
 				}
 				break;
 			default:
@@ -601,11 +601,11 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 138; Match(TRAP);
-			State = 139; Match(NAME_T);
-			State = 140; Match(EQUALS);
-			State = 141; name();
-			State = 142; Match(SEMI);
+			State = 142; Match(TRAP);
+			State = 143; Match(NAME_T);
+			State = 144; Match(EQUALS);
+			State = 145; name();
+			State = 146; Match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -653,11 +653,11 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 144; Match(MONSTER);
-			State = 145; Match(NAME_T);
-			State = 146; Match(EQUALS);
-			State = 147; name();
-			State = 148; Match(SEMI);
+			State = 148; Match(MONSTER);
+			State = 149; Match(NAME_T);
+			State = 150; Match(EQUALS);
+			State = 151; name();
+			State = 152; Match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -708,8 +708,8 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 150; Match(PARTNER);
-			State = 151;
+			State = 154; Match(PARTNER);
+			State = 155;
 			_la = _input.La(1);
 			if ( !(_la==TRAP || _la==MONSTER) ) {
 			_errHandler.RecoverInline(this);
@@ -721,10 +721,10 @@ public partial class DynamicEnemyGrammarParser : Parser {
 				_errHandler.ReportMatch(this);
 				Consume();
 			}
-			State = 152; Match(NAME_T);
-			State = 153; Match(EQUALS);
-			State = 154; name();
-			State = 155; Match(SEMI);
+			State = 156; Match(NAME_T);
+			State = 157; Match(EQUALS);
+			State = 158; name();
+			State = 159; Match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -769,9 +769,9 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 157; Match(HEALTH);
-			State = 158; Match(EQUALS);
-			State = 159; Match(NUMBER);
+			State = 161; Match(HEALTH);
+			State = 162; Match(EQUALS);
+			State = 163; Match(NUMBER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -816,9 +816,9 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 161; Match(HEAL);
-			State = 162; Match(EQUALS);
-			State = 163; Match(NUMBER);
+			State = 165; Match(HEAL);
+			State = 166; Match(EQUALS);
+			State = 167; Match(NUMBER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -863,9 +863,9 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 165; Match(DAMAGE);
-			State = 166; Match(EQUALS);
-			State = 167; Match(NUMBER);
+			State = 169; Match(DAMAGE);
+			State = 170; Match(EQUALS);
+			State = 171; Match(NUMBER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -912,9 +912,9 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 169; Match(TELEPORT_PLACE);
-			State = 170; Match(EQUALS);
-			State = 171; place();
+			State = 173; Match(TELEPORT_PLACE);
+			State = 174; Match(EQUALS);
+			State = 175; place();
 			}
 		}
 		catch (RecognitionException re) {
@@ -961,9 +961,9 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 173; Match(SPAWN_PLACE);
-			State = 174; Match(EQUALS);
-			State = 175; place();
+			State = 177; Match(SPAWN_PLACE);
+			State = 178; Match(EQUALS);
+			State = 179; place();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1010,9 +1010,9 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 177; Match(SPAWN_TYPE);
-			State = 178; Match(EQUALS);
-			State = 179; name();
+			State = 181; Match(SPAWN_TYPE);
+			State = 182; Match(EQUALS);
+			State = 183; name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1057,9 +1057,9 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 181; Match(DISTANCE);
-			State = 182; Match(EQUALS);
-			State = 183; Match(NUMBER);
+			State = 185; Match(DISTANCE);
+			State = 186; Match(EQUALS);
+			State = 187; Match(NUMBER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1110,50 +1110,50 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		MoveDeclarationContext _localctx = new MoveDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 30, RULE_moveDeclaration);
 		try {
-			State = 199;
+			State = 203;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 185; Match(MOVE);
-				State = 186; Match(DIRECTION);
+				State = 189; Match(MOVE);
+				State = 190; Match(DIRECTION);
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 187; Match(MOVE);
-				State = 188; Match(TO);
-				State = 189; place();
+				State = 191; Match(MOVE);
+				State = 192; Match(TO);
+				State = 193; place();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 190; Match(MOVE);
-				State = 191; Match(DIRECTION);
-				State = 192; distanceDeclare();
+				State = 194; Match(MOVE);
+				State = 195; Match(DIRECTION);
+				State = 196; distanceDeclare();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 193; Match(MOVE);
-				State = 194; Match(TO);
-				State = 195; Match(PLAYER);
+				State = 197; Match(MOVE);
+				State = 198; Match(TO);
+				State = 199; Match(PLAYER);
 				}
 				break;
 
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 196; Match(MOVE);
-				State = 197; Match(TO);
-				State = 198; Match(RANDOM);
+				State = 200; Match(MOVE);
+				State = 201; Match(TO);
+				State = 202; Match(RANDOM);
 				}
 				break;
 			}
@@ -1209,88 +1209,88 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		ShootDeclarationContext _localctx = new ShootDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 32, RULE_shootDeclaration);
 		try {
-			State = 231;
+			State = 235;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,5,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 201; Match(SHOOT);
-				State = 202; Match(DIRECTION);
+				State = 205; Match(SHOOT);
+				State = 206; Match(DIRECTION);
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 203; Match(SHOOT);
-				State = 204; Match(TO);
-				State = 205; place();
+				State = 207; Match(SHOOT);
+				State = 208; Match(TO);
+				State = 209; place();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 206; Match(SHOOT);
-				State = 207; Match(DIRECTION);
-				State = 208; distanceDeclare();
+				State = 210; Match(SHOOT);
+				State = 211; Match(DIRECTION);
+				State = 212; distanceDeclare();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 209; Match(SHOOT);
-				State = 210; Match(DIRECTION);
-				State = 211; damageAmountDeclaration();
+				State = 213; Match(SHOOT);
+				State = 214; Match(DIRECTION);
+				State = 215; damageAmountDeclaration();
 				}
 				break;
 
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 212; Match(SHOOT);
-				State = 213; Match(RANDOM);
+				State = 216; Match(SHOOT);
+				State = 217; Match(RANDOM);
 				}
 				break;
 
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 214; Match(SHOOT);
-				State = 215; Match(TO);
-				State = 216; Match(PLAYER);
+				State = 218; Match(SHOOT);
+				State = 219; Match(TO);
+				State = 220; Match(PLAYER);
 				}
 				break;
 
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 217; Match(SHOOT);
-				State = 218; Match(TO);
-				State = 219; Match(PLAYER);
-				State = 220; damageAmountDeclaration();
+				State = 221; Match(SHOOT);
+				State = 222; Match(TO);
+				State = 223; Match(PLAYER);
+				State = 224; damageAmountDeclaration();
 				}
 				break;
 
 			case 8:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 221; Match(SHOOT);
-				State = 222; Match(DIRECTION);
-				State = 223; distanceDeclare();
-				State = 224; damageAmountDeclaration();
+				State = 225; Match(SHOOT);
+				State = 226; Match(DIRECTION);
+				State = 227; distanceDeclare();
+				State = 228; damageAmountDeclaration();
 				}
 				break;
 
 			case 9:
 				EnterOuterAlt(_localctx, 9);
 				{
-				State = 226; Match(SHOOT);
-				State = 227; Match(TO);
-				State = 228; place();
-				State = 229; damageAmountDeclaration();
+				State = 230; Match(SHOOT);
+				State = 231; Match(TO);
+				State = 232; place();
+				State = 233; damageAmountDeclaration();
 				}
 				break;
 			}
@@ -1348,88 +1348,88 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		DamageDeclarationContext _localctx = new DamageDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 34, RULE_damageDeclaration);
 		try {
-			State = 264;
+			State = 268;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 233; Match(DAMAGE);
-				State = 234; Match(DIRECTION);
+				State = 237; Match(DAMAGE);
+				State = 238; Match(DIRECTION);
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 235; Match(DAMAGE);
-				State = 236; Match(DIRECTION);
-				State = 237; damageAmountDeclaration();
+				State = 239; Match(DAMAGE);
+				State = 240; Match(DIRECTION);
+				State = 241; damageAmountDeclaration();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 238; Match(DAMAGE);
-				State = 239; Match(DIRECTION);
-				State = 240; distanceDeclare();
+				State = 242; Match(DAMAGE);
+				State = 243; Match(DIRECTION);
+				State = 244; distanceDeclare();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 241; Match(DAMAGE);
-				State = 242; Match(DIRECTION);
-				State = 243; distanceDeclare();
-				State = 244; damageAmountDeclaration();
+				State = 245; Match(DAMAGE);
+				State = 246; Match(DIRECTION);
+				State = 247; distanceDeclare();
+				State = 248; damageAmountDeclaration();
 				}
 				break;
 
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 246; Match(DAMAGE);
-				State = 247; Match(RANDOM);
+				State = 250; Match(DAMAGE);
+				State = 251; Match(RANDOM);
 				}
 				break;
 
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 248; Match(DAMAGE);
-				State = 249; Match(TO);
-				State = 250; place();
+				State = 252; Match(DAMAGE);
+				State = 253; Match(TO);
+				State = 254; place();
 				}
 				break;
 
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 251; Match(DAMAGE);
-				State = 252; Match(TO);
-				State = 253; place();
-				State = 254; damageAmountDeclaration();
+				State = 255; Match(DAMAGE);
+				State = 256; Match(TO);
+				State = 257; place();
+				State = 258; damageAmountDeclaration();
 				}
 				break;
 
 			case 8:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 256; Match(DAMAGE);
-				State = 257; Match(TO);
-				State = 258; character();
+				State = 260; Match(DAMAGE);
+				State = 261; Match(TO);
+				State = 262; character();
 				}
 				break;
 
 			case 9:
 				EnterOuterAlt(_localctx, 9);
 				{
-				State = 259; Match(DAMAGE);
-				State = 260; Match(TO);
-				State = 261; character();
-				State = 262; damageAmountDeclaration();
+				State = 263; Match(DAMAGE);
+				State = 264; Match(TO);
+				State = 265; character();
+				State = 266; damageAmountDeclaration();
 				}
 				break;
 			}
@@ -1487,88 +1487,88 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		HealDeclarationContext _localctx = new HealDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 36, RULE_healDeclaration);
 		try {
-			State = 297;
+			State = 301;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 266; Match(HEAL);
-				State = 267; Match(DIRECTION);
+				State = 270; Match(HEAL);
+				State = 271; Match(DIRECTION);
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 268; Match(HEAL);
-				State = 269; Match(DIRECTION);
-				State = 270; healAmountDeclaration();
+				State = 272; Match(HEAL);
+				State = 273; Match(DIRECTION);
+				State = 274; healAmountDeclaration();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 271; Match(HEAL);
-				State = 272; Match(DIRECTION);
-				State = 273; distanceDeclare();
+				State = 275; Match(HEAL);
+				State = 276; Match(DIRECTION);
+				State = 277; distanceDeclare();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 274; Match(HEAL);
-				State = 275; Match(DIRECTION);
-				State = 276; distanceDeclare();
-				State = 277; healAmountDeclaration();
+				State = 278; Match(HEAL);
+				State = 279; Match(DIRECTION);
+				State = 280; distanceDeclare();
+				State = 281; healAmountDeclaration();
 				}
 				break;
 
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 279; Match(HEAL);
-				State = 280; Match(RANDOM);
+				State = 283; Match(HEAL);
+				State = 284; Match(RANDOM);
 				}
 				break;
 
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 281; Match(HEAL);
-				State = 282; Match(TO);
-				State = 283; place();
+				State = 285; Match(HEAL);
+				State = 286; Match(TO);
+				State = 287; place();
 				}
 				break;
 
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 284; Match(HEAL);
-				State = 285; Match(TO);
-				State = 286; place();
-				State = 287; healAmountDeclaration();
+				State = 288; Match(HEAL);
+				State = 289; Match(TO);
+				State = 290; place();
+				State = 291; healAmountDeclaration();
 				}
 				break;
 
 			case 8:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 289; Match(HEAL);
-				State = 290; Match(TO);
-				State = 291; character();
+				State = 293; Match(HEAL);
+				State = 294; Match(TO);
+				State = 295; character();
 				}
 				break;
 
 			case 9:
 				EnterOuterAlt(_localctx, 9);
 				{
-				State = 292; Match(HEAL);
-				State = 293; Match(TO);
-				State = 294; character();
-				State = 295; healAmountDeclaration();
+				State = 296; Match(HEAL);
+				State = 297; Match(TO);
+				State = 298; character();
+				State = 299; healAmountDeclaration();
 				}
 				break;
 			}
@@ -1620,50 +1620,50 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		SpawnDeclarationContext _localctx = new SpawnDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 38, RULE_spawnDeclaration);
 		try {
-			State = 314;
+			State = 318;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 299; Match(SPAWN);
-				State = 300; Match(MONSTER);
-				State = 301; name();
-				State = 302; Match(TO);
-				State = 303; place();
+				State = 303; Match(SPAWN);
+				State = 304; Match(MONSTER);
+				State = 305; name();
+				State = 306; Match(TO);
+				State = 307; place();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 305; Match(SPAWN);
-				State = 306; Match(RANDOM);
+				State = 309; Match(SPAWN);
+				State = 310; Match(RANDOM);
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 307; Match(SPAWN);
-				State = 308; Match(MONSTER);
-				State = 309; name();
+				State = 311; Match(SPAWN);
+				State = 312; Match(MONSTER);
+				State = 313; name();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 310; Match(SPAWN);
-				State = 311; Match(TO);
-				State = 312; place();
+				State = 314; Match(SPAWN);
+				State = 315; Match(TO);
+				State = 316; place();
 				}
 				break;
 
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 313; Match(SPAWN);
+				State = 317; Match(SPAWN);
 				}
 				break;
 			}
@@ -1714,33 +1714,33 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		TeleportDeclarationContext _localctx = new TeleportDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 40, RULE_teleportDeclaration);
 		try {
-			State = 327;
+			State = 331;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,9,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 316; Match(TELEPORT_T);
-				State = 317; character();
-				State = 318; Match(TO);
-				State = 319; place();
+				State = 320; Match(TELEPORT_T);
+				State = 321; character();
+				State = 322; Match(TO);
+				State = 323; place();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 321; Match(TELEPORT_T);
-				State = 322; character();
-				State = 323; Match(RANDOM);
+				State = 325; Match(TELEPORT_T);
+				State = 326; character();
+				State = 327; Match(RANDOM);
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 325; Match(TELEPORT_T);
-				State = 326; character();
+				State = 329; Match(TELEPORT_T);
+				State = 330; character();
 				}
 				break;
 			}
@@ -1756,7 +1756,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		return _localctx;
 	}
 
-	public partial class IfexpressionContext : ParserRuleContext {
+	public partial class IfExpressionContext : ParserRuleContext {
 		public ITerminalNode IF() { return GetToken(DynamicEnemyGrammarParser.IF, 0); }
 		public ITerminalNode PARENTHESISSTART() { return GetToken(DynamicEnemyGrammarParser.PARENTHESISSTART, 0); }
 		public BoolExpressionContext boolExpression() {
@@ -1766,38 +1766,38 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public BlockContext block() {
 			return GetRuleContext<BlockContext>(0);
 		}
-		public IfexpressionContext(ParserRuleContext parent, int invokingState)
+		public IfExpressionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_ifexpression; } }
+		public override int RuleIndex { get { return RULE_ifExpression; } }
 		public override void EnterRule(IParseTreeListener listener) {
 			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
-			if (typedListener != null) typedListener.EnterIfexpression(this);
+			if (typedListener != null) typedListener.EnterIfExpression(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
-			if (typedListener != null) typedListener.ExitIfexpression(this);
+			if (typedListener != null) typedListener.ExitIfExpression(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IDynamicEnemyGrammarVisitor<TResult> typedVisitor = visitor as IDynamicEnemyGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitIfexpression(this);
+			if (typedVisitor != null) return typedVisitor.VisitIfExpression(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public IfexpressionContext ifexpression() {
-		IfexpressionContext _localctx = new IfexpressionContext(_ctx, State);
-		EnterRule(_localctx, 42, RULE_ifexpression);
+	public IfExpressionContext ifExpression() {
+		IfExpressionContext _localctx = new IfExpressionContext(_ctx, State);
+		EnterRule(_localctx, 42, RULE_ifExpression);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 329; Match(IF);
-			State = 330; Match(PARENTHESISSTART);
-			State = 331; boolExpression();
-			State = 332; Match(PARENTHESISCLOSE);
-			State = 333; block();
+			State = 333; Match(IF);
+			State = 334; Match(PARENTHESISSTART);
+			State = 335; boolExpression();
+			State = 336; Match(PARENTHESISCLOSE);
+			State = 337; block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1811,7 +1811,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		return _localctx;
 	}
 
-	public partial class WhileexpressionContext : ParserRuleContext {
+	public partial class WhileExpressionContext : ParserRuleContext {
 		public ITerminalNode WHILE() { return GetToken(DynamicEnemyGrammarParser.WHILE, 0); }
 		public ITerminalNode PARENTHESISSTART() { return GetToken(DynamicEnemyGrammarParser.PARENTHESISSTART, 0); }
 		public BoolExpressionContext boolExpression() {
@@ -1821,38 +1821,130 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public BlockContext block() {
 			return GetRuleContext<BlockContext>(0);
 		}
-		public WhileexpressionContext(ParserRuleContext parent, int invokingState)
+		public WhileExpressionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_whileexpression; } }
+		public override int RuleIndex { get { return RULE_whileExpression; } }
 		public override void EnterRule(IParseTreeListener listener) {
 			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
-			if (typedListener != null) typedListener.EnterWhileexpression(this);
+			if (typedListener != null) typedListener.EnterWhileExpression(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
-			if (typedListener != null) typedListener.ExitWhileexpression(this);
+			if (typedListener != null) typedListener.ExitWhileExpression(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IDynamicEnemyGrammarVisitor<TResult> typedVisitor = visitor as IDynamicEnemyGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitWhileexpression(this);
+			if (typedVisitor != null) return typedVisitor.VisitWhileExpression(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public WhileexpressionContext whileexpression() {
-		WhileexpressionContext _localctx = new WhileexpressionContext(_ctx, State);
-		EnterRule(_localctx, 44, RULE_whileexpression);
+	public WhileExpressionContext whileExpression() {
+		WhileExpressionContext _localctx = new WhileExpressionContext(_ctx, State);
+		EnterRule(_localctx, 44, RULE_whileExpression);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 335; Match(WHILE);
-			State = 336; Match(PARENTHESISSTART);
-			State = 337; boolExpression();
-			State = 338; Match(PARENTHESISCLOSE);
-			State = 339; block();
+			State = 339; Match(WHILE);
+			State = 340; Match(PARENTHESISSTART);
+			State = 341; boolExpression();
+			State = 342; Match(PARENTHESISCLOSE);
+			State = 343; block();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.ReportError(this, re);
+			_errHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class WhenExpressionContext : ParserRuleContext {
+		public ITerminalNode WHEN() { return GetToken(DynamicEnemyGrammarParser.WHEN, 0); }
+		public EventContext @event() {
+			return GetRuleContext<EventContext>(0);
+		}
+		public WhenExpressionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_whenExpression; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
+			if (typedListener != null) typedListener.EnterWhenExpression(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
+			if (typedListener != null) typedListener.ExitWhenExpression(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IDynamicEnemyGrammarVisitor<TResult> typedVisitor = visitor as IDynamicEnemyGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitWhenExpression(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public WhenExpressionContext whenExpression() {
+		WhenExpressionContext _localctx = new WhenExpressionContext(_ctx, State);
+		EnterRule(_localctx, 46, RULE_whenExpression);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 345; Match(WHEN);
+			State = 346; @event();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.ReportError(this, re);
+			_errHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class EventContext : ParserRuleContext {
+		public ITerminalNode PLAYER() { return GetToken(DynamicEnemyGrammarParser.PLAYER, 0); }
+		public ITerminalNode MOVE() { return GetToken(DynamicEnemyGrammarParser.MOVE, 0); }
+		public EventContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_event; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
+			if (typedListener != null) typedListener.EnterEvent(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			IDynamicEnemyGrammarListener typedListener = listener as IDynamicEnemyGrammarListener;
+			if (typedListener != null) typedListener.ExitEvent(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IDynamicEnemyGrammarVisitor<TResult> typedVisitor = visitor as IDynamicEnemyGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEvent(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public EventContext @event() {
+		EventContext _localctx = new EventContext(_ctx, State);
+		EnterRule(_localctx, 48, RULE_event);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 348; Match(PLAYER);
+			State = 349; Match(MOVE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1898,26 +1990,26 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public BlockContext block() {
 		BlockContext _localctx = new BlockContext(_ctx, State);
-		EnterRule(_localctx, 46, RULE_block);
+		EnterRule(_localctx, 50, RULE_block);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 341; Match(BRACKETSTART);
-			State = 345;
+			State = 351; Match(BRACKETSTART);
+			State = 355;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TELEPORT_PLACE) | (1L << SPAWN_PLACE) | (1L << SPAWN_TYPE) | (1L << DAMAGE) | (1L << IF) | (1L << WHILE) | (1L << HEALTH) | (1L << MOVE) | (1L << SHOOT) | (1L << SPAWN) | (1L << TELEPORT_T) | (1L << PARTNER) | (1L << HEAL))) != 0)) {
 				{
 				{
-				State = 342; statement();
+				State = 352; statement();
 				}
 				}
-				State = 347;
+				State = 357;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 348; Match(BRACKETCLOSE);
+			State = 358; Match(BRACKETCLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1959,12 +2051,12 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public CharacterContext character() {
 		CharacterContext _localctx = new CharacterContext(_ctx, State);
-		EnterRule(_localctx, 48, RULE_character);
+		EnterRule(_localctx, 52, RULE_character);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 350;
+			State = 360;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TRAP) | (1L << MONSTER) | (1L << PLAYER) | (1L << ME))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -2046,105 +2138,105 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		int _parentState = State;
 		PossibleAttributesContext _localctx = new PossibleAttributesContext(_ctx, _parentState);
 		PossibleAttributesContext _prevctx = _localctx;
-		int _startState = 50;
-		EnterRecursionRule(_localctx, 50, RULE_possibleAttributes, _p);
+		int _startState = 54;
+		EnterRecursionRule(_localctx, 54, RULE_possibleAttributes, _p);
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 370;
+			State = 380;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case ID:
 				{
-				State = 353; name();
+				State = 363; name();
 				}
 				break;
 			case TELEPORT_PLACE:
 				{
-				State = 354; Match(TELEPORT_PLACE);
+				State = 364; Match(TELEPORT_PLACE);
 				}
 				break;
 			case PLACE_T:
 				{
-				State = 355; Match(PLACE_T);
+				State = 365; Match(PLACE_T);
 				}
 				break;
 			case SPAWN_PLACE:
 				{
-				State = 356; Match(SPAWN_PLACE);
+				State = 366; Match(SPAWN_PLACE);
 				}
 				break;
 			case SPAWN_TYPE:
 				{
-				State = 357; Match(SPAWN_TYPE);
+				State = 367; Match(SPAWN_TYPE);
 				}
 				break;
 			case ROUND:
 				{
-				State = 358; Match(ROUND);
+				State = 368; Match(ROUND);
 				}
 				break;
 			case HEALTH:
 				{
-				State = 359; Match(HEALTH);
+				State = 369; Match(HEALTH);
 				}
 				break;
 			case HEAL:
 				{
-				State = 360; Match(HEAL);
+				State = 370; Match(HEAL);
 				}
 				break;
 			case RANDOM:
 				{
-				State = 361; Match(RANDOM);
+				State = 371; Match(RANDOM);
 				}
 				break;
 			case DAMAGE:
 				{
-				State = 362; Match(DAMAGE);
+				State = 372; Match(DAMAGE);
 				}
 				break;
 			case DISTANCE:
 				{
-				State = 363; Match(DISTANCE);
+				State = 373; Match(DISTANCE);
 				}
 				break;
 			case NAME_T:
 				{
-				State = 364; Match(NAME_T);
+				State = 374; Match(NAME_T);
 				}
 				break;
 			case TRAP:
 				{
-				State = 365; Match(TRAP);
+				State = 375; Match(TRAP);
 				}
 				break;
 			case MONSTER:
 				{
-				State = 366; Match(MONSTER);
+				State = 376; Match(MONSTER);
 				}
 				break;
 			case ME:
 				{
-				State = 367; Match(ME);
+				State = 377; Match(ME);
 				}
 				break;
 			case PLAYER:
 				{
-				State = 368; Match(PLAYER);
+				State = 378; Match(PLAYER);
 				}
 				break;
 			case PARTNER:
 				{
-				State = 369; Match(PARTNER);
+				State = 379; Match(PARTNER);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.Lt(-1);
-			State = 377;
+			State = 387;
 			_errHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(_input,12,_ctx);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.InvalidAltNumber ) {
@@ -2155,14 +2247,14 @@ public partial class DynamicEnemyGrammarParser : Parser {
 					{
 					_localctx = new PossibleAttributesContext(_parentctx, _parentState);
 					PushNewRecursionContext(_localctx, _startState, RULE_possibleAttributes);
-					State = 372;
+					State = 382;
 					if (!(Precpred(_ctx, 17))) throw new FailedPredicateException(this, "Precpred(_ctx, 17)");
-					State = 373; Match(DOT);
-					State = 374; possibleAttributes(18);
+					State = 383; Match(DOT);
+					State = 384; possibleAttributes(18);
 					}
 					} 
 				}
-				State = 379;
+				State = 389;
 				_errHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(_input,12,_ctx);
 			}
@@ -2209,13 +2301,13 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public PlaceContext place() {
 		PlaceContext _localctx = new PlaceContext(_ctx, State);
-		EnterRule(_localctx, 52, RULE_place);
+		EnterRule(_localctx, 56, RULE_place);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 380; x();
-			State = 381; Match(COMMA);
-			State = 382; y();
+			State = 390; x();
+			State = 391; Match(COMMA);
+			State = 392; y();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2254,11 +2346,11 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public XContext x() {
 		XContext _localctx = new XContext(_ctx, State);
-		EnterRule(_localctx, 54, RULE_x);
+		EnterRule(_localctx, 58, RULE_x);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 384; Match(NUMBER);
+			State = 394; Match(NUMBER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2297,11 +2389,11 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public YContext y() {
 		YContext _localctx = new YContext(_ctx, State);
-		EnterRule(_localctx, 56, RULE_y);
+		EnterRule(_localctx, 60, RULE_y);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 386; Match(NUMBER);
+			State = 396; Match(NUMBER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2367,23 +2459,23 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public BoolExpressionContext boolExpression() {
 		BoolExpressionContext _localctx = new BoolExpressionContext(_ctx, State);
-		EnterRule(_localctx, 58, RULE_boolExpression);
+		EnterRule(_localctx, 62, RULE_boolExpression);
 		try {
-			State = 415;
+			State = 425;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,18,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 388; Match(PARENTHESISSTART);
-				State = 389; boolExpression();
-				State = 390; Match(PARENTHESISCLOSE);
-				State = 392;
+				State = 398; Match(PARENTHESISSTART);
+				State = 399; boolExpression();
+				State = 400; Match(PARENTHESISCLOSE);
+				State = 402;
 				_errHandler.Sync(this);
 				switch ( Interpreter.AdaptivePredict(_input,13,_ctx) ) {
 				case 1:
 					{
-					State = 391; nextBoolExpression();
+					State = 401; nextBoolExpression();
 					}
 					break;
 				}
@@ -2393,45 +2485,11 @@ public partial class DynamicEnemyGrammarParser : Parser {
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 394; Match(NEGATE);
-				State = 395; boolExpression();
-				State = 397;
-				_errHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(_input,14,_ctx) ) {
-				case 1:
-					{
-					State = 396; nextBoolExpression();
-					}
-					break;
-				}
-				}
-				break;
-
-			case 3:
-				EnterOuterAlt(_localctx, 3);
-				{
-				State = 399; numberExpression();
-				State = 400; numToBoolOperation();
-				State = 401; numberExpression();
-				State = 403;
-				_errHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(_input,15,_ctx) ) {
-				case 1:
-					{
-					State = 402; nextBoolExpression();
-					}
-					break;
-				}
-				}
-				break;
-
-			case 4:
-				EnterOuterAlt(_localctx, 4);
-				{
-				State = 405; functionExpression();
+				State = 404; Match(NEGATE);
+				State = 405; boolExpression();
 				State = 407;
 				_errHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(_input,16,_ctx) ) {
+				switch ( Interpreter.AdaptivePredict(_input,14,_ctx) ) {
 				case 1:
 					{
 					State = 406; nextBoolExpression();
@@ -2441,18 +2499,52 @@ public partial class DynamicEnemyGrammarParser : Parser {
 				}
 				break;
 
+			case 3:
+				EnterOuterAlt(_localctx, 3);
+				{
+				State = 409; numberExpression();
+				State = 410; numToBoolOperation();
+				State = 411; numberExpression();
+				State = 413;
+				_errHandler.Sync(this);
+				switch ( Interpreter.AdaptivePredict(_input,15,_ctx) ) {
+				case 1:
+					{
+					State = 412; nextBoolExpression();
+					}
+					break;
+				}
+				}
+				break;
+
+			case 4:
+				EnterOuterAlt(_localctx, 4);
+				{
+				State = 415; functionExpression();
+				State = 417;
+				_errHandler.Sync(this);
+				switch ( Interpreter.AdaptivePredict(_input,16,_ctx) ) {
+				case 1:
+					{
+					State = 416; nextBoolExpression();
+					}
+					break;
+				}
+				}
+				break;
+
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 409; attribute();
-				State = 410; Match(COMPARE);
-				State = 411; attribute();
-				State = 413;
+				State = 419; attribute();
+				State = 420; Match(COMPARE);
+				State = 421; attribute();
+				State = 423;
 				_errHandler.Sync(this);
 				switch ( Interpreter.AdaptivePredict(_input,17,_ctx) ) {
 				case 1:
 					{
-					State = 412; nextBoolExpression();
+					State = 422; nextBoolExpression();
 					}
 					break;
 				}
@@ -2499,12 +2591,12 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public NextBoolExpressionContext nextBoolExpression() {
 		NextBoolExpressionContext _localctx = new NextBoolExpressionContext(_ctx, State);
-		EnterRule(_localctx, 60, RULE_nextBoolExpression);
+		EnterRule(_localctx, 64, RULE_nextBoolExpression);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 417; Match(BOOLCONNECTER);
-			State = 418; boolExpression();
+			State = 427; Match(BOOLCONNECTER);
+			State = 428; boolExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2552,23 +2644,23 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public NumberExpressionContext numberExpression() {
 		NumberExpressionContext _localctx = new NumberExpressionContext(_ctx, State);
-		EnterRule(_localctx, 62, RULE_numberExpression);
+		EnterRule(_localctx, 66, RULE_numberExpression);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 420; numberMultipExpression();
-			State = 425;
+			State = 430; numberMultipExpression();
+			State = 435;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==NUMCONNECTERADD) {
 				{
 				{
-				State = 421; Match(NUMCONNECTERADD);
-				State = 422; numberMultipExpression();
+				State = 431; Match(NUMCONNECTERADD);
+				State = 432; numberMultipExpression();
 				}
 				}
-				State = 427;
+				State = 437;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -2619,23 +2711,23 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public NumberMultipExpressionContext numberMultipExpression() {
 		NumberMultipExpressionContext _localctx = new NumberMultipExpressionContext(_ctx, State);
-		EnterRule(_localctx, 64, RULE_numberMultipExpression);
+		EnterRule(_localctx, 68, RULE_numberMultipExpression);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 428; numberFirstExpression();
-			State = 433;
+			State = 438; numberFirstExpression();
+			State = 443;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==NUMCONNECTERMULTIP) {
 				{
 				{
-				State = 429; Match(NUMCONNECTERMULTIP);
-				State = 430; numberFirstExpression();
+				State = 439; Match(NUMCONNECTERMULTIP);
+				State = 440; numberFirstExpression();
 				}
 				}
-				State = 435;
+				State = 445;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -2688,25 +2780,25 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public NumberFirstExpressionContext numberFirstExpression() {
 		NumberFirstExpressionContext _localctx = new NumberFirstExpressionContext(_ctx, State);
-		EnterRule(_localctx, 66, RULE_numberFirstExpression);
+		EnterRule(_localctx, 70, RULE_numberFirstExpression);
 		try {
-			State = 445;
+			State = 455;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case PARENTHESISSTART:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 436; Match(PARENTHESISSTART);
-				State = 437; numberExpression();
-				State = 438; Match(PARENTHESISCLOSE);
+				State = 446; Match(PARENTHESISSTART);
+				State = 447; numberExpression();
+				State = 448; Match(PARENTHESISCLOSE);
 				}
 				break;
 			case ABSOLUTE:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 440; Match(ABSOLUTE);
-				State = 441; numberExpression();
-				State = 442; Match(ABSOLUTE);
+				State = 450; Match(ABSOLUTE);
+				State = 451; numberExpression();
+				State = 452; Match(ABSOLUTE);
 				}
 				break;
 			case TRAP:
@@ -2717,7 +2809,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 			case NUMBER:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 444; something();
+				State = 454; something();
 				}
 				break;
 			default:
@@ -2765,12 +2857,12 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public FunctionExpressionContext functionExpression() {
 		FunctionExpressionContext _localctx = new FunctionExpressionContext(_ctx, State);
-		EnterRule(_localctx, 68, RULE_functionExpression);
+		EnterRule(_localctx, 72, RULE_functionExpression);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 447; character();
-			State = 448; function();
+			State = 457; character();
+			State = 458; function();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2813,21 +2905,21 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public SomethingContext something() {
 		SomethingContext _localctx = new SomethingContext(_ctx, State);
-		EnterRule(_localctx, 70, RULE_something);
+		EnterRule(_localctx, 74, RULE_something);
 		try {
-			State = 453;
+			State = 463;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case NUMBER:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 450; Match(NUMBER);
+				State = 460; Match(NUMBER);
 				}
 				break;
 			case ROUND:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 451; Match(ROUND);
+				State = 461; Match(ROUND);
 				}
 				break;
 			case TRAP:
@@ -2836,7 +2928,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 			case ME:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 452; attribute();
+				State = 462; attribute();
 				}
 				break;
 			default:
@@ -2885,13 +2977,13 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public AttributeContext attribute() {
 		AttributeContext _localctx = new AttributeContext(_ctx, State);
-		EnterRule(_localctx, 72, RULE_attribute);
+		EnterRule(_localctx, 76, RULE_attribute);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 455; character();
-			State = 456; Match(DOT);
-			State = 457; possibleAttributes(0);
+			State = 465; character();
+			State = 466; Match(DOT);
+			State = 467; possibleAttributes(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2931,12 +3023,12 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public NumToBoolOperationContext numToBoolOperation() {
 		NumToBoolOperationContext _localctx = new NumToBoolOperationContext(_ctx, State);
-		EnterRule(_localctx, 74, RULE_numToBoolOperation);
+		EnterRule(_localctx, 78, RULE_numToBoolOperation);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 459;
+			State = 469;
 			_la = _input.La(1);
 			if ( !(_la==COMPARE || _la==NUMCOMPARE) ) {
 			_errHandler.RecoverInline(this);
@@ -2988,24 +3080,24 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	[RuleVersion(0)]
 	public FunctionContext function() {
 		FunctionContext _localctx = new FunctionContext(_ctx, State);
-		EnterRule(_localctx, 76, RULE_function);
+		EnterRule(_localctx, 80, RULE_function);
 		try {
-			State = 465;
+			State = 475;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,23,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 461; Match(IS);
-				State = 462; Match(ALIVE);
+				State = 471; Match(IS);
+				State = 472; Match(ALIVE);
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 463; Match(IS);
-				State = 464; Match(NEAR);
+				State = 473; Match(IS);
+				State = 474; Match(NEAR);
 				}
 				break;
 			}
@@ -3023,7 +3115,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 
 	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 25: return possibleAttributes_sempred((PossibleAttributesContext)_localctx, predIndex);
+		case 27: return possibleAttributes_sempred((PossibleAttributesContext)_localctx, predIndex);
 		}
 		return true;
 	}
@@ -3035,200 +3127,202 @@ public partial class DynamicEnemyGrammarParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\x31\x1D6\x4\x2"+
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\x32\x1E0\x4\x2"+
 		"\t\x2\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4"+
 		"\t\t\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10"+
 		"\t\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
 		"\x4\x16\t\x16\x4\x17\t\x17\x4\x18\t\x18\x4\x19\t\x19\x4\x1A\t\x1A\x4\x1B"+
 		"\t\x1B\x4\x1C\t\x1C\x4\x1D\t\x1D\x4\x1E\t\x1E\x4\x1F\t\x1F\x4 \t \x4!"+
-		"\t!\x4\"\t\"\x4#\t#\x4$\t$\x4%\t%\x4&\t&\x4\'\t\'\x4(\t(\x3\x2\a\x2R\n"+
-		"\x2\f\x2\xE\x2U\v\x2\x3\x3\x3\x3\x3\x4\x3\x4\a\x4[\n\x4\f\x4\xE\x4^\v"+
-		"\x4\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5"+
-		"\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3"+
+		"\t!\x4\"\t\"\x4#\t#\x4$\t$\x4%\t%\x4&\t&\x4\'\t\'\x4(\t(\x4)\t)\x4*\t"+
+		"*\x3\x2\a\x2V\n\x2\f\x2\xE\x2Y\v\x2\x3\x3\x3\x3\x3\x4\x3\x4\a\x4_\n\x4"+
+		"\f\x4\xE\x4\x62\v\x4\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3"+
 		"\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5"+
-		"\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x5\x5\x87\n\x5\x3\x6\x3\x6\x5\x6\x8B\n"+
-		"\x6\x3\a\x3\a\x3\a\x3\a\x3\a\x3\a\x3\b\x3\b\x3\b\x3\b\x3\b\x3\b\x3\t\x3"+
-		"\t\x3\t\x3\t\x3\t\x3\t\x3\t\x3\n\x3\n\x3\n\x3\n\x3\v\x3\v\x3\v\x3\v\x3"+
-		"\f\x3\f\x3\f\x3\f\x3\r\x3\r\x3\r\x3\r\x3\xE\x3\xE\x3\xE\x3\xE\x3\xF\x3"+
-		"\xF\x3\xF\x3\xF\x3\x10\x3\x10\x3\x10\x3\x10\x3\x11\x3\x11\x3\x11\x3\x11"+
+		"\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3"+
+		"\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x5\x5\x8B\n\x5\x3\x6\x3"+
+		"\x6\x5\x6\x8F\n\x6\x3\a\x3\a\x3\a\x3\a\x3\a\x3\a\x3\b\x3\b\x3\b\x3\b\x3"+
+		"\b\x3\b\x3\t\x3\t\x3\t\x3\t\x3\t\x3\t\x3\t\x3\n\x3\n\x3\n\x3\n\x3\v\x3"+
+		"\v\x3\v\x3\v\x3\f\x3\f\x3\f\x3\f\x3\r\x3\r\x3\r\x3\r\x3\xE\x3\xE\x3\xE"+
+		"\x3\xE\x3\xF\x3\xF\x3\xF\x3\xF\x3\x10\x3\x10\x3\x10\x3\x10\x3\x11\x3\x11"+
 		"\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11"+
-		"\x5\x11\xCA\n\x11\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3"+
+		"\x3\x11\x3\x11\x5\x11\xCE\n\x11\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3"+
 		"\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3"+
 		"\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3"+
-		"\x12\x3\x12\x3\x12\x5\x12\xEA\n\x12\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13"+
+		"\x12\x3\x12\x3\x12\x3\x12\x3\x12\x5\x12\xEE\n\x12\x3\x13\x3\x13\x3\x13"+
 		"\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13"+
 		"\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13"+
-		"\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x5\x13\x10B\n\x13\x3\x14\x3"+
+		"\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x5\x13\x10F\n"+
+		"\x13\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3"+
 		"\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3"+
 		"\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3"+
-		"\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x5"+
-		"\x14\x12C\n\x14\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15"+
-		"\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x5\x15\x13D\n\x15\x3"+
-		"\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3"+
-		"\x16\x5\x16\x14A\n\x16\x3\x17\x3\x17\x3\x17\x3\x17\x3\x17\x3\x17\x3\x18"+
-		"\x3\x18\x3\x18\x3\x18\x3\x18\x3\x18\x3\x19\x3\x19\a\x19\x15A\n\x19\f\x19"+
-		"\xE\x19\x15D\v\x19\x3\x19\x3\x19\x3\x1A\x3\x1A\x3\x1B\x3\x1B\x3\x1B\x3"+
-		"\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x3"+
-		"\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x5\x1B\x175\n\x1B\x3\x1B\x3\x1B\x3\x1B"+
-		"\a\x1B\x17A\n\x1B\f\x1B\xE\x1B\x17D\v\x1B\x3\x1C\x3\x1C\x3\x1C\x3\x1C"+
-		"\x3\x1D\x3\x1D\x3\x1E\x3\x1E\x3\x1F\x3\x1F\x3\x1F\x3\x1F\x5\x1F\x18B\n"+
-		"\x1F\x3\x1F\x3\x1F\x3\x1F\x5\x1F\x190\n\x1F\x3\x1F\x3\x1F\x3\x1F\x3\x1F"+
-		"\x5\x1F\x196\n\x1F\x3\x1F\x3\x1F\x5\x1F\x19A\n\x1F\x3\x1F\x3\x1F\x3\x1F"+
-		"\x3\x1F\x5\x1F\x1A0\n\x1F\x5\x1F\x1A2\n\x1F\x3 \x3 \x3 \x3!\x3!\x3!\a"+
-		"!\x1AA\n!\f!\xE!\x1AD\v!\x3\"\x3\"\x3\"\a\"\x1B2\n\"\f\"\xE\"\x1B5\v\""+
-		"\x3#\x3#\x3#\x3#\x3#\x3#\x3#\x3#\x3#\x5#\x1C0\n#\x3$\x3$\x3$\x3%\x3%\x3"+
-		"%\x5%\x1C8\n%\x3&\x3&\x3&\x3&\x3\'\x3\'\x3(\x3(\x3(\x3(\x5(\x1D4\n(\x3"+
-		"(\x2\x2\x3\x34)\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE\x2\x10\x2\x12\x2\x14"+
-		"\x2\x16\x2\x18\x2\x1A\x2\x1C\x2\x1E\x2 \x2\"\x2$\x2&\x2(\x2*\x2,\x2.\x2"+
-		"\x30\x2\x32\x2\x34\x2\x36\x2\x38\x2:\x2<\x2>\x2@\x2\x42\x2\x44\x2\x46"+
-		"\x2H\x2J\x2L\x2N\x2\x2\x5\x3\x2\v\f\x4\x2\v\r\x12\x12\x3\x2#$\x203\x2"+
-		"S\x3\x2\x2\x2\x4V\x3\x2\x2\x2\x6X\x3\x2\x2\x2\b\x86\x3\x2\x2\x2\n\x8A"+
-		"\x3\x2\x2\x2\f\x8C\x3\x2\x2\x2\xE\x92\x3\x2\x2\x2\x10\x98\x3\x2\x2\x2"+
-		"\x12\x9F\x3\x2\x2\x2\x14\xA3\x3\x2\x2\x2\x16\xA7\x3\x2\x2\x2\x18\xAB\x3"+
-		"\x2\x2\x2\x1A\xAF\x3\x2\x2\x2\x1C\xB3\x3\x2\x2\x2\x1E\xB7\x3\x2\x2\x2"+
-		" \xC9\x3\x2\x2\x2\"\xE9\x3\x2\x2\x2$\x10A\x3\x2\x2\x2&\x12B\x3\x2\x2\x2"+
-		"(\x13C\x3\x2\x2\x2*\x149\x3\x2\x2\x2,\x14B\x3\x2\x2\x2.\x151\x3\x2\x2"+
-		"\x2\x30\x157\x3\x2\x2\x2\x32\x160\x3\x2\x2\x2\x34\x174\x3\x2\x2\x2\x36"+
-		"\x17E\x3\x2\x2\x2\x38\x182\x3\x2\x2\x2:\x184\x3\x2\x2\x2<\x1A1\x3\x2\x2"+
-		"\x2>\x1A3\x3\x2\x2\x2@\x1A6\x3\x2\x2\x2\x42\x1AE\x3\x2\x2\x2\x44\x1BF"+
-		"\x3\x2\x2\x2\x46\x1C1\x3\x2\x2\x2H\x1C7\x3\x2\x2\x2J\x1C9\x3\x2\x2\x2"+
-		"L\x1CD\x3\x2\x2\x2N\x1D3\x3\x2\x2\x2PR\x5\x6\x4\x2QP\x3\x2\x2\x2RU\x3"+
-		"\x2\x2\x2SQ\x3\x2\x2\x2ST\x3\x2\x2\x2T\x3\x3\x2\x2\x2US\x3\x2\x2\x2VW"+
-		"\a\x30\x2\x2W\x5\x3\x2\x2\x2X\\\x5\n\x6\x2Y[\x5\b\x5\x2ZY\x3\x2\x2\x2"+
-		"[^\x3\x2\x2\x2\\Z\x3\x2\x2\x2\\]\x3\x2\x2\x2]\a\x3\x2\x2\x2^\\\x3\x2\x2"+
-		"\x2_`\x5\x16\f\x2`\x61\a,\x2\x2\x61\x87\x3\x2\x2\x2\x62\x63\x5\x14\v\x2"+
-		"\x63\x64\a,\x2\x2\x64\x87\x3\x2\x2\x2\x65\x87\x5\x10\t\x2\x66g\x5\x18"+
-		"\r\x2gh\a,\x2\x2h\x87\x3\x2\x2\x2ij\x5\x1A\xE\x2jk\a,\x2\x2k\x87\x3\x2"+
-		"\x2\x2lm\x5\x1C\xF\x2mn\a,\x2\x2n\x87\x3\x2\x2\x2op\x5\x12\n\x2pq\a,\x2"+
-		"\x2q\x87\x3\x2\x2\x2rs\x5&\x14\x2st\a,\x2\x2t\x87\x3\x2\x2\x2uv\x5 \x11"+
-		"\x2vw\a,\x2\x2w\x87\x3\x2\x2\x2xy\x5\"\x12\x2yz\a,\x2\x2z\x87\x3\x2\x2"+
-		"\x2{\x87\x5,\x17\x2|\x87\x5.\x18\x2}~\x5$\x13\x2~\x7F\a,\x2\x2\x7F\x87"+
-		"\x3\x2\x2\x2\x80\x81\x5*\x16\x2\x81\x82\a,\x2\x2\x82\x87\x3\x2\x2\x2\x83"+
-		"\x84\x5(\x15\x2\x84\x85\a,\x2\x2\x85\x87\x3\x2\x2\x2\x86_\x3\x2\x2\x2"+
-		"\x86\x62\x3\x2\x2\x2\x86\x65\x3\x2\x2\x2\x86\x66\x3\x2\x2\x2\x86i\x3\x2"+
-		"\x2\x2\x86l\x3\x2\x2\x2\x86o\x3\x2\x2\x2\x86r\x3\x2\x2\x2\x86u\x3\x2\x2"+
-		"\x2\x86x\x3\x2\x2\x2\x86{\x3\x2\x2\x2\x86|\x3\x2\x2\x2\x86}\x3\x2\x2\x2"+
-		"\x86\x80\x3\x2\x2\x2\x86\x83\x3\x2\x2\x2\x87\t\x3\x2\x2\x2\x88\x8B\x5"+
-		"\f\a\x2\x89\x8B\x5\xE\b\x2\x8A\x88\x3\x2\x2\x2\x8A\x89\x3\x2\x2\x2\x8B"+
-		"\v\x3\x2\x2\x2\x8C\x8D\a\v\x2\x2\x8D\x8E\a\n\x2\x2\x8E\x8F\a\x1F\x2\x2"+
-		"\x8F\x90\x5\x4\x3\x2\x90\x91\a,\x2\x2\x91\r\x3\x2\x2\x2\x92\x93\a\f\x2"+
-		"\x2\x93\x94\a\n\x2\x2\x94\x95\a\x1F\x2\x2\x95\x96\x5\x4\x3\x2\x96\x97"+
-		"\a,\x2\x2\x97\xF\x3\x2\x2\x2\x98\x99\a\x1D\x2\x2\x99\x9A\t\x2\x2\x2\x9A"+
-		"\x9B\a\n\x2\x2\x9B\x9C\a\x1F\x2\x2\x9C\x9D\x5\x4\x3\x2\x9D\x9E\a,\x2\x2"+
-		"\x9E\x11\x3\x2\x2\x2\x9F\xA0\a\x16\x2\x2\xA0\xA1\a\x1F\x2\x2\xA1\xA2\a"+
-		".\x2\x2\xA2\x13\x3\x2\x2\x2\xA3\xA4\a\x1E\x2\x2\xA4\xA5\a\x1F\x2\x2\xA5"+
-		"\xA6\a.\x2\x2\xA6\x15\x3\x2\x2\x2\xA7\xA8\a\b\x2\x2\xA8\xA9\a\x1F\x2\x2"+
-		"\xA9\xAA\a.\x2\x2\xAA\x17\x3\x2\x2\x2\xAB\xAC\a\x3\x2\x2\xAC\xAD\a\x1F"+
-		"\x2\x2\xAD\xAE\x5\x36\x1C\x2\xAE\x19\x3\x2\x2\x2\xAF\xB0\a\x4\x2\x2\xB0"+
-		"\xB1\a\x1F\x2\x2\xB1\xB2\x5\x36\x1C\x2\xB2\x1B\x3\x2\x2\x2\xB3\xB4\a\x5"+
-		"\x2\x2\xB4\xB5\a\x1F\x2\x2\xB5\xB6\x5\x4\x3\x2\xB6\x1D\x3\x2\x2\x2\xB7"+
-		"\xB8\a\a\x2\x2\xB8\xB9\a\x1F\x2\x2\xB9\xBA\a.\x2\x2\xBA\x1F\x3\x2\x2\x2"+
-		"\xBB\xBC\a\x18\x2\x2\xBC\xCA\a\t\x2\x2\xBD\xBE\a\x18\x2\x2\xBE\xBF\a\x14"+
-		"\x2\x2\xBF\xCA\x5\x36\x1C\x2\xC0\xC1\a\x18\x2\x2\xC1\xC2\a\t\x2\x2\xC2"+
-		"\xCA\x5\x1E\x10\x2\xC3\xC4\a\x18\x2\x2\xC4\xC5\a\x14\x2\x2\xC5\xCA\a\r"+
-		"\x2\x2\xC6\xC7\a\x18\x2\x2\xC7\xC8\a\x14\x2\x2\xC8\xCA\a\x6\x2\x2\xC9"+
-		"\xBB\x3\x2\x2\x2\xC9\xBD\x3\x2\x2\x2\xC9\xC0\x3\x2\x2\x2\xC9\xC3\x3\x2"+
-		"\x2\x2\xC9\xC6\x3\x2\x2\x2\xCA!\x3\x2\x2\x2\xCB\xCC\a\x1A\x2\x2\xCC\xEA"+
-		"\a\t\x2\x2\xCD\xCE\a\x1A\x2\x2\xCE\xCF\a\x14\x2\x2\xCF\xEA\x5\x36\x1C"+
-		"\x2\xD0\xD1\a\x1A\x2\x2\xD1\xD2\a\t\x2\x2\xD2\xEA\x5\x1E\x10\x2\xD3\xD4"+
-		"\a\x1A\x2\x2\xD4\xD5\a\t\x2\x2\xD5\xEA\x5\x16\f\x2\xD6\xD7\a\x1A\x2\x2"+
-		"\xD7\xEA\a\x6\x2\x2\xD8\xD9\a\x1A\x2\x2\xD9\xDA\a\x14\x2\x2\xDA\xEA\a"+
-		"\r\x2\x2\xDB\xDC\a\x1A\x2\x2\xDC\xDD\a\x14\x2\x2\xDD\xDE\a\r\x2\x2\xDE"+
-		"\xEA\x5\x16\f\x2\xDF\xE0\a\x1A\x2\x2\xE0\xE1\a\t\x2\x2\xE1\xE2\x5\x1E"+
-		"\x10\x2\xE2\xE3\x5\x16\f\x2\xE3\xEA\x3\x2\x2\x2\xE4\xE5\a\x1A\x2\x2\xE5"+
-		"\xE6\a\x14\x2\x2\xE6\xE7\x5\x36\x1C\x2\xE7\xE8\x5\x16\f\x2\xE8\xEA\x3"+
-		"\x2\x2\x2\xE9\xCB\x3\x2\x2\x2\xE9\xCD\x3\x2\x2\x2\xE9\xD0\x3\x2\x2\x2"+
-		"\xE9\xD3\x3\x2\x2\x2\xE9\xD6\x3\x2\x2\x2\xE9\xD8\x3\x2\x2\x2\xE9\xDB\x3"+
-		"\x2\x2\x2\xE9\xDF\x3\x2\x2\x2\xE9\xE4\x3\x2\x2\x2\xEA#\x3\x2\x2\x2\xEB"+
-		"\xEC\a\b\x2\x2\xEC\x10B\a\t\x2\x2\xED\xEE\a\b\x2\x2\xEE\xEF\a\t\x2\x2"+
-		"\xEF\x10B\x5\x16\f\x2\xF0\xF1\a\b\x2\x2\xF1\xF2\a\t\x2\x2\xF2\x10B\x5"+
-		"\x1E\x10\x2\xF3\xF4\a\b\x2\x2\xF4\xF5\a\t\x2\x2\xF5\xF6\x5\x1E\x10\x2"+
-		"\xF6\xF7\x5\x16\f\x2\xF7\x10B\x3\x2\x2\x2\xF8\xF9\a\b\x2\x2\xF9\x10B\a"+
-		"\x6\x2\x2\xFA\xFB\a\b\x2\x2\xFB\xFC\a\x14\x2\x2\xFC\x10B\x5\x36\x1C\x2"+
-		"\xFD\xFE\a\b\x2\x2\xFE\xFF\a\x14\x2\x2\xFF\x100\x5\x36\x1C\x2\x100\x101"+
-		"\x5\x16\f\x2\x101\x10B\x3\x2\x2\x2\x102\x103\a\b\x2\x2\x103\x104\a\x14"+
-		"\x2\x2\x104\x10B\x5\x32\x1A\x2\x105\x106\a\b\x2\x2\x106\x107\a\x14\x2"+
-		"\x2\x107\x108\x5\x32\x1A\x2\x108\x109\x5\x16\f\x2\x109\x10B\x3\x2\x2\x2"+
-		"\x10A\xEB\x3\x2\x2\x2\x10A\xED\x3\x2\x2\x2\x10A\xF0\x3\x2\x2\x2\x10A\xF3"+
-		"\x3\x2\x2\x2\x10A\xF8\x3\x2\x2\x2\x10A\xFA\x3\x2\x2\x2\x10A\xFD\x3\x2"+
-		"\x2\x2\x10A\x102\x3\x2\x2\x2\x10A\x105\x3\x2\x2\x2\x10B%\x3\x2\x2\x2\x10C"+
-		"\x10D\a\x1E\x2\x2\x10D\x12C\a\t\x2\x2\x10E\x10F\a\x1E\x2\x2\x10F\x110"+
-		"\a\t\x2\x2\x110\x12C\x5\x14\v\x2\x111\x112\a\x1E\x2\x2\x112\x113\a\t\x2"+
-		"\x2\x113\x12C\x5\x1E\x10\x2\x114\x115\a\x1E\x2\x2\x115\x116\a\t\x2\x2"+
-		"\x116\x117\x5\x1E\x10\x2\x117\x118\x5\x14\v\x2\x118\x12C\x3\x2\x2\x2\x119"+
-		"\x11A\a\x1E\x2\x2\x11A\x12C\a\x6\x2\x2\x11B\x11C\a\x1E\x2\x2\x11C\x11D"+
-		"\a\x14\x2\x2\x11D\x12C\x5\x36\x1C\x2\x11E\x11F\a\x1E\x2\x2\x11F\x120\a"+
-		"\x14\x2\x2\x120\x121\x5\x36\x1C\x2\x121\x122\x5\x14\v\x2\x122\x12C\x3"+
-		"\x2\x2\x2\x123\x124\a\x1E\x2\x2\x124\x125\a\x14\x2\x2\x125\x12C\x5\x32"+
-		"\x1A\x2\x126\x127\a\x1E\x2\x2\x127\x128\a\x14\x2\x2\x128\x129\x5\x32\x1A"+
-		"\x2\x129\x12A\x5\x14\v\x2\x12A\x12C\x3\x2\x2\x2\x12B\x10C\x3\x2\x2\x2"+
-		"\x12B\x10E\x3\x2\x2\x2\x12B\x111\x3\x2\x2\x2\x12B\x114\x3\x2\x2\x2\x12B"+
-		"\x119\x3\x2\x2\x2\x12B\x11B\x3\x2\x2\x2\x12B\x11E\x3\x2\x2\x2\x12B\x123"+
-		"\x3\x2\x2\x2\x12B\x126\x3\x2\x2\x2\x12C\'\x3\x2\x2\x2\x12D\x12E\a\x1B"+
-		"\x2\x2\x12E\x12F\a\f\x2\x2\x12F\x130\x5\x4\x3\x2\x130\x131\a\x14\x2\x2"+
-		"\x131\x132\x5\x36\x1C\x2\x132\x13D\x3\x2\x2\x2\x133\x134\a\x1B\x2\x2\x134"+
-		"\x13D\a\x6\x2\x2\x135\x136\a\x1B\x2\x2\x136\x137\a\f\x2\x2\x137\x13D\x5"+
-		"\x4\x3\x2\x138\x139\a\x1B\x2\x2\x139\x13A\a\x14\x2\x2\x13A\x13D\x5\x36"+
-		"\x1C\x2\x13B\x13D\a\x1B\x2\x2\x13C\x12D\x3\x2\x2\x2\x13C\x133\x3\x2\x2"+
-		"\x2\x13C\x135\x3\x2\x2\x2\x13C\x138\x3\x2\x2\x2\x13C\x13B\x3\x2\x2\x2"+
-		"\x13D)\x3\x2\x2\x2\x13E\x13F\a\x1C\x2\x2\x13F\x140\x5\x32\x1A\x2\x140"+
-		"\x141\a\x14\x2\x2\x141\x142\x5\x36\x1C\x2\x142\x14A\x3\x2\x2\x2\x143\x144"+
-		"\a\x1C\x2\x2\x144\x145\x5\x32\x1A\x2\x145\x146\a\x6\x2\x2\x146\x14A\x3"+
-		"\x2\x2\x2\x147\x148\a\x1C\x2\x2\x148\x14A\x5\x32\x1A\x2\x149\x13E\x3\x2"+
-		"\x2\x2\x149\x143\x3\x2\x2\x2\x149\x147\x3\x2\x2\x2\x14A+\x3\x2\x2\x2\x14B"+
-		"\x14C\a\x13\x2\x2\x14C\x14D\a\'\x2\x2\x14D\x14E\x5<\x1F\x2\x14E\x14F\a"+
-		"(\x2\x2\x14F\x150\x5\x30\x19\x2\x150-\x3\x2\x2\x2\x151\x152\a\x15\x2\x2"+
-		"\x152\x153\a\'\x2\x2\x153\x154\x5<\x1F\x2\x154\x155\a(\x2\x2\x155\x156"+
-		"\x5\x30\x19\x2\x156/\x3\x2\x2\x2\x157\x15B\a*\x2\x2\x158\x15A\x5\b\x5"+
-		"\x2\x159\x158\x3\x2\x2\x2\x15A\x15D\x3\x2\x2\x2\x15B\x159\x3\x2\x2\x2"+
-		"\x15B\x15C\x3\x2\x2\x2\x15C\x15E\x3\x2\x2\x2\x15D\x15B\x3\x2\x2\x2\x15E"+
-		"\x15F\a)\x2\x2\x15F\x31\x3\x2\x2\x2\x160\x161\t\x3\x2\x2\x161\x33\x3\x2"+
-		"\x2\x2\x162\x163\b\x1B\x1\x2\x163\x175\x5\x4\x3\x2\x164\x175\a\x3\x2\x2"+
-		"\x165\x175\a\xE\x2\x2\x166\x175\a\x4\x2\x2\x167\x175\a\x5\x2\x2\x168\x175"+
-		"\a\xF\x2\x2\x169\x175\a\x16\x2\x2\x16A\x175\a\x1E\x2\x2\x16B\x175\a\x6"+
-		"\x2\x2\x16C\x175\a\b\x2\x2\x16D\x175\a\a\x2\x2\x16E\x175\a\n\x2\x2\x16F"+
-		"\x175\a\v\x2\x2\x170\x175\a\f\x2\x2\x171\x175\a\x12\x2\x2\x172\x175\a"+
-		"\r\x2\x2\x173\x175\a\x1D\x2\x2\x174\x162\x3\x2\x2\x2\x174\x164\x3\x2\x2"+
-		"\x2\x174\x165\x3\x2\x2\x2\x174\x166\x3\x2\x2\x2\x174\x167\x3\x2\x2\x2"+
-		"\x174\x168\x3\x2\x2\x2\x174\x169\x3\x2\x2\x2\x174\x16A\x3\x2\x2\x2\x174"+
-		"\x16B\x3\x2\x2\x2\x174\x16C\x3\x2\x2\x2\x174\x16D\x3\x2\x2\x2\x174\x16E"+
-		"\x3\x2\x2\x2\x174\x16F\x3\x2\x2\x2\x174\x170\x3\x2\x2\x2\x174\x171\x3"+
-		"\x2\x2\x2\x174\x172\x3\x2\x2\x2\x174\x173\x3\x2\x2\x2\x175\x17B\x3\x2"+
-		"\x2\x2\x176\x177\f\x13\x2\x2\x177\x178\a/\x2\x2\x178\x17A\x5\x34\x1B\x14"+
-		"\x179\x176\x3\x2\x2\x2\x17A\x17D\x3\x2\x2\x2\x17B\x179\x3\x2\x2\x2\x17B"+
-		"\x17C\x3\x2\x2\x2\x17C\x35\x3\x2\x2\x2\x17D\x17B\x3\x2\x2\x2\x17E\x17F"+
-		"\x5\x38\x1D\x2\x17F\x180\a-\x2\x2\x180\x181\x5:\x1E\x2\x181\x37\x3\x2"+
-		"\x2\x2\x182\x183\a.\x2\x2\x183\x39\x3\x2\x2\x2\x184\x185\a.\x2\x2\x185"+
-		";\x3\x2\x2\x2\x186\x187\a\'\x2\x2\x187\x188\x5<\x1F\x2\x188\x18A\a(\x2"+
-		"\x2\x189\x18B\x5> \x2\x18A\x189\x3\x2\x2\x2\x18A\x18B\x3\x2\x2\x2\x18B"+
-		"\x1A2\x3\x2\x2\x2\x18C\x18D\a!\x2\x2\x18D\x18F\x5<\x1F\x2\x18E\x190\x5"+
-		"> \x2\x18F\x18E\x3\x2\x2\x2\x18F\x190\x3\x2\x2\x2\x190\x1A2\x3\x2\x2\x2"+
-		"\x191\x192\x5@!\x2\x192\x193\x5L\'\x2\x193\x195\x5@!\x2\x194\x196\x5>"+
-		" \x2\x195\x194\x3\x2\x2\x2\x195\x196\x3\x2\x2\x2\x196\x1A2\x3\x2\x2\x2"+
-		"\x197\x199\x5\x46$\x2\x198\x19A\x5> \x2\x199\x198\x3\x2\x2\x2\x199\x19A"+
-		"\x3\x2\x2\x2\x19A\x1A2\x3\x2\x2\x2\x19B\x19C\x5J&\x2\x19C\x19D\a#\x2\x2"+
-		"\x19D\x19F\x5J&\x2\x19E\x1A0\x5> \x2\x19F\x19E\x3\x2\x2\x2\x19F\x1A0\x3"+
-		"\x2\x2\x2\x1A0\x1A2\x3\x2\x2\x2\x1A1\x186\x3\x2\x2\x2\x1A1\x18C\x3\x2"+
-		"\x2\x2\x1A1\x191\x3\x2\x2\x2\x1A1\x197\x3\x2\x2\x2\x1A1\x19B\x3\x2\x2"+
-		"\x2\x1A2=\x3\x2\x2\x2\x1A3\x1A4\a\"\x2\x2\x1A4\x1A5\x5<\x1F\x2\x1A5?\x3"+
-		"\x2\x2\x2\x1A6\x1AB\x5\x42\"\x2\x1A7\x1A8\a&\x2\x2\x1A8\x1AA\x5\x42\""+
-		"\x2\x1A9\x1A7\x3\x2\x2\x2\x1AA\x1AD\x3\x2\x2\x2\x1AB\x1A9\x3\x2\x2\x2"+
-		"\x1AB\x1AC\x3\x2\x2\x2\x1AC\x41\x3\x2\x2\x2\x1AD\x1AB\x3\x2\x2\x2\x1AE"+
-		"\x1B3\x5\x44#\x2\x1AF\x1B0\a%\x2\x2\x1B0\x1B2\x5\x44#\x2\x1B1\x1AF\x3"+
-		"\x2\x2\x2\x1B2\x1B5\x3\x2\x2\x2\x1B3\x1B1\x3\x2\x2\x2\x1B3\x1B4\x3\x2"+
-		"\x2\x2\x1B4\x43\x3\x2\x2\x2\x1B5\x1B3\x3\x2\x2\x2\x1B6\x1B7\a\'\x2\x2"+
-		"\x1B7\x1B8\x5@!\x2\x1B8\x1B9\a(\x2\x2\x1B9\x1C0\x3\x2\x2\x2\x1BA\x1BB"+
-		"\a \x2\x2\x1BB\x1BC\x5@!\x2\x1BC\x1BD\a \x2\x2\x1BD\x1C0\x3\x2\x2\x2\x1BE"+
-		"\x1C0\x5H%\x2\x1BF\x1B6\x3\x2\x2\x2\x1BF\x1BA\x3\x2\x2\x2\x1BF\x1BE\x3"+
-		"\x2\x2\x2\x1C0\x45\x3\x2\x2\x2\x1C1\x1C2\x5\x32\x1A\x2\x1C2\x1C3\x5N("+
-		"\x2\x1C3G\x3\x2\x2\x2\x1C4\x1C8\a.\x2\x2\x1C5\x1C8\a\xF\x2\x2\x1C6\x1C8"+
-		"\x5J&\x2\x1C7\x1C4\x3\x2\x2\x2\x1C7\x1C5\x3\x2\x2\x2\x1C7\x1C6\x3\x2\x2"+
-		"\x2\x1C8I\x3\x2\x2\x2\x1C9\x1CA\x5\x32\x1A\x2\x1CA\x1CB\a/\x2\x2\x1CB"+
-		"\x1CC\x5\x34\x1B\x2\x1CCK\x3\x2\x2\x2\x1CD\x1CE\t\x4\x2\x2\x1CEM\x3\x2"+
-		"\x2\x2\x1CF\x1D0\a\x11\x2\x2\x1D0\x1D4\a\x17\x2\x2\x1D1\x1D2\a\x11\x2"+
-		"\x2\x1D2\x1D4\a\x10\x2\x2\x1D3\x1CF\x3\x2\x2\x2\x1D3\x1D1\x3\x2\x2\x2"+
-		"\x1D4O\x3\x2\x2\x2\x1AS\\\x86\x8A\xC9\xE9\x10A\x12B\x13C\x149\x15B\x174"+
-		"\x17B\x18A\x18F\x195\x199\x19F\x1A1\x1AB\x1B3\x1BF\x1C7\x1D3";
+		"\x14\x3\x14\x5\x14\x130\n\x14\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15"+
+		"\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x5\x15"+
+		"\x141\n\x15\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3"+
+		"\x16\x3\x16\x3\x16\x5\x16\x14E\n\x16\x3\x17\x3\x17\x3\x17\x3\x17\x3\x17"+
+		"\x3\x17\x3\x18\x3\x18\x3\x18\x3\x18\x3\x18\x3\x18\x3\x19\x3\x19\x3\x19"+
+		"\x3\x1A\x3\x1A\x3\x1A\x3\x1B\x3\x1B\a\x1B\x164\n\x1B\f\x1B\xE\x1B\x167"+
+		"\v\x1B\x3\x1B\x3\x1B\x3\x1C\x3\x1C\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D"+
+		"\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D"+
+		"\x3\x1D\x3\x1D\x3\x1D\x5\x1D\x17F\n\x1D\x3\x1D\x3\x1D\x3\x1D\a\x1D\x184"+
+		"\n\x1D\f\x1D\xE\x1D\x187\v\x1D\x3\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1F\x3\x1F"+
+		"\x3 \x3 \x3!\x3!\x3!\x3!\x5!\x195\n!\x3!\x3!\x3!\x5!\x19A\n!\x3!\x3!\x3"+
+		"!\x3!\x5!\x1A0\n!\x3!\x3!\x5!\x1A4\n!\x3!\x3!\x3!\x3!\x5!\x1AA\n!\x5!"+
+		"\x1AC\n!\x3\"\x3\"\x3\"\x3#\x3#\x3#\a#\x1B4\n#\f#\xE#\x1B7\v#\x3$\x3$"+
+		"\x3$\a$\x1BC\n$\f$\xE$\x1BF\v$\x3%\x3%\x3%\x3%\x3%\x3%\x3%\x3%\x3%\x5"+
+		"%\x1CA\n%\x3&\x3&\x3&\x3\'\x3\'\x3\'\x5\'\x1D2\n\'\x3(\x3(\x3(\x3(\x3"+
+		")\x3)\x3*\x3*\x3*\x3*\x5*\x1DE\n*\x3*\x2\x2\x3\x38+\x2\x2\x4\x2\x6\x2"+
+		"\b\x2\n\x2\f\x2\xE\x2\x10\x2\x12\x2\x14\x2\x16\x2\x18\x2\x1A\x2\x1C\x2"+
+		"\x1E\x2 \x2\"\x2$\x2&\x2(\x2*\x2,\x2.\x2\x30\x2\x32\x2\x34\x2\x36\x2\x38"+
+		"\x2:\x2<\x2>\x2@\x2\x42\x2\x44\x2\x46\x2H\x2J\x2L\x2N\x2P\x2R\x2\x2\x5"+
+		"\x3\x2\v\f\x4\x2\v\r\x12\x12\x3\x2$%\x20B\x2W\x3\x2\x2\x2\x4Z\x3\x2\x2"+
+		"\x2\x6\\\x3\x2\x2\x2\b\x8A\x3\x2\x2\x2\n\x8E\x3\x2\x2\x2\f\x90\x3\x2\x2"+
+		"\x2\xE\x96\x3\x2\x2\x2\x10\x9C\x3\x2\x2\x2\x12\xA3\x3\x2\x2\x2\x14\xA7"+
+		"\x3\x2\x2\x2\x16\xAB\x3\x2\x2\x2\x18\xAF\x3\x2\x2\x2\x1A\xB3\x3\x2\x2"+
+		"\x2\x1C\xB7\x3\x2\x2\x2\x1E\xBB\x3\x2\x2\x2 \xCD\x3\x2\x2\x2\"\xED\x3"+
+		"\x2\x2\x2$\x10E\x3\x2\x2\x2&\x12F\x3\x2\x2\x2(\x140\x3\x2\x2\x2*\x14D"+
+		"\x3\x2\x2\x2,\x14F\x3\x2\x2\x2.\x155\x3\x2\x2\x2\x30\x15B\x3\x2\x2\x2"+
+		"\x32\x15E\x3\x2\x2\x2\x34\x161\x3\x2\x2\x2\x36\x16A\x3\x2\x2\x2\x38\x17E"+
+		"\x3\x2\x2\x2:\x188\x3\x2\x2\x2<\x18C\x3\x2\x2\x2>\x18E\x3\x2\x2\x2@\x1AB"+
+		"\x3\x2\x2\x2\x42\x1AD\x3\x2\x2\x2\x44\x1B0\x3\x2\x2\x2\x46\x1B8\x3\x2"+
+		"\x2\x2H\x1C9\x3\x2\x2\x2J\x1CB\x3\x2\x2\x2L\x1D1\x3\x2\x2\x2N\x1D3\x3"+
+		"\x2\x2\x2P\x1D7\x3\x2\x2\x2R\x1DD\x3\x2\x2\x2TV\x5\x6\x4\x2UT\x3\x2\x2"+
+		"\x2VY\x3\x2\x2\x2WU\x3\x2\x2\x2WX\x3\x2\x2\x2X\x3\x3\x2\x2\x2YW\x3\x2"+
+		"\x2\x2Z[\a\x31\x2\x2[\x5\x3\x2\x2\x2\\`\x5\n\x6\x2]_\x5\b\x5\x2^]\x3\x2"+
+		"\x2\x2_\x62\x3\x2\x2\x2`^\x3\x2\x2\x2`\x61\x3\x2\x2\x2\x61\a\x3\x2\x2"+
+		"\x2\x62`\x3\x2\x2\x2\x63\x64\x5\x16\f\x2\x64\x65\a-\x2\x2\x65\x8B\x3\x2"+
+		"\x2\x2\x66g\x5\x14\v\x2gh\a-\x2\x2h\x8B\x3\x2\x2\x2i\x8B\x5\x10\t\x2j"+
+		"k\x5\x18\r\x2kl\a-\x2\x2l\x8B\x3\x2\x2\x2mn\x5\x1A\xE\x2no\a-\x2\x2o\x8B"+
+		"\x3\x2\x2\x2pq\x5\x1C\xF\x2qr\a-\x2\x2r\x8B\x3\x2\x2\x2st\x5\x12\n\x2"+
+		"tu\a-\x2\x2u\x8B\x3\x2\x2\x2vw\x5&\x14\x2wx\a-\x2\x2x\x8B\x3\x2\x2\x2"+
+		"yz\x5 \x11\x2z{\a-\x2\x2{\x8B\x3\x2\x2\x2|}\x5\"\x12\x2}~\a-\x2\x2~\x8B"+
+		"\x3\x2\x2\x2\x7F\x8B\x5,\x17\x2\x80\x8B\x5.\x18\x2\x81\x82\x5$\x13\x2"+
+		"\x82\x83\a-\x2\x2\x83\x8B\x3\x2\x2\x2\x84\x85\x5*\x16\x2\x85\x86\a-\x2"+
+		"\x2\x86\x8B\x3\x2\x2\x2\x87\x88\x5(\x15\x2\x88\x89\a-\x2\x2\x89\x8B\x3"+
+		"\x2\x2\x2\x8A\x63\x3\x2\x2\x2\x8A\x66\x3\x2\x2\x2\x8Ai\x3\x2\x2\x2\x8A"+
+		"j\x3\x2\x2\x2\x8Am\x3\x2\x2\x2\x8Ap\x3\x2\x2\x2\x8As\x3\x2\x2\x2\x8Av"+
+		"\x3\x2\x2\x2\x8Ay\x3\x2\x2\x2\x8A|\x3\x2\x2\x2\x8A\x7F\x3\x2\x2\x2\x8A"+
+		"\x80\x3\x2\x2\x2\x8A\x81\x3\x2\x2\x2\x8A\x84\x3\x2\x2\x2\x8A\x87\x3\x2"+
+		"\x2\x2\x8B\t\x3\x2\x2\x2\x8C\x8F\x5\f\a\x2\x8D\x8F\x5\xE\b\x2\x8E\x8C"+
+		"\x3\x2\x2\x2\x8E\x8D\x3\x2\x2\x2\x8F\v\x3\x2\x2\x2\x90\x91\a\v\x2\x2\x91"+
+		"\x92\a\n\x2\x2\x92\x93\a \x2\x2\x93\x94\x5\x4\x3\x2\x94\x95\a-\x2\x2\x95"+
+		"\r\x3\x2\x2\x2\x96\x97\a\f\x2\x2\x97\x98\a\n\x2\x2\x98\x99\a \x2\x2\x99"+
+		"\x9A\x5\x4\x3\x2\x9A\x9B\a-\x2\x2\x9B\xF\x3\x2\x2\x2\x9C\x9D\a\x1D\x2"+
+		"\x2\x9D\x9E\t\x2\x2\x2\x9E\x9F\a\n\x2\x2\x9F\xA0\a \x2\x2\xA0\xA1\x5\x4"+
+		"\x3\x2\xA1\xA2\a-\x2\x2\xA2\x11\x3\x2\x2\x2\xA3\xA4\a\x16\x2\x2\xA4\xA5"+
+		"\a \x2\x2\xA5\xA6\a/\x2\x2\xA6\x13\x3\x2\x2\x2\xA7\xA8\a\x1E\x2\x2\xA8"+
+		"\xA9\a \x2\x2\xA9\xAA\a/\x2\x2\xAA\x15\x3\x2\x2\x2\xAB\xAC\a\b\x2\x2\xAC"+
+		"\xAD\a \x2\x2\xAD\xAE\a/\x2\x2\xAE\x17\x3\x2\x2\x2\xAF\xB0\a\x3\x2\x2"+
+		"\xB0\xB1\a \x2\x2\xB1\xB2\x5:\x1E\x2\xB2\x19\x3\x2\x2\x2\xB3\xB4\a\x4"+
+		"\x2\x2\xB4\xB5\a \x2\x2\xB5\xB6\x5:\x1E\x2\xB6\x1B\x3\x2\x2\x2\xB7\xB8"+
+		"\a\x5\x2\x2\xB8\xB9\a \x2\x2\xB9\xBA\x5\x4\x3\x2\xBA\x1D\x3\x2\x2\x2\xBB"+
+		"\xBC\a\a\x2\x2\xBC\xBD\a \x2\x2\xBD\xBE\a/\x2\x2\xBE\x1F\x3\x2\x2\x2\xBF"+
+		"\xC0\a\x18\x2\x2\xC0\xCE\a\t\x2\x2\xC1\xC2\a\x18\x2\x2\xC2\xC3\a\x14\x2"+
+		"\x2\xC3\xCE\x5:\x1E\x2\xC4\xC5\a\x18\x2\x2\xC5\xC6\a\t\x2\x2\xC6\xCE\x5"+
+		"\x1E\x10\x2\xC7\xC8\a\x18\x2\x2\xC8\xC9\a\x14\x2\x2\xC9\xCE\a\r\x2\x2"+
+		"\xCA\xCB\a\x18\x2\x2\xCB\xCC\a\x14\x2\x2\xCC\xCE\a\x6\x2\x2\xCD\xBF\x3"+
+		"\x2\x2\x2\xCD\xC1\x3\x2\x2\x2\xCD\xC4\x3\x2\x2\x2\xCD\xC7\x3\x2\x2\x2"+
+		"\xCD\xCA\x3\x2\x2\x2\xCE!\x3\x2\x2\x2\xCF\xD0\a\x1A\x2\x2\xD0\xEE\a\t"+
+		"\x2\x2\xD1\xD2\a\x1A\x2\x2\xD2\xD3\a\x14\x2\x2\xD3\xEE\x5:\x1E\x2\xD4"+
+		"\xD5\a\x1A\x2\x2\xD5\xD6\a\t\x2\x2\xD6\xEE\x5\x1E\x10\x2\xD7\xD8\a\x1A"+
+		"\x2\x2\xD8\xD9\a\t\x2\x2\xD9\xEE\x5\x16\f\x2\xDA\xDB\a\x1A\x2\x2\xDB\xEE"+
+		"\a\x6\x2\x2\xDC\xDD\a\x1A\x2\x2\xDD\xDE\a\x14\x2\x2\xDE\xEE\a\r\x2\x2"+
+		"\xDF\xE0\a\x1A\x2\x2\xE0\xE1\a\x14\x2\x2\xE1\xE2\a\r\x2\x2\xE2\xEE\x5"+
+		"\x16\f\x2\xE3\xE4\a\x1A\x2\x2\xE4\xE5\a\t\x2\x2\xE5\xE6\x5\x1E\x10\x2"+
+		"\xE6\xE7\x5\x16\f\x2\xE7\xEE\x3\x2\x2\x2\xE8\xE9\a\x1A\x2\x2\xE9\xEA\a"+
+		"\x14\x2\x2\xEA\xEB\x5:\x1E\x2\xEB\xEC\x5\x16\f\x2\xEC\xEE\x3\x2\x2\x2"+
+		"\xED\xCF\x3\x2\x2\x2\xED\xD1\x3\x2\x2\x2\xED\xD4\x3\x2\x2\x2\xED\xD7\x3"+
+		"\x2\x2\x2\xED\xDA\x3\x2\x2\x2\xED\xDC\x3\x2\x2\x2\xED\xDF\x3\x2\x2\x2"+
+		"\xED\xE3\x3\x2\x2\x2\xED\xE8\x3\x2\x2\x2\xEE#\x3\x2\x2\x2\xEF\xF0\a\b"+
+		"\x2\x2\xF0\x10F\a\t\x2\x2\xF1\xF2\a\b\x2\x2\xF2\xF3\a\t\x2\x2\xF3\x10F"+
+		"\x5\x16\f\x2\xF4\xF5\a\b\x2\x2\xF5\xF6\a\t\x2\x2\xF6\x10F\x5\x1E\x10\x2"+
+		"\xF7\xF8\a\b\x2\x2\xF8\xF9\a\t\x2\x2\xF9\xFA\x5\x1E\x10\x2\xFA\xFB\x5"+
+		"\x16\f\x2\xFB\x10F\x3\x2\x2\x2\xFC\xFD\a\b\x2\x2\xFD\x10F\a\x6\x2\x2\xFE"+
+		"\xFF\a\b\x2\x2\xFF\x100\a\x14\x2\x2\x100\x10F\x5:\x1E\x2\x101\x102\a\b"+
+		"\x2\x2\x102\x103\a\x14\x2\x2\x103\x104\x5:\x1E\x2\x104\x105\x5\x16\f\x2"+
+		"\x105\x10F\x3\x2\x2\x2\x106\x107\a\b\x2\x2\x107\x108\a\x14\x2\x2\x108"+
+		"\x10F\x5\x36\x1C\x2\x109\x10A\a\b\x2\x2\x10A\x10B\a\x14\x2\x2\x10B\x10C"+
+		"\x5\x36\x1C\x2\x10C\x10D\x5\x16\f\x2\x10D\x10F\x3\x2\x2\x2\x10E\xEF\x3"+
+		"\x2\x2\x2\x10E\xF1\x3\x2\x2\x2\x10E\xF4\x3\x2\x2\x2\x10E\xF7\x3\x2\x2"+
+		"\x2\x10E\xFC\x3\x2\x2\x2\x10E\xFE\x3\x2\x2\x2\x10E\x101\x3\x2\x2\x2\x10E"+
+		"\x106\x3\x2\x2\x2\x10E\x109\x3\x2\x2\x2\x10F%\x3\x2\x2\x2\x110\x111\a"+
+		"\x1E\x2\x2\x111\x130\a\t\x2\x2\x112\x113\a\x1E\x2\x2\x113\x114\a\t\x2"+
+		"\x2\x114\x130\x5\x14\v\x2\x115\x116\a\x1E\x2\x2\x116\x117\a\t\x2\x2\x117"+
+		"\x130\x5\x1E\x10\x2\x118\x119\a\x1E\x2\x2\x119\x11A\a\t\x2\x2\x11A\x11B"+
+		"\x5\x1E\x10\x2\x11B\x11C\x5\x14\v\x2\x11C\x130\x3\x2\x2\x2\x11D\x11E\a"+
+		"\x1E\x2\x2\x11E\x130\a\x6\x2\x2\x11F\x120\a\x1E\x2\x2\x120\x121\a\x14"+
+		"\x2\x2\x121\x130\x5:\x1E\x2\x122\x123\a\x1E\x2\x2\x123\x124\a\x14\x2\x2"+
+		"\x124\x125\x5:\x1E\x2\x125\x126\x5\x14\v\x2\x126\x130\x3\x2\x2\x2\x127"+
+		"\x128\a\x1E\x2\x2\x128\x129\a\x14\x2\x2\x129\x130\x5\x36\x1C\x2\x12A\x12B"+
+		"\a\x1E\x2\x2\x12B\x12C\a\x14\x2\x2\x12C\x12D\x5\x36\x1C\x2\x12D\x12E\x5"+
+		"\x14\v\x2\x12E\x130\x3\x2\x2\x2\x12F\x110\x3\x2\x2\x2\x12F\x112\x3\x2"+
+		"\x2\x2\x12F\x115\x3\x2\x2\x2\x12F\x118\x3\x2\x2\x2\x12F\x11D\x3\x2\x2"+
+		"\x2\x12F\x11F\x3\x2\x2\x2\x12F\x122\x3\x2\x2\x2\x12F\x127\x3\x2\x2\x2"+
+		"\x12F\x12A\x3\x2\x2\x2\x130\'\x3\x2\x2\x2\x131\x132\a\x1B\x2\x2\x132\x133"+
+		"\a\f\x2\x2\x133\x134\x5\x4\x3\x2\x134\x135\a\x14\x2\x2\x135\x136\x5:\x1E"+
+		"\x2\x136\x141\x3\x2\x2\x2\x137\x138\a\x1B\x2\x2\x138\x141\a\x6\x2\x2\x139"+
+		"\x13A\a\x1B\x2\x2\x13A\x13B\a\f\x2\x2\x13B\x141\x5\x4\x3\x2\x13C\x13D"+
+		"\a\x1B\x2\x2\x13D\x13E\a\x14\x2\x2\x13E\x141\x5:\x1E\x2\x13F\x141\a\x1B"+
+		"\x2\x2\x140\x131\x3\x2\x2\x2\x140\x137\x3\x2\x2\x2\x140\x139\x3\x2\x2"+
+		"\x2\x140\x13C\x3\x2\x2\x2\x140\x13F\x3\x2\x2\x2\x141)\x3\x2\x2\x2\x142"+
+		"\x143\a\x1C\x2\x2\x143\x144\x5\x36\x1C\x2\x144\x145\a\x14\x2\x2\x145\x146"+
+		"\x5:\x1E\x2\x146\x14E\x3\x2\x2\x2\x147\x148\a\x1C\x2\x2\x148\x149\x5\x36"+
+		"\x1C\x2\x149\x14A\a\x6\x2\x2\x14A\x14E\x3\x2\x2\x2\x14B\x14C\a\x1C\x2"+
+		"\x2\x14C\x14E\x5\x36\x1C\x2\x14D\x142\x3\x2\x2\x2\x14D\x147\x3\x2\x2\x2"+
+		"\x14D\x14B\x3\x2\x2\x2\x14E+\x3\x2\x2\x2\x14F\x150\a\x13\x2\x2\x150\x151"+
+		"\a(\x2\x2\x151\x152\x5@!\x2\x152\x153\a)\x2\x2\x153\x154\x5\x34\x1B\x2"+
+		"\x154-\x3\x2\x2\x2\x155\x156\a\x15\x2\x2\x156\x157\a(\x2\x2\x157\x158"+
+		"\x5@!\x2\x158\x159\a)\x2\x2\x159\x15A\x5\x34\x1B\x2\x15A/\x3\x2\x2\x2"+
+		"\x15B\x15C\a\x1F\x2\x2\x15C\x15D\x5\x32\x1A\x2\x15D\x31\x3\x2\x2\x2\x15E"+
+		"\x15F\a\r\x2\x2\x15F\x160\a\x18\x2\x2\x160\x33\x3\x2\x2\x2\x161\x165\a"+
+		"+\x2\x2\x162\x164\x5\b\x5\x2\x163\x162\x3\x2\x2\x2\x164\x167\x3\x2\x2"+
+		"\x2\x165\x163\x3\x2\x2\x2\x165\x166\x3\x2\x2\x2\x166\x168\x3\x2\x2\x2"+
+		"\x167\x165\x3\x2\x2\x2\x168\x169\a*\x2\x2\x169\x35\x3\x2\x2\x2\x16A\x16B"+
+		"\t\x3\x2\x2\x16B\x37\x3\x2\x2\x2\x16C\x16D\b\x1D\x1\x2\x16D\x17F\x5\x4"+
+		"\x3\x2\x16E\x17F\a\x3\x2\x2\x16F\x17F\a\xE\x2\x2\x170\x17F\a\x4\x2\x2"+
+		"\x171\x17F\a\x5\x2\x2\x172\x17F\a\xF\x2\x2\x173\x17F\a\x16\x2\x2\x174"+
+		"\x17F\a\x1E\x2\x2\x175\x17F\a\x6\x2\x2\x176\x17F\a\b\x2\x2\x177\x17F\a"+
+		"\a\x2\x2\x178\x17F\a\n\x2\x2\x179\x17F\a\v\x2\x2\x17A\x17F\a\f\x2\x2\x17B"+
+		"\x17F\a\x12\x2\x2\x17C\x17F\a\r\x2\x2\x17D\x17F\a\x1D\x2\x2\x17E\x16C"+
+		"\x3\x2\x2\x2\x17E\x16E\x3\x2\x2\x2\x17E\x16F\x3\x2\x2\x2\x17E\x170\x3"+
+		"\x2\x2\x2\x17E\x171\x3\x2\x2\x2\x17E\x172\x3\x2\x2\x2\x17E\x173\x3\x2"+
+		"\x2\x2\x17E\x174\x3\x2\x2\x2\x17E\x175\x3\x2\x2\x2\x17E\x176\x3\x2\x2"+
+		"\x2\x17E\x177\x3\x2\x2\x2\x17E\x178\x3\x2\x2\x2\x17E\x179\x3\x2\x2\x2"+
+		"\x17E\x17A\x3\x2\x2\x2\x17E\x17B\x3\x2\x2\x2\x17E\x17C\x3\x2\x2\x2\x17E"+
+		"\x17D\x3\x2\x2\x2\x17F\x185\x3\x2\x2\x2\x180\x181\f\x13\x2\x2\x181\x182"+
+		"\a\x30\x2\x2\x182\x184\x5\x38\x1D\x14\x183\x180\x3\x2\x2\x2\x184\x187"+
+		"\x3\x2\x2\x2\x185\x183\x3\x2\x2\x2\x185\x186\x3\x2\x2\x2\x186\x39\x3\x2"+
+		"\x2\x2\x187\x185\x3\x2\x2\x2\x188\x189\x5<\x1F\x2\x189\x18A\a.\x2\x2\x18A"+
+		"\x18B\x5> \x2\x18B;\x3\x2\x2\x2\x18C\x18D\a/\x2\x2\x18D=\x3\x2\x2\x2\x18E"+
+		"\x18F\a/\x2\x2\x18F?\x3\x2\x2\x2\x190\x191\a(\x2\x2\x191\x192\x5@!\x2"+
+		"\x192\x194\a)\x2\x2\x193\x195\x5\x42\"\x2\x194\x193\x3\x2\x2\x2\x194\x195"+
+		"\x3\x2\x2\x2\x195\x1AC\x3\x2\x2\x2\x196\x197\a\"\x2\x2\x197\x199\x5@!"+
+		"\x2\x198\x19A\x5\x42\"\x2\x199\x198\x3\x2\x2\x2\x199\x19A\x3\x2\x2\x2"+
+		"\x19A\x1AC\x3\x2\x2\x2\x19B\x19C\x5\x44#\x2\x19C\x19D\x5P)\x2\x19D\x19F"+
+		"\x5\x44#\x2\x19E\x1A0\x5\x42\"\x2\x19F\x19E\x3\x2\x2\x2\x19F\x1A0\x3\x2"+
+		"\x2\x2\x1A0\x1AC\x3\x2\x2\x2\x1A1\x1A3\x5J&\x2\x1A2\x1A4\x5\x42\"\x2\x1A3"+
+		"\x1A2\x3\x2\x2\x2\x1A3\x1A4\x3\x2\x2\x2\x1A4\x1AC\x3\x2\x2\x2\x1A5\x1A6"+
+		"\x5N(\x2\x1A6\x1A7\a$\x2\x2\x1A7\x1A9\x5N(\x2\x1A8\x1AA\x5\x42\"\x2\x1A9"+
+		"\x1A8\x3\x2\x2\x2\x1A9\x1AA\x3\x2\x2\x2\x1AA\x1AC\x3\x2\x2\x2\x1AB\x190"+
+		"\x3\x2\x2\x2\x1AB\x196\x3\x2\x2\x2\x1AB\x19B\x3\x2\x2\x2\x1AB\x1A1\x3"+
+		"\x2\x2\x2\x1AB\x1A5\x3\x2\x2\x2\x1AC\x41\x3\x2\x2\x2\x1AD\x1AE\a#\x2\x2"+
+		"\x1AE\x1AF\x5@!\x2\x1AF\x43\x3\x2\x2\x2\x1B0\x1B5\x5\x46$\x2\x1B1\x1B2"+
+		"\a\'\x2\x2\x1B2\x1B4\x5\x46$\x2\x1B3\x1B1\x3\x2\x2\x2\x1B4\x1B7\x3\x2"+
+		"\x2\x2\x1B5\x1B3\x3\x2\x2\x2\x1B5\x1B6\x3\x2\x2\x2\x1B6\x45\x3\x2\x2\x2"+
+		"\x1B7\x1B5\x3\x2\x2\x2\x1B8\x1BD\x5H%\x2\x1B9\x1BA\a&\x2\x2\x1BA\x1BC"+
+		"\x5H%\x2\x1BB\x1B9\x3\x2\x2\x2\x1BC\x1BF\x3\x2\x2\x2\x1BD\x1BB\x3\x2\x2"+
+		"\x2\x1BD\x1BE\x3\x2\x2\x2\x1BEG\x3\x2\x2\x2\x1BF\x1BD\x3\x2\x2\x2\x1C0"+
+		"\x1C1\a(\x2\x2\x1C1\x1C2\x5\x44#\x2\x1C2\x1C3\a)\x2\x2\x1C3\x1CA\x3\x2"+
+		"\x2\x2\x1C4\x1C5\a!\x2\x2\x1C5\x1C6\x5\x44#\x2\x1C6\x1C7\a!\x2\x2\x1C7"+
+		"\x1CA\x3\x2\x2\x2\x1C8\x1CA\x5L\'\x2\x1C9\x1C0\x3\x2\x2\x2\x1C9\x1C4\x3"+
+		"\x2\x2\x2\x1C9\x1C8\x3\x2\x2\x2\x1CAI\x3\x2\x2\x2\x1CB\x1CC\x5\x36\x1C"+
+		"\x2\x1CC\x1CD\x5R*\x2\x1CDK\x3\x2\x2\x2\x1CE\x1D2\a/\x2\x2\x1CF\x1D2\a"+
+		"\xF\x2\x2\x1D0\x1D2\x5N(\x2\x1D1\x1CE\x3\x2\x2\x2\x1D1\x1CF\x3\x2\x2\x2"+
+		"\x1D1\x1D0\x3\x2\x2\x2\x1D2M\x3\x2\x2\x2\x1D3\x1D4\x5\x36\x1C\x2\x1D4"+
+		"\x1D5\a\x30\x2\x2\x1D5\x1D6\x5\x38\x1D\x2\x1D6O\x3\x2\x2\x2\x1D7\x1D8"+
+		"\t\x4\x2\x2\x1D8Q\x3\x2\x2\x2\x1D9\x1DA\a\x11\x2\x2\x1DA\x1DE\a\x17\x2"+
+		"\x2\x1DB\x1DC\a\x11\x2\x2\x1DC\x1DE\a\x10\x2\x2\x1DD\x1D9\x3\x2\x2\x2"+
+		"\x1DD\x1DB\x3\x2\x2\x2\x1DES\x3\x2\x2\x2\x1AW`\x8A\x8E\xCD\xED\x10E\x12F"+
+		"\x140\x14D\x165\x17E\x185\x194\x199\x19F\x1A3\x1A9\x1AB\x1B5\x1BD\x1C9"+
+		"\x1D1\x1DD";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

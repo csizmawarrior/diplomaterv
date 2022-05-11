@@ -266,7 +266,7 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitTeleportDeclaration([NotNull] DynamicEnemyGrammarParser.TeleportDeclarationContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifExpression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -274,10 +274,10 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIfexpression([NotNull] DynamicEnemyGrammarParser.IfexpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitIfExpression([NotNull] DynamicEnemyGrammarParser.IfExpressionContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileExpression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -285,7 +285,29 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitWhileexpression([NotNull] DynamicEnemyGrammarParser.WhileexpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitWhileExpression([NotNull] DynamicEnemyGrammarParser.WhileExpressionContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whenExpression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context) { return VisitChildren(context); }
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.block"/>.

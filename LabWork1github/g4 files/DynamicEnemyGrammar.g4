@@ -17,8 +17,8 @@ statement: damageAmountDeclaration ';'
 		| healDeclaration ';'
         | moveDeclaration ';'
         | shootDeclaration ';'
-		| ifexpression 
-		| whileexpression 
+		| ifExpression 
+		| whileExpression 
 		| damageDeclaration ';'
 		| teleportDeclaration ';'
 		| spawnDeclaration ';'
@@ -40,6 +40,7 @@ spawnTypeDeclaration: SPAWN_TYPE EQUALS name;
 distanceDeclare: DISTANCE EQUALS NUMBER;
 
 moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION distanceDeclare | MOVE TO PLAYER | MOVE TO RANDOM ;
+//TODO: these many case ones could be put under one parser rule to make it more transparent and to avoid redundancy
 shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION distanceDeclare | SHOOT DIRECTION damageAmountDeclaration | SHOOT RANDOM
                 | SHOOT TO PLAYER | SHOOT TO PLAYER damageAmountDeclaration | SHOOT DIRECTION distanceDeclare damageAmountDeclaration | SHOOT TO place damageAmountDeclaration ;
 damageDeclaration: DAMAGE DIRECTION | DAMAGE DIRECTION damageAmountDeclaration | DAMAGE DIRECTION distanceDeclare | DAMAGE DIRECTION distanceDeclare damageAmountDeclaration
@@ -48,8 +49,10 @@ healDeclaration: HEAL DIRECTION | HEAL DIRECTION healAmountDeclaration | HEAL DI
 					| HEAL RANDOM	| HEAL TO place | HEAL TO place healAmountDeclaration | HEAL TO character | HEAL TO character healAmountDeclaration ;
 spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN TO place | SPAWN;
 teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM | TELEPORT_T character;
-ifexpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
-whileexpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
+ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
+whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
+whenExpression:  WHEN event;
+event: PLAYER MOVE;
 
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER;
@@ -105,6 +108,7 @@ SPAWN: 'spawn';
 TELEPORT_T: 'teleport';
 PARTNER: 'partner';
 HEAL: 'heal';
+WHEN: 'when';
 
 EQUALS: '=' ;
 ABSOLUTE: '|';

@@ -210,15 +210,9 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if(Program.GetCharacterType(context.name().GetText()) == null)
-            {
-                Error += "Spawning enemy type doesn't exist at place:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
-            }
             else
             {
-                Program.GetCharacterType(typeName).SpawnType = Program.GetCharacterType(context.name().GetText());
+                Program.GetCharacterType(typeName).SpawnType = new MonsterType(context.name().GetText());
                 SpawnTypeDeclare = true;
             }
             return base.VisitSpawnTypeDeclaration(context);
@@ -414,29 +408,33 @@ namespace LabWork1github
                 newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
                                                     int.Parse(context.place().y().GetText()));
             }
-            else if (!SpawnPointDeclare)
+            else
             {
-                Error += "Spawning point not given:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
-            }
-
-            if (context.MONSTER() != null)
-            {
-                if (Program.GetCharacterType(context.name().GetText()) == null)
+                if (!SpawnPointDeclare)
                 {
-                    Error += "No existing spawning type given:\n";
+                    Error += "Spawning point not given:\n";
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
                 else
-                newCommand.TargetCharacterType = Program.GetCharacterType(context.name().GetText()).SpawnType;
+                    newCommand.TargetPlace = Program.GetCharacterType(typeName).SpawnPlace;
             }
-            else if (!SpawnTypeDeclare)
+
+
+            if (context.MONSTER() != null)
             {
-                Error += "Spawning type not given:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
+                newCommand.TargetCharacterType = new MonsterType(context.name().GetText());
+            }
+            else
+            {
+                if (!SpawnTypeDeclare)
+                {
+                    Error += "Spawning type not given:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                else
+                    newCommand.TargetCharacterType = Program.GetCharacterType(typeName).SpawnType;
             }
             newCommand.SpawnDelegate = new SpawnDelegate(Spawn);
             AddCommand(newCommand);
@@ -607,7 +605,7 @@ namespace LabWork1github
             return base.VisitHealDeclaration(context);
         }
 
-        public override object VisitIfexpression([NotNull] IfexpressionContext context)
+        public override object VisitIfExpression([NotNull] IfExpressionContext context)
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
             ConditionHelper.CheckBool(context.boolExpression());
@@ -633,10 +631,10 @@ namespace LabWork1github
                     AddCommand(newCommand);
                 }
             }
-            return base.VisitIfexpression(context);
+            return base.VisitIfExpression(context);
         }
 
-        public override object VisitWhileexpression([NotNull] WhileexpressionContext context)
+        public override object VisitWhileExpression([NotNull] WhileExpressionContext context)
         {
             //It doesn't seem to contain the whole while expression, or doesn't recognize it
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
@@ -663,7 +661,7 @@ namespace LabWork1github
                     AddCommand(newCommand);
                 }
             }
-            return base.VisitWhileexpression(context);
+            return base.VisitWhileExpression(context);
         }
 
 
@@ -685,9 +683,18 @@ namespace LabWork1github
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)
         {
-
             if (provider.OccupiedOrNot(command.TargetPlace))
                 return;
+            if (Program.GetCharacterType(command.TargetCharacterType.Name) == null && provider.GetMe().GetCharacterType().SpawnType == null)
+            {
+                return;
+            }
+
+            if (provider.GetMe().GetCharacterType().SpawnType == null)
+                command.TargetCharacterType = Program.GetCharacterType(command.TargetCharacterType.Name);
+            else
+                command.TargetCharacterType = provider.GetMe().GetCharacterType().SpawnType;
+            
             Monster newMonster = new Monster(command.TargetCharacterType.Health, (MonsterType)command.TargetCharacterType, command.TargetPlace);
             provider.GetMonsters().Add(newMonster);
             provider.GetBoard().Monsters.Add(newMonster);
