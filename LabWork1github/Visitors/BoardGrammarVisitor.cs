@@ -17,6 +17,7 @@ namespace LabWork1github
 
         public override object Visit([NotNull] IParseTree tree)
         {
+            //TODO: kiszűr nem létező név
             return base.Visit(tree);
         }
 
@@ -59,10 +60,21 @@ namespace LabWork1github
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is MonsterType) {
                 Monster m = new Monster(Program.starterHP, (MonsterType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+
+                if(context.nameDeclaration() != null)
+                {
+                    m.Name = context.nameDeclaration().ID().GetText();
+                }
+                if (context.partnerDeclaration() != null)
+                {
+                    m.PartnerName = context.partnerDeclaration().ID().GetText();
+                }
+
                 Program.Board.Monsters.Add(m);
                 Program.Characters.Add(m);
                 return base.VisitMonsterPlacement(context);
             }
+
             ErrorFound = true;
             ErrorList += "The monster type is incorrect at place:\n";
             ErrorList += context.GetText() + "\n";
@@ -79,6 +91,16 @@ namespace LabWork1github
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is TrapType)
             {
                 Trap t = new Trap((TrapType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+
+                if (context.nameDeclaration() != null)
+                {
+                    t.Name = context.nameDeclaration().ID().GetText();
+                }
+                if (context.partnerDeclaration() != null)
+                {
+                    t.PartnerName = context.partnerDeclaration().ID().GetText();
+                }
+                
                 Program.Board.Traps.Add(t);
                 Program.Characters.Add(t);
                 return base.VisitTrapPlacement(context);

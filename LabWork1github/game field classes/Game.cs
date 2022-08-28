@@ -55,37 +55,41 @@ namespace LabWork1github
             Traps = Board.Traps;
             move = new PlayerMove();
             Player = Board.Player;
-            foreach (Monster monster in Monsters)
+            foreach (Character character in Characters)
             {
-                if (monster.Place.X > Board.Height || monster.Place.Y > Board.Width)
+                if (character.Place.X > Board.Height || character.Place.Y > Board.Width)
                 {
-                    Monsters.Remove(monster);
-                    Drawer.WriteCommand("A monster was out of bounds, so it got deleted");
+                    Characters.Remove(character);
+                    Drawer.WriteCommand("A character was out of bounds, so it got deleted");
                 }
-            }
+                if (!character.PartnerName.Equals(""))
+                {
+                    foreach(Character m in Characters)
+                    {
+                        if (m.Name.Equals(character.PartnerName))
+                        {
+                            character.Partner = m;
+                            break;
+                        }
+                    }
+                    if (character.Partner == null)
+                        Drawer.WriteCommand("Character named " + character.Name + "'s partner doesn't exist, give an existing name.");
+                }
+            
             foreach (Trap Trap in Traps)
             {
-                if (Trap.Place.X > Board.Height || Trap.Place.Y > Board.Width)
                 {
-                    Traps.Remove(Trap);
-                    Drawer.WriteCommand("A trap was out of bounds, so it got deleted");
-                }
-
-                foreach (Monster monster in Monsters)
-                {
-                    if (monster.Place.DirectionTo(Player.Place) == "collision")
-                        throw new NullReferenceException("Player is on the same spot as a monster.");
-                    if (monster.Place.DirectionTo(Trap.Place) == "collision")
-                        throw new NullReferenceException("Monster spawned on a trap");
+                    if (character.Place.DirectionTo(Player.Place) == "collision")
+                        throw new NullReferenceException("Player is on the same spot as a character.");
+                    if (character.Place.DirectionTo(Trap.Place) == "collision")
+                        throw new NullReferenceException("Character named " +character.Name +" spawned on a trap");
                 }
                 if (Trap.Place.DirectionTo(Player.Place) == "collision")
                     throw new NullReferenceException("Player spawned on a trap");
             }
-            if (Player.Place.X > Board.Height || Player.Place.Y > Board.Width)
-                throw new NullReferenceException("Player is not on the board");
+           }
         }
         //hmm these checks might be able to go into the board visitor
-
 
         public void Start()
         {

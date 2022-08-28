@@ -58,5 +58,10 @@ namespace LabWork1github
                     break;
             }
         }
+
+        public override Character GetPartner()
+        {
+            return null;
+        }
     }
 }

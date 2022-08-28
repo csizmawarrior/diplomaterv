@@ -35,5 +35,10 @@ namespace LabWork1github
         {
             return;
         }
+
+        public override Character GetPartner()
+        {
+            return this.Partner;
+        }
     }
 }

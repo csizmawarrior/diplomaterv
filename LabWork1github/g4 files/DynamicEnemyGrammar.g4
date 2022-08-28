@@ -9,7 +9,6 @@ name: ID;
 statementList: nameDeclaration statement*;
 statement: damageAmountDeclaration ';'
 		| healAmountDeclaration ';'
-		| partnerDeclaration
 		| teleportPointDeclaration ';'
 		| spawnPointDeclaration ';'
 		| spawnTypeDeclaration ';'
@@ -17,8 +16,9 @@ statement: damageAmountDeclaration ';'
 		| healDeclaration ';'
         | moveDeclaration ';'
         | shootDeclaration ';'
-		| ifExpression 
-		| whileExpression 
+		| ifExpression
+		| whileExpression
+		| whenExpression
 		| damageDeclaration ';'
 		| teleportDeclaration ';'
 		| spawnDeclaration ';'
@@ -27,12 +27,11 @@ statement: damageAmountDeclaration ';'
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
 trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
 monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
-//TODO: szimbólumtábla
-partnerDeclaration: PARTNER (TRAP | MONSTER) NAME_T EQUALS name ';';
 
 healthDeclaration: HEALTH EQUALS NUMBER ;
 healAmountDeclaration: HEAL EQUALS NUMBER;
-damageAmountDeclaration: DAMAGE EQUALS NUMBER ;
+damageAmountDeclaration: DAMAGE EQUALS NUMBER;
+hpChangeAmountDeclaration: damageAmountDeclaration | healAmountDeclaration;
 teleportPointDeclaration: TELEPORT_PLACE EQUALS place;
 spawnPointDeclaration: SPAWN_PLACE EQUALS place;
 spawnTypeDeclaration: SPAWN_TYPE EQUALS name;
@@ -40,13 +39,12 @@ spawnTypeDeclaration: SPAWN_TYPE EQUALS name;
 distanceDeclare: DISTANCE EQUALS NUMBER;
 
 moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION distanceDeclare | MOVE TO PLAYER | MOVE TO RANDOM ;
-//TODO: these many case ones could be put under one parser rule to make it more transparent and to avoid redundancy
-shootDeclaration: SHOOT DIRECTION | SHOOT TO place | SHOOT DIRECTION distanceDeclare | SHOOT DIRECTION damageAmountDeclaration | SHOOT RANDOM
-                | SHOOT TO PLAYER | SHOOT TO PLAYER damageAmountDeclaration | SHOOT DIRECTION distanceDeclare damageAmountDeclaration | SHOOT TO place damageAmountDeclaration ;
-damageDeclaration: DAMAGE DIRECTION | DAMAGE DIRECTION damageAmountDeclaration | DAMAGE DIRECTION distanceDeclare | DAMAGE DIRECTION distanceDeclare damageAmountDeclaration
-					| DAMAGE RANDOM	| DAMAGE TO place | DAMAGE TO place damageAmountDeclaration | DAMAGE TO character | DAMAGE TO character damageAmountDeclaration ;
-healDeclaration: HEAL DIRECTION | HEAL DIRECTION healAmountDeclaration | HEAL DIRECTION distanceDeclare | HEAL DIRECTION distanceDeclare healAmountDeclaration
-					| HEAL RANDOM	| HEAL TO place | HEAL TO place healAmountDeclaration | HEAL TO character | HEAL TO character healAmountDeclaration ;
+
+healthChangeOption: DIRECTION | DIRECTION distanceDeclare | DIRECTION hpChangeAmountDeclaration | DIRECTION distanceDeclare hpChangeAmountDeclaration |
+					TO place | TO place hpChangeAmountDeclaration | TO character | TO character hpChangeAmountDeclaration | RANDOM;
+shootDeclaration: SHOOT healthChangeOption;
+damageDeclaration: DAMAGE healthChangeOption ;
+healDeclaration: HEAL healthChangeOption;
 spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN TO place | SPAWN;
 teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM | TELEPORT_T character;
 ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
@@ -54,11 +52,11 @@ whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
 whenExpression:  WHEN PARENTHESISSTART event PARENTHESISCLOSE block;
 event: character action | PLAYER HEALTH_CHECK;
 
-action: MOVE (FROM place)? TO place | DIE | STAY AT place | shoot NUMBER TO (character | place) | damage NUMBER TO (character | place) | 
-			heal NUMBER TO (character | place) | teleport character TO place | spawn character TO place; 
+action: MOVE (FROM place)? TO place | DIE | STAY AT place | SHOOT NUMBER TO (character | place) | DAMAGE NUMBER TO (character | place) |
+			HEAL NUMBER TO (character | place) | TELEPORT_T character TO place | SPAWN character TO place;
 
 block: BRACKETSTART statement* BRACKETCLOSE;
-character: PLAYER | ME | TRAP | MONSTER;
+character: PLAYER | ME | TRAP | MONSTER | PARTNER;
 
 possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPORT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
                 | HEALTH | HEAL | RANDOM | DAMAGE | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER | PARTNER;

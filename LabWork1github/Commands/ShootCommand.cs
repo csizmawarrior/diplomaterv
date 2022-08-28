@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,8 @@ namespace LabWork1github
 {
     public delegate void ShootDelegate(GameParamProvider provider, ShootCommand command);
 
-    public class ShootCommand : Command
+    public class ShootCommand : HealthChangerCommand
     {
-        public int Distance { get; set; } = 1;
-        public string Direction { get; set; }
-        public Place TargetPlace { get; set; }
-        public int Damage { get; set; } = 50;
 
         public ShootDelegate ShootDelegate { get; set; }
 

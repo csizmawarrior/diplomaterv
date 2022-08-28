@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Commands\DamageCommand.cs" />
     <Compile Include="Commands\HealCommand.cs" />
+    <Compile Include="Commands\HealthChangerCommand.cs" />
     <Compile Include="Commands\WhenCommand.cs" />
     <Compile Include="EventHandling\Event.cs" />
     <Compile Include="EventHandling\EventEnums.cs" />

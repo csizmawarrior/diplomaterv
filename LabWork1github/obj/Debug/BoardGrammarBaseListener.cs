@@ -178,6 +178,32 @@ public partial class BoardGrammarBaseListener : IBoardGrammarListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTrapPlacement([NotNull] BoardGrammarParser.TrapPlacementContext context) { }
 
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.nameDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNameDeclaration([NotNull] BoardGrammarParser.NameDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.nameDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNameDeclaration([NotNull] BoardGrammarParser.NameDeclarationContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.partnerDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPartnerDeclaration([NotNull] BoardGrammarParser.PartnerDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.partnerDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPartnerDeclaration([NotNull] BoardGrammarParser.PartnerDeclarationContext context) { }
+
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
 	public virtual void EnterEveryRule([NotNull] ParserRuleContext context) { }

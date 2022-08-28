@@ -108,5 +108,19 @@ public interface IBoardGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTrapPlacement([NotNull] BoardGrammarParser.TrapPlacementContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BoardGrammarParser.nameDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNameDeclaration([NotNull] BoardGrammarParser.NameDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BoardGrammarParser.partnerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPartnerDeclaration([NotNull] BoardGrammarParser.PartnerDeclarationContext context);
 }
 } // namespace LabWork1github

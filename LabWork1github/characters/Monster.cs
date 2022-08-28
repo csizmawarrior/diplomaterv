@@ -36,5 +36,10 @@ namespace LabWork1github
         {
             Health += amount;
         }
+
+        public override Character GetPartner()
+        {
+                return this.Partner;
+        }
     }
 }

@@ -6,21 +6,24 @@ statement: playerPlacement
          | monsterPlacement
          | trapPlacement
          ;
-
+//TODO: szimbólumtábla
 typeName: ID;
 place: x COMMA y;
 
 x: COORDINATE;
 y: COORDINATE;
-boardCreation: BOARD place SEMI ;
+boardCreation: BOARD (nameDeclaration)? place SEMI ;
 playerPlacement: PLAYER place SEMI | PLAYER NAME_T EQUALS ID place SEMI ;
-monsterPlacement: MONSTER typeName  place COMMA SEMI | BOARD typeName NAME_T EQUALS ID SEMI place;
-trapPlacement: TRAP typeName  place COMMA SEMI | BOARD typeName NAME_T EQUALS ID place SEMI;
+monsterPlacement: MONSTER  typeName (nameDeclaration)? (COMMA partnerDeclaration)? place SEMI;
+trapPlacement: TRAP  typeName (nameDeclaration)? (COMMA partnerDeclaration)? place SEMI;
+nameDeclaration: NAME_T EQUALS ID;
+partnerDeclaration: PARTNER EQUALS ID;
 
 SEMI: ';';
 COMMA: ',';
 COORDINATE: [0-9]+;
 BOARD: 'board';
+PARTNER: 'partner';
 PLAYER: 'player';
 NAME_T: 'name';
 MONSTER: 'monster';

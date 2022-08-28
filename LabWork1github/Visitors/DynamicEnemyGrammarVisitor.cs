@@ -279,55 +279,7 @@ namespace LabWork1github
             else
             {
                 ShootCommand newCommand = new ShootCommand();
-                if (context.distanceDeclare() != null)
-                    newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
-
-                if (context.damageAmountDeclaration() != null)
-                {
-                    newCommand.Damage = int.Parse(context.damageAmountDeclaration().NUMBER().GetText());
-                }
-
-                var direction = context.DIRECTION();
-                if (direction != null)
-                {
-                    if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
-                        direction.GetText().Equals("B") || direction.GetText().Equals("R")))
-                    {
-                        Error += "Wrong direction used:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    newCommand.Direction = direction.GetText();
-                    newCommand.ShootDelegate = new ShootDelegate(ShootDirection);
-                    AddCommand(newCommand);
-                    return base.VisitShootDeclaration(context);
-                }
-                PlaceContext place = context.place();
-                if (place != null)
-                {
-                    int xPos = int.Parse(place.x().GetText());
-                    int yPos = int.Parse(place.y().GetText());
-                    newCommand.TargetPlace = new Place(xPos, yPos);
-                    newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
-                    AddCommand(newCommand);
-                    return base.VisitShootDeclaration(context);
-                }
-
-                var helpPlayer = context.PLAYER();
-                if (helpPlayer != null)
-                {
-                    newCommand.ShootDelegate = new ShootDelegate(ShootToPlayer);
-                    AddCommand(newCommand);
-                    return base.VisitShootDeclaration(context);
-                }
-
-                var random = context.RANDOM();
-                if (random != null)
-                {
-                    newCommand.ShootDelegate = new ShootDelegate(ShootRandom);
-                    AddCommand(newCommand);
-                    return base.VisitShootDeclaration(context);
-                }
+                AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
             }
             return base.VisitShootDeclaration(context);
         }
@@ -449,81 +401,8 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (context.character() != null)
-            {
-                if (context.character().TRAP() != null)
-                {
-                    Error += "Can't damage trap:\n";
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
-            }
-
-                DamageCommand newCommand = new DamageCommand();
-                if (context.distanceDeclare() != null)
-                    newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
-                if (Math.Abs(newCommand.Distance) > 1)
-                {
-                    Error += "Can't damage further than 1:\n";
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
-
-                if (context.damageAmountDeclaration() != null)
-                {
-                    newCommand.Damage = int.Parse(context.damageAmountDeclaration().NUMBER().GetText());
-                }
-
-                var direction = context.DIRECTION();
-                if (direction != null)
-                {
-                    if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
-                        direction.GetText().Equals("B") || direction.GetText().Equals("R")))
-                    {
-                        Error += "Wrong direction used:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    newCommand.Direction = direction.GetText();
-                    newCommand.DamageDelegate = new DamageDelegate(DamageDirection);
-                    AddCommand(newCommand);
-                    return base.VisitDamageDeclaration(context);
-                }
-                PlaceContext place = context.place();
-                if (place != null)
-                {
-                    int xPos = int.Parse(place.x().GetText());
-                    int yPos = int.Parse(place.y().GetText());
-                    newCommand.TargetPlace = new Place(xPos, yPos);
-                    newCommand.DamageDelegate = new DamageDelegate(DamageToPlace);
-                    AddCommand(newCommand);
-                    return base.VisitDamageDeclaration(context);
-                }
-                if (context.character() != null)
-                {
-                    var helpPlayer = context.character().PLAYER();
-                    if (helpPlayer != null)
-                    {
-                        newCommand.DamageDelegate = new DamageDelegate(DamageToPlayer);
-                        AddCommand(newCommand);
-                        return base.VisitDamageDeclaration(context);
-                    }
-                    var helpMonster = context.character().MONSTER();
-                    if (helpMonster != null)
-                    {
-                        newCommand.DamageDelegate = new DamageDelegate(DamageToMonster);
-                        AddCommand(newCommand);
-                        return base.VisitDamageDeclaration(context);
-                    }
-                }
-                var random = context.RANDOM();
-                if (random != null)
-                {
-                    newCommand.DamageDelegate = new DamageDelegate(DamageRandom);
-                    AddCommand(newCommand);
-                    return base.VisitDamageDeclaration(context);
-                }
-
+            DamageCommand newCommand = new DamageCommand();
+            AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
             return base.VisitDamageDeclaration(context);
         }
 
@@ -535,73 +414,8 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if(context.character() != null)
-            if (context.character().TRAP() != null)
-            {
-                Error += "Can't heal trap:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
-            }
-
-                HealCommand newCommand = new HealCommand();
-                if (context.distanceDeclare() != null)
-                    newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
-
-                if (context.healAmountDeclaration() != null)
-                {
-                    newCommand.HealAmount = int.Parse(context.healAmountDeclaration().NUMBER().GetText());
-                }
-
-                var direction = context.DIRECTION();
-                if (direction != null)
-                {
-                    if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
-                        direction.GetText().Equals("B") || direction.GetText().Equals("R")))
-                    {
-                        Error += "Wrong direction used:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    newCommand.Direction = direction.GetText();
-                    newCommand.HealDelegate = new HealDelegate(HealDirection);
-                    AddCommand(newCommand);
-                    return base.VisitHealDeclaration(context);
-                }
-                PlaceContext place = context.place();
-                if (place != null)
-                {
-                    int xPos = int.Parse(place.x().GetText());
-                    int yPos = int.Parse(place.y().GetText());
-                    newCommand.TargetPlace = new Place(xPos, yPos);
-                    newCommand.HealDelegate = new HealDelegate(HealToPlace);
-                    AddCommand(newCommand);
-                    return base.VisitHealDeclaration(context);
-                }
-                if (context.character() != null)
-                {
-                    var helpPlayer = context.character().PLAYER();
-                    if (helpPlayer != null)
-                    {
-                        newCommand.HealDelegate = new HealDelegate(HealToPlayer);
-                        AddCommand(newCommand);
-                        return base.VisitHealDeclaration(context);
-                    }
-                    var helpMonster = context.character().MONSTER();
-                    if (helpMonster != null)
-                    {
-                        newCommand.HealDelegate = new HealDelegate(HealToMonster);
-                        AddCommand(newCommand);
-                        return base.VisitHealDeclaration(context);
-                    }
-                }
-                var random = context.RANDOM();
-                if (random != null)
-                {
-                    newCommand.HealDelegate = new HealDelegate(HealRandom);
-                    AddCommand(newCommand);
-                    return base.VisitHealDeclaration(context);
-                }
-
+            HealCommand newCommand = new HealCommand();
+            AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
             return base.VisitHealDeclaration(context);
         }
 
@@ -663,16 +477,6 @@ namespace LabWork1github
             }
             return base.VisitWhileExpression(context);
         }
-
-        public override object VisitWhenExpression([NotNull] WhenExpressionContext context)
-        {
-
-            return base.VisitWhenExpression(context);
-        }
-
-
-
-
 
 
 
@@ -844,7 +648,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.X - i >= 0)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - (int)command.Distance)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
                 case "B":
@@ -854,7 +658,7 @@ namespace LabWork1github
                     {
                         if((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + (int)command.Distance)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
                 case "L":
@@ -864,7 +668,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.Y - i >= 0)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - (int)command.Distance)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
                 case "R":
@@ -874,7 +678,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
             }
@@ -883,12 +687,12 @@ namespace LabWork1github
         public void ShootToPlace(GameParamProvider provider, ShootCommand command)
         {
             if (provider.GetPlayer().Place.Equals(command.TargetPlace))
-                provider.GetPlayer().Damage(command.Damage);
+                provider.GetPlayer().Damage(command.HealthChangeAmount);
         }
 
         public void ShootToPlayer(GameParamProvider provider, ShootCommand command)
         {
-            provider.GetPlayer().Damage(command.Damage);
+            provider.GetPlayer().Damage(command.HealthChangeAmount);
         }
 
         public void ShootRandom(GameParamProvider provider, ShootCommand command)
@@ -897,7 +701,7 @@ namespace LabWork1github
             int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
             int XPos = (int)(rand.Next() % provider.GetBoard().Height);
             int YPos = (int)(rand.Next() % provider.GetBoard().Width);
-            command.Damage = damage;
+            command.HealthChangeAmount = damage;
             command.TargetPlace = new Place(XPos, YPos);
             ShootToPlace(provider, command);
         }
@@ -916,7 +720,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.X - i >= 0)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     foreach(Monster monster in provider.GetMonsters())
                     {
@@ -924,7 +728,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.X - i >= 0)
                                 if (monster.Place.X == provider.GetMe().Place.X - i)
-                                    monster.Damage(command.Damage);
+                                    monster.Damage(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -935,7 +739,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     foreach(Monster monster in provider.GetMonsters())
                     {
@@ -943,7 +747,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
                                 if (monster.Place.X == provider.GetMe().Place.X + i)
-                                    monster.Damage(command.Damage);
+                                    monster.Damage(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -954,7 +758,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.Y - i >= 0)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
@@ -962,7 +766,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.Y - i >= 0)
                                 if (monster.Place.Y == provider.GetMe().Place.Y - i)
-                                    monster.Damage(command.Damage);
+                                    monster.Damage(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -973,7 +777,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
-                                provider.GetPlayer().Damage(command.Damage);
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
@@ -981,7 +785,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
                                 if (monster.Place.Y == provider.GetMe().Place.Y + i)
-                                monster.Damage(command.Damage);
+                                monster.Damage(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -996,22 +800,22 @@ namespace LabWork1github
                 return;
             }
             if (provider.GetPlayer().Place.Equals(command.TargetPlace))
-                provider.GetPlayer().Damage(command.Damage);
+                provider.GetPlayer().Damage(command.HealthChangeAmount);
             foreach(Monster monster in provider.GetMonsters())
             {
                 if (monster.Place.Equals(command.TargetPlace))
-                    monster.Damage(command.Damage);
+                    monster.Damage(command.HealthChangeAmount);
             }
         }
 
         public void DamageToPlayer(GameParamProvider provider, DamageCommand command)
         {
-            provider.GetPlayer().Damage(command.Damage);
+            provider.GetPlayer().Damage(command.HealthChangeAmount);
         }
 
         public void DamageToMonster(GameParamProvider provider, DamageCommand command)
         {
-            provider.GetMonster().Damage(command.Damage);
+            provider.GetMonster().Damage(command.HealthChangeAmount);
         }
         public void DamageRandom(GameParamProvider provider, DamageCommand command)
         {
@@ -1019,7 +823,7 @@ namespace LabWork1github
             int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
             int XPos = (int)(rand.Next() % provider.GetBoard().Height);
             int YPos = (int)(rand.Next() % provider.GetBoard().Width);
-            command.Damage = damage;
+            command.HealthChangeAmount = damage;
             command.TargetPlace = new Place(XPos, YPos);
             DamageToPlace(provider, command);
         }
@@ -1036,7 +840,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.X - i >= 0)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
-                                provider.GetPlayer().Heal(command.HealAmount);
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
@@ -1044,7 +848,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.X - i >= 0)
                                 if (monster.Place.X == provider.GetMe().Place.X - i)
-                                    monster.Heal(command.HealAmount);
+                                    monster.Heal(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -1055,7 +859,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
-                                provider.GetPlayer().Heal(command.HealAmount);
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
@@ -1063,7 +867,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
                                 if (monster.Place.X == provider.GetMe().Place.X + i)
-                                    monster.Heal(command.HealAmount);
+                                    monster.Heal(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -1074,7 +878,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.Y - i >= 0)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
-                                provider.GetPlayer().Heal(command.HealAmount);
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
@@ -1082,7 +886,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.Y - i >= 0)
                                 if (monster.Place.Y == provider.GetMe().Place.Y - i)
-                                    monster.Heal(command.HealAmount);
+                                    monster.Heal(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -1093,7 +897,7 @@ namespace LabWork1github
                     {
                         if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
-                                provider.GetPlayer().Heal(command.HealAmount);
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
                     }
                     foreach (Monster monster in provider.GetMonsters())
                     {
@@ -1101,7 +905,7 @@ namespace LabWork1github
                         {
                             if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
                                 if (monster.Place.Y == provider.GetMe().Place.Y + i)
-                                    monster.Heal(command.HealAmount);
+                                    monster.Heal(command.HealthChangeAmount);
                         }
                     }
                     break;
@@ -1111,22 +915,22 @@ namespace LabWork1github
         public void HealToPlace(GameParamProvider provider, HealCommand command)
         {
             if (provider.GetPlayer().Place.Equals(command.TargetPlace))
-                provider.GetPlayer().Heal(command.HealAmount);
+                provider.GetPlayer().Heal(command.HealthChangeAmount);
             foreach (Monster monster in provider.GetMonsters())
             {
                 if (monster.Place.Equals(command.TargetPlace))
-                    monster.Heal(command.HealAmount);
+                    monster.Heal(command.HealthChangeAmount);
             }
         }
 
         public void HealToPlayer(GameParamProvider provider, HealCommand command)
         {
-            provider.GetPlayer().Heal(command.HealAmount);
+            provider.GetPlayer().Heal(command.HealthChangeAmount);
         }
 
         public void HealToMonster(GameParamProvider provider, HealCommand command)
         {
-            provider.GetMonster().Heal(command.HealAmount);
+            provider.GetMonster().Heal(command.HealthChangeAmount);
         }
         public void HealRandom(GameParamProvider provider, HealCommand command)
         {
@@ -1134,7 +938,7 @@ namespace LabWork1github
             int Heal = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 5);
             int XPos = (int)(rand.Next() % provider.GetBoard().Height);
             int YPos = (int)(rand.Next() % provider.GetBoard().Width);
-            command.HealAmount = Heal;
+            command.HealthChangeAmount = Heal;
             command.TargetPlace = new Place(XPos, YPos);
             HealToPlace(provider, command);
         }
@@ -1159,6 +963,120 @@ namespace LabWork1github
                     else
                     ConditionCount.Add(helperCount - 1);
                 }
+        }
+
+        public HealthChangerCommand VisitHealthChangeOption([NotNull] HealthChangeOptionContext context, HealthChangerCommand command)
+        {
+
+            if (context.distanceDeclare() != null)
+                command.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+
+            if (context.hpChangeAmountDeclaration() != null)
+            {
+                if (context.hpChangeAmountDeclaration().damageAmountDeclaration() != null)
+                {
+                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().damageAmountDeclaration().NUMBER().GetText());
+                }
+                else
+                {
+                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().healAmountDeclaration().NUMBER().GetText());
+                }
+            }
+
+            var direction = context.DIRECTION();
+            if (direction != null)
+            {
+                if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
+                    direction.GetText().Equals("B") || direction.GetText().Equals("R")))
+                {
+                    Error += "Wrong direction used:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                command.Direction = direction.GetText();
+                if (command is ShootCommand)
+                {
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootDirection);
+                }
+                if (command is DamageCommand)
+                {
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageDirection);
+                }
+                if (command is HealCommand)
+                {
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealDirection);
+                }
+                return command;;
+            }
+            PlaceContext place = context.place();
+            if (place != null)
+            {
+                int xPos = int.Parse(place.x().GetText());
+                int yPos = int.Parse(place.y().GetText());
+                command.TargetPlace = new Place(xPos, yPos);
+                if (command is ShootCommand)
+                {
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlace);
+                }
+                if (command is DamageCommand)
+                {
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlace);
+                }
+                if (command is HealCommand)
+                {
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlace);
+                }
+                return command;;
+            }
+
+            if (context.character() != null)
+            {
+                if (context.character().TRAP() != null || context.character().ME() != null)
+                {
+                    Error += "This character doesn't have health, or you can't change it yourself:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                if (command is ShootCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                    {
+                        Error += "You can't shoot a monster:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    if (context.character().PLAYER() != null)
+                        ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlayer);
+                }
+                if (command is DamageCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToMonster);
+                    if (context.character().PLAYER() != null)
+                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlayer);
+                }
+                if (command is HealCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToMonster);
+                    if (context.character().PLAYER() != null)
+                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlayer);
+                }
+                return command;;
+            }
+
+            var random = context.RANDOM();
+            if (random != null)
+            {
+                if (command is ShootCommand)
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootRandom);
+                if (command is DamageCommand)
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageRandom);
+                if (command is HealCommand)
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealRandom);
+                return command;
+            }
+            return command;
         }
     }
 }

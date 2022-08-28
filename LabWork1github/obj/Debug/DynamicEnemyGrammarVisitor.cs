@@ -82,13 +82,6 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitMonsterNameDeclaration([NotNull] DynamicEnemyGrammarParser.MonsterNameDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.partnerDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPartnerDeclaration([NotNull] DynamicEnemyGrammarParser.PartnerDeclarationContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.healthDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -108,6 +101,13 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitDamageAmountDeclaration([NotNull] DynamicEnemyGrammarParser.DamageAmountDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.hpChangeAmountDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHpChangeAmountDeclaration([NotNull] DynamicEnemyGrammarParser.HpChangeAmountDeclarationContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.teleportPointDeclaration"/>.
@@ -143,6 +143,13 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMoveDeclaration([NotNull] DynamicEnemyGrammarParser.MoveDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.healthChangeOption"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHealthChangeOption([NotNull] DynamicEnemyGrammarParser.HealthChangeOptionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.shootDeclaration"/>.
@@ -206,6 +213,13 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.action"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAction([NotNull] DynamicEnemyGrammarParser.ActionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.block"/>.

@@ -8,12 +8,8 @@ namespace LabWork1github.Commands
 {
     public delegate void HealDelegate(GameParamProvider provider, HealCommand command);
 
-    public class HealCommand : Command
+    public class HealCommand : HealthChangerCommand
     {
-        public int Distance { get; set; } = 1;
-        public string Direction { get; set; }
-        public Place TargetPlace { get; set; }
-        public int HealAmount { get; set; } = 50;
 
         public HealDelegate HealDelegate { get; set; }
 
