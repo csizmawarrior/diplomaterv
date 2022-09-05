@@ -14,8 +14,6 @@ namespace LabWork1github
 
         public int Round { get; set; }
 
-        public EnemyType SpawnType { get; set; }
-
         public SpawnDelegate SpawnDelegate { get; set; }
 
         public CharacterType TargetCharacterType { get; set; } = null;

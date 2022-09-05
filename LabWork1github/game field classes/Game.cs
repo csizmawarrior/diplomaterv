@@ -79,9 +79,9 @@ namespace LabWork1github
             foreach (Trap Trap in Traps)
             {
                 {
-                    if (character.Place.DirectionTo(Player.Place) == "collision")
+                    if (character.Place.DirectionTo(Player.Place) == "collision" && !(character is Player))
                         throw new NullReferenceException("Player is on the same spot as a character.");
-                    if (character.Place.DirectionTo(Trap.Place) == "collision")
+                    if (character.Place.DirectionTo(Trap.Place) == "collision" && character != Trap)
                         throw new NullReferenceException("Character named " +character.Name +" spawned on a trap");
                 }
                 if (Trap.Place.DirectionTo(Player.Place) == "collision")
