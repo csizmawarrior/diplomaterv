@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
+using LabWork1github.Commands;
+using LabWork1github.Visitors;
 using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
@@ -12,65 +14,211 @@ namespace LabWork1github
     {
         private string typeName = "";
         private string type = null;
+        private List<int> ConditionCount = new List<int>();
+        private List<Command> ConditionalCommands = new List<Command>();
+        private bool HealthDeclare { get; set; } = false;
+        private bool HealAmountDeclare { get; set; } = false;
+        private bool DamageAmountDeclare { get; set; } = false;
+        private bool TeleportPointDeclare { get; set; } = false;
+        private bool SpawnTypeDeclare { get; set; } = false;
+        private bool SpawnPointDeclare { get; set; } = false;
+        public string Error = "";
+        public bool ErrorFound = false;
+        public override object VisitDefinition([NotNull] DefinitionContext context)
+        {
+            foreach (var child in context.statementList())
+            {
+                typeName = "";
+                type = null;
+                ConditionCount = new List<int>();
+                ConditionalCommands = new List<Command>();
+                HealthDeclare = false;
+                HealAmountDeclare = false;
+                DamageAmountDeclare = false;
+                TeleportPointDeclare = false;
+                SpawnTypeDeclare = false;
+                SpawnPointDeclare = false;
+                Error = "";
+                ErrorFound = false;
 
+                VisitStatementList(child);
+            }
+                if(type.Equals(Types.MONSTER) && (!HealthDeclare || !DamageAmountDeclare))
+                {
+                    if (!HealthDeclare)
+                        Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Health;
+                    if (!DamageAmountDeclare)
+                        Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Damage;
+                }
+                if (type.Equals(Types.TRAP) && !HealAmountDeclare && !DamageAmountDeclare && (!SpawnPointDeclare || !SpawnTypeDeclare) && !TeleportPointDeclare) {
+                    Program.GetCharacterType(typeName).Damage = Program.GetCharacterType("DefaultTrap").Damage;
+                }
+
+            //since I manually visit every children of the definition, no need to return the base visit function, only a null
+            return null;
+        }
         public override object VisitTrapNameDeclaration([NotNull] TrapNameDeclarationContext context)
         {
-            type = Types.TRAP;
-            Program.EnemyTypes.Add(new TrapType(context.name().GetText()));
+            if (Program.GetCharacterType(typeName) != null)
+            {
+                Error += "Trap with this type already exists:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                type = Types.TRAP;
+                Program.CharacterTypes.Add(new TrapType(context.name().GetText()));
+            }
             typeName = context.name().GetText();
             return base.VisitTrapNameDeclaration(context);
         }
         public override object VisitMonsterNameDeclaration([NotNull] MonsterNameDeclarationContext context)
         {
-            type = Types.MONSTER;
-            Program.EnemyTypes.Add(new MonsterType(context.name().GetText()));
+            if (Program.GetCharacterType(typeName) != null)
+            {
+                Error += "Monster with this type already exists:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                type = Types.MONSTER;
+                Program.CharacterTypes.Add(new MonsterType(context.name().GetText()));
+            }
             typeName = context.name().GetText();
+            HealthDeclare = false;
+            HealAmountDeclare = false;
+            DamageAmountDeclare = false;
+            TeleportPointDeclare = false;
+            SpawnPointDeclare = false;
+            SpawnTypeDeclare = false;
+
             return base.VisitMonsterNameDeclaration(context);
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
             if (type == Types.TRAP)
-                throw new ArrayTypeMismatchException("Traps don't have Health");
-            Program.GetEnemyType(typeName).Health = int.Parse(context.NUMBER().GetText());
-            return base.VisitHealthDeclaration(context);
+            {
+                Error += "Trap doesn't have health:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else if (HealthDeclare)
+            {
+                Error += "Health amount was already declared:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                Program.GetCharacterType(typeName).Health = int.Parse(context.NUMBER().GetText());
+                HealthDeclare = true;
+            }
+                return base.VisitHealthDeclaration(context);
+            
         }
         public override object VisitHealAmountDeclaration([NotNull] HealAmountDeclarationContext context)
         {
             if (type != Types.TRAP)
-                throw new ArrayTypeMismatchException("Traps don't have Health");
-            Program.GetEnemyType(typeName).Heal = int.Parse(context.NUMBER().GetText());
+            {
+                Error += "A non Trap wants to heal:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else if (HealAmountDeclare)
+            {
+                Error += "Heal amount was already declared:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                Program.GetCharacterType(typeName).Heal = int.Parse(context.NUMBER().GetText());
+                HealAmountDeclare = true;
+            }
             return base.VisitHealAmountDeclaration(context);
         }
         public override object VisitDamageAmountDeclaration([NotNull] DamageAmountDeclarationContext context)
         {
-            Program.GetEnemyType(typeName).Damage = int.Parse(context.NUMBER().GetText());
+            if (DamageAmountDeclare)
+            {
+                Error += "Damage amount was already declared:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                Program.GetCharacterType(typeName).Damage = int.Parse(context.NUMBER().GetText());
+                DamageAmountDeclare = true;
+            }
             return base.VisitDamageAmountDeclaration(context);
         }
         public override object VisitTeleportPointDeclaration([NotNull] TeleportPointDeclarationContext context)
         {
             if (type != Types.TRAP)
-                throw new ArrayTypeMismatchException("Traps don't have Health");
-            Program.GetEnemyType(typeName).TeleportPlace = new Place(uint.Parse(context.place().x().GetText()), uint.Parse(context.place().y().GetText()));
+            {
+                Error += "A non Trap wants to teleport:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (TeleportPointDeclare)
+            {
+                Error += "Teleport destination was already declared:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                Program.GetCharacterType(typeName).TeleportPlace = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                TeleportPointDeclare = true;
+            }
             return base.VisitTeleportPointDeclaration(context);
         }
         public override object VisitSpawnPointDeclaration([NotNull] SpawnPointDeclarationContext context)
         {
             if (type != Types.TRAP)
-                throw new ArrayTypeMismatchException("Traps don't have Health");
-            Program.GetEnemyType(typeName).SpawnPlace = new Place(uint.Parse(context.place().x().GetText()), uint.Parse(context.place().y().GetText()));
+            {
+                Error += "A non Trap wants to spawn:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (SpawnPointDeclare)
+            {
+                Error += "Spawn destination was already declared:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                Program.GetCharacterType(typeName).SpawnPlace = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                SpawnPointDeclare = true;
+            }
             return base.VisitSpawnPointDeclaration(context);
         }
         public override object VisitSpawnTypeDeclaration([NotNull] SpawnTypeDeclarationContext context)
         {
             if (type != Types.TRAP)
-                throw new ArrayTypeMismatchException("Traps don't have Health");
-            Program.GetEnemyType(typeName).SpawnType = Program.GetEnemyType(context.name().GetText());
+            {
+                Error += "A non Trap wants to spawn:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (SpawnTypeDeclare)
+            {
+                Error += "Spawning enemy type has been already declared:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            else
+            {
+                Program.GetCharacterType(typeName).SpawnType = new MonsterType(context.name().GetText());
+                SpawnTypeDeclare = true;
+            }
             return base.VisitSpawnTypeDeclaration(context);
         }
         public override object VisitMoveDeclaration([NotNull] MoveDeclarationContext context)
         {
-            if (Program.GetEnemyType(typeName) == null)
-                throw new NullReferenceException("The type doesn't exist");
 
             MoveCommand newCommand = new MoveCommand();
             if (context.distanceDeclare() != null)
@@ -78,39 +226,42 @@ namespace LabWork1github
             var direction = context.DIRECTION();
             if (direction != null)
             {
-                if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
-                    throw new NotSupportedException("Wrong direction in Monster commandlist");
+                if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") || direction.GetText().Equals("B") ||
+                    direction.GetText().Equals("R")))
+                {
+                    Error += "Wrong direction used:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                    
                 newCommand.Direction = direction.GetText();
                 newCommand.MoveDelegate = new MoveDelegate(MoveDirection);
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
             PlaceContext place = context.place();
             if (place != null)
             {
-                uint xPos = uint.Parse(place.x().GetText());
-                uint yPos = uint.Parse(place.y().GetText());
-                newCommand.targetPlace = new Place(xPos, yPos);
+                int xPos = int.Parse(place.x().GetText());
+                int yPos = int.Parse(place.y().GetText());
+                newCommand.TargetPlace = new Place(xPos, yPos);
                 newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
             var helpPlayer = context.PLAYER();
             if (helpPlayer != null)
             {
-                newCommand.targetPlace = Program.Board.Player.Place;
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                newCommand.MoveDelegate = new MoveDelegate(MoveToPlayer);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
             }
+
             var random = context.RANDOM();
             if (random != null)
             {
-                Random rand = new Random();
-                uint XPos = (uint)(rand.Next() % Program.Board.Height);
-                uint YPos = (uint)(rand.Next() % Program.Board.Width);
-                newCommand.targetPlace = new Place(XPos, YPos);
-                newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                newCommand.MoveDelegate = new MoveDelegate(MoveRandom);
+                AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
 
             }
@@ -119,195 +270,321 @@ namespace LabWork1github
 
         public override object VisitShootDeclaration([NotNull] ShootDeclarationContext context)
         {
-            if (Program.GetEnemyType(typeName) == null)
-                throw new NullReferenceException("The type doesn't exist");
-
-            if(type.Equals(Types.TRAP))
-                throw new ArrayTypeMismatchException("Traps can't shoot");
-
-            ShootCommand newCommand = new ShootCommand();
-            if (context.distanceDeclare() != null)
-                newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
-
-            var direction = context.DIRECTION();
-            if (direction != null)
+            if (type.Equals(Types.TRAP))
             {
-                if (!(direction.Equals("F") || direction.Equals("L") || direction.Equals("B") || direction.Equals("R")))
-                    throw new NotSupportedException("Wrong direction in Monster commandlist");
-                newCommand.Direction = direction.GetText();
-                newCommand.ShootDelegate = new ShootDelegate(ShootDirection);
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
-                return base.VisitShootDeclaration(context);
+                Error += "Trap wants to shoot:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
             }
-            PlaceContext place = context.place();
-            if (place != null)
+            else
             {
-                uint xPos = uint.Parse(place.x().GetText());
-                uint yPos = uint.Parse(place.y().GetText());
-                newCommand.targetPlace = new Place(xPos, yPos);
-                newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
-                return base.VisitShootDeclaration(context);
+                ShootCommand newCommand = new ShootCommand();
+                AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
             }
-            var helpPlayer = context.PLAYER();
-            if (helpPlayer != null)
-            {
-                newCommand.targetPlace = Program.Board.Player.Place;
-                newCommand.ShootDelegate = new ShootDelegate(ShootToPlayer);
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
-                return base.VisitShootDeclaration(context);
-            }
-            var random = context.RANDOM();
-            if (random != null)
-            {
-                Random rand = new Random();
-                uint XPos = (uint)(rand.Next() % Program.Board.Height);
-                uint YPos = (uint)(rand.Next() % Program.Board.Width);
-                newCommand.targetPlace = new Place(XPos, YPos);
-                newCommand.ShootDelegate = new ShootDelegate(ShootToPlace);
-                Program.GetEnemyType(typeName).Commands.Add(newCommand);
-                return base.VisitShootDeclaration(context);
-            }
-
             return base.VisitShootDeclaration(context);
         }
 
         public override object VisitTeleportDeclaration([NotNull] TeleportDeclarationContext context)
         {
-            if (Program.GetEnemyType(typeName) == null)
-                throw new NullReferenceException("The type doesn't exist");
-
             if (!type.Equals(Types.TRAP))
-                throw new ArrayTypeMismatchException("Monsters can't teleport");
+            {
+                Error += "A non trap wants to teleport:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
 
             TeleportCommand newCommand = new TeleportCommand();
             if (context.place() != null)
             {
-                newCommand.TargetPlace = new Place(uint.Parse(context.place().x().GetText()),
-                                                    uint.Parse(context.place().y().GetText()));
-            }
-            else if (context.RANDOM() != null)
-            {
-                Random rand = new Random();
-                uint XPos = (uint)(rand.Next() % Program.Board.Height);
-                uint YPos = (uint)(rand.Next() % Program.Board.Width);
-                newCommand.TargetPlace = new Place(XPos, YPos);
+                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
+                                                    int.Parse(context.place().y().GetText()));
             }
             else
-                newCommand.TargetPlace = Program.GetEnemyType(typeName).TeleportPlace;
+            {
+                if (!TeleportPointDeclare && context.RANDOM() == null)
+                {
+                    Error += "Teleport point not given, but trying to teleport:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                newCommand.TargetPlace = Program.GetCharacterType(typeName).TeleportPlace;
+            }
             if(context.character() != null)
             {
                 switch (context.character().GetText())
                 {
-                    case "player":
+                    case Types.PLAYER:
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportPlayer);
-                        Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                        AddCommand(newCommand);
                         break;
-                    case "monster":
+                    case Types.MONSTER:
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportMonster);
-                        Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                        AddCommand(newCommand);
                         break;
-                    case "trap":
+                    case Types.TRAP:
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportTrap);
-                        Program.GetEnemyType(typeName).Commands.Add(newCommand);
+                        AddCommand(newCommand);
                         break;
                     case "me":
-                        throw new ArgumentOutOfRangeException("You can't teleport yourself");
+                        Error += "You can't teleport yourself:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                        break;
                 }
+            }
+            if (context.RANDOM() != null)
+            {
+                newCommand.Random = true;
             }
             return base.VisitTeleportDeclaration(context);
         }
 
         public override object VisitSpawnDeclaration([NotNull] SpawnDeclarationContext context)
         {
-            if (Program.GetEnemyType(typeName) == null)
-                throw new NullReferenceException("The type doesn't exist");
-
             if (!type.Equals(Types.TRAP))
-                throw new ArrayTypeMismatchException("Monsters can't teleport");
+            {
+                Error += "A non trap wants to spawn:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
 
             SpawnCommand newCommand = new SpawnCommand();
-            if (context.place() != null)
-            {
-                newCommand.TargetPlace = new Place(uint.Parse(context.place().x().GetText()),
-                                                    uint.Parse(context.place().y().GetText()));
-            }
             if (context.RANDOM() != null)
             {
-                Random rand = new Random();
-                uint XPos = (uint)(rand.Next() % Program.Board.Height);
-                uint YPos = (uint)(rand.Next() % Program.Board.Width);
-                newCommand.TargetPlace = new Place(XPos, YPos);
-                if(context.MONSTER() == null)
-                {
-                    int monsterCount = (int)(rand.Next() % Program.monsterTypes.Count);
-                    newCommand.SpawnType = Program.monsterTypes.ElementAt(monsterCount);
-                }
+                newCommand.SpawnDelegate = new SpawnDelegate(SpawnRandom);
+                AddCommand(newCommand);
+                return base.VisitSpawnDeclaration(context);
             }
+            if (context.place() != null)
+            {
+                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
+                                                    int.Parse(context.place().y().GetText()));
+            }
+            else
+            {
+                if (!SpawnPointDeclare)
+                {
+                    Error += "Spawning point not given:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                else
+                    newCommand.TargetPlace = Program.GetCharacterType(typeName).SpawnPlace;
+            }
+
+
             if (context.MONSTER() != null)
             {
-                if (Program.GetEnemyType(context.name().GetText()) == null)
-                    throw new ArgumentException("Monster type doesn't exist");
-                newCommand.SpawnType = Program.GetEnemyType(context.name().GetText()).SpawnType;
+                newCommand.TargetCharacterType = new MonsterType(context.name().GetText());
             }
-            
+            else
+            {
+                if (!SpawnTypeDeclare)
+                {
+                    Error += "Spawning type not given:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                else
+                    newCommand.TargetCharacterType = Program.GetCharacterType(typeName).SpawnType;
+            }
+            newCommand.SpawnDelegate = new SpawnDelegate(Spawn);
+            AddCommand(newCommand);
             return base.VisitSpawnDeclaration(context);
         }
 
-        public override object VisitIfexpression([NotNull] IfexpressionContext context)
+        public override object VisitDamageDeclaration([NotNull] DamageDeclarationContext context)
         {
-            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.expression());
-            return base.VisitIfexpression(context);
+            if (type.Equals(Types.MONSTER))
+            {
+                Error += "Monster wants to damage:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            DamageCommand newCommand = new DamageCommand();
+            AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
+            return base.VisitDamageDeclaration(context);
         }
-        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
-        //TODO: folders
 
-        //TODO: the while command just like any command only executes in one round, and it won'T leave the loop until the condition is false
-        //so it is either an infinite loop, or the while command is finished and we can safely go to the next command
+        public override object VisitHealDeclaration([NotNull] HealDeclarationContext context)
+        {
+            if (type.Equals(Types.MONSTER))
+            {
+                Error += "Monster wants to Heal:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            HealCommand newCommand = new HealCommand();
+            AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
+            return base.VisitHealDeclaration(context);
+        }
+
+        public override object VisitIfExpression([NotNull] IfExpressionContext context)
+        {
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
+            ConditionHelper.CheckBool(context.boolExpression());
+            if (ConditionHelper.CheckFailed)
+            {
+                Error += "Condition check failed\n";
+                Error += ConditionHelper.ErrorList;
+                ErrorFound = true;
+            }
+            else
+            {
+                IfCommand newCommand = new IfCommand
+                {
+                    MyContext = context.boolExpression(),
+                    Condition = (GetCondition)
+                };
+                this.ConditionalCommands.Add(newCommand);
+                this.ConditionCount.Add(context.block().ChildCount - 2);
+                if (context.block().ChildCount - 2 == 0)
+                {
+                    this.ConditionalCommands.Remove(this.ConditionalCommands.ElementAt(this.ConditionalCommands.Count - 1));
+                    this.ConditionCount.Remove(this.ConditionCount.ElementAt(this.ConditionCount.Count - 1));
+                    AddCommand(newCommand);
+                }
+            }
+            return base.VisitIfExpression(context);
+        }
+
+        public override object VisitWhileExpression([NotNull] WhileExpressionContext context)
+        {
+            //It doesn't seem to contain the whole while expression, or doesn't recognize it
+            ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
+            ConditionHelper.CheckBool(context.boolExpression());
+            if (ConditionHelper.CheckFailed)
+            {
+                Error += "Condition check failed\n";
+                Error += ConditionHelper.ErrorList;
+                ErrorFound = true;
+            }
+            else
+            {
+                WhileCommand newCommand = new WhileCommand
+                {
+                    MyContext = context.boolExpression(),
+                    Condition = (GetCondition)
+                };
+                this.ConditionalCommands.Add(newCommand);
+                this.ConditionCount.Add(context.block().ChildCount);
+                if (context.block().ChildCount == 0)
+                {
+                    this.ConditionalCommands.Remove(this.ConditionalCommands.ElementAt(this.ConditionalCommands.Count - 1));
+                    this.ConditionCount.Remove(this.ConditionCount.ElementAt(this.ConditionCount.Count - 1));
+                    AddCommand(newCommand);
+                }
+            }
+            return base.VisitWhileExpression(context);
+        }
+
+
+
+
+        public bool GetCondition(GameParamProvider provider, BoolExpressionContext context)
+        {
+            ConditionVisitor visitor = new ConditionVisitor(provider, context);
+            return visitor.CheckConditions();
+        }
+
+
+        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
 
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)
         {
-            foreach(Monster monster in provider.GetMonsters())
-            {
-                if (monster.Place.directionTo(command.TargetPlace).Equals("collision"))
-                    return;
-            }
-            foreach (Trap trap in provider.GetTraps())
-            {
-                if (trap.Place.directionTo(command.TargetPlace).Equals("collision"))
-                    return;
-            }
-            if (provider.GetPlayer().Place.directionTo(command.TargetPlace).Equals("collision"))
+            if (provider.OccupiedOrNot(command.TargetPlace))
                 return;
-            Monster newMonster = new Monster(command.SpawnType.Health, (MonsterType)command.SpawnType, command.TargetPlace);
+            if (Program.GetCharacterType(command.TargetCharacterType.Name) == null && provider.GetMe().GetCharacterType().SpawnType == null)
+            {
+                return;
+            }
+
+            if (provider.GetMe().GetCharacterType().SpawnType == null)
+                command.TargetCharacterType = Program.GetCharacterType(command.TargetCharacterType.Name);
+            else
+                command.TargetCharacterType = provider.GetMe().GetCharacterType().SpawnType;
+            
+            Monster newMonster = new Monster(command.TargetCharacterType.Health, (MonsterType)command.TargetCharacterType, command.TargetPlace);
             provider.GetMonsters().Add(newMonster);
             provider.GetBoard().Monsters.Add(newMonster);
             //TODO: check if it works
         }
 
+        public void SpawnRandom(GameParamProvider provider, SpawnCommand command)
+        {
+            Random rand = new Random();
+                int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                command.TargetPlace = new Place(XPos, YPos);
+            
+                bool found = false;
+                while (!found)
+                {
+                    int index = (int)(rand.Next() % Program.CharacterTypes.Count);
+                    if(Program.CharacterTypes.ElementAt(index) is MonsterType)
+                    {
+                        command.TargetCharacterType = Program.CharacterTypes.ElementAt(index);
+                        found = true;
+                    }
+                }
+            Spawn(provider, command);
+        }
+
+
         public void TeleportTrap(GameParamProvider provider, TeleportCommand command)
         {
             foreach (Trap Trap in provider.GetTraps())
             {
-                if (Trap.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
-                    provider.GetPlayer().Place = command.TargetPlace;
+                if (Trap.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+                {
+                    if (command.Random)
+                    {
+                        Random rand = new Random();
+                        int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                        int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                        command.TargetPlace = new Place(XPos, YPos);
+                    }
+                    if (!provider.OccupiedOrNot(command.TargetPlace))
+                        Trap.Place = command.TargetPlace;
+                }
             }
         }
         public void TeleportMonster(GameParamProvider provider, TeleportCommand command)
         {
             foreach (Monster monster in provider.GetMonsters()) {
-                if (monster.Place.directionTo(provider.GetTrap().Place).Equals("collision"))
-                    provider.GetPlayer().Place = command.TargetPlace;
+                if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+                {
+                    if (command.Random)
+                    {
+                        Random rand = new Random();
+                        int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                        int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                        command.TargetPlace = new Place(XPos, YPos);
+                    }
+                    if (!provider.OccupiedOrNot(command.TargetPlace))
+                        monster.Place = command.TargetPlace;
+                }
             }
         }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
-            if(provider.GetPlayer().Place.directionTo(provider.GetTrap().Place).Equals("collision"))
-                provider.GetPlayer().Place = command.TargetPlace;
+            if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+            {
+                if (command.Random)
+                {
+                    Random rand = new Random();
+                    int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                    int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                    command.TargetPlace = new Place(XPos, YPos);
+                }
+                if (!provider.OccupiedOrNot(command.TargetPlace))
+                    provider.GetPlayer().Place = command.TargetPlace;
+            }
 
         }
 
+        //TODO: check if fall check this way okay or not
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
 
@@ -315,24 +592,25 @@ namespace LabWork1github
             {
                 case "F":
                     if ((int)provider.GetMonster().Place.X - command.Distance >= 0)
-                        provider.GetMonster().Place.X -= (uint)command.Distance;
+                        provider.GetMonster().Place.X -= (int)command.Distance;
                     break;
                 case "B":
-                    provider.GetMonster().Place.X += (uint)command.Distance;
+                    if ((int)provider.GetMonster().Place.X + command.Distance <= provider.GetBoard().Height)
+                        provider.GetMonster().Place.X += (int)command.Distance;
                     break;
                 case "L":
                     if ((int)provider.GetMonster().Place.Y - command.Distance >= 0)
-                        provider.GetMonster().Place.Y -= (uint)command.Distance;
+                        provider.GetMonster().Place.Y -= (int)command.Distance;
                     break;
                 case "R":
-                    provider.GetMonster().Place.Y += (uint)command.Distance;
+                    if ((int)provider.GetMonster().Place.Y + command.Distance <= provider.GetBoard().Width)
+                        provider.GetMonster().Place.Y += (int)command.Distance;
                     break;
             }
         }
         public void MoveToPlace(GameParamProvider provider, MoveCommand command)
         {
-
-            provider.GetMonster().Place = command.targetPlace;
+            provider.GetMe().Place = command.TargetPlace;
         }
         public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
         {
@@ -350,47 +628,57 @@ namespace LabWork1github
                 provider.GetMonster().Place.Y = provider.GetPlayer().Place.Y - 1;
 
         }
+        public void MoveRandom(GameParamProvider provider, MoveCommand command)
+        {
+            Random rand = new Random();
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.TargetPlace = new Place(XPos, YPos);
+            MoveToPlace(provider, command);
+        }
 
         public void ShootDirection(GameParamProvider provider, ShootCommand command)
         {
             switch (command.Direction)
             {
                 case "F":
-                    if (provider.GetPlayer().Place.Y != provider.GetMonster().Place.Y)
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMonster().Place.X - i >= 0)
-                            if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X - (uint)command.Distance)
-                                provider.GetPlayer().Damage(command.Damage);
+                        if ((int)provider.GetMe().Place.X - i >= 0)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - (int)command.Distance)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
                 case "B":
-                    if (provider.GetPlayer().Place.Y != provider.GetMonster().Place.Y)
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.X == provider.GetMonster().Place.X + (uint)command.Distance)
-                            provider.GetPlayer().Damage(command.Damage);
+                        if((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + (int)command.Distance)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
                 case "L":
-                    if (provider.GetPlayer().Place.X != provider.GetMonster().Place.X)
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMonster().Place.Y - i >= 0)
-                            if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y - (uint)command.Distance)
-                                provider.GetPlayer().Damage(command.Damage);
+                        if ((int)provider.GetMe().Place.Y - i >= 0)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - (int)command.Distance)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
                 case "R":
-                    if (provider.GetPlayer().Place.X != provider.GetMonster().Place.X)
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if (provider.GetPlayer().Place.Y == provider.GetMonster().Place.Y + (uint)command.Distance)
-                            provider.GetPlayer().Damage(command.Damage);
+                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
             }
@@ -398,15 +686,397 @@ namespace LabWork1github
 
         public void ShootToPlace(GameParamProvider provider, ShootCommand command)
         {
-            if (provider.GetPlayer().Place.Equals(command.targetPlace))
-                provider.GetPlayer().Damage(command.Damage);
+            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+                provider.GetPlayer().Damage(command.HealthChangeAmount);
         }
 
         public void ShootToPlayer(GameParamProvider provider, ShootCommand command)
         {
-            provider.GetPlayer().Damage(command.Damage);
+            provider.GetPlayer().Damage(command.HealthChangeAmount);
+        }
+
+        public void ShootRandom(GameParamProvider provider, ShootCommand command)
+        {
+            Random rand = new Random();
+            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.HealthChangeAmount = damage;
+            command.TargetPlace = new Place(XPos, YPos);
+            ShootToPlace(provider, command);
         }
 
 
+
+        public void DamageDirection(GameParamProvider provider, DamageCommand command)
+        {
+            switch (command.Direction)
+            {
+                case "F":
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
+                        break;
+                    //distance is 1 as default value
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.X - i >= 0)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
+                    }
+                    foreach(Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.X - i >= 0)
+                                if (monster.Place.X == provider.GetMe().Place.X - i)
+                                    monster.Damage(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+                case "B":
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
+                    }
+                    foreach(Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                                if (monster.Place.X == provider.GetMe().Place.X + i)
+                                    monster.Damage(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+                case "L":
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.Y - i >= 0)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.Y - i >= 0)
+                                if (monster.Place.Y == provider.GetMe().Place.Y - i)
+                                    monster.Damage(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+                case "R":
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                                if (monster.Place.Y == provider.GetMe().Place.Y + i)
+                                monster.Damage(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        public void DamageToPlace(GameParamProvider provider, DamageCommand command)
+        {
+            if (provider.GetMe().Place.DirectionTo(command.TargetPlace).Equals("away"))
+            {
+                provider.GetDrawer().WriteCommand("Trap with type" + provider.GetMe().GetCharacterType() + "tried to damage far away target.");
+                return;
+            }
+            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+                provider.GetPlayer().Damage(command.HealthChangeAmount);
+            foreach(Monster monster in provider.GetMonsters())
+            {
+                if (monster.Place.Equals(command.TargetPlace))
+                    monster.Damage(command.HealthChangeAmount);
+            }
+        }
+
+        public void DamageToPlayer(GameParamProvider provider, DamageCommand command)
+        {
+            provider.GetPlayer().Damage(command.HealthChangeAmount);
+        }
+
+        public void DamageToMonster(GameParamProvider provider, DamageCommand command)
+        {
+            provider.GetMonster().Damage(command.HealthChangeAmount);
+        }
+        public void DamageRandom(GameParamProvider provider, DamageCommand command)
+        {
+            Random rand = new Random();
+            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.HealthChangeAmount = damage;
+            command.TargetPlace = new Place(XPos, YPos);
+            DamageToPlace(provider, command);
+        }
+
+        public void HealDirection(GameParamProvider provider, HealCommand command)
+        {
+            switch (command.Direction)
+            {
+                case "F":
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
+                        break;
+                    //distance is 1 as default value
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.X - i >= 0)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.X - i >= 0)
+                                if (monster.Place.X == provider.GetMe().Place.X - i)
+                                    monster.Heal(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+                case "B":
+                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                                if (monster.Place.X == provider.GetMe().Place.X + i)
+                                    monster.Heal(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+                case "L":
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.Y - i >= 0)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.Y - i >= 0)
+                                if (monster.Place.Y == provider.GetMe().Place.Y - i)
+                                    monster.Heal(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+                case "R":
+                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                        break;
+                    for (int i = 0; i < command.Distance; i++)
+                    {
+                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                    }
+                    foreach (Monster monster in provider.GetMonsters())
+                    {
+                        for (int i = 0; i < command.Distance; i++)
+                        {
+                            if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                                if (monster.Place.Y == provider.GetMe().Place.Y + i)
+                                    monster.Heal(command.HealthChangeAmount);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        public void HealToPlace(GameParamProvider provider, HealCommand command)
+        {
+            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+                provider.GetPlayer().Heal(command.HealthChangeAmount);
+            foreach (Monster monster in provider.GetMonsters())
+            {
+                if (monster.Place.Equals(command.TargetPlace))
+                    monster.Heal(command.HealthChangeAmount);
+            }
+        }
+
+        public void HealToPlayer(GameParamProvider provider, HealCommand command)
+        {
+            provider.GetPlayer().Heal(command.HealthChangeAmount);
+        }
+
+        public void HealToMonster(GameParamProvider provider, HealCommand command)
+        {
+            provider.GetMonster().Heal(command.HealthChangeAmount);
+        }
+        public void HealRandom(GameParamProvider provider, HealCommand command)
+        {
+            Random rand = new Random();
+            int Heal = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 5);
+            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            command.HealthChangeAmount = Heal;
+            command.TargetPlace = new Place(XPos, YPos);
+            HealToPlace(provider, command);
+        }
+
+
+        public void AddCommand(Command newCommand)
+        {
+            if(ConditionCount.Count == 0 || ConditionalCommands.Count==0)
+                Program.GetCharacterType(typeName).Commands.Add(newCommand);
+            else
+                if (ConditionCount.ElementAt(ConditionCount.Count - 1) > 0)
+                {
+                    ConditionalCommands.ElementAt(ConditionalCommands.Count - 1).CommandList.Add(newCommand);
+                    int helperCount = ConditionCount.ElementAt(ConditionCount.Count - 1);
+                    ConditionCount.Remove(ConditionCount.ElementAt(ConditionCount.Count - 1));
+                    if(helperCount-1 == 0)
+                    {
+                        Command helperCommand = ConditionalCommands.ElementAt(ConditionalCommands.Count - 1);
+                        Program.GetCharacterType(typeName).Commands.Add(helperCommand);
+                        ConditionalCommands.Remove(ConditionalCommands.ElementAt(ConditionalCommands.Count - 1));
+                    }
+                    else
+                    ConditionCount.Add(helperCount - 1);
+                }
+        }
+
+        public HealthChangerCommand VisitHealthChangeOption([NotNull] HealthChangeOptionContext context, HealthChangerCommand command)
+        {
+
+            if (context.distanceDeclare() != null)
+                command.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+
+            if (context.hpChangeAmountDeclaration() != null)
+            {
+                if (context.hpChangeAmountDeclaration().damageAmountDeclaration() != null)
+                {
+                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().damageAmountDeclaration().NUMBER().GetText());
+                }
+                else
+                {
+                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().healAmountDeclaration().NUMBER().GetText());
+                }
+            }
+
+            var direction = context.DIRECTION();
+            if (direction != null)
+            {
+                if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
+                    direction.GetText().Equals("B") || direction.GetText().Equals("R")))
+                {
+                    Error += "Wrong direction used:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                command.Direction = direction.GetText();
+                if (command is ShootCommand)
+                {
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootDirection);
+                }
+                if (command is DamageCommand)
+                {
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageDirection);
+                }
+                if (command is HealCommand)
+                {
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealDirection);
+                }
+                return command;;
+            }
+            PlaceContext place = context.place();
+            if (place != null)
+            {
+                int xPos = int.Parse(place.x().GetText());
+                int yPos = int.Parse(place.y().GetText());
+                command.TargetPlace = new Place(xPos, yPos);
+                if (command is ShootCommand)
+                {
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlace);
+                }
+                if (command is DamageCommand)
+                {
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlace);
+                }
+                if (command is HealCommand)
+                {
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlace);
+                }
+                return command;;
+            }
+
+            if (context.character() != null)
+            {
+                if (context.character().TRAP() != null || context.character().ME() != null)
+                {
+                    Error += "This character doesn't have health, or you can't change it yourself:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                if (command is ShootCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                    {
+                        Error += "You can't shoot a monster:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    if (context.character().PLAYER() != null)
+                        ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlayer);
+                }
+                if (command is DamageCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToMonster);
+                    if (context.character().PLAYER() != null)
+                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlayer);
+                }
+                if (command is HealCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToMonster);
+                    if (context.character().PLAYER() != null)
+                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlayer);
+                }
+                return command;;
+            }
+
+            var random = context.RANDOM();
+            if (random != null)
+            {
+                if (command is ShootCommand)
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootRandom);
+                if (command is DamageCommand)
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageRandom);
+                if (command is HealCommand)
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealRandom);
+                return command;
+            }
+            return command;
+        }
     }
 }

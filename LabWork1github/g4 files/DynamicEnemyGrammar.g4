@@ -1,0 +1,137 @@
+grammar DynamicEnemyGrammar;
+
+/*
+ * Parser Rules
+ */
+ definition: statementList* ;
+name: ID;
+
+statementList: nameDeclaration statement*;
+statement: damageAmountDeclaration ';'
+		| healAmountDeclaration ';'
+		| teleportPointDeclaration ';'
+		| spawnPointDeclaration ';'
+		| spawnTypeDeclaration ';'
+		| healthDeclaration ';'
+		| healDeclaration ';'
+        | moveDeclaration ';'
+        | shootDeclaration ';'
+		| ifExpression
+		| whileExpression
+		| whenExpression
+		| damageDeclaration ';'
+		| teleportDeclaration ';'
+		| spawnDeclaration ';'
+        ;
+
+nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
+trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
+monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
+
+healthDeclaration: HEALTH EQUALS NUMBER ;
+healAmountDeclaration: HEAL EQUALS NUMBER;
+damageAmountDeclaration: DAMAGE EQUALS NUMBER;
+hpChangeAmountDeclaration: damageAmountDeclaration | healAmountDeclaration;
+teleportPointDeclaration: TELEPORT_PLACE EQUALS place;
+spawnPointDeclaration: SPAWN_PLACE EQUALS place;
+spawnTypeDeclaration: SPAWN_TYPE EQUALS name;
+
+distanceDeclare: DISTANCE EQUALS NUMBER;
+
+moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION distanceDeclare | MOVE TO PLAYER | MOVE TO RANDOM ;
+
+healthChangeOption: DIRECTION | DIRECTION distanceDeclare | DIRECTION hpChangeAmountDeclaration | DIRECTION distanceDeclare hpChangeAmountDeclaration |
+					TO place | TO place hpChangeAmountDeclaration | TO character | TO character hpChangeAmountDeclaration | RANDOM;
+shootDeclaration: SHOOT healthChangeOption;
+damageDeclaration: DAMAGE healthChangeOption ;
+healDeclaration: HEAL healthChangeOption;
+spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN TO place | SPAWN;
+teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM | TELEPORT_T character;
+ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
+whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
+whenExpression:  WHEN PARENTHESISSTART event PARENTHESISCLOSE block;
+event: character action | PLAYER HEALTH_CHECK;
+
+action: MOVE (FROM place)? TO place | DIE | STAY AT place | SHOOT NUMBER TO (character | place) | DAMAGE NUMBER TO (character | place) |
+			HEAL NUMBER TO (character | place) | TELEPORT_T character TO place | SPAWN character TO place;
+
+block: BRACKETSTART statement* BRACKETCLOSE;
+character: PLAYER | ME | TRAP | MONSTER | PARTNER;
+
+possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPORT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
+                | HEALTH | HEAL | RANDOM | DAMAGE | DISTANCE | NAME_T | TRAP | MONSTER | ME | PLAYER | PARTNER;
+
+place: x ',' y;
+x: NUMBER;
+y: NUMBER;
+
+boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression? | NEGATE boolExpression nextBoolExpression?
+            | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression? | attribute COMPARE attribute nextBoolExpression?;
+nextBoolExpression: BOOLCONNECTER boolExpression;
+
+numberExpression: numberMultipExpression (NUMCONNECTERADD numberMultipExpression)*;
+numberMultipExpression: numberFirstExpression (NUMCONNECTERMULTIP numberFirstExpression)*;
+numberFirstExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTE numberExpression ABSOLUTE | something;
+functionExpression: character function;
+
+something: NUMBER | ROUND | attribute;
+attribute: character DOT possibleAttributes;
+numToBoolOperation: NUMCOMPARE | COMPARE;
+function: IS ALIVE | IS NEAR ;
+/*
+ * Lexer Rules
+ */
+TELEPORT_PLACE: 'teleport_place';
+SPAWN_PLACE: 'spawn_place';
+SPAWN_TYPE: 'spawn_type';
+RANDOM: 'random';
+DISTANCE: 'distance';
+DAMAGE: 'damage';
+HEALTH_CHECK: 'health_check';
+DIRECTION: 'F' | 'L' | 'R' | 'B';
+NAME_T: 'name';
+TRAP: 'trap';
+MONSTER: 'monster';
+PLAYER: 'player';
+PLACE_T: 'place';
+ROUND: 'round';
+NEAR: 'near';
+IS: 'is';
+ME: 'me';
+IF: 'if';
+TO: 'to';
+WHILE: 'while';
+HEALTH: 'health';
+ALIVE: 'alive';
+MOVE: 'move';
+ON:'on';
+SHOOT: 'shoot';
+SPAWN: 'spawn';
+TELEPORT_T: 'teleport';
+PARTNER: 'partner';
+HEAL: 'heal';
+FROM: 'from';
+WHEN: 'when';
+DIE: 'die';
+STAY: 'stay';
+AT: 'at';
+
+EQUALS: '=' ;
+ABSOLUTE: '|';
+NEGATE: '!';
+BOOLCONNECTER: '||' | '&&' ;
+COMPARE: '==' | '!=' ;
+NUMCOMPARE: '<' | '>' ;
+NUMCONNECTERMULTIP: '*' | '/' | '%' ;
+NUMCONNECTERADD: '+' | '-' ;
+PARENTHESISSTART: '(';
+PARENTHESISCLOSE: ')';
+BRACKETCLOSE: '}';
+BRACKETSTART: '{';
+COLON: ':';
+SEMI: ';';
+COMMA: ',';
+NUMBER: [0-9]+ (DOT[0-9]+)?;
+DOT: '.';
+ID: [a-zA-Z][a-zA-Z0-9_]* ;
+WS: (' ' | '\t' | '\n' | '\r') -> skip;

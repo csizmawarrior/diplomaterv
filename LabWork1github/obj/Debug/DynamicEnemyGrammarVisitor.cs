@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\Dana\source\repos\LabWork1github\LabWork1github\G4 files\DynamicEnemyGrammar.g4 by ANTLR 4.6.6
+// Generated from C:\Users\Dana\source\repos\LabWork1github\LabWork1github\g4 files\DynamicEnemyGrammar.g4 by ANTLR 4.6.6
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -103,6 +103,13 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitDamageAmountDeclaration([NotNull] DynamicEnemyGrammarParser.DamageAmountDeclarationContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.hpChangeAmountDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHpChangeAmountDeclaration([NotNull] DynamicEnemyGrammarParser.HpChangeAmountDeclarationContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.teleportPointDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -136,6 +143,13 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMoveDeclaration([NotNull] DynamicEnemyGrammarParser.MoveDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.healthChangeOption"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHealthChangeOption([NotNull] DynamicEnemyGrammarParser.HealthChangeOptionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.shootDeclaration"/>.
@@ -173,18 +187,39 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitTeleportDeclaration([NotNull] DynamicEnemyGrammarParser.TeleportDeclarationContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.ifExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIfexpression([NotNull] DynamicEnemyGrammarParser.IfexpressionContext context);
+	Result VisitIfExpression([NotNull] DynamicEnemyGrammarParser.IfExpressionContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileexpression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whileExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitWhileexpression([NotNull] DynamicEnemyGrammarParser.WhileexpressionContext context);
+	Result VisitWhileExpression([NotNull] DynamicEnemyGrammarParser.WhileExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.whenExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.action"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAction([NotNull] DynamicEnemyGrammarParser.ActionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.block"/>.
@@ -229,11 +264,46 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitY([NotNull] DynamicEnemyGrammarParser.YContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression([NotNull] DynamicEnemyGrammarParser.ExpressionContext context);
+	Result VisitBoolExpression([NotNull] DynamicEnemyGrammarParser.BoolExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextBoolExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNextBoolExpression([NotNull] DynamicEnemyGrammarParser.NextBoolExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNumberExpression([NotNull] DynamicEnemyGrammarParser.NumberExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberMultipExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNumberMultipExpression([NotNull] DynamicEnemyGrammarParser.NumberMultipExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberFirstExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNumberFirstExpression([NotNull] DynamicEnemyGrammarParser.NumberFirstExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.functionExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionExpression([NotNull] DynamicEnemyGrammarParser.FunctionExpressionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.something"/>.
@@ -243,10 +313,24 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitSomething([NotNull] DynamicEnemyGrammarParser.SomethingContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.operation"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.attribute"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOperation([NotNull] DynamicEnemyGrammarParser.OperationContext context);
+	Result VisitAttribute([NotNull] DynamicEnemyGrammarParser.AttributeContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numToBoolOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNumToBoolOperation([NotNull] DynamicEnemyGrammarParser.NumToBoolOperationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.function"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunction([NotNull] DynamicEnemyGrammarParser.FunctionContext context);
 }
 } // namespace LabWork1github

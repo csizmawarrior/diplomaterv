@@ -2,27 +2,35 @@ using Antlr4.Runtime;
 using LabWork1github;
 using System;
 using System.Collections.Generic;
+using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
 {
-    class Program
+    public class Program
     {
-        public static List<EnemyType> EnemyTypes = new List<EnemyType>();
-
+        public static List<CharacterType> CharacterTypes = new List<CharacterType>();
+        public static List<Character> Characters = new List<Character>();
 
         public static Board Board = new Board();
-        public static List<MonsterType> monsterTypes = new List<MonsterType>();
-        public static List<TrapType> trapTypes = new List<TrapType>();
+        
         public static int starterHP = 300;
 
         static void Main(string[] args)
         {
+            //we hand in a default type for a monster and a trap, so when nothing is given, the trap or monster will get these ones' attributes
+            //CharacterTypes.Add(new MonsterType("DefaultMonster"));
+            //GetCharacterType("DefaultMonster").Damage = 50;
+            //GetCharacterType("DefaultMonster").Health = 200;
+
+            //CharacterTypes.Add(new TrapType("DefaultTrap"));
+            //GetCharacterType("DefaultTrap").Damage = 50;
 
 
-
-            MonsterTypeLoader();
+            //  MonsterTypeLoader();
             TrapTypeLoader();
+            MonsterTypeLoader();
             BoardLoader();
+
 
             Game theGame = new Game();
             theGame.Init();
@@ -32,16 +40,18 @@ namespace LabWork1github
 
         }
 
-        private static void MonsterTypeLoader()
+        public static void MonsterTypeLoader()
         {
-            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/MonsterTypes.txt");
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/DefaultMonster.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
-            MonsterGrammarLexer MonsterGrammarLexer_ = new MonsterGrammarLexer(inputStream);
+            DynamicEnemyGrammarLexer MonsterGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(MonsterGrammarLexer_);
-            MonsterGrammarParser MonsterGrammarParser = new MonsterGrammarParser(commonTokenStream);
-            MonsterGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
-            MonsterGrammarVisitor visitor = new MonsterGrammarVisitor();
+            DynamicEnemyGrammarParser MonsterGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
+            DynamicEnemyGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
+            if (visitor.ErrorFound)
+                Console.WriteLine(visitor.Error);
         }
 
         public static void BoardLoader()
@@ -58,20 +68,31 @@ namespace LabWork1github
 
         public static void TrapTypeLoader()
         {
-            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/TrapTypes.txt");
+            string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/DefaultTrap.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
-            TrapGrammarLexer TrapGrammarLexer_ = new TrapGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(TrapGrammarLexer_);
-            TrapGrammarParser TrapGrammarParser = new TrapGrammarParser(commonTokenStream);
-            TrapGrammarParser.DefinitionContext chatContext = TrapGrammarParser.definition();
-            TrapGrammarVisitor visitor = new TrapGrammarVisitor();
+            DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
+            DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
+            DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
+            if(visitor.ErrorFound)
+                Console.WriteLine(visitor.Error);
         }
-        public static EnemyType GetEnemyType(string name)
+
+        public static CharacterType GetCharacterType(string name)
         {
-            if (EnemyTypes.FindAll(e => e.Name.Equals(name)).Count > 1 || EnemyTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
-                throw new ArgumentException("Not a valid enemyType name");
-            return EnemyTypes.Find(e => e.Name.Equals(name));
+            if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1)
+            {
+                Console.WriteLine("The type "+name+" does not exist");
+                return null;
+            }   
+            else if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
+            {
+                Console.WriteLine("The type " + name + " does not exist");
+                return null;
+            }
+            return CharacterTypes.Find(e => e.Name.Equals(name));
                 
         }
     }

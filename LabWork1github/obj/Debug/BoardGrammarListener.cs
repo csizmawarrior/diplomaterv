@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\Dana\source\repos\LabWork1github\LabWork1github\G4 files\BoardGrammar.g4 by ANTLR 4.6.6
+// Generated from C:\Users\Dana\source\repos\LabWork1github\LabWork1github\g4 files\BoardGrammar.g4 by ANTLR 4.6.6
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -151,5 +151,27 @@ public interface IBoardGrammarListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitTrapPlacement([NotNull] BoardGrammarParser.TrapPlacementContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.nameDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNameDeclaration([NotNull] BoardGrammarParser.NameDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.nameDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNameDeclaration([NotNull] BoardGrammarParser.NameDeclarationContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="BoardGrammarParser.partnerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPartnerDeclaration([NotNull] BoardGrammarParser.PartnerDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="BoardGrammarParser.partnerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPartnerDeclaration([NotNull] BoardGrammarParser.PartnerDeclarationContext context);
 }
 } // namespace LabWork1github
