@@ -14,7 +14,9 @@ namespace LabWork1github
 
         public void WriteCommand(string message)
         {
-            Console.WriteLine(message);
+            Console.WriteLine("--------------------------------\n");
+            Console.WriteLine(message+"\n");
+            Console.WriteLine("--------------------------------\n");
         }
         public void DrawBoard(Board board, Player player, List<Monster> monsters, List<Trap> traps)
         {

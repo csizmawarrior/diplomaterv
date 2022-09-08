@@ -15,12 +15,6 @@ namespace LabWork1github
 
         public string ErrorList { get; set; } = "";
 
-        public override object Visit([NotNull] IParseTree tree)
-        {
-            //TODO: kiszűr nem létező név
-            return base.Visit(tree);
-        }
-
         public override object VisitProgram([NotNull] ProgramContext context)
         {
             return base.VisitProgram(context);

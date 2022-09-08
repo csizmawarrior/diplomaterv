@@ -16,18 +16,18 @@ statement: damageAmountDeclaration ';'
 		| healDeclaration ';'
         | moveDeclaration ';'
         | shootDeclaration ';'
-		| ifExpression
-		| whileExpression
-		| whenExpression
 		| damageDeclaration ';'
 		| teleportDeclaration ';'
 		| spawnDeclaration ';'
+		| ifExpression
+		| whileExpression
+		| whenExpression
         ;
 
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
 trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
 monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
-
+//TODO: make a command out of parameter change
 healthDeclaration: HEALTH EQUALS NUMBER ;
 healAmountDeclaration: HEAL EQUALS NUMBER;
 damageAmountDeclaration: DAMAGE EQUALS NUMBER;
@@ -50,6 +50,7 @@ teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM
 ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
 whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
 whenExpression:  WHEN PARENTHESISSTART event PARENTHESISCLOSE block;
+
 event: character action | PLAYER HEALTH_CHECK;
 
 action: MOVE (FROM place)? TO place | DIE | STAY AT place | SHOOT NUMBER TO (character | place) | DAMAGE NUMBER TO (character | place) |
