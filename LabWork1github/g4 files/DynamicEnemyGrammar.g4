@@ -49,12 +49,12 @@ spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER nam
 teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM | TELEPORT_T character;
 ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
 whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
-whenExpression:  WHEN PARENTHESISSTART event PARENTHESISCLOSE block;
+whenExpression:  WHEN PARENTHESISSTART triggerEvent PARENTHESISCLOSE block;
 
-event: character action | PLAYER HEALTH_CHECK;
+triggerEvent: character action | PLAYER HEALTH_CHECK;
 
-action: MOVE (FROM place)? TO place | DIE | STAY AT place | SHOOT NUMBER TO (character | place) | DAMAGE NUMBER TO (character | place) |
-			HEAL NUMBER TO (character | place) | TELEPORT_T character TO place | SPAWN character TO place;
+action: MOVE fromPlace? TO place | DIE | STAY AT place | SHOOT (NUMBER)? TO (character | place) | DAMAGE NUMBER TO (character | place) |
+			HEAL (NUMBER)? TO (character | place) | TELEPORT_T character TO place | SPAWN character TO place;
 
 block: BRACKETSTART statement* BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER | PARTNER;
@@ -65,6 +65,7 @@ possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPORT_
 place: x ',' y;
 x: NUMBER;
 y: NUMBER;
+fromPlace: FROM place;
 
 boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression? | NEGATE boolExpression nextBoolExpression?
             | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression? | attribute COMPARE attribute nextBoolExpression?;

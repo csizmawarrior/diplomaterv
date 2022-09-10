@@ -16,6 +16,10 @@ namespace LabWork1github
 
     public class TrapType : CharacterType
     {
+        public TrapType()
+        {
+        }
+
         public TrapType(string _name)
         {
             this.Name = _name;

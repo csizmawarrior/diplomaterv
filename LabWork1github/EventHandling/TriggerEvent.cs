@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace LabWork1github.EventHandling
 {
-    public class Event: EventArgs
+    public class TriggerEvent: EventArgs
     {
         public EventType EventType { get; set; }
         public Place TargetPlace { get; set; }
         public Place SourcePlace { get; set; }
-        public Character SourceCharacter { get; set; }
-        public Character TargetCharacter { get; set; }
-        public int Amount { get; set; }
+        public CharacterType SourceCharacter { get; set; }
+        public CharacterType TargetCharacter { get; set; }
+        public double Amount { get; set; }
 
     }   
 }

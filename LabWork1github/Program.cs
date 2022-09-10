@@ -10,6 +10,7 @@ namespace LabWork1github
     {
         public static List<CharacterType> CharacterTypes = new List<CharacterType>();
         public static List<Character> Characters = new List<Character>();
+        public static List<EventHandler> EventHandlers = new List<EventHandler>();
 
         public static Board Board = new Board();
         

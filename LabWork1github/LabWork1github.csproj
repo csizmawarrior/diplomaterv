@@ -52,8 +52,10 @@
     <Compile Include="Commands\HealCommand.cs" />
     <Compile Include="Commands\HealthChangerCommand.cs" />
     <Compile Include="Commands\WhenCommand.cs" />
-    <Compile Include="EventHandling\Event.cs" />
+    <Compile Include="EventHandling\EventCollection.cs" />
+    <Compile Include="EventHandling\TriggerEvent.cs" />
     <Compile Include="EventHandling\EventEnums.cs" />
+    <Compile Include="EventHandling\TriggerEventHandler.cs" />
     <Compile Include="game field classes\Board.cs" />
     <Compile Include="g4 files\BoardGrammar.g4.lexer.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>

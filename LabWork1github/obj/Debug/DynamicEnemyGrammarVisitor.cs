@@ -208,11 +208,11 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.triggerEvent"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
+	Result VisitTriggerEvent([NotNull] DynamicEnemyGrammarParser.TriggerEventContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.action"/>.
@@ -262,6 +262,13 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitY([NotNull] DynamicEnemyGrammarParser.YContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.fromPlace"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFromPlace([NotNull] DynamicEnemyGrammarParser.FromPlaceContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.

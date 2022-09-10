@@ -307,15 +307,15 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	void ExitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.triggerEvent"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
+	void EnterTriggerEvent([NotNull] DynamicEnemyGrammarParser.TriggerEventContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.triggerEvent"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context);
+	void ExitTriggerEvent([NotNull] DynamicEnemyGrammarParser.TriggerEventContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.action"/>.
@@ -393,6 +393,17 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitY([NotNull] DynamicEnemyGrammarParser.YContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.fromPlace"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFromPlace([NotNull] DynamicEnemyGrammarParser.FromPlaceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.fromPlace"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFromPlace([NotNull] DynamicEnemyGrammarParser.FromPlaceContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.

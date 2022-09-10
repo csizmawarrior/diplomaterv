@@ -361,17 +361,17 @@ public partial class DynamicEnemyGrammarBaseListener : IDynamicEnemyGrammarListe
 	public virtual void ExitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.triggerEvent"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterEvent([NotNull] DynamicEnemyGrammarParser.EventContext context) { }
+	public virtual void EnterTriggerEvent([NotNull] DynamicEnemyGrammarParser.TriggerEventContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.triggerEvent"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context) { }
+	public virtual void ExitTriggerEvent([NotNull] DynamicEnemyGrammarParser.TriggerEventContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.action"/>.
@@ -463,6 +463,19 @@ public partial class DynamicEnemyGrammarBaseListener : IDynamicEnemyGrammarListe
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitY([NotNull] DynamicEnemyGrammarParser.YContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.fromPlace"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFromPlace([NotNull] DynamicEnemyGrammarParser.FromPlaceContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.fromPlace"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFromPlace([NotNull] DynamicEnemyGrammarParser.FromPlaceContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.

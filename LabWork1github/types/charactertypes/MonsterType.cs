@@ -10,10 +10,9 @@ namespace LabWork1github
 
     public class MonsterType : CharacterType
     {
-        public event EventHandler MonsterMoved;
-        public event EventHandler MonsterShot;
-        public event EventHandler MonsterStayed;
-        public event EventHandler MonsterDied;
+        public MonsterType()
+        {
+        }
 
         public MonsterType(string name)
         {

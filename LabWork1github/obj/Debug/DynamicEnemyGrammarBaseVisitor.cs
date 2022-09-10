@@ -310,7 +310,7 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitWhenExpression([NotNull] DynamicEnemyGrammarParser.WhenExpressionContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.event"/>.
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.triggerEvent"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -318,7 +318,7 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitEvent([NotNull] DynamicEnemyGrammarParser.EventContext context) { return VisitChildren(context); }
+	public virtual Result VisitTriggerEvent([NotNull] DynamicEnemyGrammarParser.TriggerEventContext context) { return VisitChildren(context); }
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.action"/>.
@@ -396,6 +396,17 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitY([NotNull] DynamicEnemyGrammarParser.YContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.fromPlace"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitFromPlace([NotNull] DynamicEnemyGrammarParser.FromPlaceContext context) { return VisitChildren(context); }
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.boolExpression"/>.
