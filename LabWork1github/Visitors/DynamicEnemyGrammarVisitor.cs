@@ -546,9 +546,9 @@ namespace LabWork1github
                                 Error += context.GetText() + "\n";
                                 ErrorFound = true;
                             }
-                            if (context.action().character().MONSTER() != null)
+                            if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
                                 resultTrigger.TargetCharacter = new MonsterType();
-                            if (context.action().character().TRAP() != null)
+                            if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                                 resultTrigger.TargetCharacter = new TrapType();
                             return resultTrigger;
                         }
@@ -586,182 +586,18 @@ namespace LabWork1github
                 }
                 if (context.character().MONSTER() != null)
                 {
-                    if (context.action() == null)
-                    {
-                        Error += "When command doesn't have action at:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    resultTrigger.SourceCharacter = new MonsterType();
-                    if (context.action().place() != null)
-                    {
-                        resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                               int.Parse(context.action().place().y().GetText()));
-                    }
-                    if (context.action().MOVE() != null)
-                    {
-                        EventCollection.MonsterMoved += eventHandler.OnEvent;
-                        if (context.action().fromPlace() != null)
-                            resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                                    int.Parse(context.action().place().y().GetText()));
-                        return resultTrigger;
-                    }
-                    if (context.action().DIE() != null)
-                    {
-                        EventCollection.MonsterDied += eventHandler.OnEvent;
-                        return resultTrigger;
-                    }
-                    if (context.action().STAY() != null)
-                    {
-                        EventCollection.MonsterStayed += eventHandler.OnEvent;
-                        return resultTrigger;
-                    }
-                    if (context.action().SHOOT() != null)
-                    {
-                        EventCollection.MonsterShot += eventHandler.OnEvent;
-                        if (context.action().NUMBER() != null)
-                        {
-                            resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
-                        }
-                        if (context.action().character() != null)
-                        {
-                            if (context.action().character().PLAYER() != null)
-                                resultTrigger.TargetCharacter = new PlayerType();
-                            if (context.action().character().MONSTER() != null)
-                            {
-                                Error += "When command action error, monster can't shoot monster:\n";
-                                Error += context.GetText() + "\n";
-                                ErrorFound = true;
-                            }
-                            if (context.action().character().TRAP() != null)
-                            {
-                                Error += "When command action error, monster can't shoot trap:\n";
-                                Error += context.GetText() + "\n";
-                                ErrorFound = true;
-                            }
-                            return resultTrigger;
-                        }
-                        if (context.action().place() == null)
-                        {
-                            Error += "When command action doesn't have character nor place as target:\n";
-                            Error += context.GetText() + "\n";
-                            ErrorFound = true;
-                        }
-                    }
-                    if (context.action().DAMAGE() != null)
-                    {
-                        Error += "When command action error, monster can't damage, try shoot instead at:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().HEAL() != null)
-                    {
-                        Error += "When command action error, monster can't heal, try trap heal to monster instead at:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().TELEPORT_T() != null)
-                    {
-                        Error += "When command action error, monster can't teleport, try trap teleport monster instead:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().SPAWN() != null)
-                    {
-                        Error += "When command action error, monster can't spawn:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
+                    resultTrigger = VisitMonsterActionContext(context, resultTrigger, eventHandler);
                 }
                 if (context.character().TRAP() != null)
                 {
-                    if (context.action() == null)
-                    {
-                        Error += "When command doesn't have action at:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    resultTrigger.SourceCharacter = new TrapType();
-                    if (context.action().place() != null)
-                    {
-                        resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                               int.Parse(context.action().place().y().GetText()));
-                    }
-                    if (context.action().MOVE() != null)
-                    {
-                        EventCollection.TrapMoved += eventHandler.OnEvent;
-                        if (context.action().fromPlace() != null)
-                            resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                                    int.Parse(context.action().place().y().GetText()));
-                        return resultTrigger;
-                    }
-                    if (context.action().DIE() != null)
-                    {
-                        Error += "Traps can't die, error at:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().STAY() != null)
-                    {
-                        EventCollection.TrapStayed += eventHandler.OnEvent;
-                        return resultTrigger;
-                    }
-                    if (context.action().SHOOT() != null)
-                    {
-                        Error += "When command action error, trap can't shoot, error at:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().DAMAGE() != null)
-                    {
-                        EventCollection.TrapDamaged += eventHandler.OnEvent;
-                        if (context.action().NUMBER() != null)
-                        {
-                            resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
-                        }
-                        if (context.action().character() != null)
-                        {
-                            if (context.action().character().PLAYER() != null)
-                                resultTrigger.TargetCharacter = new PlayerType();
-                            if (context.action().character().MONSTER() != null)
-                            {
-                                Error += "When command action error, monster can't shoot monster:\n";
-                                Error += context.GetText() + "\n";
-                                ErrorFound = true;
-                            }
-                            if (context.action().character().TRAP() != null)
-                            {
-                                Error += "When command action error, monster can't shoot trap:\n";
-                                Error += context.GetText() + "\n";
-                                ErrorFound = true;
-                            }
-                            return resultTrigger;
-                        }
-                        if (context.action().place() == null)
-                        {
-                            Error += "When command action doesn't have character nor place as target:\n";
-                            Error += context.GetText() + "\n";
-                            ErrorFound = true;
-                        }
-                    }
-                    if (context.action().HEAL() != null)
-                    {
-                        Error += "When command action error, monster can't heal, try trap heal to monster instead at:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().TELEPORT_T() != null)
-                    {
-                        Error += "When command action error, monster can't teleport, try trap teleport monster instead:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().SPAWN() != null)
-                    {
-                        Error += "When command action error, monster can't spawn:\n";
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
+                    resultTrigger = VisitTrapActionContext(context, resultTrigger, eventHandler);
+                }
+                if(context.character().ME() != null)
+                {
+                    if(type.Equals(Types.MONSTER))
+                        resultTrigger = VisitMonsterActionContext(context, resultTrigger, eventHandler);
+                    if(type.Equals(Types.TRAP))
+                        resultTrigger = VisitTrapActionContext(context, resultTrigger, eventHandler);
                 }
             }
             else
@@ -770,6 +606,250 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
+            return resultTrigger;
+        }
+
+        private TriggerEvent VisitMonsterActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        {
+            if (context.action() == null)
+            {
+                Error += "When command doesn't have action at:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            resultTrigger.SourceCharacter = new MonsterType();
+            if (context.action().place() != null)
+            {
+                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                       int.Parse(context.action().place().y().GetText()));
+            }
+            if (context.action().MOVE() != null)
+            {
+                EventCollection.MonsterMoved += eventHandler.OnEvent;
+                if (context.action().fromPlace() != null)
+                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                            int.Parse(context.action().place().y().GetText()));
+                return resultTrigger;
+            }
+            if (context.action().DIE() != null)
+            {
+                EventCollection.MonsterDied += eventHandler.OnEvent;
+                return resultTrigger;
+            }
+            if (context.action().STAY() != null)
+            {
+                EventCollection.MonsterStayed += eventHandler.OnEvent;
+                return resultTrigger;
+            }
+            if (context.action().SHOOT() != null)
+            {
+                EventCollection.MonsterShot += eventHandler.OnEvent;
+                if (context.action().NUMBER() != null)
+                {
+                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                }
+                if (context.action().character() != null)
+                {
+                    if (context.action().character().PLAYER() != null)
+                        resultTrigger.TargetCharacter = new PlayerType();
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                    {
+                        Error += "When command action error, monster can't shoot monster:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                    {
+                        Error += "When command action error, monster can't shoot trap:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    return resultTrigger;
+                }
+                if (context.action().place() == null)
+                {
+                    Error += "When command action doesn't have character nor place as target:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().DAMAGE() != null)
+            {
+                Error += "When command action error, monster can't damage, try shoot instead at:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().HEAL() != null)
+            {
+                Error += "When command action error, monster can't heal, try trap heal to monster instead at:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().TELEPORT_T() != null)
+            {
+                Error += "When command action error, monster can't teleport, try trap teleport monster instead:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().SPAWN() != null)
+            {
+                Error += "When command action error, monster can't spawn:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            return resultTrigger;
+        }
+
+        private TriggerEvent VisitTrapActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        {
+            if (context.action() == null)
+            {
+                Error += "When command doesn't have action at:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            resultTrigger.SourceCharacter = new TrapType();
+            if (context.action().place() != null)
+            {
+                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                       int.Parse(context.action().place().y().GetText()));
+            }
+            if (context.action().MOVE() != null)
+            {
+                EventCollection.TrapMoved += eventHandler.OnEvent;
+                if (context.action().fromPlace() != null)
+                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                            int.Parse(context.action().place().y().GetText()));
+                return resultTrigger;
+            }
+            if (context.action().DIE() != null)
+            {
+                Error += "Traps can't die, error at:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().STAY() != null)
+            {
+                EventCollection.TrapStayed += eventHandler.OnEvent;
+                return resultTrigger;
+            }
+            if (context.action().SHOOT() != null)
+            {
+                Error += "When command action error, trap can't shoot, error at:\n";
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().DAMAGE() != null)
+            {
+                EventCollection.TrapDamaged += eventHandler.OnEvent;
+                if (context.action().NUMBER() != null)
+                {
+                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                }
+                if (context.action().character() != null)
+                {
+                    if (context.action().character().PLAYER() != null)
+                        resultTrigger.TargetCharacter = new PlayerType();
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                    {
+                        resultTrigger.TargetCharacter = new MonsterType();
+                    }
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                    {
+                        Error += "When command action error, trap can't damage trap or itself:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    return resultTrigger;
+                }
+                if (context.action().place() == null)
+                {
+                    Error += "When command action doesn't have character nor place as target:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().HEAL() != null)
+            {
+                EventCollection.TrapHealed += eventHandler.OnEvent;
+                if (context.action().NUMBER() != null)
+                {
+                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                }
+                if (context.action().character() != null)
+                {
+                    if (context.action().character().PLAYER() != null)
+                        resultTrigger.TargetCharacter = new PlayerType();
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                    {
+                        resultTrigger.TargetCharacter = new MonsterType();
+                    }
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                    {
+                        Error += "When command action error, trap can't heal trap or itself:\n";
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    return resultTrigger;
+                }
+                if (context.action().place() == null)
+                {
+                    Error += "When command action doesn't have character nor place as target:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().TELEPORT_T() != null)
+            {
+                EventCollection.TrapTeleported += eventHandler.OnEvent;
+                if (context.action().character().PLAYER() != null)
+                    resultTrigger.TargetCharacter = new PlayerType();
+                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                {
+                    resultTrigger.TargetCharacter = new MonsterType();
+                }
+                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                {
+                    Error += "When command action error, trap can't teleport trap or itself:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                if (context.action().place() != null)
+                {
+                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                           int.Parse(context.action().place().y().GetText()));
+                    return resultTrigger;
+                }
+            }
+            if (context.action().SPAWN() != null)
+            {
+                EventCollection.TrapTeleported += eventHandler.OnEvent;
+                if (context.action().character().PLAYER() != null)
+                {
+                    Error += "When command action error, trap can't spawn a player:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                {
+                    resultTrigger.TargetCharacter = new MonsterType();
+                }
+                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                {
+                    Error += "When command action error, trap can't spawn trap or itself:\n";
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                if (context.action().place() != null)
+                {
+                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                           int.Parse(context.action().place().y().GetText()));
+                    return resultTrigger;
+                }
+            }
+            Error += "When command action unexpected error at:\n";
+            Error += context.GetText() + "\n";
+            ErrorFound = true;
             return resultTrigger;
         }
 
