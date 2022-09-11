@@ -479,7 +479,7 @@ namespace LabWork1github
             }
             return base.VisitWhileExpression(context);
         }
-
+        //TODO: check if using CharacterType for partner is possible, if so then test it in Game class
         public override object VisitWhenExpression([NotNull] WhenExpressionContext context)
         {
             TriggerEventHandler eventHandler = new TriggerEventHandler();
