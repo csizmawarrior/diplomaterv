@@ -14,6 +14,7 @@ namespace LabWork1github
     public class DynamicEnemyGrammarVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {
         //TODO: eventHandling class that is for a specific when block
+        //TODO: parameter change Command
         private string typeName = "";
         private string type = null;
         private List<int> ConditionCount = new List<int>();

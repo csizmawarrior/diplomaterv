@@ -284,7 +284,7 @@ namespace UnitTestLabWork
         [TestMethod]
         public void AssignMonShootCommandDirAndDist()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; health = 50; shoot L distance = 4;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; damage = 50; health = 50; shoot L distance = 4;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
