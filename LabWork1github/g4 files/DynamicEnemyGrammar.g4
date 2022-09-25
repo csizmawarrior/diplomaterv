@@ -6,13 +6,10 @@ grammar DynamicEnemyGrammar;
  definition: statementList* ;
 name: ID;
 
-statementList: nameDeclaration statement*;
-statement: damageAmountDeclaration ';'
-		| healAmountDeclaration ';'
-		| teleportPointDeclaration ';'
-		| spawnPointDeclaration ';'
-		| spawnTypeDeclaration ';'
-		| healthDeclaration ';'
+statementList: nameDeclaration declarations statement*;
+declarations: declareStatements* COMMANDS COLON; 
+
+statement: declareStatements
 		| healDeclaration ';'
         | moveDeclaration ';'
         | shootDeclaration ';'
@@ -23,6 +20,14 @@ statement: damageAmountDeclaration ';'
 		| whileExpression
 		| whenExpression
         ;
+
+declareStatements: damageAmountDeclaration ';'
+		| healAmountDeclaration ';'
+		| healthDeclaration ';'
+		| teleportPointDeclaration ';'
+		| spawnPointDeclaration ';'
+		| spawnTypeDeclaration ';'
+		;
 
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
 trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
@@ -102,6 +107,7 @@ IS: 'is';
 ME: 'me';
 IF: 'if';
 TO: 'to';
+COMMANDS: 'commands';
 WHILE: 'while';
 HEALTH: 'health';
 ALIVE: 'alive';

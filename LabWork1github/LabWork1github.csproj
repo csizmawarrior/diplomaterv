@@ -51,6 +51,9 @@
     <Compile Include="Commands\DamageCommand.cs" />
     <Compile Include="Commands\HealCommand.cs" />
     <Compile Include="Commands\HealthChangerCommand.cs" />
+    <Compile Include="Commands\NumberParameterDeclareCommand.cs" />
+    <Compile Include="Commands\PlaceParameterDeclareCommand.cs" />
+    <Compile Include="Commands\TypeParameterDeclareCommand.cs" />
     <Compile Include="Commands\WhenCommand.cs" />
     <Compile Include="EventHandling\EventCollection.cs" />
     <Compile Include="EventHandling\TriggerEvent.cs" />
@@ -64,6 +67,13 @@
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
     <Compile Include="PlayerMove.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Symbols\Scope.cs" />
+    <Compile Include="Symbols\Symbol.cs" />
     <Compile Include="Visitors\BoardGrammarVisitor.cs" />
     <Compile Include="characters\Character.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -120,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>LabWork1github</CustomToolNamespace>
     </Antlr4>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

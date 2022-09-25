@@ -65,6 +65,17 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	void ExitStatementList([NotNull] DynamicEnemyGrammarParser.StatementListContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.declarations"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDeclarations([NotNull] DynamicEnemyGrammarParser.DeclarationsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.declarations"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDeclarations([NotNull] DynamicEnemyGrammarParser.DeclarationsContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -74,6 +85,17 @@ public interface IDynamicEnemyGrammarListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] DynamicEnemyGrammarParser.StatementContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.declareStatements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDeclareStatements([NotNull] DynamicEnemyGrammarParser.DeclareStatementsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.declareStatements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDeclareStatements([NotNull] DynamicEnemyGrammarParser.DeclareStatementsContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.nameDeclaration"/>.

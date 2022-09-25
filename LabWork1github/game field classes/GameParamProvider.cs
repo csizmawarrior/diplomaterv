@@ -73,5 +73,9 @@ namespace LabWork1github
         {
             game.PlayerCommand();
         }
+        public List<Character> GetCharacters()
+        {
+            return Game.Characters;
+        }
     }
 }

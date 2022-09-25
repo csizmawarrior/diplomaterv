@@ -75,6 +75,19 @@ public partial class DynamicEnemyGrammarBaseListener : IDynamicEnemyGrammarListe
 	public virtual void ExitStatementList([NotNull] DynamicEnemyGrammarParser.StatementListContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.declarations"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDeclarations([NotNull] DynamicEnemyGrammarParser.DeclarationsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.declarations"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDeclarations([NotNull] DynamicEnemyGrammarParser.DeclarationsContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -86,6 +99,19 @@ public partial class DynamicEnemyGrammarBaseListener : IDynamicEnemyGrammarListe
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] DynamicEnemyGrammarParser.StatementContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.declareStatements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDeclareStatements([NotNull] DynamicEnemyGrammarParser.DeclareStatementsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.declareStatements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDeclareStatements([NotNull] DynamicEnemyGrammarParser.DeclareStatementsContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.nameDeclaration"/>.

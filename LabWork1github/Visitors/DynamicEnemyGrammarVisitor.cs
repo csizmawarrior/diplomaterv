@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 using LabWork1github.Commands;
 using LabWork1github.EventHandling;
+using LabWork1github.Symbols;
 using LabWork1github.Visitors;
 using static LabWork1github.DynamicEnemyGrammarParser;
 
@@ -19,14 +20,11 @@ namespace LabWork1github
         private string type = null;
         private List<int> ConditionCount = new List<int>();
         private List<Command> ConditionalCommands = new List<Command>();
-        private bool HealthDeclare { get; set; } = false;
-        private bool HealAmountDeclare { get; set; } = false;
-        private bool DamageAmountDeclare { get; set; } = false;
-        private bool TeleportPointDeclare { get; set; } = false;
-        private bool SpawnTypeDeclare { get; set; } = false;
-        private bool SpawnPointDeclare { get; set; } = false;
+        private bool CommandListing { get; set; } = false;
         public string Error = "";
         public bool ErrorFound = false;
+        public Scope CurrentScope { get; set; } = new Scope(null);
+
         public override object VisitDefinition([NotNull] DefinitionContext context)
         {
             foreach (var child in context.statementList())
@@ -35,27 +33,13 @@ namespace LabWork1github
                 type = null;
                 ConditionCount = new List<int>();
                 ConditionalCommands = new List<Command>();
-                HealthDeclare = false;
-                HealAmountDeclare = false;
-                DamageAmountDeclare = false;
-                TeleportPointDeclare = false;
-                SpawnTypeDeclare = false;
-                SpawnPointDeclare = false;
                 Error = "";
                 ErrorFound = false;
+                CommandListing = false;
 
                 VisitStatementList(child);
             }
-                if(type.Equals(Types.MONSTER) && (!HealthDeclare || !DamageAmountDeclare))
-                {
-                    if (!HealthDeclare)
-                        Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Health;
-                    if (!DamageAmountDeclare)
-                        Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Damage;
-                }
-                if (type.Equals(Types.TRAP) && !HealAmountDeclare && !DamageAmountDeclare && (!SpawnPointDeclare || !SpawnTypeDeclare) && !TeleportPointDeclare) {
-                    Program.GetCharacterType(typeName).Damage = Program.GetCharacterType("DefaultTrap").Damage;
-                }
+
 
             //since I manually visit every children of the definition, no need to return the base visit function, only a null
             return null;
@@ -74,6 +58,7 @@ namespace LabWork1github
                 Program.CharacterTypes.Add(new TrapType(context.name().GetText()));
             }
             typeName = context.name().GetText();
+            Program.GetCharacterType(typeName).Damage = Program.GetCharacterType("DefaultTrap").Damage;
             return base.VisitTrapNameDeclaration(context);
         }
         public override object VisitMonsterNameDeclaration([NotNull] MonsterNameDeclarationContext context)
@@ -90,14 +75,19 @@ namespace LabWork1github
                 Program.CharacterTypes.Add(new MonsterType(context.name().GetText()));
             }
             typeName = context.name().GetText();
-            HealthDeclare = false;
-            HealAmountDeclare = false;
-            DamageAmountDeclare = false;
-            TeleportPointDeclare = false;
-            SpawnPointDeclare = false;
-            SpawnTypeDeclare = false;
-
+            Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Health;
+            Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Damage;
             return base.VisitMonsterNameDeclaration(context);
+        }
+        public override object VisitDeclarations([NotNull] DeclarationsContext context)
+        {
+            foreach(var child in context.declareStatements())
+            {
+                VisitDeclareStatements(child);
+                if (context.COMMANDS() != null)
+                    CommandListing = true;
+            }
+            return null;
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
@@ -107,19 +97,16 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if (HealthDeclare)
+            if(CommandListing)
             {
-                Error += "Health amount was already declared:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
+                NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
+                newCommand.Number = int.Parse(context.NUMBER().GetText());
+                newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(HealthChange);
+                AddCommand(newCommand);
             }
             else
-            {
                 Program.GetCharacterType(typeName).Health = int.Parse(context.NUMBER().GetText());
-                HealthDeclare = true;
-            }
-                return base.VisitHealthDeclaration(context);
-            
+            return base.VisitHealthDeclaration(context);
         }
         public override object VisitHealAmountDeclaration([NotNull] HealAmountDeclarationContext context)
         {
@@ -129,32 +116,28 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if (HealAmountDeclare)
+            if (CommandListing)
             {
-                Error += "Heal amount was already declared:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
+                NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
+                newCommand.Number = int.Parse(context.NUMBER().GetText());
+                newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(HealChange);
+                AddCommand(newCommand);
             }
             else
-            {
                 Program.GetCharacterType(typeName).Heal = int.Parse(context.NUMBER().GetText());
-                HealAmountDeclare = true;
-            }
             return base.VisitHealAmountDeclaration(context);
         }
         public override object VisitDamageAmountDeclaration([NotNull] DamageAmountDeclarationContext context)
         {
-            if (DamageAmountDeclare)
+            if (CommandListing)
             {
-                Error += "Damage amount was already declared:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
+                NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
+                newCommand.Number = int.Parse(context.NUMBER().GetText());
+                newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(DamageChange);
+                AddCommand(newCommand);
             }
             else
-            {
                 Program.GetCharacterType(typeName).Damage = int.Parse(context.NUMBER().GetText());
-                DamageAmountDeclare = true;
-            }
             return base.VisitDamageAmountDeclaration(context);
         }
         public override object VisitTeleportPointDeclaration([NotNull] TeleportPointDeclarationContext context)
@@ -165,17 +148,16 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (TeleportPointDeclare)
+            if (CommandListing)
             {
-                Error += "Teleport destination was already declared:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
+                PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
+                newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(TeleportPlaceChange);
+                AddCommand(newCommand);
             }
             else
-            {
-                Program.GetCharacterType(typeName).TeleportPlace = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
-                TeleportPointDeclare = true;
-            }
+                Program.GetCharacterType(typeName).TeleportPlace = 
+                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
             return base.VisitTeleportPointDeclaration(context);
         }
         public override object VisitSpawnPointDeclaration([NotNull] SpawnPointDeclarationContext context)
@@ -186,17 +168,16 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (SpawnPointDeclare)
+            if (CommandListing)
             {
-                Error += "Spawn destination was already declared:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
+                PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
+                newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(SpawnPlaceChange);
+                AddCommand(newCommand);
             }
             else
-            {
-                Program.GetCharacterType(typeName).SpawnPlace = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
-                SpawnPointDeclare = true;
-            }
+                Program.GetCharacterType(typeName).SpawnPlace = 
+                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
             return base.VisitSpawnPointDeclaration(context);
         }
         public override object VisitSpawnTypeDeclaration([NotNull] SpawnTypeDeclarationContext context)
@@ -207,17 +188,15 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (SpawnTypeDeclare)
+            if (CommandListing)
             {
-                Error += "Spawning enemy type has been already declared:\n";
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
+                TypeParameterDeclareCommand newCommand = new TypeParameterDeclareCommand();
+                newCommand.CharacterType = new MonsterType(context.name().GetText());
+                newCommand.TypeParameterDeclareDelegate = new TypeParameterDeclareDelegate(SpawnTypeChange);
+                AddCommand(newCommand);
             }
             else
-            {
                 Program.GetCharacterType(typeName).SpawnType = new MonsterType(context.name().GetText());
-                SpawnTypeDeclare = true;
-            }
             return base.VisitSpawnTypeDeclaration(context);
         }
         public override object VisitMoveDeclaration([NotNull] MoveDeclarationContext context)
@@ -304,7 +283,7 @@ namespace LabWork1github
             }
             else
             {
-                if (!TeleportPointDeclare && context.RANDOM() == null)
+                if (Program.GetCharacterType(typeName).TeleportPlace.Equals(new Place(-1, -1)) && context.RANDOM() == null)
                 {
                     Error += "Teleport point not given, but trying to teleport:\n";
                     Error += context.GetText() + "\n";
@@ -365,7 +344,7 @@ namespace LabWork1github
             }
             else
             {
-                if (!SpawnPointDeclare)
+                if (Program.GetCharacterType(typeName).SpawnPlace.Equals(new Place(-1, -1)))
                 {
                     Error += "Spawning point not given:\n";
                     Error += context.GetText() + "\n";
@@ -382,7 +361,7 @@ namespace LabWork1github
             }
             else
             {
-                if (!SpawnTypeDeclare)
+                if (Program.GetCharacterType(typeName).SpawnType == null)
                 {
                     Error += "Spawning type not given:\n";
                     Error += context.GetText() + "\n";
@@ -872,7 +851,8 @@ namespace LabWork1github
             {
                 return;
             }
-
+            if (!(Program.GetCharacterType(command.TargetCharacterType.Name) is MonsterType) && provider.GetMe().GetCharacterType().SpawnType == null)
+                return;
             if (provider.GetMe().GetCharacterType().SpawnType == null)
                 command.TargetCharacterType = Program.GetCharacterType(command.TargetCharacterType.Name);
             else
@@ -1336,6 +1316,64 @@ namespace LabWork1github
                     else
                     ConditionCount.Add(helperCount - 1);
                 }
+        }
+
+        public void HealthChange(GameParamProvider provider, NumberParameterDeclareCommand command)
+        {
+            foreach(Character character in provider.GetCharacters())
+            {
+                if (this.type == Types.MONSTER)
+                    if (character.GetCharacterType() is MonsterType && character.GetCharacterType().Name.Equals(this.typeName))
+                        character.GetCharacterType().Health = command.Number;
+            }
+        }
+        public void HealChange(GameParamProvider provider, NumberParameterDeclareCommand command)
+        {
+            foreach (Character character in provider.GetCharacters())
+            {
+                if (this.type == Types.TRAP)
+                    if (character.GetCharacterType() is TrapType && character.GetCharacterType().Name.Equals(this.typeName))
+                        character.GetCharacterType().Heal = command.Number;
+            }
+        }
+        public void DamageChange(GameParamProvider provider, NumberParameterDeclareCommand command)
+        {
+            foreach (Character character in provider.GetCharacters())
+            {
+                if (this.type == Types.TRAP)
+                    if (character.GetCharacterType() is TrapType && character.GetCharacterType().Name.Equals(this.typeName))
+                        character.GetCharacterType().Damage = command.Number;
+                if (this.type == Types.MONSTER)
+                    if (character.GetCharacterType() is MonsterType && character.GetCharacterType().Name.Equals(this.typeName))
+                        character.GetCharacterType().Damage = command.Number;
+            }
+        }
+        public void TeleportPlaceChange(GameParamProvider provider, PlaceParameterDeclareCommand command)
+        {
+            foreach (Character character in provider.GetCharacters())
+            {
+                if (this.type == Types.TRAP)
+                    if (character.GetCharacterType() is TrapType && character.GetCharacterType().Name.Equals(this.typeName))
+                        character.GetCharacterType().TeleportPlace = command.Place;
+            }
+        }
+        public void SpawnPlaceChange(GameParamProvider provider, PlaceParameterDeclareCommand command)
+        {
+            foreach (Character character in provider.GetCharacters())
+            {
+                if (this.type == Types.TRAP)
+                    if (character.GetCharacterType() is TrapType && character.GetCharacterType().Name.Equals(this.typeName))
+                        character.GetCharacterType().SpawnPlace = command.Place;
+            }
+        }
+        public void SpawnTypeChange(GameParamProvider provider, TypeParameterDeclareCommand command)
+        {
+            foreach (Character character in provider.GetCharacters())
+            {
+                if (this.type == Types.TRAP)
+                    if (character.GetCharacterType() is TrapType && character.GetCharacterType().Name.Equals(this.typeName))
+                        character.GetCharacterType().SpawnType = command.CharacterType;
+            }
         }
 
         public HealthChangerCommand VisitHealthChangeOption([NotNull] HealthChangeOptionContext context, HealthChangerCommand command)
