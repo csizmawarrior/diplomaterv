@@ -85,9 +85,9 @@ namespace LabWork1github
             foreach(var child in context.declareStatements())
             {
                 VisitDeclareStatements(child);
-                if (context.COMMANDS() != null)
-                    CommandListing = true;
             }
+            if (context.COMMANDS() != null)
+                CommandListing = true;
             return null;
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
@@ -98,7 +98,7 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if(CommandListing)
+            else if(CommandListing)
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
                 newCommand.Number = int.Parse(context.NUMBER().GetText());
@@ -117,7 +117,7 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (CommandListing)
+            else if (CommandListing)
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
                 newCommand.Number = int.Parse(context.NUMBER().GetText());
@@ -149,7 +149,7 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (CommandListing)
+            else if (CommandListing)
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
                 newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
@@ -169,7 +169,7 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (CommandListing)
+            else if (CommandListing)
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
                 newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
@@ -189,7 +189,7 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            if (CommandListing)
+            else if (CommandListing)
             {
                 TypeParameterDeclareCommand newCommand = new TypeParameterDeclareCommand();
                 newCommand.CharacterType = new MonsterType(context.name().GetText());
