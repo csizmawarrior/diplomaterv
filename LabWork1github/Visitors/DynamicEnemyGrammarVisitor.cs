@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 using LabWork1github.Commands;
 using LabWork1github.EventHandling;
+using LabWork1github.static_constants;
 using LabWork1github.Symbols;
 using LabWork1github.Visitors;
 using static LabWork1github.DynamicEnemyGrammarParser;
@@ -48,7 +49,7 @@ namespace LabWork1github
         {
             if (Program.GetCharacterType(typeName) != null)
             {
-                Error += "Trap with this type already exists:\n";
+                Error += ErrorMessages.ParameterDeclarationError.TRAP_TYPE_ALREADY_EXISTS;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -58,14 +59,14 @@ namespace LabWork1github
                 Program.CharacterTypes.Add(new TrapType(context.name().GetText()));
             }
             typeName = context.name().GetText();
-            Program.GetCharacterType(typeName).Damage = Program.GetCharacterType("DefaultTrap").Damage;
+            Program.GetCharacterType(typeName).Damage = Program.GetCharacterType(Types.DEFAULT_TRAP).Damage;
             return base.VisitTrapNameDeclaration(context);
         }
         public override object VisitMonsterNameDeclaration([NotNull] MonsterNameDeclarationContext context)
         {
             if (Program.GetCharacterType(typeName) != null)
             {
-                Error += "Monster with this type already exists:\n";
+                Error += ErrorMessages.ParameterDeclarationError.MONSTER_TYPE_ALREADY_EXISTS;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -75,8 +76,8 @@ namespace LabWork1github
                 Program.CharacterTypes.Add(new MonsterType(context.name().GetText()));
             }
             typeName = context.name().GetText();
-            Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Health;
-            Program.GetCharacterType(typeName).Health = Program.GetCharacterType("DefaultMonster").Damage;
+            Program.GetCharacterType(typeName).Health = Program.GetCharacterType(Types.DEFAULT_MONSTER).Health;
+            Program.GetCharacterType(typeName).Health = Program.GetCharacterType(Types.DEFAULT_MONSTER).Damage;
             return base.VisitMonsterNameDeclaration(context);
         }
         public override object VisitDeclarations([NotNull] DeclarationsContext context)
@@ -93,7 +94,7 @@ namespace LabWork1github
         {
             if (type == Types.TRAP)
             {
-                Error += "Trap doesn't have health:\n";
+                Error += ErrorMessages.ParameterDeclarationError.TRAP_HAS_NO_HEALTH;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -112,7 +113,7 @@ namespace LabWork1github
         {
             if (type != Types.TRAP)
             {
-                Error += "A non Trap wants to heal:\n";
+                Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_HEAL;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -144,7 +145,7 @@ namespace LabWork1github
         {
             if (type != Types.TRAP)
             {
-                Error += "A non Trap wants to teleport:\n";
+                Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_TELEPORT;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -164,7 +165,7 @@ namespace LabWork1github
         {
             if (type != Types.TRAP)
             {
-                Error += "A non Trap wants to spawn:\n";
+                Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TO_PLACE;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -184,7 +185,7 @@ namespace LabWork1github
         {
             if (type != Types.TRAP)
             {
-                Error += "A non Trap wants to spawn:\n";
+                Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TYPE;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -208,10 +209,10 @@ namespace LabWork1github
             var direction = context.DIRECTION();
             if (direction != null)
             {
-                if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") || direction.GetText().Equals("B") ||
-                    direction.GetText().Equals("R")))
+                if (!(direction.GetText().Equals(Directions.FORWARD) || direction.GetText().Equals(Directions.LEFT) || direction.GetText().Equals(Directions.BACKWARDS) ||
+                    direction.GetText().Equals(Directions.RIGHT)))
                 {
-                    Error += "Wrong direction used:\n";
+                    Error += ErrorMessages.MoveError.WRONG_DIRECTION;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -353,8 +354,6 @@ namespace LabWork1github
                 else
                     newCommand.TargetPlace = Program.GetCharacterType(typeName).SpawnPlace;
             }
-
-
             if (context.MONSTER() != null)
             {
                 newCommand.TargetCharacterType = new MonsterType(context.name().GetText());
@@ -883,8 +882,7 @@ namespace LabWork1github
                 }
             Spawn(provider, command);
         }
-
-
+        
         public void TeleportTrap(GameParamProvider provider, TeleportCommand command)
         {
             foreach (Trap Trap in provider.GetTraps())
@@ -943,19 +941,19 @@ namespace LabWork1github
 
             switch (command.Direction)
             {
-                case "F":
+                case Directions.FORWARD:
                     if ((int)provider.GetMonster().Place.X - command.Distance >= 0)
                         provider.GetMonster().Place.X -= (int)command.Distance;
                     break;
-                case "B":
+                case Directions.BACKWARDS:
                     if ((int)provider.GetMonster().Place.X + command.Distance <= provider.GetBoard().Height)
                         provider.GetMonster().Place.X += (int)command.Distance;
                     break;
-                case "L":
+                case Directions.LEFT:
                     if ((int)provider.GetMonster().Place.Y - command.Distance >= 0)
                         provider.GetMonster().Place.Y -= (int)command.Distance;
                     break;
-                case "R":
+                case Directions.RIGHT:
                     if ((int)provider.GetMonster().Place.Y + command.Distance <= provider.GetBoard().Width)
                         provider.GetMonster().Place.Y += (int)command.Distance;
                     break;
@@ -994,7 +992,7 @@ namespace LabWork1github
         {
             switch (command.Direction)
             {
-                case "F":
+                case Directions.FORWARD:
                     if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1004,7 +1002,7 @@ namespace LabWork1github
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
-                case "B":
+                case Directions.BACKWARDS:
                     if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1014,7 +1012,7 @@ namespace LabWork1github
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
-                case "L":
+                case Directions.LEFT:
                     if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1024,7 +1022,7 @@ namespace LabWork1github
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
                     break;
-                case "R":
+                case Directions.RIGHT:
                     if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1065,7 +1063,7 @@ namespace LabWork1github
         {
             switch (command.Direction)
             {
-                case "F":
+                case Directions.FORWARD:
                     if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     //distance is 1 as default value
@@ -1085,7 +1083,7 @@ namespace LabWork1github
                         }
                     }
                     break;
-                case "B":
+                case Directions.BACKWARDS:
                     if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1104,7 +1102,7 @@ namespace LabWork1github
                         }
                     }
                     break;
-                case "L":
+                case Directions.LEFT:
                     if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1123,7 +1121,7 @@ namespace LabWork1github
                         }
                     }
                     break;
-                case "R":
+                case Directions.RIGHT:
                     if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1185,7 +1183,7 @@ namespace LabWork1github
         {
             switch (command.Direction)
             {
-                case "F":
+                case Directions.FORWARD:
                     if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     //distance is 1 as default value
@@ -1205,7 +1203,7 @@ namespace LabWork1github
                         }
                     }
                     break;
-                case "B":
+                case Directions.BACKWARDS:
                     if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1224,7 +1222,7 @@ namespace LabWork1github
                         }
                     }
                     break;
-                case "L":
+                case Directions.LEFT:
                     if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1243,7 +1241,7 @@ namespace LabWork1github
                         }
                     }
                     break;
-                case "R":
+                case Directions.RIGHT:
                     if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                         break;
                     for (int i = 0; i < command.Distance; i++)
@@ -1397,8 +1395,8 @@ namespace LabWork1github
             var direction = context.DIRECTION();
             if (direction != null)
             {
-                if (!(direction.GetText().Equals("F") || direction.GetText().Equals("L") ||
-                    direction.GetText().Equals("B") || direction.GetText().Equals("R")))
+                if (!(direction.GetText().Equals(Directions.FORWARD) || direction.GetText().Equals(Directions.LEFT) ||
+                    direction.GetText().Equals(Directions.BACKWARDS) || direction.GetText().Equals(Directions.RIGHT)))
                 {
                     Error += "Wrong direction used:\n";
                     Error += context.GetText() + "\n";

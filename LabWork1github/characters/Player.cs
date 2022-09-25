@@ -44,16 +44,16 @@ namespace LabWork1github
         {
             switch (direction)
             {
-                case "F":
+                case Directions.FORWARD:
                     Place.X -= 1;
                     break;
-                case "B":
+                case Directions.BACKWARDS:
                     Place.X += 1;
                     break;
-                case "L":
+                case Directions.LEFT:
                     Place.Y -= 1;
                     break;
-                case "R":
+                case Directions.RIGHT:
                     Place.Y += 1;
                     break;
             }

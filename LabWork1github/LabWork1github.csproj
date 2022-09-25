@@ -72,6 +72,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="static constants\Directions.cs" />
+    <Compile Include="static constants\ErrorMessages.cs" />
     <Compile Include="Symbols\Scope.cs" />
     <Compile Include="Symbols\Symbol.cs" />
     <Compile Include="Visitors\BoardGrammarVisitor.cs" />
@@ -94,7 +96,7 @@
     <Compile Include="characters\Monster.cs" />
     <Compile Include="types\charactertypes\MonsterType.cs" />
     <Compile Include="Commands\MoveCommand.cs" />
-    <Compile Include="types\MyTypes.cs" />
+    <Compile Include="static constants\MyTypes.cs" />
     <Compile Include="game field classes\Place.cs" />
     <Compile Include="characters\Player.cs" />
     <Compile Include="g4 files\PlayerGrammar.g4.lexer.cs">

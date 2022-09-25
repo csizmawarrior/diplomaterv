@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using LabWork1github;
+using LabWork1github.static_constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,12 +80,12 @@ namespace LabWork1github
             foreach (Trap Trap in Traps)
             {
                 {
-                    if (character.Place.DirectionTo(Player.Place) == "collision" && !(character is Player))
+                    if (character.Place.DirectionTo(Player.Place) == Directions.COLLISION && !(character is Player))
                         throw new NullReferenceException("Player is on the same spot as a character.");
-                    if (character.Place.DirectionTo(Trap.Place) == "collision" && character != Trap)
+                    if (character.Place.DirectionTo(Trap.Place) == Directions.COLLISION && character != Trap)
                         throw new NullReferenceException("Character named " +character.Name +" spawned on a trap");
                 }
-                if (Trap.Place.DirectionTo(Player.Place) == "collision")
+                if (Trap.Place.DirectionTo(Player.Place) == Directions.COLLISION)
                     throw new NullReferenceException("Player spawned on a trap");
             }
            }
@@ -128,24 +129,22 @@ namespace LabWork1github
                     break;
                 }
             }
-
             Drawer.DrawBoard(Board, Player, Monsters, Traps);
-
         }
 
         private bool CheckSpawn(Place spawnPoint)
         {
             foreach(Trap trap in Traps)
             {
-                if (trap.Place.DirectionTo(spawnPoint) == "collision")
+                if (trap.Place.DirectionTo(spawnPoint) == Directions.COLLISION)
                     return false;
             }
             foreach (Monster monster in Monsters)
             {
-                if (monster.Place.DirectionTo(spawnPoint) == "collision")
+                if (monster.Place.DirectionTo(spawnPoint) == Directions.COLLISION)
                     return false;
             }
-            if (Player.Place.DirectionTo(spawnPoint) == "collision")
+            if (Player.Place.DirectionTo(spawnPoint) == Directions.COLLISION)
                 return false;
             return true;
         }
@@ -163,13 +162,13 @@ namespace LabWork1github
 
         private bool fallingCheck(Player player, PlayerMove move)
         {
-                if (Player.Place.Y == 0 && move.Direction == "L")
+                if (Player.Place.Y == 0 && move.Direction == Directions.LEFT)
                     return true;
-                if (Player.Place.Y == Board.Width - 1 && move.Direction == "R")
+                if (Player.Place.Y == Board.Width - 1 && move.Direction == Directions.RIGHT)
                     return true;
-                if (Player.Place.X == 0 && move.Direction == "F")
+                if (Player.Place.X == 0 && move.Direction == Directions.FORWARD)
                     return true;
-                if (Player.Place.X == Board.Height - 1 && move.Direction == "B")
+                if (Player.Place.X == Board.Height - 1 && move.Direction == Directions.BACKWARDS)
                     return true;
                 return false;
         }
@@ -229,15 +228,15 @@ namespace LabWork1github
         {
             foreach(Monster m in Monsters)
             {
-                if (m.Place.DirectionTo(p) == "collision")
+                if (m.Place.DirectionTo(p) == Directions.COLLISION)
                     return true;
             }
             foreach (Trap t in Traps)
             {
-                if (t.Place.DirectionTo(p) == "collision")
+                if (t.Place.DirectionTo(p) == Directions.COLLISION)
                     return true;
             }
-            if (Player.Place.DirectionTo(p) == "collision")
+            if (Player.Place.DirectionTo(p) == Directions.COLLISION)
                 return true;
             return false;
         }

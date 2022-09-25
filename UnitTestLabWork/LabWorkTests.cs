@@ -225,7 +225,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveDirection)) &&
-                 ((MoveCommand)x).Direction.Equals("B") && ((MoveCommand)x).Distance == 1 ) != null);
+                 ((MoveCommand)x).Direction.Equals(Directions.BACKWARDS) && ((MoveCommand)x).Distance == 1 ) != null);
         }
         [TestMethod]
         public void AssignMonMoveCommandDirectionAndDistance()
@@ -236,7 +236,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(visitor.MoveDirection)) &&
-                ((MoveCommand)x).Direction.Equals("R") && ((MoveCommand)x).Distance == 5) != null);
+                ((MoveCommand)x).Direction.Equals(Directions.RIGHT) && ((MoveCommand)x).Distance == 5) != null);
         }
         [TestMethod]
         public void AssignMonMoveCommandRandom()
@@ -268,7 +268,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
-                 ((ShootCommand)x).Direction.Equals("F") && ((ShootCommand)x).Distance == 1) != null);
+                 ((ShootCommand)x).Direction.Equals(Directions.FORWARD) && ((ShootCommand)x).Distance == 1) != null);
         }
         [TestMethod]
         public void AssignMonShootCommandToPlace()
@@ -290,7 +290,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
-                 ((ShootCommand)x).Direction.Equals("L") && ((ShootCommand)x).Distance == 4) != null);
+                 ((ShootCommand)x).Direction.Equals(Directions.LEFT) && ((ShootCommand)x).Distance == 4) != null);
         }
         [TestMethod]
         public void AssignMonShootDirAndDam()
@@ -301,7 +301,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
-                 ((ShootCommand)x).Direction.Equals("L") && ((ShootCommand)x).HealthChangeAmount == 40) != null);
+                 ((ShootCommand)x).Direction.Equals(Directions.LEFT) && ((ShootCommand)x).HealthChangeAmount == 40) != null);
         }
         [TestMethod]
         public void AssignMonShootCommandRandom()
@@ -343,7 +343,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("tesztmonster").Commands
                 .Find(x => x is ShootCommand && ((ShootCommand)x).ShootDelegate.Equals(new ShootDelegate(visitor.ShootDirection)) &&
-                 ((ShootCommand)x).Direction.Equals("F") && ((ShootCommand)x).HealthChangeAmount == 70 && ((ShootCommand)x).Distance == 5 ) != null);
+                 ((ShootCommand)x).Direction.Equals(Directions.FORWARD) && ((ShootCommand)x).HealthChangeAmount == 70 && ((ShootCommand)x).Distance == 5 ) != null);
         }
         [TestMethod]
         public void AssignMonShootCommandToPlaceAndDam()
@@ -365,7 +365,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
-                 ((DamageCommand)x).Direction.Equals("F") && ((DamageCommand)x).Distance == 1) != null);
+                 ((DamageCommand)x).Direction.Equals(Directions.FORWARD) && ((DamageCommand)x).Distance == 1) != null);
         }
         [TestMethod]
         public void AssignTrapDamageCommandToPlace()
@@ -387,7 +387,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
-                 ((DamageCommand)x).Direction.Equals("L") && ((DamageCommand)x).Distance == 0) != null);
+                 ((DamageCommand)x).Direction.Equals(Directions.LEFT) && ((DamageCommand)x).Distance == 0) != null);
         }
         [TestMethod]
         public void AssignTrapDamageDirAndDam()
@@ -398,7 +398,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
-                 ((DamageCommand)x).Direction.Equals("L") && ((DamageCommand)x).HealthChangeAmount == 40) != null);
+                 ((DamageCommand)x).Direction.Equals(Directions.LEFT) && ((DamageCommand)x).HealthChangeAmount == 40) != null);
         }
         [TestMethod]
         public void AssignTrapDamageCommandRandom()
@@ -450,7 +450,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(visitor.DamageDirection)) &&
-                 ((DamageCommand)x).Direction.Equals("F") && ((DamageCommand)x).HealthChangeAmount == 70 && ((DamageCommand)x).Distance == 0) != null);
+                 ((DamageCommand)x).Direction.Equals(Directions.FORWARD) && ((DamageCommand)x).HealthChangeAmount == 70 && ((DamageCommand)x).Distance == 0) != null);
         }
         [TestMethod]
         public void AssignTrapDamageCommandToPlaceAndDam()
@@ -472,7 +472,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is HealCommand && ((HealCommand)x).HealDelegate.Equals(new HealDelegate(visitor.HealDirection)) &&
-                 ((HealCommand)x).Direction.Equals("F") && ((HealCommand)x).Distance == 1) != null);
+                 ((HealCommand)x).Direction.Equals(Directions.FORWARD) && ((HealCommand)x).Distance == 1) != null);
         }
         [TestMethod]
         public void AssignTrapHealCommandToPlace()
@@ -494,7 +494,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is HealCommand && ((HealCommand)x).HealDelegate.Equals(new HealDelegate(visitor.HealDirection)) &&
-                 ((HealCommand)x).Direction.Equals("L") && ((HealCommand)x).Distance == 0) != null);
+                 ((HealCommand)x).Direction.Equals(Directions.LEFT) && ((HealCommand)x).Distance == 0) != null);
         }
         [TestMethod]
         public void AssignTrapHealDirAndDam()
@@ -505,7 +505,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is HealCommand && ((HealCommand)x).HealDelegate.Equals(new HealDelegate(visitor.HealDirection)) &&
-                 ((HealCommand)x).Direction.Equals("L") && ((HealCommand)x).HealthChangeAmount == 40) != null);
+                 ((HealCommand)x).Direction.Equals(Directions.LEFT) && ((HealCommand)x).HealthChangeAmount == 40) != null);
         }
         [TestMethod]
         public void AssignTrapHealCommandRandom()
@@ -557,7 +557,7 @@ namespace UnitTestLabWork
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is HealCommand && ((HealCommand)x).HealDelegate.Equals(new HealDelegate(visitor.HealDirection)) &&
-                 ((HealCommand)x).Direction.Equals("F") && ((HealCommand)x).HealthChangeAmount == 70 && ((HealCommand)x).Distance == 2) != null);
+                 ((HealCommand)x).Direction.Equals(Directions.FORWARD) && ((HealCommand)x).HealthChangeAmount == 70 && ((HealCommand)x).Distance == 2) != null);
         }
         [TestMethod]
         public void AssignTrapHealCommandToPlaceAndDam()
@@ -679,7 +679,7 @@ namespace UnitTestLabWork
             Assert.IsTrue(Program.GetCharacterType("teszttrap").Commands
                 .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(visitor.Spawn)) &&
                  ((SpawnCommand)x).TargetPlace.X == 2 && ((SpawnCommand)x).TargetPlace.Y == 3 && 
-                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("DefaultMonster")) != null);
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals(Types.DEFAULT_MONSTER)) != null);
         }
         [TestMethod]
         public void AssignTrapSpawnCommandRandom()

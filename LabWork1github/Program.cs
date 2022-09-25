@@ -19,12 +19,12 @@ namespace LabWork1github
         static void Main(string[] args)
         {
             //we hand in a default type for a monster and a trap, so when nothing is given, the trap or monster will get these ones' attributes
-            //CharacterTypes.Add(new MonsterType("DefaultMonster"));
-            //GetCharacterType("DefaultMonster").Damage = 50;
-            //GetCharacterType("DefaultMonster").Health = 200;
+            //CharacterTypes.Add(new MonsterType(Types.DEFAULT_MONSTER));
+            //GetCharacterType(Types.DEFAULT_MONSTER).Damage = 50;
+            //GetCharacterType(Types.DEFAULT_MONSTER).Health = 200;
 
-            //CharacterTypes.Add(new TrapType("DefaultTrap"));
-            //GetCharacterType("DefaultTrap").Damage = 50;
+            //CharacterTypes.Add(new TrapType(Types.DEFAULT_TRAP));
+            //GetCharacterType(Types.DEFAULT_TRAP).Damage = 50;
 
 
             //  MonsterTypeLoader();

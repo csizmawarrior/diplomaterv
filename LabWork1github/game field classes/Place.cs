@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,16 +20,16 @@ namespace LabWork1github
         public string DirectionTo(Place otherPlace)
         {
             if (otherPlace.X == X && otherPlace.Y == Y)
-                return "collision";
+                return Directions.COLLISION;
             if (otherPlace.X == X && otherPlace.Y == Y-1)
-                return "L";
+                return Directions.LEFT;
             if (otherPlace.X == X && otherPlace.Y == Y+1)
-                return "R";
+                return Directions.RIGHT;
             if (otherPlace.X == X+1 && otherPlace.Y == Y)
-                return "B";
+                return Directions.BACKWARDS;
             if (otherPlace.X == X-1 && otherPlace.Y == Y)
-                return "F";
-            return "away";
+                return Directions.FORWARD;
+            return Directions.AWAY;
         }
     }
 }
