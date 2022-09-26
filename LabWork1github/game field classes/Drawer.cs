@@ -42,7 +42,7 @@ namespace LabWork1github
 
                     foreach (Trap trap in traps)
                     {
-                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == "collision")
+                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
                         {
                             Console.Write(" TTT");
                             trapOccupied = true;
@@ -65,7 +65,7 @@ namespace LabWork1github
 
                     foreach (Trap trap in traps)
                     {
-                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == "collision")
+                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
                         {
                             trapOccupied = true;
                             break;
@@ -81,7 +81,7 @@ namespace LabWork1github
 
                     foreach (Place place in places)
                     {
-                        if (place.DirectionTo(new Place((int)i, (int)j)) == "collision")
+                        if (place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
                         {
                             occupied = true;
                             break;
@@ -95,13 +95,13 @@ namespace LabWork1github
                             Console.Write("\n");
                         continue;
                     }
-                    if (player.Place.DirectionTo(new Place((int)i, (int)j)) == "collision")
+                    if (player.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
                         Console.Write("P");
                     else
                     {
                         foreach(Monster monster in monsters)
                         {
-                            if (monster.Place.DirectionTo(new Place((int)i, (int)j)) == "collision")
+                            if (monster.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
                             {
                                 Console.Write("M");
                                 found = true;
@@ -127,7 +127,7 @@ namespace LabWork1github
 
                     foreach (Trap trap in traps)
                     {
-                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == "collision")
+                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
                         {
                             trapOccupied = true;
                             break;

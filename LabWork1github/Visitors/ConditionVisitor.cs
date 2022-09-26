@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -180,7 +181,7 @@ namespace LabWork1github.Visitors
             if (context.something().attribute() != null)
                 return CheckNumberAttributeExpression(context.something().attribute());
 
-            throw new ArgumentException("Unrecognized number expression");
+            throw new ArgumentException(ErrorMessages.ConditionError.UNRECOGNIZED_NUMBER+context.GetText());
         }
 
         public double CheckNumberAttributeExpression(AttributeContext context)

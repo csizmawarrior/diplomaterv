@@ -647,32 +647,32 @@ namespace LabWork1github
                 }
                 if (context.action().place() == null)
                 {
-                    Error += "When command action doesn't have character nor place as target:\n";
+                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
             }
             if (context.action().DAMAGE() != null)
             {
-                Error += "When command action error, monster can't damage, try shoot instead at:\n";
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_DAMAGE;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             if (context.action().HEAL() != null)
             {
-                Error += "When command action error, monster can't heal, try trap heal to monster instead at:\n";
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             if (context.action().TELEPORT_T() != null)
             {
-                Error += "When command action error, monster can't teleport, try trap teleport monster instead:\n";
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             if (context.action().SPAWN() != null)
             {
-                Error += "When command action error, monster can't spawn:\n";
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -683,7 +683,7 @@ namespace LabWork1github
         {
             if (context.action() == null)
             {
-                Error += "When command doesn't have action at:\n";
+                Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -703,7 +703,7 @@ namespace LabWork1github
             }
             if (context.action().DIE() != null)
             {
-                Error += "Traps can't die, error at:\n";
+                Error += ErrorMessages.EventError.TRAPS_DO_NOT_DIE;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -714,7 +714,7 @@ namespace LabWork1github
             }
             if (context.action().SHOOT() != null)
             {
-                Error += "When command action error, trap can't shoot, error at:\n";
+                Error += ErrorMessages.EventError.ONLY_MONSTER_CAN_SHOOT;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -735,7 +735,7 @@ namespace LabWork1github
                     }
                     if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                     {
-                        Error += "When command action error, trap can't damage trap or itself:\n";
+                        Error += ErrorMessages.EventError.TRAP_DAMAGING_TRAP;
                         Error += context.GetText() + "\n";
                         ErrorFound = true;
                     }
@@ -743,7 +743,7 @@ namespace LabWork1github
                 }
                 if (context.action().place() == null)
                 {
-                    Error += "When command action doesn't have character nor place as target:\n";
+                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -765,7 +765,7 @@ namespace LabWork1github
                     }
                     if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                     {
-                        Error += "When command action error, trap can't heal trap or itself:\n";
+                        Error += ErrorMessages.EventError.TRAP_HEALING_TRAP;
                         Error += context.GetText() + "\n";
                         ErrorFound = true;
                     }
@@ -773,7 +773,7 @@ namespace LabWork1github
                 }
                 if (context.action().place() == null)
                 {
-                    Error += "When command action doesn't have character nor place as target:\n";
+                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -789,7 +789,7 @@ namespace LabWork1github
                 }
                 if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                 {
-                    Error += "When command action error, trap can't teleport trap or itself:\n";
+                    Error += ErrorMessages.EventError.TRAP_TELEPORTING_TRAP;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -805,7 +805,7 @@ namespace LabWork1github
                 EventCollection.TrapTeleported += eventHandler.OnEvent;
                 if (context.action().character().PLAYER() != null)
                 {
-                    Error += "When command action error, trap can't spawn a player:\n";
+                    Error += ErrorMessages.EventError.TRAP_SPAWNING_PLAYER;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -815,7 +815,7 @@ namespace LabWork1github
                 }
                 if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                 {
-                    Error += "When command action error, trap can't spawn trap or itself:\n";
+                    Error += ErrorMessages.EventError.TRAP_SPAWNING_TRAP;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -826,7 +826,7 @@ namespace LabWork1github
                     return resultTrigger;
                 }
             }
-            Error += "When command action unexpected error at:\n";
+            Error += ErrorMessages.EventError.UNEXPECTED_ERROR;
             Error += context.GetText() + "\n";
             ErrorFound = true;
             return resultTrigger;
@@ -840,7 +840,7 @@ namespace LabWork1github
 
 
         //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
-
+        
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)
         {
@@ -887,7 +887,7 @@ namespace LabWork1github
         {
             foreach (Trap Trap in provider.GetTraps())
             {
-                if (Trap.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+                if (Trap.Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
                 {
                     if (command.Random)
                     {
@@ -904,7 +904,7 @@ namespace LabWork1github
         public void TeleportMonster(GameParamProvider provider, TeleportCommand command)
         {
             foreach (Monster monster in provider.GetMonsters()) {
-                if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+                if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
                 {
                     if (command.Random)
                     {
@@ -920,7 +920,7 @@ namespace LabWork1github
         }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
-            if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals("collision"))
+            if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
             {
                 if (command.Random)
                 {
@@ -1145,11 +1145,6 @@ namespace LabWork1github
 
         public void DamageToPlace(GameParamProvider provider, DamageCommand command)
         {
-            if (provider.GetMe().Place.DirectionTo(command.TargetPlace).Equals("away"))
-            {
-                provider.GetDrawer().WriteCommand("Trap with type" + provider.GetMe().GetCharacterType() + "tried to damage far away target.");
-                return;
-            }
             if (provider.GetPlayer().Place.Equals(command.TargetPlace))
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
             foreach(Monster monster in provider.GetMonsters())
@@ -1398,7 +1393,7 @@ namespace LabWork1github
                 if (!(direction.GetText().Equals(Directions.FORWARD) || direction.GetText().Equals(Directions.LEFT) ||
                     direction.GetText().Equals(Directions.BACKWARDS) || direction.GetText().Equals(Directions.RIGHT)))
                 {
-                    Error += "Wrong direction used:\n";
+                    Error += ErrorMessages.HealthChangeError.WRONG_DIRECTION;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -1442,7 +1437,7 @@ namespace LabWork1github
             {
                 if (context.character().TRAP() != null || context.character().ME() != null)
                 {
-                    Error += "This character doesn't have health, or you can't change it yourself:\n";
+                    Error += ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
@@ -1450,7 +1445,7 @@ namespace LabWork1github
                 {
                     if (context.character().MONSTER() != null)
                     {
-                        Error += "You can't shoot a monster:\n";
+                        Error += ErrorMessages.ShootError.MONSTER_CANNOT_BE_SHOT;
                         Error += context.GetText() + "\n";
                         ErrorFound = true;
                     }
