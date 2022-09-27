@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
+using LabWork1github.static_constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace LabWork1github
             }
 
             ErrorFound = true;
-            ErrorList += "The monster type is incorrect at place:\n";
+            ErrorList += ErrorMessages.BoardError.UNDEFINED_MONSTER_TYPE;
             ErrorList += context.GetText() + "\n";
            
             
@@ -100,7 +101,7 @@ namespace LabWork1github
                 return base.VisitTrapPlacement(context);
             }
             ErrorFound = true;
-            ErrorList += "The trap type is incorrect at place:\n";
+            ErrorList += ErrorMessages.BoardError.UNDEFINED_TRAP_TYPE;
             ErrorList += context.GetText() + "\n";
 
             return base.VisitTrapPlacement(context);

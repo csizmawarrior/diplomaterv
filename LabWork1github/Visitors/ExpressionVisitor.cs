@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
+using LabWork1github.static_constants;
 using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
@@ -47,7 +48,7 @@ namespace LabWork1github
                     context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_type"))
                     && context.attribute().ElementAt(1).possibleAttributes().possibleAttributes().Length == 0))
                     {
-                        ErrorList += "Type compared with a different type of attribue:\n";
+                        ErrorList += ErrorMessages.ExpressionError.TYPE_COMPARED_WITH_OTHER_ATTRIBUTE;
                         ErrorList += context.GetText() + "\n";
                         CheckFailed = true;
                     }
@@ -61,7 +62,7 @@ namespace LabWork1github
                     context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
                     && context.attribute().ElementAt(1).possibleAttributes().possibleAttributes().Length == 0))
                     {
-                        ErrorList += "Place compared with a different type of attribue:\n";
+                        ErrorList += ErrorMessages.ExpressionError.PLACE_COMPARED_WITH_OTHER_ATTRIBUTE;
                         ErrorList += context.GetText() + "\n";
                         CheckFailed = true;
                     }
@@ -80,7 +81,7 @@ namespace LabWork1github
                 context.something().attribute().possibleAttributes().GetText().Equals("teleport_place"))
                     if(context.something().attribute().possibleAttributes().possibleAttributes().Length < 2)
                 {
-                    ErrorList += "Place or type in iself is not a number:\n";
+                    ErrorList += ErrorMessages.ExpressionError.NOT_A_NUMBER;
                     ErrorList += context.GetText() + "\n";
                     CheckFailed = true;
                 }
@@ -94,7 +95,7 @@ namespace LabWork1github
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
                     context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("type")))
                 {
-                    ErrorList += "Monster not having this attribute:\n";
+                    ErrorList += ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE;
                     ErrorList += context.GetText() + "\n";
                     CheckFailed = true;
                 }
@@ -104,7 +105,7 @@ namespace LabWork1github
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
                     context.possibleAttributes().GetText().Equals("damage")))
                 {
-                    ErrorList += "Player not having this attribute:\n";
+                    ErrorList += ErrorMessages.ExpressionError.PLAYER_DOES_NOT_HAVE_THIS_ATTRIBUTE;
                     ErrorList += context.GetText() + "\n";
                     CheckFailed = true;
                 }
@@ -116,7 +117,7 @@ namespace LabWork1github
                     context.possibleAttributes().GetText().Equals("spawn_place") ||  context.possibleAttributes().GetText().Equals("spawn_type") ||
                     context.possibleAttributes().GetText().Equals("heal")))
                 {
-                    ErrorList += "Trap not having this attribute:\n";
+                    ErrorList += ErrorMessages.ExpressionError.TRAP_DOES_NOT_HAVE_THIS_ATTRIBUTE;
                     ErrorList += context.GetText() + "\n";
                     CheckFailed = true;
                 }
@@ -130,7 +131,7 @@ namespace LabWork1github
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x") ||
                                     context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("y")))
                         {
-                                ErrorList += "Place doesn't have other attributes:\n";
+                                ErrorList += ErrorMessages.ExpressionError.PLACE_DOES_NOT_HAVE_THIS_ATTRIBUTE;
                                 ErrorList += context.GetText() + "\n";
                                 CheckFailed = true;
                         }
@@ -145,7 +146,7 @@ namespace LabWork1github
                             context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage")))
                         {
-                            ErrorList += "Enemy types do not have this attribute:\n";
+                            ErrorList += ErrorMessages.ExpressionError.ENEMY_DOES_NOT_HAVE_THIS_ATTRIBUTE;
                             ErrorList += context.GetText() + "\n";
                             CheckFailed = true;
                         }

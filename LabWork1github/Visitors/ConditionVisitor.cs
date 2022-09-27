@@ -317,7 +317,7 @@ namespace LabWork1github.Visitors
                         }
                     }
                 }
-                //monster is the first character, place is the attribue
+                //monster is the first character, place is the attribute
                 if(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") &&
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
                 {
