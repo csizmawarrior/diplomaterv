@@ -19,10 +19,10 @@ namespace LabWork1github.static_constants
             public const string TRAP_TYPE_ALREADY_EXISTS = "Trap with this type already exists:\n";
             public const string MONSTER_TYPE_ALREADY_EXISTS = "Monster with this type already exists:\n";
             public const string TRAP_HAS_NO_HEALTH = "Trap doesn't have health:\n";
-            public const string ONLY_TRAP_CAN_HEAL = "Only Traps have heal parameter:\n";
-            public const string ONLY_TRAP_CAN_TELEPORT = "Only Traps have teleport point parameter:\n";
-            public const string ONLY_TRAP_CAN_SPAWN_TO_PLACE = "Only Traps have spawn point parameter:\n";
-            public const string ONLY_TRAP_CAN_SPAWN_TYPE = "Only Traps have spawn type parameter:\n";
+            public const string ONLY_TRAP_CAN_HEAL = "Only Traps have heal attribue:\n";
+            public const string ONLY_TRAP_CAN_TELEPORT = "Only Traps have teleport point attribue:\n";
+            public const string ONLY_TRAP_CAN_SPAWN_TO_PLACE = "Only Traps have spawn point attribue:\n";
+            public const string ONLY_TRAP_CAN_SPAWN_TYPE = "Only Traps have spawn type attribue:\n";
         }
         public static class MoveError
         {
@@ -56,7 +56,17 @@ namespace LabWork1github.static_constants
         public static class ConditionError
         {
             public const string CONDITION_CHECK_FAIL = "Condition check failed\n";
-            public const string UNRECOGNIZED_NUMBER = Unrecognized number expression at:\n;
+            public const string UNRECOGNIZED_NUMBER = "Unrecognized number expression at:\n";
+            public const string UNRECOGNIZED_ATTRIBUTE_ERROR = "An attribute caused error!\n" + ErrorMessages.ConditionError.IN_PLACE;
+            public const string PLAYER_ATTRIBUTE_ERROR = "A player attribute caused error!\n";
+            public const string TRAP_ATTRIBUTE_ERROR = "A trap attribute caused error!\n";
+            public const string MONSTER_ATTRIBUTE_ERROR = "A monster attribute caused error!\n";
+            public const string MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED = "The referenced Monster type has no Damage attribue defined!\n";
+            public const string TRAP_HAS_NO_HEALTH = "Trap type has no health attribue\n";
+            public const string ONLY_TRAP_CAN_HEAL = "Only Trap type can heal, no heal attribute for other types!\n";
+            public const string IN_PLACE = "In place:\n";
+            public const string TYPE_MISMATCH = "The two types aren't the same, so incompatible to compare!\n";
+            public const string TYPE_MISMATCH_UNEXPECTED = "Unexpected error: The two types aren't compatible to compare!\n";
         }
         public static class EventError
         {

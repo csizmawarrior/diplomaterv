@@ -215,8 +215,7 @@ namespace LabWork1github.Visitors
                     return TrapAttribute(context);
                 }
             }
-            ErrorList += ("ERROR: An attribute caused error!\n");
-            ErrorList += ("in place: \n");
+            ErrorList += ErrorMessages.ConditionError.UNRECOGNIZED_ATTRIBUTE_ERROR;
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;
             return -1;
@@ -236,8 +235,8 @@ namespace LabWork1github.Visitors
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
                         {
-                            ErrorList += ("ERROR: Trap type can't be compared with MonsterType!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return false;
@@ -261,8 +260,8 @@ namespace LabWork1github.Visitors
                     {
                         if(context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
                         {
-                            ErrorList += ("ERROR: Trap type can't be compared with MonsterType!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return false;
@@ -276,8 +275,8 @@ namespace LabWork1github.Visitors
                         }
                         else
                         {
-                            ErrorList += ("ERROR: Me can't be both monster and trap!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH_UNEXPECTED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return false;
@@ -479,8 +478,8 @@ namespace LabWork1github.Visitors
                 {
                     if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_type"))
                     {
-                        ErrorList += ("ERROR: TrapType cannot be compared with MonsterType!\n");
-                        ErrorList += ("in place: \n");
+                        ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
                         return false;
@@ -523,8 +522,8 @@ namespace LabWork1github.Visitors
                     if ((context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType) ||
                         context.attribute().ElementAt(1).character().MONSTER() != null)
                     {
-                            ErrorList += ("ERROR: Trap type can't be compared with MonsterType!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return false;
@@ -538,8 +537,8 @@ namespace LabWork1github.Visitors
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
                         {
-                            ErrorList += ("ERROR: MonsterType cannot be compared with TrapType!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return false;
@@ -564,8 +563,8 @@ namespace LabWork1github.Visitors
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
                         {
-                            ErrorList += ("ERROR: MonsterType cannot be compared with TrapType!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return false;
@@ -1203,8 +1202,8 @@ namespace LabWork1github.Visitors
                 else
                     return Provider.GetPlayer().Place.Y;
             }
-            ErrorList += ("ERROR: A player attribute caused error!\n");
-            ErrorList += ("in place: \n");
+            ErrorList += (ErrorMessages.ConditionError.PLAYER_ATTRIBUTE_ERROR);
+            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;
             return -1;
@@ -1302,8 +1301,8 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
                 {
-                    ErrorList += ("ERROR: A trap doesn't have health!\n");
-                    ErrorList += ("in place: \n");
+                    ErrorList += (ErrorMessages.ConditionError.TRAP_HAS_NO_HEALTH);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
@@ -1334,8 +1333,8 @@ namespace LabWork1github.Visitors
                     {
                         if (Provider.GetMe().GetCharacterType().SpawnType.Damage == -1)
                         {
-                            ErrorList += ("ERROR: A monster needs damage!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return -1;
@@ -1345,8 +1344,8 @@ namespace LabWork1github.Visitors
 
                     if (Provider.GetTrap().GetCharacterType().SpawnType.Damage == -1)
                     {
-                        ErrorList += ("ERROR: A monster needs damage!\n");
-                        ErrorList += ("in place: \n");
+                        ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
                         return -1;
@@ -1362,16 +1361,16 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
-                    ErrorList += ("ERROR: A monster can't heal!\n");
-                    ErrorList += ("in place: \n");
+                    ErrorList += (ErrorMessages.ConditionError.ONLY_TRAP_CAN_HEAL);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
                 }
             }
 
-            ErrorList += ("ERROR: A trap caused error with attributes!\n");
-            ErrorList += ("in place: \n");
+            ErrorList += (ErrorMessages.ConditionError.TRAP_ATTRIBUTE_ERROR);
+            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;
             return -1;
@@ -1385,8 +1384,8 @@ namespace LabWork1github.Visitors
                 {
                     if (Provider.GetMe().GetCharacterType().Damage == -1)
                     {
-                        ErrorList += ("ERROR: A monster needs damage!\n");
-                        ErrorList += ("in place: \n");
+                        ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
                         return -1;
@@ -1397,8 +1396,8 @@ namespace LabWork1github.Visitors
 
                 if (Provider.GetMonster().GetCharacterType().Damage == -1)
                 {
-                    ErrorList += ("ERROR: A monster needs damage!\n");
-                    ErrorList += ("in place: \n");
+                    ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
@@ -1436,8 +1435,8 @@ namespace LabWork1github.Visitors
                     {
                         if (Provider.GetMe().GetCharacterType().Damage == -1)
                         {
-                            ErrorList += ("ERROR: A monster needs damage!\n");
-                            ErrorList += ("in place: \n");
+                            ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return -1;
@@ -1448,8 +1447,8 @@ namespace LabWork1github.Visitors
 
                     if (Provider.GetMonster().GetCharacterType().Damage == -1)
                     {
-                        ErrorList += ("ERROR: A monster needs damage!\n");
-                        ErrorList += ("in place: \n");
+                        ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
                         return -1;
@@ -1465,116 +1464,19 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
-                    ErrorList += ("ERROR: A monster can't heal!\n");
-                    ErrorList += ("in place: \n");
+                    ErrorList += (ErrorMessages.ConditionError.ONLY_TRAP_CAN_HEAL);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
                 }
             }
 
-            ErrorList += ("ERROR: A monster attribute caused unexpected error!\n");
-            ErrorList += ("in place: \n");
+            ErrorList += (ErrorMessages.ConditionError.MONSTER_ATTRIBUTE_ERROR);
+            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;
             return -1;
         }
-
-
-
-            //    string attribute = context.expression().ElementAt(1).something().possibleAttributes().GetText();
-            //    if(context.expression().ElementAt(0).something().character().PLAYER() != null)
-            //    {
-            //        switch (attribute)
-            //        {
-            //            case "x":
-            //                return this.Provider.GetPlayer().Place.X;
-            //            case "y":
-            //                return this.Provider.GetPlayer().Place.Y;
-            //            case "health":
-            //                return this.Provider.GetPlayer().GetHealth();
-            //            case "damage":
-            //                return this.Provider.GetPlayer().Type.Damage;
-            //        }
-            //    }
-            //    if (context.expression().ElementAt(0).something().character().MONSTER() != null)
-            //    {
-            //        switch (attribute)
-            //        {
-            //            case "x":
-            //                return this.Provider.GetMonster().Place.X;
-            //            case "y":
-            //                return this.Provider.GetMonster().Place.Y;
-            //            case "health":
-            //                return this.Provider.GetMonster().GetHealth();
-            //            case "damage":
-            //                return this.Provider.GetMonster().Type.Damage;
-            //        }
-            //    }
-            //    if (context.expression().ElementAt(0).something().character().TRAP() != null)
-            //    {
-            //        switch (attribute)
-            //        {
-            //            case "x":
-            //                return this.Provider.GetTrap().Place.X;
-            //            case "y":
-            //                return this.Provider.GetTrap().Place.Y;
-            //            case "health":
-            //                return this.Provider.GetTrap().GetHealth();
-            //            case "damage":
-            //                return this.Provider.GetTrap().Type.Damage;
-            //            case "heal":
-            //                return this.Provider.GetTrap().Type.Heal;
-            //            case "teleport.x":
-            //                return this.Provider.GetTrap().Type.TeleportPlace.X;
-            //            case "teleport.y":
-            //                return this.Provider.GetTrap().Type.TeleportPlace.Y;
-            //            case "spawn.x":
-            //                return this.Provider.GetTrap().Type.SpawnPlace.X;
-            //            case "spawn.y":
-            //                return this.Provider.GetTrap().Type.SpawnPlace.Y;
-            //        }
-            //    }
-            //    if(context.something().ElementAt(0).something().character().ME() != null)
-            //    {
-            //        if(Provider.GetMe() is Trap)
-            //        {
-            //            switch (attribute)
-            //            {
-            //                case "x":
-            //                    return this.Provider.GetMe().Place.X;
-            //                case "y":
-            //                    return this.Provider.GetMe().Place.Y;
-            //                case "health":
-            //                    return this.Provider.GetMe().GetHealth();
-            //                case "damage":
-            //                    return this.Provider.GetMe().GetCharacterType().Damage;
-            //                case "heal":
-            //                    return this.Provider.GetMe().GetCharacterType().Heal;
-            //                case "teleport.x":
-            //                    return this.Provider.GetMe().GetCharacterType().TeleportPlace.X;
-            //                case "teleport.y":
-            //                    return this.Provider.GetMe().GetCharacterType().TeleportPlace.Y;
-            //                case "spawn.x":
-            //                    return this.Provider.GetMe().GetCharacterType().SpawnPlace.X;
-            //                case "spawn.y":
-            //                    return this.Provider.GetMe().GetCharacterType().SpawnPlace.Y;
-            //            }
-            //        }
-            //        else
-            //            switch (attribute)
-            //            {
-            //                case "x":
-            //                    return this.Provider.GetMe().Place.X;
-            //                case "y":
-            //                    return this.Provider.GetMe().Place.Y;
-            //                case "health":
-            //                    return this.Provider.GetMe().GetHealth();
-            //                case "damage":
-            //                    return this.Provider.GetMe().GetCharacterType().Damage;
-            //            }
-            //    }
-            //    throw new InvalidOperationException("type check failed in attribute");
-            //}
         }
 }
