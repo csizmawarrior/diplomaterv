@@ -59,6 +59,10 @@ namespace LabWork1github.static_constants
         {
             public const string ONLY_TRAP_CAN_HEAL = "Only Trap type can heal:\n";
         }
+        public static class GameError
+        {
+            public const string CHARACTER_SPAWNED_OUT_OF_BOUNDS = "A character was out of bounds, so it got deleted";
+        }
         public static class ExpressionError
         {
             public const string TYPE_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute type can only be compared with type attributes, at:\n";

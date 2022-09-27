@@ -74,7 +74,7 @@ namespace LabWork1github
                         }
                     }
                     if (character.Partner == null)
-                        Drawer.WriteCommand("Character named " + character.Name + "'s partner doesn't exist, give an existing name.");
+                        Drawer.WriteCommand($"Character named {character.Name}'s partner doesn't exist, give an existing name.");
                 }
             
             foreach (Trap Trap in Traps)
