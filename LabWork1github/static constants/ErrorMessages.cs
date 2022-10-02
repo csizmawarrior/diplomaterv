@@ -62,6 +62,10 @@ namespace LabWork1github.static_constants
         public static class GameError
         {
             public const string CHARACTER_SPAWNED_OUT_OF_BOUNDS = "A character was out of bounds, so it got deleted";
+            public const string CHARACTER_SPAWNED_ON_TRAP = "A character wwith the following name spawns on a trap, give a valid board: ";
+            public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.";
+            public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.";
+            public const string CHARACTER_HAS_NON_EXISTANT_PARTNER = "The following character has a referenced non existant partner, give a valid partner name for this character:";
         }
         public static class ExpressionError
         {

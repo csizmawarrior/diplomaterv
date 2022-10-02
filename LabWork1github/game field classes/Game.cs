@@ -61,7 +61,7 @@ namespace LabWork1github
                 if (character.Place.X > Board.Height || character.Place.Y > Board.Width)
                 {
                     Characters.Remove(character);
-                    Drawer.WriteCommand("A character was out of bounds, so it got deleted");
+                    Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS);
                 }
                 if (!character.PartnerName.Equals(""))
                 {
@@ -74,19 +74,22 @@ namespace LabWork1github
                         }
                     }
                     if (character.Partner == null)
-                        Drawer.WriteCommand($"Character named {character.Name}'s partner doesn't exist, give an existing name.");
+                    {
+                        Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_HAS_NON_EXISTANT_PARTNER);
+                        Drawer.WriteCommand(character.Name);
+                    }
                 }
             
             foreach (Trap Trap in Traps)
             {
                 {
                     if (character.Place.DirectionTo(Player.Place) == Directions.COLLISION && !(character is Player))
-                        throw new NullReferenceException("Player is on the same spot as a character.");
+                        throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_CHARACTER);
                     if (character.Place.DirectionTo(Trap.Place) == Directions.COLLISION && character != Trap)
-                        throw new NullReferenceException("Character named " +character.Name +" spawned on a trap");
+                        throw new NullReferenceException(ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP+character.Name);
                 }
                 if (Trap.Place.DirectionTo(Player.Place) == Directions.COLLISION)
-                    throw new NullReferenceException("Player spawned on a trap");
+                    throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_TRAP);
             }
            }
         }
@@ -101,9 +104,9 @@ namespace LabWork1github
                 Step();
             }
             if (Player.GetHealth() <= 0)
-                Drawer.WriteCommand("You died!");
+                Drawer.WriteCommand(PlayerInteractionMessages.YOU_LOST);
             else
-                Drawer.WriteCommand("You WON!");
+                Drawer.WriteCommand(PlayerInteractionMessages.YOU_WON);
         }
 
         public void Step()
@@ -175,18 +178,18 @@ namespace LabWork1github
 
         public void PlayerCommand()
         {
-            Drawer.WriteCommand("Give a command!");
+            Drawer.WriteCommand(PlayerInteractionMessages.PROVIDE_A_COMMAND);
             string inputLine = Console.ReadLine();
             CommandProcess(inputLine);
             switch (move.CommandType)
             {
                 case CommandType.health:
-                    Drawer.WriteCommand("The payer's health is: " + Player.GetHealth());
+                    Drawer.WriteCommand(PlayerInteractionMessages.HEALTH_CHECK_MESSAGE + Player.GetHealth());
                     break;
                 case CommandType.move:
                     if (fallingCheck(Player, move))
                     {
-                        Drawer.WriteCommand("Invalid move, falling off the board, try again next turn!");
+                        Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_FALLING_OFF_BOARD);
                         wrongMove = true;
                         break;
                     }
@@ -194,7 +197,7 @@ namespace LabWork1github
                     {
                         if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
                         {
-                            Drawer.WriteCommand("Invalid move, bumping into Monster, you damaged yourself, try again next turn!");
+                            Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_BUMP_INTO_MONSTER);
                             Player.Damage(25);
                             wrongMove = true;
                             break;
@@ -218,7 +221,7 @@ namespace LabWork1github
                     Drawer.writeHelp();
                     break;
                 default:
-                    Drawer.WriteCommand("Invalid command! Try again! Try the help command");
+                    Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_INVALID_COMMAND);
                     wrongMove = true;
                     break;
             }
