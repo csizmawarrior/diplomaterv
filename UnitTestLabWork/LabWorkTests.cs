@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LabWork1github;
 using Antlr4.Runtime;
-using LabWork1github.Commands;
+using LabWork1github;
 using LabWork1github.static_constants;
+using LabWork1github.Commands;
 
 namespace UnitTestLabWork
 {
@@ -54,10 +54,20 @@ namespace UnitTestLabWork
 
         //Declaration tests: To see that declaring works as they should
 
+        //Parameter declaring errors
         [TestMethod]
         public void AssigningTrapsHealth()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; health=20;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.TRAP_HAS_NO_HEALTH + "health=20" + "\n");
+        }
+        [TestMethod]
+        public void AssigningTrapsHealthAsCommand()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; commands: health=20;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
@@ -73,9 +83,27 @@ namespace UnitTestLabWork
             Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_HEAL + "heal=20" + "\n");
         }
         [TestMethod]
+        public void AssigningMonsterHealAsCommand()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; commands: heal=20;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_HEAL + "heal=20" + "\n");
+        }
+        [TestMethod]
         public void AssigningMonsterTeleportPoint()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; teleport_place=1,1;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_TELEPORT + "teleport_place=1,1" + "\n");
+        }
+        [TestMethod]
+        public void AssigningMonsterTeleportPointAsCommand()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; commands: teleport_place=1,1;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
@@ -91,6 +119,15 @@ namespace UnitTestLabWork
             Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TO_PLACE + "spawn_place=1,1" + "\n");
         }
         [TestMethod]
+        public void AssigningMonsterSpawnPointAsCommand()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; commands: spawn_place=1,1;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TO_PLACE + "spawn_place=1,1" + "\n");
+        }
+        [TestMethod]
         public void AssigningMonsterSpawnType()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; spawn_type=DefaultMonster;");
@@ -99,6 +136,18 @@ namespace UnitTestLabWork
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TYPE + "spawn_type=DefaultMonster" + "\n");
         }
+        [TestMethod]
+        public void AssigningMonsterSpawnTypeAsCommand()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = tesztmonster ; commands: spawn_type=DefaultMonster;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TYPE + "spawn_type=DefaultMonster" + "\n");
+        }
+
+
+        //MoveCommand errors
         [TestMethod]
         public void AssignMonMoveCommandToPlayer()
         {

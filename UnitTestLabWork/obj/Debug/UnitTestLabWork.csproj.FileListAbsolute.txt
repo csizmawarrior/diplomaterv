@@ -17,3 +17,23 @@ C:\Users\Dana\source\repos\LabWork1github\UnitTestLabWork\obj\Debug\UnitTestLabW
 C:\Users\Dana\source\repos\LabWork1github\UnitTestLabWork\obj\Debug\UnitTestLabWork.csproj.CopyComplete
 C:\Users\Dana\source\repos\LabWork1github\UnitTestLabWork\obj\Debug\UnitTestLabWork.dll
 C:\Users\Dana\source\repos\LabWork1github\UnitTestLabWork\obj\Debug\UnitTestLabWork.pdb
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\UnitTestLabWork.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\UnitTestLabWork.pdb
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Antlr4.Runtime.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\LabWork1github.exe
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\LabWork1github.pdb
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\LabWork1github.exe.config
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Antlr4.Runtime.xml
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\obj\Debug\UnitTestLabWork.csproj.AssemblyReference.cache
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\obj\Debug\UnitTestLabWork.csproj.CoreCompileInputs.cache
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\obj\Debug\UnitTestLabWork.csproj.CopyComplete
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\obj\Debug\UnitTestLabWork.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTestLabWork\obj\Debug\UnitTestLabWork.pdb
