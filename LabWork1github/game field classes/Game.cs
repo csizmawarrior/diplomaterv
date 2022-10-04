@@ -48,7 +48,7 @@ namespace LabWork1github
 
         public void Init()
         {
-            Drawer = new Drawer();
+            Drawer = Program.Drawer;
             Provider = new GameParamProvider(this);
             Board = Program.Board;
             Monsters = Board.Monsters;

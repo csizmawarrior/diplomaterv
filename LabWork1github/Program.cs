@@ -11,7 +11,7 @@ namespace LabWork1github
         public static List<CharacterType> CharacterTypes = new List<CharacterType>();
         public static List<Character> Characters = new List<Character>();
         public static List<EventHandler> EventHandlers = new List<EventHandler>();
-
+        public static Drawer Drawer = new Drawer();
         public static Board Board = new Board();
         
         public static int starterHP = 300;
@@ -52,7 +52,7 @@ namespace LabWork1github
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
             if (visitor.ErrorFound)
-                Console.WriteLine(visitor.Error);
+                Drawer.WriteCommand(visitor.Error);
         }
 
         public static void BoardLoader()
@@ -78,19 +78,19 @@ namespace LabWork1github
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
             if(visitor.ErrorFound)
-                Console.WriteLine(visitor.Error);
+                Drawer.WriteCommand(visitor.Error);
         }
 
         public static CharacterType GetCharacterType(string name)
         {
             if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1)
             {
-                Console.WriteLine("The type "+name+" does not exist");
+                Drawer.WriteCommand("The type "+name+" does not exist");
                 return null;
             }   
             else if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
             {
-                Console.WriteLine("The type " + name + " does not exist");
+                Drawer.WriteCommand("The type " + name + " does not exist");
                 return null;
             }
             return CharacterTypes.Find(e => e.Name.Equals(name));

@@ -1,10 +1,7 @@
 ﻿using LabWork1github.static_constants;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.IO;
 namespace LabWork1github
 {
     public class Drawer
@@ -12,9 +9,21 @@ namespace LabWork1github
         bool occupied = false;
         bool trapOccupied = false;
         bool found = false;
+        public static void LogMessage(string message)
+        {
+            try
+            {
+                File.WriteAllText("error_log.txt", message + "\n");
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
 
         public void WriteCommand(string message)
         {
+            LogMessage(message);
             Console.WriteLine("--------------------------------\n");
             Console.WriteLine(message+"\n");
             Console.WriteLine("--------------------------------\n");
