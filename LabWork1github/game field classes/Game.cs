@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using LabWork1github;
+using LabWork1github.EventHandling;
 using LabWork1github.static_constants;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,11 @@ namespace LabWork1github
                         Drawer.WriteCommand(character.Name);
                     }
                 }
-            
+            if(character.GetCharacterType().EventHandlers.Count > 0)
+                {
+                    foreach (TriggerEventHandler eventHandler in character.GetCharacterType().EventHandlers)
+                        eventHandler.GameParamProvider = Provider;
+                }
             foreach (Trap Trap in Traps)
             {
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.EventHandling;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace LabWork1github
         public CharacterType SpawnType { get; set; } = null;
         public string Name { get; set; }
         public List<Command> Commands { get; set; } = new List<Command>();
+        public List<TriggerEventHandler> EventHandlers { get; set; } = new List<TriggerEventHandler>();
 
 
         public abstract void Step(GameParamProvider provider);

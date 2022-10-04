@@ -426,6 +426,32 @@ public partial class DynamicEnemyGrammarBaseListener : IDynamicEnemyGrammarListe
 	public virtual void ExitBlock([NotNull] DynamicEnemyGrammarParser.BlockContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketStartCommand"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBracketStartCommand([NotNull] DynamicEnemyGrammarParser.BracketStartCommandContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketStartCommand"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBracketStartCommand([NotNull] DynamicEnemyGrammarParser.BracketStartCommandContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketCloseCommand"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBracketCloseCommand([NotNull] DynamicEnemyGrammarParser.BracketCloseCommandContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketCloseCommand"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBracketCloseCommand([NotNull] DynamicEnemyGrammarParser.BracketCloseCommandContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.character"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

@@ -20,6 +20,11 @@ namespace LabWork1github.static_constants
             public const string CHARACTER_HAS_NO_HEALTH = "The character has no health, or you can't change its health yourself:\n";
         }
 
+        public static class CommandAddingError
+        {
+            public const string UNEXPECTED_ERROR = "Unexpected error occurred while saving commands\n";
+        }
+
         public static class ParameterDeclarationError
         {
             public const string TRAP_TYPE_ALREADY_EXISTS = "Trap with this type already exists:\n";
@@ -66,6 +71,10 @@ namespace LabWork1github.static_constants
             public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.";
             public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.";
             public const string CHARACTER_HAS_NON_EXISTANT_PARTNER = "The following character has a referenced non existant partner, give a valid partner name for this character:";
+        }
+        public static class TypeCreationError
+        {
+            public const string TYPE_DOES_NOT_EXIST = "The type with the following name doesn't exist: ";
         }
         public static class ExpressionError
         {

@@ -116,6 +116,7 @@
     <Compile Include="characters\Trap.cs" />
     <Compile Include="types\charactertypes\TrapType.cs" />
     <Compile Include="Commands\WhileCommand.cs" />
+    <Compile Include="Visitors\TypeCreationStage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

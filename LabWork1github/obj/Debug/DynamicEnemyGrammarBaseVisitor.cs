@@ -365,6 +365,28 @@ public partial class DynamicEnemyGrammarBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitBlock([NotNull] DynamicEnemyGrammarParser.BlockContext context) { return VisitChildren(context); }
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketStartCommand"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitBracketStartCommand([NotNull] DynamicEnemyGrammarParser.BracketStartCommandContext context) { return VisitChildren(context); }
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketCloseCommand"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitBracketCloseCommand([NotNull] DynamicEnemyGrammarParser.BracketCloseCommandContext context) { return VisitChildren(context); }
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.character"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>

@@ -16,12 +16,13 @@ namespace LabWork1github
     public class DynamicEnemyGrammarVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {
         //TODO: eventHandling class that is for a specific when block
-        //TODO: parameter change Command
         private string typeName = "";
         private string type = null;
         private List<int> ConditionCount = new List<int>();
         private List<Command> ConditionalCommands = new List<Command>();
-        private bool CommandListing { get; set; } = false;
+        private TriggerEventHandler TriggerEventHandler { get; set; } = null;
+        private Command ConditionalCommand { get; set; } = null;
+        private TypeCreationStage CreationStage { get; set; } = TypeCreationStage.ParameterDeclare;
         public string Error = "";
         public bool ErrorFound = false;
         public Scope CurrentScope { get; set; } = new Scope(null);
@@ -36,7 +37,7 @@ namespace LabWork1github
                 ConditionalCommands = new List<Command>();
                 Error = "";
                 ErrorFound = false;
-                CommandListing = false;
+                CreationStage = TypeCreationStage.ParameterDeclare;
 
                 VisitStatementList(child);
             }
@@ -87,7 +88,7 @@ namespace LabWork1github
                 VisitDeclareStatements(child);
             }
             if (context.COMMANDS() != null)
-                CommandListing = true;
+                CreationStage = TypeCreationStage.CommandListing;
             return null;
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
@@ -98,15 +99,16 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if(CommandListing)
+            else if(CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+                Program.GetCharacterType(typeName).Health = int.Parse(context.NUMBER().GetText());
+            else
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
                 newCommand.Number = int.Parse(context.NUMBER().GetText());
                 newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(HealthChange);
                 AddCommand(newCommand);
             }
-            else
-                Program.GetCharacterType(typeName).Health = int.Parse(context.NUMBER().GetText());
+            
             return base.VisitHealthDeclaration(context);
         }
         public override object VisitHealAmountDeclaration([NotNull] HealAmountDeclarationContext context)
@@ -117,28 +119,30 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if (CommandListing)
+            else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+                    Program.GetCharacterType(typeName).Heal = int.Parse(context.NUMBER().GetText());
+            else
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
                 newCommand.Number = int.Parse(context.NUMBER().GetText());
                 newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(HealChange);
                 AddCommand(newCommand);
             }
-            else
-                Program.GetCharacterType(typeName).Heal = int.Parse(context.NUMBER().GetText());
+            
             return base.VisitHealAmountDeclaration(context);
         }
         public override object VisitDamageAmountDeclaration([NotNull] DamageAmountDeclarationContext context)
         {
-            if (CommandListing)
+            if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+                Program.GetCharacterType(typeName).Damage = int.Parse(context.NUMBER().GetText());
+            else
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
                 newCommand.Number = int.Parse(context.NUMBER().GetText());
                 newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(DamageChange);
                 AddCommand(newCommand);
             }
-            else
-                Program.GetCharacterType(typeName).Damage = int.Parse(context.NUMBER().GetText());
+            
             return base.VisitDamageAmountDeclaration(context);
         }
         public override object VisitTeleportPointDeclaration([NotNull] TeleportPointDeclarationContext context)
@@ -149,16 +153,17 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if (CommandListing)
+            else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+                Program.GetCharacterType(typeName).TeleportPlace =
+                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+            else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
                 newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(TeleportPlaceChange);
                 AddCommand(newCommand);
             }
-            else
-                Program.GetCharacterType(typeName).TeleportPlace = 
-                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+            
             return base.VisitTeleportPointDeclaration(context);
         }
         public override object VisitSpawnPointDeclaration([NotNull] SpawnPointDeclarationContext context)
@@ -169,16 +174,17 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if (CommandListing)
+            else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+                Program.GetCharacterType(typeName).SpawnPlace =
+                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+            else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
                 newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(SpawnPlaceChange);
                 AddCommand(newCommand);
             }
-            else
-                Program.GetCharacterType(typeName).SpawnPlace = 
-                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+            
             return base.VisitSpawnPointDeclaration(context);
         }
         public override object VisitSpawnTypeDeclaration([NotNull] SpawnTypeDeclarationContext context)
@@ -189,15 +195,16 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if (CommandListing)
+            else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+                Program.GetCharacterType(typeName).SpawnType = new MonsterType(context.name().GetText());
+            else
             {
                 TypeParameterDeclareCommand newCommand = new TypeParameterDeclareCommand();
                 newCommand.CharacterType = new MonsterType(context.name().GetText());
                 newCommand.TypeParameterDeclareDelegate = new TypeParameterDeclareDelegate(SpawnTypeChange);
                 AddCommand(newCommand);
             }
-            else
-                Program.GetCharacterType(typeName).SpawnType = new MonsterType(context.name().GetText());
+            
             return base.VisitSpawnTypeDeclaration(context);
         }
         public override object VisitMoveDeclaration([NotNull] MoveDeclarationContext context)
@@ -400,6 +407,16 @@ namespace LabWork1github
             return base.VisitHealDeclaration(context);
         }
 
+        public override object VisitBlock([NotNull] BlockContext context)
+        {
+            if(CreationStage.Equals(TypeCreationStage.ConditionalCommandBlock) || CreationStage.Equals(TypeCreationStage.EventCommandBlock))
+                foreach (var child in context.statement())
+                {
+                    VisitStatement(child);
+                }
+            return base.VisitBlock(context);
+        }
+
         public override object VisitIfExpression([NotNull] IfExpressionContext context)
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
@@ -417,12 +434,31 @@ namespace LabWork1github
                     MyContext = context.boolExpression(),
                     Condition = (GetCondition)
                 };
-                this.ConditionalCommands.Add(newCommand);
-                this.ConditionCount.Add(context.block().ChildCount - 2);
-                if (context.block().ChildCount - 2 == 0)
+                if (CreationStage.Equals(TypeCreationStage.CommandListing))
                 {
-                    this.ConditionalCommands.Remove(this.ConditionalCommands.ElementAt(this.ConditionalCommands.Count - 1));
-                    this.ConditionCount.Remove(this.ConditionCount.ElementAt(this.ConditionCount.Count - 1));
+                    CreationStage = TypeCreationStage.ConditionalCommandBlock;
+                    ConditionalCommand = newCommand;
+                    VisitBlock(context.block());
+                    ConditionalCommand = null;
+                    CreationStage = TypeCreationStage.CommandListing;
+                    AddCommand(newCommand);
+                }
+                if (CreationStage.Equals(TypeCreationStage.ConditionalCommandBlock))
+                {
+                    Command previousConditionalCommand = ConditionalCommand;
+                    ConditionalCommand = newCommand;
+                    VisitBlock(context.block());
+                    ConditionalCommand = previousConditionalCommand;
+                    AddCommand(newCommand);
+                }
+                if (CreationStage.Equals(TypeCreationStage.EventCommandBlock))
+                {
+                    CreationStage = TypeCreationStage.ConditionalCommandBlock;
+                    TriggerEventHandler previousEventHandler = TriggerEventHandler;
+                    ConditionalCommand = newCommand;
+                    VisitBlock(context.block());
+                    TriggerEventHandler = previousEventHandler;
+                    CreationStage = TypeCreationStage.EventCommandBlock;
                     AddCommand(newCommand);
                 }
             }
@@ -447,12 +483,32 @@ namespace LabWork1github
                     MyContext = context.boolExpression(),
                     Condition = (GetCondition)
                 };
-                this.ConditionalCommands.Add(newCommand);
-                this.ConditionCount.Add(context.block().ChildCount);
-                if (context.block().ChildCount == 0)
+                if (CreationStage.Equals(TypeCreationStage.CommandListing))
                 {
-                    this.ConditionalCommands.Remove(this.ConditionalCommands.ElementAt(this.ConditionalCommands.Count - 1));
-                    this.ConditionCount.Remove(this.ConditionCount.ElementAt(this.ConditionCount.Count - 1));
+                    CreationStage = TypeCreationStage.ConditionalCommandBlock;
+                    ConditionalCommand = newCommand;
+                    VisitBlock(context.block());
+                    ConditionalCommand = null;
+                    CreationStage = TypeCreationStage.CommandListing;
+                    AddCommand(newCommand);
+                }
+                if (CreationStage.Equals(TypeCreationStage.ConditionalCommandBlock))
+                {
+                    Command previousConditionalCommand = ConditionalCommand;
+                    ConditionalCommand = newCommand;
+                    VisitBlock(context.block());
+                    ConditionalCommand = previousConditionalCommand;
+                    AddCommand(newCommand);
+                }
+                if (CreationStage.Equals(TypeCreationStage.EventCommandBlock))
+                {
+                    CreationStage = TypeCreationStage.ConditionalCommandBlock;
+                    TriggerEventHandler previousEventHandler = TriggerEventHandler;
+                    ConditionalCommand = newCommand;
+                    VisitBlock(context.block());
+                    ConditionalCommand = null;
+                    TriggerEventHandler = previousEventHandler;
+                    CreationStage = TypeCreationStage.EventCommandBlock;
                     AddCommand(newCommand);
                 }
             }
@@ -461,16 +517,52 @@ namespace LabWork1github
         //TODO: check if using CharacterType for partner is possible, if so then test it in Game class
         public override object VisitWhenExpression([NotNull] WhenExpressionContext context)
         {
-            TriggerEventHandler eventHandler = new TriggerEventHandler();
-            TriggerEvent triggerEvent = VisitEvent(context.triggerEvent(), eventHandler);
-            
+            TriggerEventHandler EventHandler = new TriggerEventHandler();
+            TriggerEvent TriggerEvent = VisitEvent(context.triggerEvent(), EventHandler);
+            EventHandler.TriggeringEvent = TriggerEvent;
+
+            if (CreationStage.Equals(TypeCreationStage.CommandListing))
+            {
+                CreationStage = TypeCreationStage.EventCommandBlock;
+                TriggerEventHandler = EventHandler;
+                VisitBlock(context.block());
+                TriggerEventHandler = null;
+                CreationStage = TypeCreationStage.CommandListing;
+                Program.GetCharacterType(this.typeName).EventHandlers.Add(EventHandler);
+            }
+            if (CreationStage.Equals(TypeCreationStage.ConditionalCommandBlock))
+            {
+                Command previousConditionalCommand = ConditionalCommand;
+                WhenCommand newCommand = new WhenCommand
+                {
+                    TriggerEventHandler = EventHandler
+                };
+                ConditionalCommand = newCommand;
+                VisitBlock(context.block());
+                ConditionalCommand = previousConditionalCommand;
+                AddCommand(newCommand);
+            }
+            if (CreationStage.Equals(TypeCreationStage.EventCommandBlock))
+            {
+                CreationStage = TypeCreationStage.ConditionalCommandBlock;
+                WhenCommand newCommand = new WhenCommand
+                {
+                    TriggerEventHandler = EventHandler
+                };
+                ConditionalCommand = newCommand;
+                VisitBlock(context.block());
+                ConditionalCommand = null;
+                CreationStage = TypeCreationStage.EventCommandBlock;
+                AddCommand(newCommand);
+            }    
+
             return base.VisitWhenExpression(context);
         }
 
         public TriggerEvent VisitEvent(TriggerEventContext context, TriggerEventHandler eventHandler)
         {
             TriggerEvent resultTrigger = new TriggerEvent();
-            if(context.PLAYER() != null)
+            if(context.HEALTH_CHECK() != null)
             {
                 EventCollection.PlayerHealthCheck += eventHandler.OnEvent;
                 resultTrigger.SourceCharacter = new PlayerType();
@@ -480,88 +572,7 @@ namespace LabWork1github
             {
                 if(context.character().PLAYER() != null)
                 {
-                    if(context.action() == null)
-                    {
-                        Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    resultTrigger.SourceCharacter = new PlayerType();
-                    if (context.action().place() != null)
-                    {
-                        resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                               int.Parse(context.action().place().y().GetText()));
-                    }
-                    if (context.action().MOVE() != null)
-                    {
-                        EventCollection.PlayerMoved += eventHandler.OnEvent;
-                        if (context.action().fromPlace() != null)
-                            resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                                    int.Parse(context.action().place().y().GetText()));
-                        return resultTrigger;
-                    }
-                    if(context.action().DIE() != null)
-                    {
-                        EventCollection.PlayerDied += eventHandler.OnEvent;
-                        return resultTrigger;
-                    }
-                    if (context.action().STAY() != null)
-                    {
-                        EventCollection.PlayerStayed += eventHandler.OnEvent;
-                        return resultTrigger;
-                    }
-                    if(context.action().SHOOT() != null)
-                    {
-                        EventCollection.PlayerShot += eventHandler.OnEvent;
-                        if (context.action().NUMBER() != null)
-                        {
-                            resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
-                        }
-                        if(context.action().character() != null)
-                        {
-                            if(context.action().character().PLAYER() != null)
-                            {
-                                Error += ErrorMessages.EventError.PLAYER_SHOOTING_ITSELF;
-                                Error += context.GetText() + "\n";
-                                ErrorFound = true;
-                            }
-                            if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
-                                resultTrigger.TargetCharacter = new MonsterType();
-                            if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
-                                resultTrigger.TargetCharacter = new TrapType();
-                            return resultTrigger;
-                        }
-                        if(context.action().place() == null)
-                        {
-                            Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
-                            Error += context.GetText() + "\n";
-                            ErrorFound = true;
-                        }
-                    }
-                    if(context.action().DAMAGE() != null)
-                    {
-                        Error += ErrorMessages.EventError.ONLY_TRAP_CAN_DAMAGE;
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().HEAL() != null)
-                    {
-                        Error += ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL;
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().TELEPORT_T() != null)
-                    {
-                        Error += ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT;
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.action().SPAWN() != null)
-                    {
-                        Error += ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN;
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
+                    resultTrigger = VisitPlayerActionContext(context, resultTrigger, eventHandler);
                 }
                 if (context.character().MONSTER() != null)
                 {
@@ -582,6 +593,93 @@ namespace LabWork1github
             else
             {
                 Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            return resultTrigger;
+        }
+
+        private TriggerEvent VisitPlayerActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        {
+            if (context.action() == null)
+            {
+                Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            resultTrigger.SourceCharacter = new PlayerType();
+            if (context.action().place() != null)
+            {
+                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                       int.Parse(context.action().place().y().GetText()));
+            }
+            if (context.action().MOVE() != null)
+            {
+                EventCollection.PlayerMoved += eventHandler.OnEvent;
+                if (context.action().fromPlace() != null)
+                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
+                                            int.Parse(context.action().place().y().GetText()));
+                return resultTrigger;
+            }
+            if (context.action().DIE() != null)
+            {
+                EventCollection.PlayerDied += eventHandler.OnEvent;
+                return resultTrigger;
+            }
+            if (context.action().STAY() != null)
+            {
+                EventCollection.PlayerStayed += eventHandler.OnEvent;
+                return resultTrigger;
+            }
+            if (context.action().SHOOT() != null)
+            {
+                EventCollection.PlayerShot += eventHandler.OnEvent;
+                if (context.action().NUMBER() != null)
+                {
+                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                }
+                if (context.action().character() != null)
+                {
+                    if (context.action().character().PLAYER() != null)
+                    {
+                        Error += ErrorMessages.EventError.PLAYER_SHOOTING_ITSELF;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null))
+                        resultTrigger.TargetCharacter = new MonsterType();
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null))
+                        resultTrigger.TargetCharacter = new TrapType();
+                    return resultTrigger;
+                }
+                if (context.action().place() == null)
+                {
+                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().DAMAGE() != null)
+            {
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_DAMAGE;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().HEAL() != null)
+            {
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().TELEPORT_T() != null)
+            {
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if (context.action().SPAWN() != null)
+            {
+                Error += ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
@@ -839,8 +937,29 @@ namespace LabWork1github
         }
 
 
+        public void AddCommand(Command newCommand)
+        {
+            switch (CreationStage)
+            {
+                case TypeCreationStage.CommandListing:
+                    Program.GetCharacterType(typeName).Commands.Add(newCommand);
+                    break;
+                case TypeCreationStage.ConditionalCommandBlock:
+                    ConditionalCommand.CommandList.Add(newCommand);
+                    break;
+                case TypeCreationStage.EventCommandBlock:
+                    TriggerEventHandler.Commands.Add(newCommand);
+                    break;
+                default:
+                    Error += ErrorMessages.CommandAddingError.UNEXPECTED_ERROR;
+                    ErrorFound = true;
+                    break;
+            }
+        }
+
+
         //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
-        
+
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)
         {
@@ -1287,28 +1406,6 @@ namespace LabWork1github
             command.HealthChangeAmount = Heal;
             command.TargetPlace = new Place(XPos, YPos);
             HealToPlace(provider, command);
-        }
-
-
-        public void AddCommand(Command newCommand)
-        {
-            if(ConditionCount.Count == 0 || ConditionalCommands.Count==0)
-                Program.GetCharacterType(typeName).Commands.Add(newCommand);
-            else
-                if (ConditionCount.ElementAt(ConditionCount.Count - 1) > 0)
-                {
-                    ConditionalCommands.ElementAt(ConditionalCommands.Count - 1).CommandList.Add(newCommand);
-                    int helperCount = ConditionCount.ElementAt(ConditionCount.Count - 1);
-                    ConditionCount.Remove(ConditionCount.ElementAt(ConditionCount.Count - 1));
-                    if(helperCount-1 == 0)
-                    {
-                        Command helperCommand = ConditionalCommands.ElementAt(ConditionalCommands.Count - 1);
-                        Program.GetCharacterType(typeName).Commands.Add(helperCommand);
-                        ConditionalCommands.Remove(ConditionalCommands.ElementAt(ConditionalCommands.Count - 1));
-                    }
-                    else
-                    ConditionCount.Add(helperCount - 1);
-                }
         }
 
         public void HealthChange(GameParamProvider provider, NumberParameterDeclareCommand command)

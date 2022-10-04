@@ -1,5 +1,6 @@
 using Antlr4.Runtime;
 using LabWork1github;
+using LabWork1github.static_constants;
 using System;
 using System.Collections.Generic;
 using static LabWork1github.DynamicEnemyGrammarParser;
@@ -83,14 +84,16 @@ namespace LabWork1github
 
         public static CharacterType GetCharacterType(string name)
         {
+            if (String.IsNullOrEmpty(name))
+                return null;
             if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1)
             {
-                Drawer.WriteCommand("The type "+name+" does not exist");
+                Drawer.WriteCommand(ErrorMessages.TypeCreationError.TYPE_DOES_NOT_EXIST + name);
                 return null;
             }   
             else if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
             {
-                Drawer.WriteCommand("The type " + name + " does not exist");
+                Drawer.WriteCommand(ErrorMessages.TypeCreationError.TYPE_DOES_NOT_EXIST + name);
                 return null;
             }
             return CharacterTypes.Find(e => e.Name.Equals(name));

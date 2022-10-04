@@ -243,6 +243,20 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitBlock([NotNull] DynamicEnemyGrammarParser.BlockContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketStartCommand"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBracketStartCommand([NotNull] DynamicEnemyGrammarParser.BracketStartCommandContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.bracketCloseCommand"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBracketCloseCommand([NotNull] DynamicEnemyGrammarParser.BracketCloseCommandContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.character"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

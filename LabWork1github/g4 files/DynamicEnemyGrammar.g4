@@ -32,7 +32,6 @@ declareStatements: damageAmountDeclaration ';'
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
 trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
 monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
-//TODO: make a command out of parameter change
 healthDeclaration: HEALTH EQUALS NUMBER ;
 healAmountDeclaration: HEAL EQUALS NUMBER;
 damageAmountDeclaration: DAMAGE EQUALS NUMBER;
@@ -61,7 +60,9 @@ triggerEvent: character action | PLAYER HEALTH_CHECK;
 action: MOVE fromPlace? TO place | DIE | STAY AT place | SHOOT (NUMBER)? TO (character | place) | DAMAGE NUMBER TO (character | place) |
 			HEAL (NUMBER)? TO (character | place) | TELEPORT_T character TO place | SPAWN character TO place;
 
-block: BRACKETSTART statement* BRACKETCLOSE;
+block: bracketStartCommand statement* bracketCloseCommand;
+bracketStartCommand: BRACKETSTART;
+bracketCloseCommand: BRACKETCLOSE;
 character: PLAYER | ME | TRAP | MONSTER | PARTNER;
 
 possibleAttributes: name | possibleAttributes DOT possibleAttributes | TELEPORT_PLACE | PLACE_T | SPAWN_PLACE | SPAWN_TYPE | ROUND
