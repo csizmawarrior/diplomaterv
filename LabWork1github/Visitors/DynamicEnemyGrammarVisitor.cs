@@ -963,23 +963,38 @@ namespace LabWork1github
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)
         {
+            TriggerEvent spawnEvent = new TriggerEvent
+            {
+                SourceCharacter = new TrapType(),
+                TargetCharacter = new MonsterType()
+            };
+
             if (provider.OccupiedOrNot(command.TargetPlace))
                 return;
-            if (Program.GetCharacterType(command.TargetCharacterType.Name) == null && provider.GetMe().GetCharacterType().SpawnType == null)
+            if ( ( command.TargetCharacterType == null || Program.GetCharacterType(command.TargetCharacterType.Name) == null )
+                && provider.GetMe().GetCharacterType().SpawnType == null)
             {
                 return;
             }
-            if (!(Program.GetCharacterType(command.TargetCharacterType.Name) is MonsterType) && provider.GetMe().GetCharacterType().SpawnType == null)
+            if ((command.TargetCharacterType == null ||  ( ! (Program.GetCharacterType(command.TargetCharacterType.Name) is MonsterType) ) )
+                && provider.GetMe().GetCharacterType().SpawnType == null)
                 return;
             if (provider.GetMe().GetCharacterType().SpawnType == null)
                 command.TargetCharacterType = Program.GetCharacterType(command.TargetCharacterType.Name);
             else
-                command.TargetCharacterType = provider.GetMe().GetCharacterType().SpawnType;
+            {
+                if ( ! (Program.GetCharacterType(provider.GetMe().GetCharacterType().SpawnType.Name) is MonsterType) )
+                    return;
+                else
+                    command.TargetCharacterType = provider.GetMe().GetCharacterType().SpawnType;
+            }
             
             Monster newMonster = new Monster(command.TargetCharacterType.Health, (MonsterType)command.TargetCharacterType, command.TargetPlace);
+            spawnEvent.TargetPlace = command.TargetPlace;
             provider.GetMonsters().Add(newMonster);
             provider.GetBoard().Monsters.Add(newMonster);
-            //TODO: check if it works
+            EventCollection.InvokeTrapSpawned(provider.GetMe(), spawnEvent);
+            //TODO: Fix charactertype recognition for the newly spawned monster
         }
 
         public void SpawnRandom(GameParamProvider provider, SpawnCommand command)
@@ -1057,46 +1072,93 @@ namespace LabWork1github
         //TODO: check if fall check this way okay or not
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
-
+            TriggerEvent moveEvent = new TriggerEvent
+            {
+                EventType = EventType.Move,
+                SourcePlace = provider.GetMe().Place,
+                SourceCharacter = provider.GetMe().GetCharacterType()
+            };
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    if ((int)provider.GetMonster().Place.X - command.Distance >= 0)
-                        provider.GetMonster().Place.X -= (int)command.Distance;
+                    if ((int)provider.GetMe().Place.X - command.Distance >= 0)
+                        provider.GetMe().Place.X -= (int)command.Distance;
                     break;
                 case Directions.BACKWARDS:
-                    if ((int)provider.GetMonster().Place.X + command.Distance <= provider.GetBoard().Height)
-                        provider.GetMonster().Place.X += (int)command.Distance;
+                    if ((int)provider.GetMe().Place.X + command.Distance <= provider.GetBoard().Height)
+                        provider.GetMe().Place.X += (int)command.Distance;
                     break;
                 case Directions.LEFT:
-                    if ((int)provider.GetMonster().Place.Y - command.Distance >= 0)
-                        provider.GetMonster().Place.Y -= (int)command.Distance;
+                    if ((int)provider.GetMe().Place.Y - command.Distance >= 0)
+                        provider.GetMe().Place.Y -= (int)command.Distance;
                     break;
                 case Directions.RIGHT:
-                    if ((int)provider.GetMonster().Place.Y + command.Distance <= provider.GetBoard().Width)
-                        provider.GetMonster().Place.Y += (int)command.Distance;
+                    if ((int)provider.GetMe().Place.Y + command.Distance <= provider.GetBoard().Width)
+                        provider.GetMe().Place.Y += (int)command.Distance;
                     break;
+            }
+            moveEvent.TargetPlace = provider.GetMe().Place;
+            if (provider.GetMe().GetCharacterType() is MonsterType)
+            {
+                EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
+            }
+            if (provider.GetMe().GetCharacterType() is TrapType)
+            {
+                EventCollection.InvokeTrapMoved(provider.GetMe(), moveEvent);
             }
         }
         public void MoveToPlace(GameParamProvider provider, MoveCommand command)
         {
+            TriggerEvent moveEvent = new TriggerEvent
+            {
+                EventType = EventType.Move,
+                SourcePlace = provider.GetMe().Place,
+                SourceCharacter = provider.GetMe().GetCharacterType()
+            };
+
             provider.GetMe().Place = command.TargetPlace;
+
+            moveEvent.TargetPlace = provider.GetMe().Place;
+            if (provider.GetMe().GetCharacterType() is MonsterType)
+            {
+                EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
+            }
+            if (provider.GetMe().GetCharacterType() is TrapType)
+            {
+                EventCollection.InvokeTrapMoved(provider.GetMe(), moveEvent);
+            }
         }
         public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
         {
+            TriggerEvent moveEvent = new TriggerEvent
+            {
+                EventType = EventType.Move,
+                SourcePlace = provider.GetMe().Place,
+                SourceCharacter = provider.GetMe().GetCharacterType()
+            };
+
             Random rand = new Random();
             if (rand.Next() % 2 == 0)
             {
                 if (rand.Next() % 2 == 0)
-                    provider.GetMonster().Place.X = provider.GetPlayer().Place.X + 1;
+                    provider.GetMe().Place.X = provider.GetPlayer().Place.X + 1;
                 else
-                    provider.GetMonster().Place.X = provider.GetPlayer().Place.X - 1;
+                    provider.GetMe().Place.X = provider.GetPlayer().Place.X - 1;
             }
             if (rand.Next() % 2 == 0)
-                provider.GetMonster().Place.Y = provider.GetPlayer().Place.Y + 1;
+                provider.GetMe().Place.Y = provider.GetPlayer().Place.Y + 1;
             else
-                provider.GetMonster().Place.Y = provider.GetPlayer().Place.Y - 1;
+                provider.GetMe().Place.Y = provider.GetPlayer().Place.Y - 1;
 
+            moveEvent.TargetPlace = provider.GetMe().Place;
+            if (provider.GetMe().GetCharacterType() is MonsterType)
+            {
+                EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
+            }
+            if (provider.GetMe().GetCharacterType() is TrapType)
+            {
+                EventCollection.InvokeTrapMoved(provider.GetMe(), moveEvent);
+            }
         }
         public void MoveRandom(GameParamProvider provider, MoveCommand command)
         {

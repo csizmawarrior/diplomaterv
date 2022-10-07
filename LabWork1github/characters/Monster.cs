@@ -11,7 +11,7 @@ namespace LabWork1github
         public Monster(int hp, MonsterType type, Place place)
         {
             Health = hp;
-            Type = type;
+            Type = (MonsterType)Program.GetCharacterType(type.Name);
             Place = place;
         }
         public int Health { get; set; }

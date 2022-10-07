@@ -15,11 +15,17 @@ namespace LabWork1github.EventHandling
 
         public virtual void OnEvent(object sender, TriggerEvent args)
         {
-            if(args.Equals(TriggeringEvent))
-                foreach(Command command in Commands)
+            if (args.EventType.Equals(TriggeringEvent.EventType) && args.TargetCharacter == TriggeringEvent.TargetCharacter) {
+                if ((TriggeringEvent.Amount == 0 || TriggeringEvent.Amount == args.Amount)
+                    && (TriggeringEvent.SourcePlace == null || TriggeringEvent.SourcePlace.Equals(args.SourcePlace))
+                    && (TriggeringEvent.SourceCharacter == null || TriggeringEvent.SourceCharacter.Equals(args.SourceCharacter)) )
                 {
-                    command.Execute(GameParamProvider);
+                    foreach (Command command in Commands)
+                    {
+                        command.Execute(GameParamProvider);
+                    }
                 }
+            }
         }
     }
 }
