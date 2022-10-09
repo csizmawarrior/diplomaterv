@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1062
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWork1github", "LabWork1github\LabWork1github.csproj", "{6ADDF320-6E6D-4CDE-A574-52987B5CE2E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestLabWork", "UnitTestLabWork\UnitTestLabWork.csproj", "{39352056-CAC3-48D2-9339-124C1C817B44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{39EECD56-7C0B-42D7-B13B-C71DF619F475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{6ADDF320-6E6D-4CDE-A574-52987B5CE2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ADDF320-6E6D-4CDE-A574-52987B5CE2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ADDF320-6E6D-4CDE-A574-52987B5CE2E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39352056-CAC3-48D2-9339-124C1C817B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39352056-CAC3-48D2-9339-124C1C817B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39352056-CAC3-48D2-9339-124C1C817B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39352056-CAC3-48D2-9339-124C1C817B44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39EECD56-7C0B-42D7-B13B-C71DF619F475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39EECD56-7C0B-42D7-B13B-C71DF619F475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39EECD56-7C0B-42D7-B13B-C71DF619F475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39EECD56-7C0B-42D7-B13B-C71DF619F475}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
