@@ -1085,7 +1085,7 @@ namespace LabWork1github
                         provider.GetMe().Place.X -= (int)command.Distance;
                     break;
                 case Directions.BACKWARDS:
-                    if ((int)provider.GetMe().Place.X + command.Distance <= provider.GetBoard().Height)
+                    if ((int)provider.GetMe().Place.X + command.Distance < provider.GetBoard().Height)
                         provider.GetMe().Place.X += (int)command.Distance;
                     break;
                 case Directions.LEFT:
@@ -1093,7 +1093,7 @@ namespace LabWork1github
                         provider.GetMe().Place.Y -= (int)command.Distance;
                     break;
                 case Directions.RIGHT:
-                    if ((int)provider.GetMe().Place.Y + command.Distance <= provider.GetBoard().Width)
+                    if ((int)provider.GetMe().Place.Y + command.Distance < provider.GetBoard().Width)
                         provider.GetMe().Place.Y += (int)command.Distance;
                     break;
             }
@@ -1188,7 +1188,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                        if((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + (int)command.Distance)
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
@@ -1208,7 +1208,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
@@ -1269,7 +1269,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                        if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
@@ -1277,7 +1277,7 @@ namespace LabWork1github
                     {
                         for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
                                 if (monster.Place.X == provider.GetMe().Place.X + i)
                                     monster.Damage(command.HealthChangeAmount);
                         }
@@ -1307,7 +1307,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                     }
@@ -1315,7 +1315,7 @@ namespace LabWork1github
                     {
                         for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                                 if (monster.Place.Y == provider.GetMe().Place.Y + i)
                                 monster.Damage(command.HealthChangeAmount);
                         }
@@ -1384,7 +1384,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                        if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                     }
@@ -1392,7 +1392,7 @@ namespace LabWork1github
                     {
                         for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.X + i <= provider.GetBoard().Height)
+                            if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
                                 if (monster.Place.X == provider.GetMe().Place.X + i)
                                     monster.Heal(command.HealthChangeAmount);
                         }
@@ -1422,7 +1422,7 @@ namespace LabWork1github
                         break;
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                     }
@@ -1430,7 +1430,7 @@ namespace LabWork1github
                     {
                         for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.Y + i <= provider.GetBoard().Width)
+                            if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                                 if (monster.Place.Y == provider.GetMe().Place.Y + i)
                                     monster.Heal(command.HealthChangeAmount);
                         }

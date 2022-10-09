@@ -15,7 +15,7 @@ namespace LabWork1github
         public static Drawer Drawer = new Drawer();
         public static Board Board = new Board();
         
-        public static int starterHP = 300;
+        public static int starterHP = 600;
 
         static void Main(string[] args)
         {

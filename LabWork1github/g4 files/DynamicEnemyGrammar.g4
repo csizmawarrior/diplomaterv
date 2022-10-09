@@ -55,6 +55,7 @@ ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
 whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
 whenExpression:  WHEN PARENTHESISSTART triggerEvent PARENTHESISCLOSE block;
 
+
 triggerEvent: character action | PLAYER HEALTH_CHECK;
 
 action: MOVE fromPlace? TO place | DIE | STAY AT place | SHOOT (NUMBER)? TO (character | place) | DAMAGE (NUMBER)? TO (character | place) |
