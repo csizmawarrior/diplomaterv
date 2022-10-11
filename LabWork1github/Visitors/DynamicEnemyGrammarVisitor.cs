@@ -1535,63 +1535,83 @@ namespace LabWork1github
                                     healEvent.TargetCharacter = new MonsterType();
                                 }
                             }
+                            healEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
+                            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
                         }
                     }
                     break;
                 case Directions.BACKWARDS:
-                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
-                        break;
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
-                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
-                                provider.GetPlayer().Heal(command.HealthChangeAmount);
-                    }
-                    foreach (Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
-                                if (monster.Place.X == provider.GetMe().Place.X + i)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i
+                                && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
+                            {
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                                healEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach (Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.X == provider.GetMe().Place.X + i
+                                    && monster.Place.Y == provider.GetMe().Place.Y)
+                                {
                                     monster.Heal(command.HealthChangeAmount);
+                                    healEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
+                            healEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
+                            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
                         }
                     }
                     break;
                 case Directions.LEFT:
-                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
-                        break;
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.Y - i >= 0)
-                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
-                                provider.GetPlayer().Heal(command.HealthChangeAmount);
-                    }
-                    foreach (Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.Y - i >= 0)
-                                if (monster.Place.Y == provider.GetMe().Place.Y - i)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i
+                                && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
+                            {
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                                healEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach (Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.Y == provider.GetMe().Place.Y - i
+                                    && monster.Place.X == provider.GetMe().Place.X)
+                                {
                                     monster.Heal(command.HealthChangeAmount);
+                                    healEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
+                            healEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
+                            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
                         }
                     }
                     break;
                 case Directions.RIGHT:
-                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
-                        break;
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
-                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
-                                provider.GetPlayer().Heal(command.HealthChangeAmount);
-                    }
-                    foreach (Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
-                                if (monster.Place.Y == provider.GetMe().Place.Y + i)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i
+                                && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
+                            {
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                                healEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach (Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.Y == provider.GetMe().Place.Y + i
+                                    && monster.Place.X == provider.GetMe().Place.X)
+                                {
                                     monster.Heal(command.HealthChangeAmount);
+                                    healEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
+                            healEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
+                            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
                         }
                     }
                     break;
@@ -1600,22 +1620,56 @@ namespace LabWork1github
 
         public void HealToPlace(GameParamProvider provider, HealCommand command)
         {
+            TriggerEvent healEvent = new TriggerEvent
+            {
+                EventType = EventType.Heal,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount,
+                TargetPlace = command.TargetPlace
+            };
             if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+            {
                 provider.GetPlayer().Heal(command.HealthChangeAmount);
+                healEvent.TargetCharacter = new PlayerType();
+            }
             foreach (Monster monster in provider.GetMonsters())
             {
                 if (monster.Place.Equals(command.TargetPlace))
+                {
                     monster.Heal(command.HealthChangeAmount);
+                    healEvent.TargetCharacter = new MonsterType();
+                }
             }
+            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
         }
 
         public void HealToPlayer(GameParamProvider provider, HealCommand command)
         {
+            TriggerEvent healEvent = new TriggerEvent
+            {
+                EventType = EventType.Heal,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount,
+                TargetPlace = provider.GetPlayer().Place,
+                TargetCharacter = new PlayerType()
+            };
             provider.GetPlayer().Heal(command.HealthChangeAmount);
+            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
         }
 
         public void HealToMonster(GameParamProvider provider, HealCommand command)
         {
+            TriggerEvent healEvent = new TriggerEvent
+            {
+                EventType = EventType.Heal,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount,
+                TargetPlace = provider.GetMonster().Place,
+                TargetCharacter = new MonsterType()
+            };
             provider.GetMonster().Heal(command.HealthChangeAmount);
         }
         public void HealRandom(GameParamProvider provider, HealCommand command)
