@@ -1157,17 +1157,30 @@ namespace LabWork1github
             };
 
             Random rand = new Random();
-            if (rand.Next() % 2 == 0)
-            {
-                if (rand.Next() % 2 == 0)
-                    provider.GetMe().Place.X = provider.GetPlayer().Place.X + 1;
-                else
-                    provider.GetMe().Place.X = provider.GetPlayer().Place.X - 1;
-            }
-            if (rand.Next() % 2 == 0)
-                provider.GetMe().Place.Y = provider.GetPlayer().Place.Y + 1;
-            else
-                provider.GetMe().Place.Y = provider.GetPlayer().Place.Y - 1;
+                if(provider.GetMe().Place.X < provider.GetPlayer().Place.X)
+                {
+                    int xChange = rand.Next() % (provider.GetPlayer().Place.X - provider.GetMe().Place.X);
+                    if (provider.IsFreePlace(new Place( provider.GetMe().Place.X + xChange,  provider.GetMe().Place.Y)))
+                        provider.GetMe().Place.X += xChange; 
+                }
+                if(provider.GetMe().Place.X > provider.GetPlayer().Place.X)
+                {
+                    int xChange = rand.Next() % (provider.GetMe().Place.X - provider.GetPlayer().Place.X);
+                    if (provider.IsFreePlace(new Place(provider.GetMe().Place.X - xChange, provider.GetMe().Place.Y)))
+                        provider.GetMe().Place.X -= xChange;
+                }
+                if (provider.GetMe().Place.Y < provider.GetPlayer().Place.Y)
+                {
+                    int yChange = rand.Next() % (provider.GetPlayer().Place.Y - provider.GetMe().Place.Y);
+                    if (provider.IsFreePlace(new Place(provider.GetMe().Place.Y + yChange, provider.GetMe().Place.Y)))
+                        provider.GetMe().Place.Y += yChange;
+                }
+                if (provider.GetMe().Place.Y > provider.GetPlayer().Place.Y)
+                {
+                    int yChange = rand.Next() % (provider.GetMe().Place.Y - provider.GetPlayer().Place.Y);
+                    if (provider.IsFreePlace(new Place(provider.GetMe().Place.Y - yChange, provider.GetMe().Place.Y)))
+                        provider.GetMe().Place.Y -= yChange;
+                }
 
             moveEvent.TargetPlace = provider.GetMe().Place;
             if (provider.GetMe().GetCharacterType() is MonsterType)
@@ -1190,46 +1203,76 @@ namespace LabWork1github
 
         public void ShootDirection(GameParamProvider provider, ShootCommand command)
         {
+            TriggerEvent shootEvent = new TriggerEvent
+            {
+                EventType = EventType.Shoot,
+                SourceCharacter = new MonsterType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount
+        };
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
-                        break;
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.X - i >= 0)
-                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - (int)command.Distance)
+                        if (provider.GetMe().Place.X - i >= 0) {
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i
+                                && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
+                            {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
+                                shootEvent.TargetCharacter = new PlayerType();
+                            }
+                            shootEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
+                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                        }
                     }
                     break;
                 case Directions.BACKWARDS:
-                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
-                        break;
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
-                        if((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
-                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + (int)command.Distance)
+                        if (provider.GetMe().Place.X + i < provider.GetBoard().Height)
+                        {
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i
+                                && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
+                            {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
+                                shootEvent.TargetCharacter = new PlayerType();
+                            }
+                            shootEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
+                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                        }
                     }
                     break;
                 case Directions.LEFT:
-                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
-                        break;
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y - i >= 0)
-                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - (int)command.Distance)
+                        if (provider.GetMe().Place.Y - i >= 0)
+                        {
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i
+                                && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
+                            {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
+                                shootEvent.TargetCharacter = new PlayerType();
+                            }
+                            shootEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
+                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                        }
                     }
                     break;
                 case Directions.RIGHT:
-                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
-                        break;
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
-                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + (int)command.Distance)
+                        if (provider.GetMe().Place.Y + i < provider.GetBoard().Width)
+                        {
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i
+                                && provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                            {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
+                                shootEvent.TargetCharacter = new PlayerType();
+                            }
+                            shootEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
+                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                        }
                     }
                     break;
             }
@@ -1237,13 +1280,35 @@ namespace LabWork1github
 
         public void ShootToPlace(GameParamProvider provider, ShootCommand command)
         {
+            TriggerEvent shootEvent = new TriggerEvent
+            {
+                EventType = EventType.Shoot,
+                SourceCharacter = new MonsterType(),
+                SourcePlace = provider.GetMe().Place,
+                TargetPlace = command.TargetPlace,
+                Amount = command.HealthChangeAmount
+            };
             if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+            {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
+                shootEvent.TargetCharacter = new PlayerType();
+            }
+            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
         }
 
         public void ShootToPlayer(GameParamProvider provider, ShootCommand command)
         {
+            TriggerEvent shootEvent = new TriggerEvent
+            {
+                EventType = EventType.Shoot,
+                SourceCharacter = new MonsterType(),
+                SourcePlace = provider.GetMe().Place,
+                TargetCharacter = new PlayerType(),
+                TargetPlace = provider.GetPlayer().Place,
+                Amount = command.HealthChangeAmount
+            };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
+            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
         }
 
         public void ShootRandom(GameParamProvider provider, ShootCommand command)
@@ -1257,86 +1322,115 @@ namespace LabWork1github
             ShootToPlace(provider, command);
         }
 
-
-
         public void DamageDirection(GameParamProvider provider, DamageCommand command)
         {
+            TriggerEvent damageEvent = new TriggerEvent
+            {
+                EventType = EventType.Damage,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount
+            };
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
-                        break;
                     //distance is 1 as default value
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.X - i >= 0)
-                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
-                                provider.GetPlayer().Damage(command.HealthChangeAmount);
-                    }
-                    foreach(Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.X - i >= 0)
-                                if (monster.Place.X == provider.GetMe().Place.X - i)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i
+                                && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
+                            {
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
+                                damageEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach(Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.X == provider.GetMe().Place.X - i
+                                    && monster.Place.Y == provider.GetMe().Place.Y)
+                                {
                                     monster.Damage(command.HealthChangeAmount);
+                                    damageEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
+                            damageEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
+                            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
                         }
                     }
                     break;
                 case Directions.BACKWARDS:
-                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
-                        break;
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
-                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i)
-                                provider.GetPlayer().Damage(command.HealthChangeAmount);
-                    }
-                    foreach(Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
-                                if (monster.Place.X == provider.GetMe().Place.X + i)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i
+                                && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
+                            {
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
+                                damageEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach (Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.X == provider.GetMe().Place.X + i
+                                    && monster.Place.Y == provider.GetMe().Place.Y)
+                                {
                                     monster.Damage(command.HealthChangeAmount);
+                                    damageEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
+                            damageEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
+                            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
                         }
                     }
                     break;
                 case Directions.LEFT:
-                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
-                        break;
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.Y - i >= 0)
-                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i)
-                                provider.GetPlayer().Damage(command.HealthChangeAmount);
-                    }
-                    foreach (Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.Y - i >= 0)
-                                if (monster.Place.Y == provider.GetMe().Place.Y - i)
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i
+                                && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
+                            {
+                                provider.GetPlayer().Damage(command.HealthChangeAmount);
+                                damageEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach (Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.Y == provider.GetMe().Place.Y - i
+                                    && monster.Place.X == provider.GetMe().Place.X)
+                                {
                                     monster.Damage(command.HealthChangeAmount);
+                                    damageEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
+                            damageEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
+                            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
                         }
                     }
                     break;
                 case Directions.RIGHT:
-                    if (provider.GetPlayer().Place.X != provider.GetMe().Place.X)
-                        break;
-                    for (int i = 0; i < command.Distance; i++)
+                    for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
-                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i)
+                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width) {
+
+                            if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i
+                                && provider.GetPlayer().Place.X == provider.GetMe().Place.X) 
+                            { 
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                    }
-                    foreach (Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
-                        {
-                            if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
-                                if (monster.Place.Y == provider.GetMe().Place.Y + i)
-                                monster.Damage(command.HealthChangeAmount);
+                                damageEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach (Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.Y == provider.GetMe().Place.Y + i
+                                    && monster.Place.X == provider.GetMe().Place.X)
+                                {
+                                    monster.Damage(command.HealthChangeAmount);
+                                    damageEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
+                            damageEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
+                            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
                         }
                     }
                     break;
@@ -1345,23 +1439,58 @@ namespace LabWork1github
 
         public void DamageToPlace(GameParamProvider provider, DamageCommand command)
         {
+            TriggerEvent damageEvent = new TriggerEvent
+            {
+                EventType = EventType.Damage,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount,
+                TargetPlace = command.TargetPlace
+            };
             if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+            {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
+                damageEvent.TargetCharacter = new PlayerType();
+            }
             foreach(Monster monster in provider.GetMonsters())
             {
                 if (monster.Place.Equals(command.TargetPlace))
+                {
                     monster.Damage(command.HealthChangeAmount);
+                    damageEvent.TargetCharacter = new MonsterType();
+                }
             }
+            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
         }
 
         public void DamageToPlayer(GameParamProvider provider, DamageCommand command)
         {
+            TriggerEvent damageEvent = new TriggerEvent
+            {
+                EventType = EventType.Damage,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount,
+                TargetPlace = provider.GetPlayer().Place,
+                TargetCharacter = new PlayerType()
+            };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
+            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
         }
 
         public void DamageToMonster(GameParamProvider provider, DamageCommand command)
         {
+            TriggerEvent damageEvent = new TriggerEvent
+            {
+                EventType = EventType.Damage,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount,
+                TargetPlace = provider.GetMonster().Place,
+                TargetCharacter = new MonsterType()
+            };
             provider.GetMonster().Damage(command.HealthChangeAmount);
+            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
         }
         public void DamageRandom(GameParamProvider provider, DamageCommand command)
         {
@@ -1376,25 +1505,36 @@ namespace LabWork1github
 
         public void HealDirection(GameParamProvider provider, HealCommand command)
         {
+            TriggerEvent healEvent = new TriggerEvent
+            {
+                EventType = EventType.Heal,
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place,
+                Amount = command.HealthChangeAmount
+            };
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    if (provider.GetPlayer().Place.Y != provider.GetMe().Place.Y)
-                        break;
                     //distance is 1 as default value
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if ((int)provider.GetMe().Place.X - i >= 0)
-                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i)
-                                provider.GetPlayer().Heal(command.HealthChangeAmount);
-                    }
-                    foreach (Monster monster in provider.GetMonsters())
-                    {
-                        for (int i = 0; i < command.Distance; i++)
                         {
-                            if ((int)provider.GetMe().Place.X - i >= 0)
-                                if (monster.Place.X == provider.GetMe().Place.X - i)
+                            if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i
+                                && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
+                            {
+                                provider.GetPlayer().Heal(command.HealthChangeAmount);
+                                healEvent.TargetCharacter = new PlayerType();
+                            }
+                            foreach (Monster monster in provider.GetMonsters())
+                            {
+                                if (monster.Place.X == provider.GetMe().Place.X - i
+                                && monster.Place.Y == provider.GetMe().Place.Y)
+                                {
                                     monster.Heal(command.HealthChangeAmount);
+                                    healEvent.TargetCharacter = new MonsterType();
+                                }
+                            }
                         }
                     }
                     break;
