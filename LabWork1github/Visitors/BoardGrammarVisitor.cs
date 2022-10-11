@@ -34,7 +34,10 @@ namespace LabWork1github
             PlaceContext place = context.place();
             Program.Board.Height = int.Parse(place.x().GetText());
             Program.Board.Width = int.Parse(place.y().GetText());
-
+            if(context.nameDeclaration() != null)
+            {
+                Program.Board.Name = context.nameDeclaration().ID().GetText();
+            }
             return base.VisitBoardCreation(context);
         }
 
@@ -44,6 +47,8 @@ namespace LabWork1github
             int xPos = int.Parse(place.x().GetText());
             int yPos = int.Parse(place.y().GetText());
             Program.Board.Player = new Player(new Place(xPos-1, yPos-1), Program.starterHP);
+            if (context.nameDeclaration() != null)
+                Program.Board.Player.Name = context.nameDeclaration().ID().GetText();
             Program.Characters.Add(Program.Board.Player);
             return base.VisitPlayerPlacement(context);
         }

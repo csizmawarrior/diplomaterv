@@ -13,7 +13,6 @@ namespace LabWork1github.EventHandling
         Damage,
         Heal,
         Teleport,
-        Stay,
         Spawn,
         HealthCheck,
         Die

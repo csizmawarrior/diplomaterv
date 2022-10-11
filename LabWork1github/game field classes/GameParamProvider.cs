@@ -65,9 +65,9 @@ namespace LabWork1github
         {
             game.Repeat = commandCount;
         }
-        public bool OccupiedOrNot(Place p)
+        public bool IsFreePlace(Place p)
         {
-            return game.IsOccupied(p);
+            return game.IsOccupiedOrOutOfBounds(p);
         }
         public void PlayerCommand()
         {
@@ -76,6 +76,11 @@ namespace LabWork1github
         public List<Character> GetCharacters()
         {
             return Game.Characters;
+        }
+
+        public void SpawnMonster(Monster monster)
+        {
+            game.SpawnMonster(monster);
         }
     }
 }

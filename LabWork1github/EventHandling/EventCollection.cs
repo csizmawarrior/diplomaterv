@@ -12,16 +12,13 @@ namespace LabWork1github.EventHandling
 
         public static event EventDelegate PlayerMoved = new EventDelegate(DefaultDelegate);
         public static event EventDelegate PlayerShot = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate PlayerStayed = new EventDelegate(DefaultDelegate);
         public static event EventDelegate PlayerDied = new EventDelegate(DefaultDelegate);
         public static event EventDelegate PlayerHealthCheck = new EventDelegate(DefaultDelegate);
         public static event EventDelegate MonsterMoved = new EventDelegate(DefaultDelegate);
         public static event EventDelegate MonsterShot = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate MonsterStayed = new EventDelegate(DefaultDelegate);
         public static event EventDelegate MonsterDied = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapMoved = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapDamaged = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate TrapStayed = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapHealed = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapTeleported = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapSpawned = new EventDelegate(DefaultDelegate);
@@ -37,10 +34,6 @@ namespace LabWork1github.EventHandling
         public static void InvokePlayerShot(object sender, TriggerEvent triggerEvent)
         {
             PlayerShot.Invoke(sender, triggerEvent);
-        }
-        public static void InvokePlayerStayed(object sender, TriggerEvent triggerEvent)
-        {
-            PlayerStayed.Invoke(sender, triggerEvent);
         }
         public static void InvokePlayerDied(object sender, TriggerEvent triggerEvent)
         {
@@ -58,10 +51,6 @@ namespace LabWork1github.EventHandling
         {
             MonsterShot.Invoke(sender, triggerEvent);
         }
-        public static void InvokeMonsterStayed(object sender, TriggerEvent triggerEvent)
-        {
-            MonsterStayed.Invoke(sender, triggerEvent);
-        }
         public static void InvokeMonsterDied(object sender, TriggerEvent triggerEvent)
         {
             MonsterDied.Invoke(sender, triggerEvent);
@@ -73,10 +62,6 @@ namespace LabWork1github.EventHandling
         public static void InvokeTrapDamaged(object sender, TriggerEvent triggerEvent)
         {
             TrapDamaged.Invoke(sender, triggerEvent);
-        }
-        public static void InvokeTrapStayed(object sender, TriggerEvent triggerEvent)
-        {
-            TrapStayed.Invoke(sender, triggerEvent);
         }
         public static void InvokeTrapHealed(object sender, TriggerEvent triggerEvent)
         {

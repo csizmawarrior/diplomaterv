@@ -71,6 +71,7 @@ namespace LabWork1github.static_constants
             public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.";
             public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.";
             public const string CHARACTER_HAS_NON_EXISTANT_PARTNER = "The following character has a referenced non existant partner, give a valid partner name for this character:";
+            public const string PLACE_OUT_OF_BOUNDS = "A referenced place is out of bounds.";
         }
         public static class TypeCreationError
         {

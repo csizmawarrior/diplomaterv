@@ -15,7 +15,6 @@ namespace LabWork1github
 {
     public class DynamicEnemyGrammarVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {
-        //TODO: eventHandling class that is for a specific when block
         private string typeName = "";
         private string type = null;
         private List<int> ConditionCount = new List<int>();
@@ -155,11 +154,11 @@ namespace LabWork1github
             }
             else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
                 Program.GetCharacterType(typeName).TeleportPlace =
-                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                    new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
             else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
-                newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                newCommand.Place = new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(TeleportPlaceChange);
                 AddCommand(newCommand);
             }
@@ -176,11 +175,11 @@ namespace LabWork1github
             }
             else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
                 Program.GetCharacterType(typeName).SpawnPlace =
-                    new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                    new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
             else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
-                newCommand.Place = new Place(int.Parse(context.place().x().GetText()), int.Parse(context.place().y().GetText()));
+                newCommand.Place = new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(SpawnPlaceChange);
                 AddCommand(newCommand);
             }
@@ -286,8 +285,8 @@ namespace LabWork1github
             TeleportCommand newCommand = new TeleportCommand();
             if (context.place() != null)
             {
-                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
-                                                    int.Parse(context.place().y().GetText()));
+                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText())-1,
+                                                    int.Parse(context.place().y().GetText())-1);
             }
             else
             {
@@ -347,8 +346,8 @@ namespace LabWork1github
             }
             if (context.place() != null)
             {
-                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText()),
-                                                    int.Parse(context.place().y().GetText()));
+                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText())-1,
+                                                    int.Parse(context.place().y().GetText())-1);
             }
             else
             {
@@ -610,25 +609,20 @@ namespace LabWork1github
             resultTrigger.SourceCharacter = new PlayerType();
             if (context.action().place() != null)
             {
-                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                       int.Parse(context.action().place().y().GetText()));
+                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
+                                       int.Parse(context.action().place().y().GetText())-1);
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.PlayerMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
-                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                            int.Parse(context.action().place().y().GetText()));
+                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText())-1,
+                                            int.Parse(context.action().place().y().GetText())-1);
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
             {
                 EventCollection.PlayerDied += eventHandler.OnEvent;
-                return resultTrigger;
-            }
-            if (context.action().STAY() != null)
-            {
-                EventCollection.PlayerStayed += eventHandler.OnEvent;
                 return resultTrigger;
             }
             if (context.action().SHOOT() != null)
@@ -697,25 +691,20 @@ namespace LabWork1github
             resultTrigger.SourceCharacter = new MonsterType();
             if (context.action().place() != null)
             {
-                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                       int.Parse(context.action().place().y().GetText()));
+                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
+                                       int.Parse(context.action().place().y().GetText())-1);
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.MonsterMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
-                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                            int.Parse(context.action().place().y().GetText()));
+                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText())-1,
+                                            int.Parse(context.action().place().y().GetText())-1);
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
             {
                 EventCollection.MonsterDied += eventHandler.OnEvent;
-                return resultTrigger;
-            }
-            if (context.action().STAY() != null)
-            {
-                EventCollection.MonsterStayed += eventHandler.OnEvent;
                 return resultTrigger;
             }
             if (context.action().SHOOT() != null)
@@ -788,15 +777,15 @@ namespace LabWork1github
             resultTrigger.SourceCharacter = new TrapType();
             if (context.action().place() != null)
             {
-                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
+                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
                                        int.Parse(context.action().place().y().GetText()));
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.TrapMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
-                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                            int.Parse(context.action().place().y().GetText()));
+                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText())-1,
+                                            int.Parse(context.action().place().y().GetText())-1);
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -804,11 +793,6 @@ namespace LabWork1github
                 Error += ErrorMessages.EventError.TRAPS_DO_NOT_DIE;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
-            }
-            if (context.action().STAY() != null)
-            {
-                EventCollection.TrapStayed += eventHandler.OnEvent;
-                return resultTrigger;
             }
             if (context.action().SHOOT() != null)
             {
@@ -893,8 +877,8 @@ namespace LabWork1github
                 }
                 if (context.action().place() != null)
                 {
-                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                           int.Parse(context.action().place().y().GetText()));
+                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
+                                           int.Parse(context.action().place().y().GetText())-1);
                     return resultTrigger;
                 }
             }
@@ -919,8 +903,8 @@ namespace LabWork1github
                 }
                 if (context.action().place() != null)
                 {
-                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText()),
-                                           int.Parse(context.action().place().y().GetText()));
+                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
+                                           int.Parse(context.action().place().y().GetText())-1);
                     return resultTrigger;
                 }
             }
@@ -969,7 +953,7 @@ namespace LabWork1github
                 TargetCharacter = new MonsterType()
             };
 
-            if (provider.OccupiedOrNot(command.TargetPlace))
+            if (provider.IsFreePlace(command.TargetPlace))
                 return;
             if ( ( command.TargetCharacterType == null || Program.GetCharacterType(command.TargetCharacterType.Name) == null )
                 && provider.GetMe().GetCharacterType().SpawnType == null)
@@ -991,10 +975,10 @@ namespace LabWork1github
             
             Monster newMonster = new Monster(command.TargetCharacterType.Health, (MonsterType)command.TargetCharacterType, command.TargetPlace);
             spawnEvent.TargetPlace = command.TargetPlace;
-            provider.GetMonsters().Add(newMonster);
+
+            provider.SpawnMonster(newMonster);
             provider.GetBoard().Monsters.Add(newMonster);
             EventCollection.InvokeTrapSpawned(provider.GetMe(), spawnEvent);
-            //TODO: Fix charactertype recognition for the newly spawned monster
         }
 
         public void SpawnRandom(GameParamProvider provider, SpawnCommand command)
@@ -1019,9 +1003,16 @@ namespace LabWork1github
         
         public void TeleportTrap(GameParamProvider provider, TeleportCommand command)
         {
+            TriggerEvent teleportEvent = new TriggerEvent
+            {
+                EventType = EventType.Teleport,
+                TargetCharacter = new TrapType(),
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place
+            };
             foreach (Trap Trap in provider.GetTraps())
             {
-                if (Trap.Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
+                if (Trap.Place.DirectionTo(provider.GetMe().Place).Equals(Directions.COLLISION) && !Trap.Equals(provider.GetMe()) )
                 {
                     if (command.Random)
                     {
@@ -1030,13 +1021,24 @@ namespace LabWork1github
                         int YPos = (int)(rand.Next() % provider.GetBoard().Width);
                         command.TargetPlace = new Place(XPos, YPos);
                     }
-                    if (!provider.OccupiedOrNot(command.TargetPlace))
+                    if (!provider.IsFreePlace(command.TargetPlace))
+                    {
+                        teleportEvent.TargetPlace = command.TargetPlace;
                         Trap.Place = command.TargetPlace;
+                        EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
+                    }
                 }
             }
         }
         public void TeleportMonster(GameParamProvider provider, TeleportCommand command)
         {
+            TriggerEvent teleportEvent = new TriggerEvent
+            {
+                EventType = EventType.Teleport,
+                TargetCharacter = new MonsterType(),
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place
+            };
             foreach (Monster monster in provider.GetMonsters()) {
                 if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
                 {
@@ -1047,13 +1049,24 @@ namespace LabWork1github
                         int YPos = (int)(rand.Next() % provider.GetBoard().Width);
                         command.TargetPlace = new Place(XPos, YPos);
                     }
-                    if (!provider.OccupiedOrNot(command.TargetPlace))
+                    if (!provider.IsFreePlace(command.TargetPlace))
+                    {
+                        teleportEvent.TargetPlace = command.TargetPlace;
                         monster.Place = command.TargetPlace;
+                        EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
+                    }
                 }
             }
         }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
+            TriggerEvent teleportEvent = new TriggerEvent
+            {
+                EventType = EventType.Teleport,
+                TargetCharacter = new PlayerType(),
+                SourceCharacter = new TrapType(),
+                SourcePlace = provider.GetMe().Place
+            };
             if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
             {
                 if (command.Random)
@@ -1063,13 +1076,17 @@ namespace LabWork1github
                     int YPos = (int)(rand.Next() % provider.GetBoard().Width);
                     command.TargetPlace = new Place(XPos, YPos);
                 }
-                if (!provider.OccupiedOrNot(command.TargetPlace))
+                if (!provider.IsFreePlace(command.TargetPlace))
+                {
+                    teleportEvent.TargetPlace = command.TargetPlace;
                     provider.GetPlayer().Place = command.TargetPlace;
+                    EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
+                }
             }
 
         }
 
-        //TODO: check if fall check this way okay or not
+        //TODO: check with test if fall check this way okay or not
         public void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
             TriggerEvent moveEvent = new TriggerEvent
@@ -1081,19 +1098,19 @@ namespace LabWork1github
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    if ((int)provider.GetMe().Place.X - command.Distance >= 0)
+                    if (provider.IsFreePlace(new Place( (int)provider.GetMe().Place.X - command.Distance, (int)provider.GetMe().Place.Y ) ) )
                         provider.GetMe().Place.X -= (int)command.Distance;
                     break;
                 case Directions.BACKWARDS:
-                    if ((int)provider.GetMe().Place.X + command.Distance < provider.GetBoard().Height)
+                    if (provider.IsFreePlace(new Place( (int)provider.GetMe().Place.X + command.Distance, (int)provider.GetMe().Place.Y) ) )
                         provider.GetMe().Place.X += (int)command.Distance;
                     break;
                 case Directions.LEFT:
-                    if ((int)provider.GetMe().Place.Y - command.Distance >= 0)
+                    if (provider.IsFreePlace(new Place((int)provider.GetMe().Place.X, (int)provider.GetMe().Place.Y - command.Distance)))
                         provider.GetMe().Place.Y -= (int)command.Distance;
                     break;
                 case Directions.RIGHT:
-                    if ((int)provider.GetMe().Place.Y + command.Distance < provider.GetBoard().Width)
+                    if (provider.IsFreePlace(new Place((int)provider.GetMe().Place.X, (int)provider.GetMe().Place.Y + command.Distance)))
                         provider.GetMe().Place.Y += (int)command.Distance;
                     break;
             }
@@ -1115,8 +1132,8 @@ namespace LabWork1github
                 SourcePlace = provider.GetMe().Place,
                 SourceCharacter = provider.GetMe().GetCharacterType()
             };
-
-            provider.GetMe().Place = command.TargetPlace;
+            if(provider.IsFreePlace(command.TargetPlace))
+                provider.GetMe().Place = command.TargetPlace;
 
             moveEvent.TargetPlace = provider.GetMe().Place;
             if (provider.GetMe().GetCharacterType() is MonsterType)
@@ -1128,6 +1145,8 @@ namespace LabWork1github
                 EventCollection.InvokeTrapMoved(provider.GetMe(), moveEvent);
             }
         }
+
+        //TODO: fix this logic 
         public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
         {
             TriggerEvent moveEvent = new TriggerEvent

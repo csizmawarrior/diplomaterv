@@ -13,7 +13,7 @@ place: x COMMA y;
 x: COORDINATE;
 y: COORDINATE;
 boardCreation: BOARD (nameDeclaration)? place SEMI ;
-playerPlacement: PLAYER place SEMI | PLAYER NAME_T EQUALS ID place SEMI ;
+playerPlacement: PLAYER (nameDeclaration)? place SEMI;
 monsterPlacement: MONSTER  typeName (nameDeclaration)? (COMMA partnerDeclaration)? place SEMI;
 trapPlacement: TRAP  typeName (nameDeclaration)? (COMMA partnerDeclaration)? place SEMI;
 nameDeclaration: NAME_T EQUALS ID;

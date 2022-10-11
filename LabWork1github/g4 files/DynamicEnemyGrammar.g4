@@ -58,7 +58,7 @@ whenExpression:  WHEN PARENTHESISSTART triggerEvent PARENTHESISCLOSE block;
 
 triggerEvent: character action | PLAYER HEALTH_CHECK;
 
-action: MOVE fromPlace? TO place | DIE | STAY AT place | SHOOT (NUMBER)? TO (character | place) | DAMAGE (NUMBER)? TO (character | place) |
+action: MOVE fromPlace? TO place | DIE | SHOOT (NUMBER)? TO (character | place) | DAMAGE (NUMBER)? TO (character | place) |
 			HEAL (NUMBER)? TO (character | place) | TELEPORT_T character TO place | SPAWN character TO place;
 
 block: bracketStartCommand statement* bracketCloseCommand;

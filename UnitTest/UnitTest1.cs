@@ -47,7 +47,7 @@ namespace UnitTest
         }
 
         [Test]
-        public void UnitTest1()
+        public void AssigningTrapsHealth()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = teszttrap ; health=20;");
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();

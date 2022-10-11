@@ -33,6 +33,8 @@ namespace LabWork1github
 
         public Drawer Drawer;
 
+        public bool spawned = false;
+
         public Character ActualCharacter { get; set; }
 
         public Monster ActualMonster { get; set; }
@@ -118,6 +120,7 @@ namespace LabWork1github
         {
             wrongMove = false;
             move = new PlayerMove();
+            spawned = false;
 
             foreach (Character character in Characters)
             {
@@ -125,6 +128,8 @@ namespace LabWork1github
                 character.GetCharacterType().Step(Provider);
             }
 
+            if (spawned)
+                Characters.Add(Monsters.ElementAt(Monsters.Count - 1));
             if (wrongMove)
                 return;
 
@@ -134,6 +139,7 @@ namespace LabWork1github
                 if (monster.Health <= 0)
                 {
                     Monsters.Remove(monster);
+                    Characters.Remove(monster);
                     break;
                 }
             }
@@ -168,7 +174,7 @@ namespace LabWork1github
                 visitor.Visit(chatContext);
         }
 
-        private bool fallingCheck(Player player, PlayerMove move)
+        private bool FallingCheck(Player player, PlayerMove move)
         {
                 if (Player.Place.Y == 0 && move.Direction == Directions.LEFT)
                     return true;
@@ -189,10 +195,10 @@ namespace LabWork1github
             switch (move.CommandType)
             {
                 case CommandType.health:
-                    Drawer.WriteCommand(PlayerInteractionMessages.HEALTH_CHECK_MESSAGE + Player.GetHealth());
+                    Drawer.WriteHealths(Monsters);
                     break;
                 case CommandType.move:
-                    if (fallingCheck(Player, move))
+                    if (FallingCheck(Player, move))
                     {
                         Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_FALLING_OFF_BOARD);
                         wrongMove = true;
@@ -209,7 +215,6 @@ namespace LabWork1github
                         }
                     }
                     if (!wrongMove)
-                        //TODO: ask if this is good, or should the game move the player
                         Player.Move(move.Direction);
                     break;
                 case CommandType.shoot:
@@ -232,20 +237,37 @@ namespace LabWork1github
             }
         }
 
-        public bool IsOccupied(Place p)
+        public void SpawnMonster(Monster monster)
         {
-            foreach(Monster m in Monsters)
+            if (monster.Place.X >= 0 && monster.Place.X < Board.Height && monster.Place.Y >= 0 && monster.Place.Y < Board.Width)
             {
-                if (m.Place.DirectionTo(p) == Directions.COLLISION)
-                    return true;
+                spawned = true;
+                this.Monsters.Add(monster);
             }
-            foreach (Trap t in Traps)
+            else
+                Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS);
+        }
+
+        public bool IsOccupiedOrOutOfBounds(Place p)
+        {
+            int counter = 0;
+            if(p.X < 0 || p.X >= Board.Height || p.Y < 0 || p.Y >= Board.Width)
             {
-                if (t.Place.DirectionTo(p) == Directions.COLLISION)
-                    return true;
-            }
-            if (Player.Place.DirectionTo(p) == Directions.COLLISION)
+                Drawer.WriteCommand(ErrorMessages.GameError.PLACE_OUT_OF_BOUNDS);
                 return true;
+            }
+            foreach(Character c in Characters)
+            {
+                if (c.Place.DirectionTo(p) == Directions.COLLISION)
+                    if(c.GetCharacterType() is TrapType)
+                    {
+                        if (counter >= 2)
+                            return true;
+                        counter++;
+                        continue;
+                    }
+                    return true;
+            }
             return false;
         }
     }

@@ -28,6 +28,14 @@ namespace LabWork1github
             Console.WriteLine(message+"\n");
             Console.WriteLine("--------------------------------\n");
         }
+
+        public void WriteHealths(List<Monster> monsters)
+        {
+            foreach(Monster monster in monsters)
+            {
+                Console.WriteLine($"Health of Monster at {monster.Place.X},{monster.Place.Y}: {monster.Health}");
+            }
+        }
         public void DrawBoard(Board board, Player player, List<Monster> monsters, List<Trap> traps)
         {
             List<Place> places = new List<Place>();
@@ -155,6 +163,8 @@ namespace LabWork1github
                 Console.Write("\n");
             }
             Console.Write("\n");
+            Console.WriteLine(PlayerInteractionMessages.PLAYER_HEALTH_MESSAGE+player.GetHealth());
+            Console.WriteLine(PlayerInteractionMessages.PLAYER_DAMAGE_MESSAGE+player.GetCharacterType().Damage);
         }
 
         internal void writeHelp()
