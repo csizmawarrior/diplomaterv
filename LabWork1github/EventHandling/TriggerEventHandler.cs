@@ -10,7 +10,7 @@ namespace LabWork1github.EventHandling
     {
         public TriggerEvent TriggeringEvent { get; set; }
 
-        public List<Command> Commands { get; set; }
+        public List<Command> Commands { get; set; } = new List<Command>();
         public GameParamProvider GameParamProvider { get; set; }
 
         public virtual void OnEvent(object sender, TriggerEvent args)
