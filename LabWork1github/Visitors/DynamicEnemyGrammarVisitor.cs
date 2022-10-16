@@ -913,7 +913,119 @@ namespace LabWork1github
             ErrorFound = true;
             return resultTrigger;
         }
+        public HealthChangerCommand VisitHealthChangeOption([NotNull] HealthChangeOptionContext context, HealthChangerCommand command)
+        {
 
+            if (context.distanceDeclare() != null)
+                command.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+
+            if (context.hpChangeAmountDeclaration() != null)
+            {
+                if (context.hpChangeAmountDeclaration().damageAmountDeclaration() != null)
+                {
+                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().damageAmountDeclaration().NUMBER().GetText());
+                }
+                else
+                {
+                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().healAmountDeclaration().NUMBER().GetText());
+                }
+            }
+
+            var direction = context.DIRECTION();
+            if (direction != null)
+            {
+                if (!(direction.GetText().Equals(Directions.FORWARD) || direction.GetText().Equals(Directions.LEFT) ||
+                    direction.GetText().Equals(Directions.BACKWARDS) || direction.GetText().Equals(Directions.RIGHT)))
+                {
+                    Error += ErrorMessages.HealthChangeError.WRONG_DIRECTION;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                command.Direction = direction.GetText();
+                if (command is ShootCommand)
+                {
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootDirection);
+                }
+                if (command is DamageCommand)
+                {
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageDirection);
+                }
+                if (command is HealCommand)
+                {
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealDirection);
+                }
+                return command; ;
+            }
+            PlaceContext place = context.place();
+            if (place != null)
+            {
+                int xPos = int.Parse(place.x().GetText());
+                int yPos = int.Parse(place.y().GetText());
+                command.TargetPlace = new Place(xPos, yPos);
+                if (command is ShootCommand)
+                {
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlace);
+                }
+                if (command is DamageCommand)
+                {
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlace);
+                }
+                if (command is HealCommand)
+                {
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlace);
+                }
+                return command; ;
+            }
+
+            if (context.character() != null)
+            {
+                if (context.character().TRAP() != null || context.character().ME() != null)
+                {
+                    Error += ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                if (command is ShootCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                    {
+                        Error += ErrorMessages.ShootError.MONSTER_CANNOT_BE_SHOT;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    if (context.character().PLAYER() != null)
+                        ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlayer);
+                }
+                if (command is DamageCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToMonster);
+                    if (context.character().PLAYER() != null)
+                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlayer);
+                }
+                if (command is HealCommand)
+                {
+                    if (context.character().MONSTER() != null)
+                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToMonster);
+                    if (context.character().PLAYER() != null)
+                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlayer);
+                }
+                return command; ;
+            }
+
+            var random = context.RANDOM();
+            if (random != null)
+            {
+                if (command is ShootCommand)
+                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootRandom);
+                if (command is DamageCommand)
+                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageRandom);
+                if (command is HealCommand)
+                    ((HealCommand)command).HealDelegate = new HealDelegate(HealRandom);
+                return command;
+            }
+            return command;
+        }
         public bool GetCondition(GameParamProvider provider, [NotNull] BoolExpressionContext context)
         {
             ConditionVisitor visitor = new ConditionVisitor(provider, context);
@@ -1146,7 +1258,6 @@ namespace LabWork1github
             }
         }
 
-        //TODO: fix this logic 
         public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
         {
             TriggerEvent moveEvent = new TriggerEvent
@@ -1194,9 +1305,21 @@ namespace LabWork1github
         }
         public void MoveRandom(GameParamProvider provider, MoveCommand command)
         {
+            int counter = 0;
             Random rand = new Random();
-            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            int XPos=-1;
+            int YPos = -1;
+            while (XPos == -1 && YPos == -1 && counter < 10)
+            {
+                XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                if(provider.IsFreePlace(new Place(XPos, YPos)))
+                {
+                    XPos = -1;
+                    YPos = -1;
+                    counter++;
+                }
+            }
             command.TargetPlace = new Place(XPos, YPos);
             MoveToPlace(provider, command);
         }
@@ -1671,6 +1794,7 @@ namespace LabWork1github
                 TargetCharacter = new MonsterType()
             };
             provider.GetMonster().Heal(command.HealthChangeAmount);
+            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
         }
         public void HealRandom(GameParamProvider provider, HealCommand command)
         {
@@ -1739,120 +1863,6 @@ namespace LabWork1github
                     if (character.GetCharacterType() is TrapType && character.GetCharacterType().Name.Equals(this.typeName))
                         character.GetCharacterType().SpawnType = command.CharacterType;
             }
-        }
-
-        public HealthChangerCommand VisitHealthChangeOption([NotNull] HealthChangeOptionContext context, HealthChangerCommand command)
-        {
-
-            if (context.distanceDeclare() != null)
-                command.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
-
-            if (context.hpChangeAmountDeclaration() != null)
-            {
-                if (context.hpChangeAmountDeclaration().damageAmountDeclaration() != null)
-                {
-                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().damageAmountDeclaration().NUMBER().GetText());
-                }
-                else
-                {
-                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().healAmountDeclaration().NUMBER().GetText());
-                }
-            }
-
-            var direction = context.DIRECTION();
-            if (direction != null)
-            {
-                if (!(direction.GetText().Equals(Directions.FORWARD) || direction.GetText().Equals(Directions.LEFT) ||
-                    direction.GetText().Equals(Directions.BACKWARDS) || direction.GetText().Equals(Directions.RIGHT)))
-                {
-                    Error += ErrorMessages.HealthChangeError.WRONG_DIRECTION;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
-                command.Direction = direction.GetText();
-                if (command is ShootCommand)
-                {
-                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootDirection);
-                }
-                if (command is DamageCommand)
-                {
-                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageDirection);
-                }
-                if (command is HealCommand)
-                {
-                    ((HealCommand)command).HealDelegate = new HealDelegate(HealDirection);
-                }
-                return command;;
-            }
-            PlaceContext place = context.place();
-            if (place != null)
-            {
-                int xPos = int.Parse(place.x().GetText());
-                int yPos = int.Parse(place.y().GetText());
-                command.TargetPlace = new Place(xPos, yPos);
-                if (command is ShootCommand)
-                {
-                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlace);
-                }
-                if (command is DamageCommand)
-                {
-                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlace);
-                }
-                if (command is HealCommand)
-                {
-                    ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlace);
-                }
-                return command;;
-            }
-
-            if (context.character() != null)
-            {
-                if (context.character().TRAP() != null || context.character().ME() != null)
-                {
-                    Error += ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
-                if (command is ShootCommand)
-                {
-                    if (context.character().MONSTER() != null)
-                    {
-                        Error += ErrorMessages.ShootError.MONSTER_CANNOT_BE_SHOT;
-                        Error += context.GetText() + "\n";
-                        ErrorFound = true;
-                    }
-                    if (context.character().PLAYER() != null)
-                        ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlayer);
-                }
-                if (command is DamageCommand)
-                {
-                    if (context.character().MONSTER() != null)
-                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToMonster);
-                    if (context.character().PLAYER() != null)
-                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlayer);
-                }
-                if (command is HealCommand)
-                {
-                    if (context.character().MONSTER() != null)
-                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToMonster);
-                    if (context.character().PLAYER() != null)
-                        ((HealCommand)command).HealDelegate = new HealDelegate(HealToPlayer);
-                }
-                return command;;
-            }
-
-            var random = context.RANDOM();
-            if (random != null)
-            {
-                if (command is ShootCommand)
-                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootRandom);
-                if (command is DamageCommand)
-                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageRandom);
-                if (command is HealCommand)
-                    ((HealCommand)command).HealDelegate = new HealDelegate(HealRandom);
-                return command;
-            }
-            return command;
         }
     }
 }
