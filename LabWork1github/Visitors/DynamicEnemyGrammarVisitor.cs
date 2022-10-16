@@ -1054,7 +1054,6 @@ namespace LabWork1github
         }
 
 
-        //TODO: collision detectation fucntion should be created and called, whenever we want to move someone or teleport or spawn.
 
 
         public void Spawn(GameParamProvider provider, SpawnCommand command)

@@ -6,7 +6,7 @@ statement: playerPlacement
          | monsterPlacement
          | trapPlacement
          ;
-//TODO: szimbólumtábla
+
 typeName: ID;
 place: x COMMA y;
 

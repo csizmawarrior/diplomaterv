@@ -1,4 +1,5 @@
-﻿using LabWork1github.static_constants;
+﻿using LabWork1github.EventHandling;
+using LabWork1github.static_constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,21 +44,32 @@ namespace LabWork1github
 
         public void Move(string direction)
         {
+            TriggerEvent moveEvent = new TriggerEvent
+            {
+                EventType = EventType.Move,
+                SourceCharacter = new PlayerType(),
+                SourcePlace = Place
+            };
             switch (direction)
             {
                 case Directions.FORWARD:
                     Place.X -= 1;
+                    moveEvent.TargetPlace = Place;
                     break;
                 case Directions.BACKWARDS:
                     Place.X += 1;
+                    moveEvent.TargetPlace = Place;
                     break;
                 case Directions.LEFT:
                     Place.Y -= 1;
+                    moveEvent.TargetPlace = Place;
                     break;
                 case Directions.RIGHT:
                     Place.Y += 1;
+                    moveEvent.TargetPlace = Place;
                     break;
             }
+            EventCollection.InvokePlayerMoved(this, moveEvent);
         }
 
         public override Character GetPartner()

@@ -111,7 +111,16 @@ namespace LabWork1github
                 Step();
             }
             if (Player.GetHealth() <= 0)
+            {
+                TriggerEvent dieEvent = new TriggerEvent
+                {
+                    EventType = EventType.Die,
+                    SourceCharacter = new PlayerType(),
+                    SourcePlace = Player.Place
+                };
+                EventCollection.InvokePlayerDied(Player, dieEvent);
                 Drawer.WriteCommand(PlayerInteractionMessages.YOU_LOST);
+            }
             else
                 Drawer.WriteCommand(PlayerInteractionMessages.YOU_WON);
         }
@@ -138,29 +147,19 @@ namespace LabWork1github
             {
                 if (monster.Health <= 0)
                 {
+                    TriggerEvent dieEvent = new TriggerEvent
+                    {
+                        EventType = EventType.Die,
+                        SourceCharacter = new MonsterType(),
+                        SourcePlace = monster.Place
+                    };
                     Monsters.Remove(monster);
                     Characters.Remove(monster);
+                    EventCollection.InvokeMonsterDied(monster, dieEvent);
                     break;
                 }
             }
             Drawer.DrawBoard(Board, Player, Monsters, Traps);
-        }
-
-        private bool CheckSpawn(Place spawnPoint)
-        {
-            foreach(Trap trap in Traps)
-            {
-                if (trap.Place.DirectionTo(spawnPoint) == Directions.COLLISION)
-                    return false;
-            }
-            foreach (Monster monster in Monsters)
-            {
-                if (monster.Place.DirectionTo(spawnPoint) == Directions.COLLISION)
-                    return false;
-            }
-            if (Player.Place.DirectionTo(spawnPoint) == Directions.COLLISION)
-                return false;
-            return true;
         }
 
         private void CommandProcess(string inputCommand)
@@ -195,7 +194,14 @@ namespace LabWork1github
             switch (move.CommandType)
             {
                 case CommandType.health:
+                    TriggerEvent healthCheckEvent = new TriggerEvent
+                    {
+                        EventType = EventType.HealthCheck,
+                        SourceCharacter = new PlayerType(),
+                        SourcePlace = Player.Place
+                    };
                     Drawer.WriteHealths(Monsters);
+                    EventCollection.InvokePlayerHealthCheck(Player, healthCheckEvent);
                     break;
                 case CommandType.move:
                     if (FallingCheck(Player, move))
@@ -218,13 +224,22 @@ namespace LabWork1github
                         Player.Move(move.Direction);
                     break;
                 case CommandType.shoot:
+                    TriggerEvent shootEvent = new TriggerEvent
+                    {
+                        EventType = EventType.Shoot,
+                        SourceCharacter = new PlayerType(),
+                        SourcePlace = Player.Place
+                    };
                     for (int i = 0; i < Monsters.Count; i++)
                     {
                         if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
                         {
                             Monsters.ElementAt(i).Damage(Player.Type.Damage);
+                            shootEvent.TargetCharacter = new MonsterType();
+                            shootEvent.TargetPlace = Monsters.ElementAt(i).Place;
                         }
                     }
+                    EventCollection.InvokePlayerShot(Player, shootEvent);
                     break;
                 case CommandType.help:
                     wrongMove = true;
