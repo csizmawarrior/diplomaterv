@@ -33,7 +33,7 @@ namespace LabWork1github
         {
             foreach(Monster monster in monsters)
             {
-                Console.WriteLine($"Health of Monster at {monster.Place.X},{monster.Place.Y}: {monster.Health}");
+                Console.WriteLine($"Health of Monster at {monster.Place.X+1},{monster.Place.Y+1}: {monster.Health}");
             }
         }
         public void DrawBoard(Board board, Player player, List<Monster> monsters, List<Trap> traps)
@@ -126,8 +126,22 @@ namespace LabWork1github
                                 break;
                             }
                         }
-                        if(!found)
-                            Console.Write("T");
+                        int counter = 0;
+                        foreach (Trap trap in traps)
+                        {
+                            if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                            {
+                                counter++;
+                                if (counter == 2)
+                                {
+                                    Console.Write("T");
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!found)
+                            Console.Write(" ");
                     }
 
                     if(trapOccupied)

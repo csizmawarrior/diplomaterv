@@ -82,5 +82,9 @@ namespace LabWork1github
         {
             game.SpawnMonster(monster);
         }
+        public void SetActualCharacter(Character character)
+        {
+            game.ActualCharacter = character;
+        }
     }
 }

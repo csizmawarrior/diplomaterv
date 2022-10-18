@@ -278,7 +278,7 @@ namespace LabWork1github
                 {
                     if (c.GetCharacterType() is TrapType)
                     {
-                        if (counter >= 2)
+                        if (counter >= 1)
                             return true;
                         counter++;
                         continue;

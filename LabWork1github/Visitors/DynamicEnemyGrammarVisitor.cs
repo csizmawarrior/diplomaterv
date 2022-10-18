@@ -405,12 +405,16 @@ namespace LabWork1github
 
         public override object VisitBlock([NotNull] BlockContext context)
         {
+            return null;
+        }
+
+        public void VisitMyBlock([NotNull] BlockContext context)
+        {
             if(CreationStage.Equals(TypeCreationStage.ConditionalCommandBlock) || CreationStage.Equals(TypeCreationStage.EventCommandBlock))
                 foreach (var child in context.statement())
                 {
                     VisitStatement(child);
                 }
-            return base.VisitBlock(context);
         }
 
         public override object VisitIfExpression([NotNull] IfExpressionContext context)
@@ -434,7 +438,7 @@ namespace LabWork1github
                 {
                     CreationStage = TypeCreationStage.ConditionalCommandBlock;
                     ConditionalCommand = newCommand;
-                    VisitBlock(context.block());
+                    VisitMyBlock(context.block());
                     ConditionalCommand = null;
                     CreationStage = TypeCreationStage.CommandListing;
                     AddCommand(newCommand);
@@ -510,10 +514,12 @@ namespace LabWork1github
             }
             return base.VisitWhileExpression(context);
         }
-        //TODO: check if using CharacterType for partner is possible, if so then test it in Game class
         public override object VisitWhenExpression([NotNull] WhenExpressionContext context)
         {
-            TriggerEventHandler EventHandler = new TriggerEventHandler();
+            TriggerEventHandler EventHandler = new TriggerEventHandler
+            {
+                Owner = Program.GetCharacterType(this.typeName)
+            };
             TriggerEvent TriggerEvent = VisitEvent(context.triggerEvent(), EventHandler);
             EventHandler.TriggeringEvent = TriggerEvent;
 
@@ -1033,7 +1039,7 @@ namespace LabWork1github
 
         public void AddCommand(Command newCommand)
         {
-            switch (CreationStage)
+            oswitch (CreationStage)
             {
                 case TypeCreationStage.CommandListing:
                     Program.GetCharacterType(typeName).Commands.Add(newCommand);
