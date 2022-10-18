@@ -17,8 +17,6 @@ namespace LabWork1github
     {
         private string typeName = "";
         private string type = null;
-        private List<int> ConditionCount = new List<int>();
-        private List<Command> ConditionalCommands = new List<Command>();
         private TriggerEventHandler TriggerEventHandler { get; set; } = null;
         private Command ConditionalCommand { get; set; } = null;
         private TypeCreationStage CreationStage { get; set; } = TypeCreationStage.ParameterDeclare;
@@ -32,8 +30,6 @@ namespace LabWork1github
             {
                 typeName = "";
                 type = null;
-                ConditionCount = new List<int>();
-                ConditionalCommands = new List<Command>();
                 Error = "";
                 ErrorFound = false;
                 CreationStage = TypeCreationStage.ParameterDeclare;
@@ -566,6 +562,7 @@ namespace LabWork1github
             {
                 EventCollection.PlayerHealthCheck += eventHandler.OnEvent;
                 resultTrigger.SourceCharacter = new PlayerType();
+                resultTrigger.EventType = EventType.HealthCheck;
                 return resultTrigger;
             }
             if (context.character() != null)
@@ -1065,7 +1062,7 @@ namespace LabWork1github
                 TargetCharacter = new MonsterType()
             };
 
-            if (provider.IsFreePlace(command.TargetPlace))
+            if ( ! provider.IsFreePlace(command.TargetPlace))
                 return;
             if ( ( command.TargetCharacterType == null || Program.GetCharacterType(command.TargetCharacterType.Name) == null )
                 && provider.GetMe().GetCharacterType().SpawnType == null)
@@ -1089,7 +1086,6 @@ namespace LabWork1github
             spawnEvent.TargetPlace = command.TargetPlace;
 
             provider.SpawnMonster(newMonster);
-            provider.GetBoard().Monsters.Add(newMonster);
             EventCollection.InvokeTrapSpawned(provider.GetMe(), spawnEvent);
         }
 
@@ -1133,7 +1129,7 @@ namespace LabWork1github
                         int YPos = (int)(rand.Next() % provider.GetBoard().Width);
                         command.TargetPlace = new Place(XPos, YPos);
                     }
-                    if (!provider.IsFreePlace(command.TargetPlace))
+                    if (provider.IsFreePlace(command.TargetPlace))
                     {
                         teleportEvent.TargetPlace = command.TargetPlace;
                         Trap.Place = command.TargetPlace;
@@ -1161,7 +1157,7 @@ namespace LabWork1github
                         int YPos = (int)(rand.Next() % provider.GetBoard().Width);
                         command.TargetPlace = new Place(XPos, YPos);
                     }
-                    if (!provider.IsFreePlace(command.TargetPlace))
+                    if (provider.IsFreePlace(command.TargetPlace))
                     {
                         teleportEvent.TargetPlace = command.TargetPlace;
                         monster.Place = command.TargetPlace;
@@ -1188,7 +1184,7 @@ namespace LabWork1github
                     int YPos = (int)(rand.Next() % provider.GetBoard().Width);
                     command.TargetPlace = new Place(XPos, YPos);
                 }
-                if (!provider.IsFreePlace(command.TargetPlace))
+                if (provider.IsFreePlace(command.TargetPlace))
                 {
                     teleportEvent.TargetPlace = command.TargetPlace;
                     provider.GetPlayer().Place = command.TargetPlace;
@@ -1313,7 +1309,7 @@ namespace LabWork1github
             {
                 XPos = (int)(rand.Next() % provider.GetBoard().Height);
                 YPos = (int)(rand.Next() % provider.GetBoard().Width);
-                if(provider.IsFreePlace(new Place(XPos, YPos)))
+                if(!provider.IsFreePlace(new Place(XPos, YPos)))
                 {
                     XPos = -1;
                     YPos = -1;

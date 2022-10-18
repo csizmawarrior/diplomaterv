@@ -1102,4 +1102,51 @@ namespace UnitTest
         }
 
     }
+
+    public class InActionTests
+    {
+        public static Game testGame;
+
+        [SetUp]
+        public void Setup()
+        {
+            Program.Characters.Clear();
+            Program.CharacterTypes.Clear();
+            Program.Board = new Board();
+            Program.TrapTypeLoader();
+            Program.MonsterTypeLoader();
+            testGame = new Game();
+        }
+
+        public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(fileText);
+            DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
+            DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
+            DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
+            return chatContext;
+        }
+        public BoardGrammarParser.ProgramContext PreparingBoardGrammar(string fileText)
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(fileText);
+            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
+            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
+            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
+            return chatContext;
+        }
+        public PlayerGrammarParser.StatementContext PreparingPlayerGrammar(string fileText)
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(fileText);
+            PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(PlayerGrammarLexer_);
+            PlayerGrammarParser PlayerGrammarParser = new PlayerGrammarParser(commonTokenStream);
+            PlayerGrammarParser.StatementContext chatContext = PlayerGrammarParser.statement();
+            return chatContext;
+        }
+
+        //Move tests
+
+    }
 }

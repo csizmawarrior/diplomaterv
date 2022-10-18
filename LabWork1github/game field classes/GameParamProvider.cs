@@ -67,7 +67,7 @@ namespace LabWork1github
         }
         public bool IsFreePlace(Place p)
         {
-            return game.IsOccupiedOrOutOfBounds(p);
+            return !game.IsOccupiedOrOutOfBounds(p);
         }
         public void PlayerCommand()
         {

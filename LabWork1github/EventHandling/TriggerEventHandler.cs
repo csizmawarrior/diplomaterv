@@ -18,7 +18,7 @@ namespace LabWork1github.EventHandling
             if (args.EventType.Equals(TriggeringEvent.EventType) && args.TargetCharacter == TriggeringEvent.TargetCharacter) {
                 if ((TriggeringEvent.Amount == 0 || TriggeringEvent.Amount == args.Amount)
                     && (TriggeringEvent.SourcePlace == null || (TriggeringEvent.SourcePlace.X.Equals(args.SourcePlace.X) && TriggeringEvent.SourcePlace.Y.Equals(args.SourcePlace.Y)) )
-                    && (TriggeringEvent.SourceCharacter == null || TriggeringEvent.SourceCharacter.Equals(args.SourceCharacter)) )
+                    && (TriggeringEvent.SourceCharacter == null || TriggeringEvent.SourceCharacter.GetType().Equals(args.SourceCharacter.GetType())) )
                 {
                     foreach (Command command in Commands)
                     {

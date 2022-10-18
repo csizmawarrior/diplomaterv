@@ -258,11 +258,12 @@ namespace LabWork1github
             {
                 spawned = true;
                 this.Monsters.Add(monster);
+                if(!this.Board.Monsters.Contains(monster))
+                    this.Board.Monsters.Add(monster);
             }
             else
                 Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS);
         }
-
         public bool IsOccupiedOrOutOfBounds(Place p)
         {
             int counter = 0;
@@ -274,7 +275,8 @@ namespace LabWork1github
             foreach(Character c in Characters)
             {
                 if (c.Place.DirectionTo(p) == Directions.COLLISION)
-                    if(c.GetCharacterType() is TrapType)
+                {
+                    if (c.GetCharacterType() is TrapType)
                     {
                         if (counter >= 2)
                             return true;
@@ -282,7 +284,11 @@ namespace LabWork1github
                         continue;
                     }
                     return true;
+                }
             }
+            if (spawned)
+                if (Monsters.ElementAt(Monsters.Count - 1).Place.DirectionTo(p) == Directions.COLLISION)
+                    return true;
             return false;
         }
     }
