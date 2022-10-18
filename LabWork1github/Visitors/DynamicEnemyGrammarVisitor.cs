@@ -1039,7 +1039,7 @@ namespace LabWork1github
 
         public void AddCommand(Command newCommand)
         {
-            oswitch (CreationStage)
+            switch (CreationStage)
             {
                 case TypeCreationStage.CommandListing:
                     Program.GetCharacterType(typeName).Commands.Add(newCommand);
