@@ -231,8 +231,8 @@ namespace LabWork1github
             PlaceContext place = context.place();
             if (place != null)
             {
-                int xPos = int.Parse(place.x().GetText());
-                int yPos = int.Parse(place.y().GetText());
+                int xPos = int.Parse(place.x().GetText()) -1;
+                int yPos = int.Parse(place.y().GetText()) -1;
                 newCommand.TargetPlace = new Place(xPos, yPos);
                 newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
                 AddCommand(newCommand);
@@ -290,6 +290,7 @@ namespace LabWork1github
             }
             else
             {
+
                 if (Program.GetCharacterType(typeName).TeleportPlace.Equals(new Place(-1, -1)) && context.RANDOM() == null)
                 {
                     Error += ErrorMessages.TeleportError.TELEPORTING_WITHOUT_PLACE_GIVEN;
@@ -959,8 +960,8 @@ namespace LabWork1github
             PlaceContext place = context.place();
             if (place != null)
             {
-                int xPos = int.Parse(place.x().GetText());
-                int yPos = int.Parse(place.y().GetText());
+                int xPos = int.Parse(place.x().GetText()) -1;
+                int yPos = int.Parse(place.y().GetText()) -1;
                 command.TargetPlace = new Place(xPos, yPos);
                 if (command is ShootCommand)
                 {
@@ -1410,7 +1411,7 @@ namespace LabWork1github
                 TargetPlace = command.TargetPlace,
                 Amount = command.HealthChangeAmount
             };
-            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+            if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                 shootEvent.TargetCharacter = new PlayerType();
@@ -1569,14 +1570,14 @@ namespace LabWork1github
                 Amount = command.HealthChangeAmount,
                 TargetPlace = command.TargetPlace
             };
-            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+            if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                 damageEvent.TargetCharacter = new PlayerType();
             }
             foreach(Monster monster in provider.GetMonsters())
             {
-                if (monster.Place.Equals(command.TargetPlace))
+                if (monster.Place.X == (command.TargetPlace.X) && monster.Place.Y == (command.TargetPlace.Y))
                 {
                     monster.Damage(command.HealthChangeAmount);
                     damageEvent.TargetCharacter = new MonsterType();
@@ -1750,14 +1751,14 @@ namespace LabWork1github
                 Amount = command.HealthChangeAmount,
                 TargetPlace = command.TargetPlace
             };
-            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
+            if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
             {
                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                 healEvent.TargetCharacter = new PlayerType();
             }
             foreach (Monster monster in provider.GetMonsters())
             {
-                if (monster.Place.Equals(command.TargetPlace))
+                if (monster.Place.X == (command.TargetPlace.X) && monster.Place.Y == (command.TargetPlace.Y))
                 {
                     monster.Heal(command.HealthChangeAmount);
                     healEvent.TargetCharacter = new MonsterType();
