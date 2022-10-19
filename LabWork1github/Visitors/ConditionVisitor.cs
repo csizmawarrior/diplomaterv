@@ -10,6 +10,8 @@ namespace LabWork1github.Visitors
 {
     class ConditionVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {   //TODO: Partner integration
+        //TODO: While refactoring pay attention to possible type errors
+        //TODO: Check double int mismatches or just remove double-ness, it has to be integrated to a lot of places
         public BoolExpressionContext BoolExpressionContext { get; set; }
 
         public GameParamProvider Provider { get; set; }
@@ -45,13 +47,12 @@ namespace LabWork1github.Visitors
             {
                 expressionValue = CheckFunctionExpression(context.functionExpression());
             }
-            if(context.numToBoolOperation() != null)
+            if(context.numberExpression() != null && context.numberExpression().Length > 1)
             {
                 if (context.numToBoolOperation().NUMCOMPARE() != null)
                     expressionValue = CheckNumCompareExpression(context);
                 if (context.numToBoolOperation().COMPARE() != null)
                     expressionValue = CheckCompareExpression(context);
-
             }
             if (context.attribute().Length > 1)
                 expressionValue = CheckBoolAttributeExpression(context);
@@ -283,12 +284,19 @@ namespace LabWork1github.Visitors
                             if (context.COMPARE().GetText().Equals("!="))
                                 return Provider.GetMonster().GetCharacterType() != Provider.GetTrap().GetCharacterType().SpawnType;
                         }
-                        else
+                        if (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
                         {
                             if (context.COMPARE().GetText().Equals("=="))
                                 return Provider.GetMe().GetCharacterType() == Provider.GetTrap().GetCharacterType().SpawnType;
                             if (context.COMPARE().GetText().Equals("!="))
                                 return Provider.GetMe().GetCharacterType() != Provider.GetTrap().GetCharacterType().SpawnType;
+                        }
+                        else
+                        {
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetPartner().GetCharacterType() == Provider.GetTrap().GetCharacterType().SpawnType;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetPartner().GetCharacterType() != Provider.GetTrap().GetCharacterType().SpawnType;
                         }
                     }
                     if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)

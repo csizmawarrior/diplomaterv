@@ -79,9 +79,13 @@ namespace LabWork1github.static_constants
         }
         public static class ExpressionError
         {
-            public const string TYPE_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute type can only be compared with type attributes, at:\n";
+            public const string TYPE_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute \"type\" can only be compared with \"type\" attributes, at:\n";
             public const string PLACE_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute place can only be compared with place attributes, at:\n";
             public const string NOT_A_NUMBER = "The referenced attribute is not a number, number expected at:\n";
+            public const string DIVIDING_WITH_ZERO = "The expression want to divide with zero.\n";
+            public const string NOT_NUMBER_EXPRESSION_COMPARED_WITH_NUMBER = "The expressions compared don't match type, one is number, the other isn't at:\n";
+            public const string NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER = "At least one of the referenced number exppressions does not calculate to a number at:\n";
+            public const string NOT_NUMBER_EXPRESSION_HANDLED_AS_NUMBER = "The referenced number exppression does not calculate to a number at:\n";
             public const string PLAYER_DOES_NOT_HAVE_THIS_ATTRIBUTE = "The Player type doesn't have this kind of attribute at:\n";
             public const string MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE = "The Monster type doesn't have this kind of attribute at:\n";
             public const string TRAP_DOES_NOT_HAVE_THIS_ATTRIBUTE = "The Trap type doesn't have this kind of attribtue at:\n";

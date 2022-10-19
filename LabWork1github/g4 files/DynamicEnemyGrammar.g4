@@ -7,7 +7,7 @@ grammar DynamicEnemyGrammar;
 name: ID;
 
 statementList: nameDeclaration declarations statement*;
-declarations: declareStatements* COMMANDS COLON; 
+declarations: declareStatements* COMMANDS COLON;
 
 statement: declareStatements
 		| healDeclaration ';'
@@ -75,11 +75,13 @@ y: NUMBER;
 fromPlace: FROM place;
 
 boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpression? | NEGATE boolExpression nextBoolExpression?
-            | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression? | attribute COMPARE attribute nextBoolExpression?;
+            | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression?;
 nextBoolExpression: BOOLCONNECTER boolExpression;
 
-numberExpression: numberMultipExpression (NUMCONNECTERADD numberMultipExpression)*;
-numberMultipExpression: numberFirstExpression (NUMCONNECTERMULTIP numberFirstExpression)*;
+numberExpression: numberMultipExpression nextNumberExpression?;
+nextNumberExpression: NUMCONNECTERADD numberExpression;
+numberMultipExpression: numberFirstExpression nextNumberMultipExpression?;
+nextNumberMultipExpression: NUMCONNECTERMULTIP numberMultipExpression;
 numberFirstExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTE numberExpression ABSOLUTE | something;
 functionExpression: character function;
 

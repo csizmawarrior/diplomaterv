@@ -71,8 +71,8 @@ namespace LabWork1github
             Drawer.DrawBoard(Board, Player, Monsters, Traps);
             while (Player.GetHealth() > 0 && Monsters.Count > 0)
             {
-                Round++;
                 Step();
+                Round++;
             }
             if (Player.GetHealth() <= 0)
             {

@@ -320,11 +320,25 @@ public interface IDynamicEnemyGrammarVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitNumberExpression([NotNull] DynamicEnemyGrammarParser.NumberExpressionContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNextNumberExpression([NotNull] DynamicEnemyGrammarParser.NextNumberExpressionContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberMultipExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitNumberMultipExpression([NotNull] DynamicEnemyGrammarParser.NumberMultipExpressionContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberMultipExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNextNumberMultipExpression([NotNull] DynamicEnemyGrammarParser.NextNumberMultipExpressionContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberFirstExpression"/>.
