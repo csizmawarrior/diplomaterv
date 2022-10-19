@@ -9,7 +9,7 @@ using static LabWork1github.DynamicEnemyGrammarParser;
 namespace LabWork1github.Visitors
 {
     class ConditionVisitor : DynamicEnemyGrammarBaseVisitor<object>
-    {
+    {   //TODO: Partner integration
         public BoolExpressionContext BoolExpressionContext { get; set; }
 
         public GameParamProvider Provider { get; set; }

@@ -18,7 +18,9 @@ namespace LabWork1github
 
         public override object VisitProgram([NotNull] ProgramContext context)
         {
-            return base.VisitProgram(context);
+            VisitStatementList(context.statementList());
+            AfterBoardCreationCheck();
+            return null;
         }
 
         public override object VisitStatementList(StatementListContext context)
@@ -110,6 +112,49 @@ namespace LabWork1github
             ErrorList += context.GetText() + "\n";
 
             return base.VisitTrapPlacement(context);
+        }
+
+        private void AfterBoardCreationCheck()
+        {
+            foreach (Character character in Program.Characters)
+            {
+                if (character.Place.X > Program.Board.Height || character.Place.Y > Program.Board.Width)
+                {
+                    Program.Characters.Remove(character);
+                    ErrorFound = true;
+                    ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS+character.Name;
+                }
+                if (!character.PartnerName.Equals(""))
+                {
+                    foreach (Character m in Program.Characters)
+                    {
+                        if (m.Name.Equals(character.PartnerName))
+                        {
+                            character.Partner = m;
+                            break;
+                        }
+                    }
+                    if (character.Partner == null)
+                    {
+                        ErrorFound = true;
+                        ErrorList += ErrorMessages.GameError.CHARACTER_HAS_NON_EXISTANT_PARTNER + character.Name;
+                    }
+                }
+                foreach (Character c in Program.Characters)
+                {
+                    if(character is Player)
+                            if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && !(c is Player))
+                                throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_CHARACTER);
+                    if ((c is Trap))
+                    {
+                        if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && character != c)
+                            throw new NullReferenceException(ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + character.Name);
+                        if (character is Player)
+                            if (c.Place.DirectionTo(character.Place) == Directions.COLLISION)
+                                throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_TRAP);
+                    }
+                }
+            }
         }
     }
 }

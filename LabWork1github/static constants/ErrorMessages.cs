@@ -66,12 +66,12 @@ namespace LabWork1github.static_constants
         }
         public static class GameError
         {
-            public const string CHARACTER_SPAWNED_OUT_OF_BOUNDS = "A character was out of bounds, so it got deleted";
+            public const string CHARACTER_SPAWNED_OUT_OF_BOUNDS = "A character was out of bounds, so it got deleted, with the given name: ";
             public const string CHARACTER_SPAWNED_ON_TRAP = "A character wwith the following name spawns on a trap, give a valid board: ";
-            public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.";
-            public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.";
-            public const string CHARACTER_HAS_NON_EXISTANT_PARTNER = "The following character has a referenced non existant partner, give a valid partner name for this character:";
-            public const string PLACE_OUT_OF_BOUNDS = "A referenced place is out of bounds.";
+            public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.\n";
+            public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.\n";
+            public const string CHARACTER_HAS_NON_EXISTANT_PARTNER = "The following character has a referenced non existant partner, give a valid partner name for this character: ";
+            public const string PLACE_OUT_OF_BOUNDS = "A referenced place is out of bounds.\n";
         }
         public static class TypeCreationError
         {
@@ -87,6 +87,7 @@ namespace LabWork1github.static_constants
             public const string TRAP_DOES_NOT_HAVE_THIS_ATTRIBUTE = "The Trap type doesn't have this kind of attribtue at:\n";
             public const string PLACE_DOES_NOT_HAVE_THIS_ATTRIBUTE = "The Place attribute doesn't have this kind of attribute at:\n";
             public const string ENEMY_DOES_NOT_HAVE_THIS_ATTRIBUTE = "The Monster type and the Trap type don't have this kind of attribute at:\n";
+            public const string NOBODY_HAS_THIS_ATTRIBUTE = "The game's current types don't have this kind of attribute at:\n";
         }
         public static class ConditionError
         {

@@ -37,10 +37,6 @@ namespace LabWork1github
 
         public Character ActualCharacter { get; set; }
 
-        public Monster ActualMonster { get; set; }
-
-        public Trap ActualTrap { get; set; }
-
         public int NoExecution { get; set; } = 0;
 
         public int ImmediateExecution { get; set; } = 0;
@@ -61,44 +57,12 @@ namespace LabWork1github
             Player = Board.Player;
             foreach (Character character in Characters)
             {
-                if (character.Place.X > Board.Height || character.Place.Y > Board.Width)
-                {
-                    Characters.Remove(character);
-                    Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS);
-                }
-                if (!character.PartnerName.Equals(""))
-                {
-                    foreach(Character m in Characters)
-                    {
-                        if (m.Name.Equals(character.PartnerName))
-                        {
-                            character.Partner = m;
-                            break;
-                        }
-                    }
-                    if (character.Partner == null)
-                    {
-                        Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_HAS_NON_EXISTANT_PARTNER);
-                        Drawer.WriteCommand(character.Name);
-                    }
-                }
-            if(character.GetCharacterType().EventHandlers.Count > 0)
+                if(character.GetCharacterType().EventHandlers.Count > 0)
                 {
                     foreach (TriggerEventHandler eventHandler in character.GetCharacterType().EventHandlers)
                         eventHandler.GameParamProvider = Provider;
                 }
-            foreach (Trap Trap in Traps)
-            {
-                {
-                    if (character.Place.DirectionTo(Player.Place) == Directions.COLLISION && !(character is Player))
-                        throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_CHARACTER);
-                    if (character.Place.DirectionTo(Trap.Place) == Directions.COLLISION && character != Trap)
-                        throw new NullReferenceException(ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP+character.Name);
-                }
-                if (Trap.Place.DirectionTo(Player.Place) == Directions.COLLISION)
-                    throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_TRAP);
             }
-           }
         }
         //hmm these checks might be able to go into the board visitor
 
@@ -290,6 +254,60 @@ namespace LabWork1github
                 if (Monsters.ElementAt(Monsters.Count - 1).Place.DirectionTo(p) == Directions.COLLISION)
                     return true;
             return false;
+        }
+
+        public Monster GetClosestMonster()
+        {
+            int smallestDistance = Board.Height+Board.Width;
+            Monster closestMonster = null;
+            int xDistance = smallestDistance;
+            int yDistance = smallestDistance;
+            foreach(Monster m in Monsters)
+            {
+                if (m.Equals(ActualCharacter))
+                    continue;
+                if (m.Place.X > ActualCharacter.Place.X)
+                    xDistance = m.Place.X - ActualCharacter.Place.X;
+                else
+                    xDistance = ActualCharacter.Place.X - m.Place.X;
+                if (m.Place.Y > ActualCharacter.Place.Y)
+                    yDistance = m.Place.Y - ActualCharacter.Place.Y;
+                else
+                    yDistance = ActualCharacter.Place.Y - m.Place.Y;
+                if (xDistance + yDistance < smallestDistance)
+                {
+                    smallestDistance = xDistance + yDistance;
+                    closestMonster = m;
+                }
+            }
+            return closestMonster;
+        }
+
+        public Trap GetClosestTrap()
+        {
+            int smallestDistance = Board.Height + Board.Width;
+            Trap closestTrap = null;
+            int xDistance = smallestDistance;
+            int yDistance = smallestDistance;
+            foreach (Trap m in Traps)
+            {
+                if (m.Equals(ActualCharacter))
+                    continue;
+                if (m.Place.X > ActualCharacter.Place.X)
+                    xDistance = m.Place.X - ActualCharacter.Place.X;
+                else
+                    xDistance = ActualCharacter.Place.X - m.Place.X;
+                if (m.Place.Y > ActualCharacter.Place.Y)
+                    yDistance = m.Place.Y - ActualCharacter.Place.Y;
+                else
+                    yDistance = ActualCharacter.Place.Y - m.Place.Y;
+                if (xDistance + yDistance < smallestDistance)
+                {
+                    smallestDistance = xDistance + yDistance;
+                    closestTrap = m;
+                }
+            }
+            return closestTrap;
         }
     }
 }

@@ -47,11 +47,17 @@ namespace LabWork1github
         }
         public Monster GetMonster()
         {
-            return game.ActualMonster;
+            return game.GetClosestMonster();
+        }
+        public Character GetPartner()
+        {
+            if (GetMe().Partner != null)
+                return GetMe().Partner;
+            return null;
         }
         public Trap GetTrap()
         {
-            return game.ActualTrap;
+            return game.GetClosestTrap();
         }
         public void NoExecution(int commandCount)
         {

@@ -11,6 +11,8 @@ namespace LabWork1github
         public const string TRAP = "trap";
         public const string MONSTER = "monster";
         public const string PLAYER = "player";
+        public const string PARTNER = "partner";
+        public const string ME = "me";
         public const string DEFAULT_TRAP = "DefaultTrap";
         public const string DEFAULT_MONSTER = "DefaultMonster";
     }

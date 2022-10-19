@@ -17,12 +17,12 @@ namespace LabWork1github
         public string ErrorList { get; set; } = "";
         public bool CheckFailed { get; set; } = false;
         public bool NumberCheckFailed { get; set; } = false;
-        public string characterType { get; set; }
+        public string CharacterType { get; set; }
 
         public ExpressionVisitor(BoolExpressionContext context, string myType)
         {
             BoolExpressionContext = context;
-            characterType = myType;
+            CharacterType = myType;
         }
 
         public void CheckTypes(BoolExpressionContext Excontext)
@@ -90,7 +90,7 @@ namespace LabWork1github
 
         public override object VisitAttribute([NotNull] AttributeContext context)
         {
-            if (context.character().GetText().Equals(Types.MONSTER) || characterType.Equals(Types.MONSTER))
+            if (context.character().GetText().Equals(Types.MONSTER) || (context.character().GetText().Equals(Types.ME) && CharacterType.Equals(Types.MONSTER)) )
             {
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
                     context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("type")))
@@ -110,7 +110,19 @@ namespace LabWork1github
                     CheckFailed = true;
                 }
             }
-            if (context.character().GetText().Equals(Types.TRAP) || characterType.Equals(Types.TRAP))
+            if (context.character().GetText().Equals(Types.PARTNER))
+            {
+                if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("damage") ||
+                      context.possibleAttributes().GetText().Equals("type") || context.possibleAttributes().GetText().Equals("teleport_place") ||
+                      context.possibleAttributes().GetText().Equals("spawn_place") || context.possibleAttributes().GetText().Equals("spawn_type") ||
+                      context.possibleAttributes().GetText().Equals("heal") || context.possibleAttributes().GetText().Equals("health")))
+                {
+                    ErrorList += ErrorMessages.ExpressionError.NOBODY_HAS_THIS_ATTRIBUTE;
+                    ErrorList += context.GetText() + "\n";
+                    CheckFailed = true;
+                }
+            }
+            if (context.character().GetText().Equals(Types.TRAP) || (context.character().GetText().Equals(Types.ME) && CharacterType.Equals(Types.TRAP)) )
             {
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("damage") || 
                     context.possibleAttributes().GetText().Equals("type") || context.possibleAttributes().GetText().Equals("teleport_place") || 
@@ -138,7 +150,7 @@ namespace LabWork1github
                     }
                     else
         //by this we rerstrict the deepness of the reference for types, no need for further levels, the same things can be represented like this as well
-        //and it'd look weird to have e.g. type.type.type, or spawn_type.type they return the same type as the first one
+        //and it would not be logical to have e.g. type.type.type, or spawn_type.type they should return the same type as the first one anyway
         //we can't ensure now that it will be a trap or a monster referred to under type, or a player, so the error for this can only be provided in runtime
                     if (context.possibleAttributes().GetText().Equals("spawn_type") || context.possibleAttributes().GetText().Equals("type"))
                     {
