@@ -51,9 +51,7 @@ namespace LabWork1github
         }
         public Character GetPartner()
         {
-            if (GetMe().Partner != null)
-                return GetMe().Partner;
-            return null;
+            return GetMe().Partner;
         }
         public Trap GetTrap()
         {

@@ -48,25 +48,25 @@ namespace LabWork1github
             {
                 EventType = EventType.Move,
                 SourceCharacter = new PlayerType(),
-                SourcePlace = Place
+                SourcePlace = new Place(Place.X, Place.Y)
             };
             switch (direction)
             {
                 case Directions.FORWARD:
                     Place.X -= 1;
-                    moveEvent.TargetPlace = Place;
+                    moveEvent.TargetPlace = new Place(Place.X, Place.Y);
                     break;
                 case Directions.BACKWARDS:
                     Place.X += 1;
-                    moveEvent.TargetPlace = Place;
+                    moveEvent.TargetPlace = new Place(Place.X, Place.Y);
                     break;
                 case Directions.LEFT:
                     Place.Y -= 1;
-                    moveEvent.TargetPlace = Place;
+                    moveEvent.TargetPlace = new Place(Place.X, Place.Y);
                     break;
                 case Directions.RIGHT:
                     Place.Y += 1;
-                    moveEvent.TargetPlace = Place;
+                    moveEvent.TargetPlace = new Place(Place.X, Place.Y);
                     break;
             }
             EventCollection.InvokePlayerMoved(this, moveEvent);

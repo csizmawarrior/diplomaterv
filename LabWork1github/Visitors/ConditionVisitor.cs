@@ -92,6 +92,14 @@ namespace LabWork1github.Visitors
                             return true;
                     }
                 }
+                if (functionExpressionContext.character().PARTNER() != null)
+                {
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPartner().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetPartner().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
+                    {
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPartner().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetPartner().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
+                            return true;
+                    }
+                }
                 if (functionExpressionContext.character().TRAP() != null)
                 {
                     if (Math.Abs(Provider.GetMe().Place.X - Provider.GetTrap().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetTrap().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
@@ -118,6 +126,10 @@ namespace LabWork1github.Visitors
                     return Provider.GetMonster().GetHealth() > 0;
                 if (functionExpressionContext.character().TRAP() != null)
                     return true;
+                if (functionExpressionContext.character().PLAYER() != null)
+                    return true;
+                if (functionExpressionContext.character().PARTNER() != null)
+                    return (Provider.GetPartner() == null ? false : Provider.GetPartner().GetHealth() > 0);
             }
             return false;
         }
@@ -215,6 +227,28 @@ namespace LabWork1github.Visitors
                     return TrapAttribute(context);
                 }
             }
+            if(context.character().PARTNER() != null)
+            {
+                if (Provider.GetPartner() == null)
+                {
+                    ErrorList += ErrorMessages.ConditionError.UNRECOGNIZED_ATTRIBUTE_ERROR + Provider.GetMe().Partner;
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if (Provider.GetPartner() is Monster)
+                {
+                    return MonsterAttribute(context);
+                }
+                if (Provider.GetPartner() is Trap)
+                {
+                    return TrapAttribute(context);
+                }
+                if (Provider.GetPartner() is Player)
+                {
+                    return PlayerAttribute(context);
+                }
+            }
             ErrorList += ErrorMessages.ConditionError.UNRECOGNIZED_ATTRIBUTE_ERROR;
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;
@@ -225,9 +259,10 @@ namespace LabWork1github.Visitors
         {
             //monster is the first character
             if(context.attribute().ElementAt(0).character().MONSTER() != null || 
-                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType))
+                (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType) ||
+                (context.attribute().ElementAt(0).character().PARTNER() != null && Provider.GetPartner() != null && Provider.GetPartner() is Monster))
             {
-                //monster is the first character type is the attribute
+                //monster is the first character, type is the first attribute
                 if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") && 
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
                 {

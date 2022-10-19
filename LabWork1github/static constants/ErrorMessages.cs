@@ -93,6 +93,7 @@ namespace LabWork1github.static_constants
         {
             public const string CONDITION_CHECK_FAIL = "Condition check failed\n";
             public const string UNRECOGNIZED_NUMBER = "Unrecognized number expression at:\n";
+            public const string NON_EXISTANT_PARTNER = "The partner of the character is not existing, give a real partner to the character with the name:\n";
             public const string UNRECOGNIZED_ATTRIBUTE_ERROR = "An attribute caused error!\n" + ErrorMessages.ConditionError.IN_PLACE;
             public const string PLAYER_ATTRIBUTE_ERROR = "A player attribute caused error!\n";
             public const string TRAP_ATTRIBUTE_ERROR = "A trap attribute caused error!\n";

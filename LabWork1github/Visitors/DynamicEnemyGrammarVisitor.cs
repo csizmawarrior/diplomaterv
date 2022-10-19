@@ -1122,7 +1122,7 @@ namespace LabWork1github
                 EventType = EventType.Teleport,
                 TargetCharacter = new TrapType(),
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
             foreach (Trap Trap in provider.GetTraps())
             {
@@ -1151,7 +1151,7 @@ namespace LabWork1github
                 EventType = EventType.Teleport,
                 TargetCharacter = new MonsterType(),
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
             foreach (Monster monster in provider.GetMonsters()) {
                 if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
@@ -1179,7 +1179,7 @@ namespace LabWork1github
                 EventType = EventType.Teleport,
                 TargetCharacter = new PlayerType(),
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
             if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
             {
@@ -1206,7 +1206,7 @@ namespace LabWork1github
             TriggerEvent moveEvent = new TriggerEvent
             {
                 EventType = EventType.Move,
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 SourceCharacter = provider.GetMe().GetCharacterType()
             };
             switch (command.Direction)
@@ -1228,7 +1228,7 @@ namespace LabWork1github
                         provider.GetMe().Place.Y += (int)command.Distance;
                     break;
             }
-            moveEvent.TargetPlace = provider.GetMe().Place;
+            moveEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y);
             if (provider.GetMe().GetCharacterType() is MonsterType)
             {
                 EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
@@ -1243,13 +1243,13 @@ namespace LabWork1github
             TriggerEvent moveEvent = new TriggerEvent
             {
                 EventType = EventType.Move,
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 SourceCharacter = provider.GetMe().GetCharacterType()
             };
             if(provider.IsFreePlace(command.TargetPlace))
                 provider.GetMe().Place = command.TargetPlace;
 
-            moveEvent.TargetPlace = provider.GetMe().Place;
+            moveEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y);
             if (provider.GetMe().GetCharacterType() is MonsterType)
             {
                 EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
@@ -1265,7 +1265,7 @@ namespace LabWork1github
             TriggerEvent moveEvent = new TriggerEvent
             {
                 EventType = EventType.Move,
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 SourceCharacter = provider.GetMe().GetCharacterType()
             };
 
@@ -1295,7 +1295,7 @@ namespace LabWork1github
                         provider.GetMe().Place.Y -= yChange;
                 }
 
-            moveEvent.TargetPlace = provider.GetMe().Place;
+            moveEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y);
             if (provider.GetMe().GetCharacterType() is MonsterType)
             {
                 EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
@@ -1332,7 +1332,7 @@ namespace LabWork1github
             {
                 EventType = EventType.Shoot,
                 SourceCharacter = new MonsterType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount
         };
             switch (command.Direction)
@@ -1409,7 +1409,7 @@ namespace LabWork1github
             {
                 EventType = EventType.Shoot,
                 SourceCharacter = new MonsterType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 TargetPlace = command.TargetPlace,
                 Amount = command.HealthChangeAmount
             };
@@ -1427,9 +1427,9 @@ namespace LabWork1github
             {
                 EventType = EventType.Shoot,
                 SourceCharacter = new MonsterType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 TargetCharacter = new PlayerType(),
-                TargetPlace = provider.GetPlayer().Place,
+                TargetPlace = new Place(provider.GetPlayer().Place.X, provider.GetPlayer().Place.Y),
                 Amount = command.HealthChangeAmount
             };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
@@ -1453,7 +1453,7 @@ namespace LabWork1github
             {
                 EventType = EventType.Damage,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount
             };
             switch (command.Direction)
@@ -1568,7 +1568,7 @@ namespace LabWork1github
             {
                 EventType = EventType.Damage,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = command.TargetPlace
             };
@@ -1594,9 +1594,9 @@ namespace LabWork1github
             {
                 EventType = EventType.Damage,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
-                TargetPlace = provider.GetPlayer().Place,
+                TargetPlace = new Place(provider.GetPlayer().Place.X, provider.GetPlayer().Place.Y),
                 TargetCharacter = new PlayerType()
             };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
@@ -1609,9 +1609,9 @@ namespace LabWork1github
             {
                 EventType = EventType.Damage,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
-                TargetPlace = provider.GetMonster().Place,
+                TargetPlace = new Place(provider.GetMonster().Place.X, provider.GetMonster().Place.Y),
                 TargetCharacter = new MonsterType()
             };
             provider.GetMonster().Damage(command.HealthChangeAmount);
@@ -1634,7 +1634,7 @@ namespace LabWork1github
             {
                 EventType = EventType.Heal,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount
             };
             switch (command.Direction)
@@ -1749,7 +1749,7 @@ namespace LabWork1github
             {
                 EventType = EventType.Heal,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = command.TargetPlace
             };
@@ -1775,9 +1775,9 @@ namespace LabWork1github
             {
                 EventType = EventType.Heal,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
-                TargetPlace = provider.GetPlayer().Place,
+                TargetPlace = new Place(provider.GetPlayer().Place.X, provider.GetPlayer().Place.Y),
                 TargetCharacter = new PlayerType()
             };
             provider.GetPlayer().Heal(command.HealthChangeAmount);
@@ -1790,9 +1790,9 @@ namespace LabWork1github
             {
                 EventType = EventType.Heal,
                 SourceCharacter = new TrapType(),
-                SourcePlace = provider.GetMe().Place,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
-                TargetPlace = provider.GetMonster().Place,
+                TargetPlace = new Place(provider.GetMonster().Place.X, provider.GetMonster().Place.Y),
                 TargetCharacter = new MonsterType()
             };
             provider.GetMonster().Heal(command.HealthChangeAmount);

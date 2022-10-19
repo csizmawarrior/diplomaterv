@@ -80,7 +80,7 @@ namespace LabWork1github
                 {
                     EventType = EventType.Die,
                     SourceCharacter = new PlayerType(),
-                    SourcePlace = Player.Place
+                    SourcePlace = new Place(Player.Place.X, Player.Place.Y)
                 };
                 EventCollection.InvokePlayerDied(Player, dieEvent);
                 Drawer.WriteCommand(PlayerInteractionMessages.YOU_LOST);
@@ -115,7 +115,7 @@ namespace LabWork1github
                     {
                         EventType = EventType.Die,
                         SourceCharacter = new MonsterType(),
-                        SourcePlace = monster.Place
+                        SourcePlace = new Place(monster.Place.X, monster.Place.Y)
                     };
                     Monsters.Remove(monster);
                     Characters.Remove(monster);
@@ -162,7 +162,7 @@ namespace LabWork1github
                     {
                         EventType = EventType.HealthCheck,
                         SourceCharacter = new PlayerType(),
-                        SourcePlace = Player.Place
+                        SourcePlace = new Place(Player.Place.X, Player.Place.Y)
                     };
                     Drawer.WriteHealths(Monsters);
                     EventCollection.InvokePlayerHealthCheck(Player, healthCheckEvent);
@@ -192,7 +192,7 @@ namespace LabWork1github
                     {
                         EventType = EventType.Shoot,
                         SourceCharacter = new PlayerType(),
-                        SourcePlace = Player.Place
+                        SourcePlace = new Place(Player.Place.X, Player.Place.Y)
                     };
                     for (int i = 0; i < Monsters.Count; i++)
                     {
@@ -200,7 +200,7 @@ namespace LabWork1github
                         {
                             Monsters.ElementAt(i).Damage(Player.Type.Damage);
                             shootEvent.TargetCharacter = new MonsterType();
-                            shootEvent.TargetPlace = Monsters.ElementAt(i).Place;
+                            shootEvent.TargetPlace = new Place(Monsters.ElementAt(i).Place.X, Monsters.ElementAt(i).Place.Y);
                         }
                     }
                     EventCollection.InvokePlayerShot(Player, shootEvent);
@@ -266,14 +266,8 @@ namespace LabWork1github
             {
                 if (m.Equals(ActualCharacter))
                     continue;
-                if (m.Place.X > ActualCharacter.Place.X)
-                    xDistance = m.Place.X - ActualCharacter.Place.X;
-                else
-                    xDistance = ActualCharacter.Place.X - m.Place.X;
-                if (m.Place.Y > ActualCharacter.Place.Y)
-                    yDistance = m.Place.Y - ActualCharacter.Place.Y;
-                else
-                    yDistance = ActualCharacter.Place.Y - m.Place.Y;
+                xDistance = Math.Abs(m.Place.X - ActualCharacter.Place.X);
+                yDistance = Math.Abs(m.Place.Y - ActualCharacter.Place.Y);
                 if (xDistance + yDistance < smallestDistance)
                 {
                     smallestDistance = xDistance + yDistance;
@@ -293,14 +287,8 @@ namespace LabWork1github
             {
                 if (m.Equals(ActualCharacter))
                     continue;
-                if (m.Place.X > ActualCharacter.Place.X)
-                    xDistance = m.Place.X - ActualCharacter.Place.X;
-                else
-                    xDistance = ActualCharacter.Place.X - m.Place.X;
-                if (m.Place.Y > ActualCharacter.Place.Y)
-                    yDistance = m.Place.Y - ActualCharacter.Place.Y;
-                else
-                    yDistance = ActualCharacter.Place.Y - m.Place.Y;
+                xDistance = Math.Abs(m.Place.X - ActualCharacter.Place.X);
+                yDistance = Math.Abs(m.Place.Y - ActualCharacter.Place.Y);
                 if (xDistance + yDistance < smallestDistance)
                 {
                     smallestDistance = xDistance + yDistance;
