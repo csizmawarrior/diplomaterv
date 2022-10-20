@@ -24,11 +24,6 @@ namespace LabWork1github
             BoolExpressionContext = context;
             CharacterType = myType;
         }
-
-        public void CheckTypes(BoolExpressionContext Excontext)
-        {
-            
-        }
         
         public void CheckBool(BoolExpressionContext context)
         {
@@ -73,6 +68,7 @@ namespace LabWork1github
                     if (IsNumberExpressionNumber(context.numberExpression().ElementAt(0)) &&
                         IsNumberExpressionNumber(context.numberExpression().ElementAt(1)))
                         return base.VisitBoolExpression(context);
+
 
                     //if a NumberExpression is not a number, then there is no "nextNumberExpression" and such
                     //and there must be an attribute, if there isn't then a check failed and we mustn't check
@@ -122,11 +118,6 @@ namespace LabWork1github
             }
             return base.VisitBoolExpression(context);
         }
-
-        public void CheckNotNumberNumberExpression([NotNull] NumberExpressionContext context)
-        {
-
-        }
         public bool IsNumberExpressionNumber([NotNull] NumberExpressionContext context)
         {
             bool isfirstExpressionNumber = IsNumberMultipExpressionNumber(context.numberMultipExpression(), true);
@@ -175,10 +166,10 @@ namespace LabWork1github
         }
         public bool IsNumberFirstExpressionValidNumber([NotNull] NumberFirstExpressionContext context, bool isZeroAllowed)
         {
-            if(context.PARENTHESISSTART() != null || (context.ABSOLUTE() != null && context.ABSOLUTE().Length > 1))
+            if(context.PARENTHESISSTART() != null || (context.ABSOLUTESTART() != null && context.ABSOLUTEEND() != null))
             {
                 bool isInsideExpressionNumber = IsNumberExpressionNumber(context.numberExpression());
-                if (!isInsideExpressionNumber && (context.ABSOLUTE() != null && context.ABSOLUTE().Length > 1))
+                if (!isInsideExpressionNumber && (context.ABSOLUTESTART() != null && context.ABSOLUTEEND() != null))
                 {
                     ErrorList += ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_HANDLED_AS_NUMBER;
                     ErrorList += context.GetText() + "\n";

@@ -20,6 +20,9 @@ namespace LabWork1github.Visitors
 
         public bool ErrorFound { get; set; }
 
+        public List<double> NumberList { get; set; } = new List<double>();
+        public List<MathSymbol> SymbolList { get; set; } = new List<MathSymbol>();
+
         public ConditionVisitor(GameParamProvider provider, BoolExpressionContext context)
         { 
             this.BoolExpressionContext = context;
@@ -54,8 +57,6 @@ namespace LabWork1github.Visitors
                 if (context.numToBoolOperation().COMPARE() != null)
                     expressionValue = CheckCompareExpression(context);
             }
-            if (context.attribute().Length > 1)
-                expressionValue = CheckBoolAttributeExpression(context);
             if (context.nextBoolExpression() != null)
             {
                 expressionValue = CheckNextBoolExpression(expressionValue, context.nextBoolExpression());
@@ -87,33 +88,35 @@ namespace LabWork1github.Visitors
                     return true;
                 if (functionExpressionContext.character().MONSTER() != null)
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetMonster().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetMonster().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetMonster().Place.X) <= Provider.GetNear())
                     {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetMonster().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetMonster().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetMonster().Place.Y) <= Provider.GetNear())
                             return true;
                     }
                 }
                 if (functionExpressionContext.character().PARTNER() != null)
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPartner().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetPartner().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
+                    if (Provider.GetPartner() == null)
+                        return false;
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPartner().Place.X) <= Provider.GetNear())
                     {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPartner().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetPartner().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPartner().Place.Y) <= Provider.GetNear())
                             return true;
                     }
                 }
                 if (functionExpressionContext.character().TRAP() != null)
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetTrap().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetTrap().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetTrap().Place.X) <= Provider.GetNear())
                     {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetTrap().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetTrap().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetTrap().Place.Y) <= Provider.GetNear())
                             return true;
                     }
                 }
                 if (functionExpressionContext.character().PLAYER() != null)
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPlayer().Place.X) <= Provider.GetNear() || Math.Abs(Provider.GetPlayer().Place.X - Provider.GetMe().Place.X) <= Provider.GetNear())
+                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPlayer().Place.X) <= Provider.GetNear())
                     {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPlayer().Place.Y) <= Provider.GetNear() || Math.Abs(Provider.GetPlayer().Place.Y - Provider.GetMe().Place.Y) <= Provider.GetNear())
+                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPlayer().Place.Y) <= Provider.GetNear())
                             return true;
                     }
                 }
@@ -130,7 +133,7 @@ namespace LabWork1github.Visitors
                 if (functionExpressionContext.character().PLAYER() != null)
                     return true;
                 if (functionExpressionContext.character().PARTNER() != null)
-                    return (Provider.GetPartner() == null ? false : Provider.GetPartner().GetHealth() > 0);
+                    return (Provider.GetPartner() != null && Provider.GetPartner().GetHealth() > 0);
             }
             return false;
         }
@@ -145,8 +148,12 @@ namespace LabWork1github.Visitors
 
         public double CheckNumberAddExpression(NumberExpressionContext context)
         {
-            double expressionValue = CheckNumberMultipExpression(context.numberMultipExpression().ElementAt(0));
+            double firstExpressionValue = CheckNumberMultipExpression(context.numberMultipExpression());
 
+            if(context.nextNumberExpression() != null)
+            {
+
+            }
             if(context.NUMCONNECTERADD().Length > 0)
             {
                 for(int i=0; i<context.NUMCONNECTERADD().Length; i++)

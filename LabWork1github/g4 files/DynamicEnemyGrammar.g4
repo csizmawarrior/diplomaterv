@@ -82,7 +82,7 @@ numberExpression: numberMultipExpression nextNumberExpression?;
 nextNumberExpression: NUMCONNECTERADD numberExpression;
 numberMultipExpression: numberFirstExpression nextNumberMultipExpression?;
 nextNumberMultipExpression: NUMCONNECTERMULTIP numberMultipExpression;
-numberFirstExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTE numberExpression ABSOLUTE | something;
+numberFirstExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTESTART numberExpression ABSOLUTEEND | something;
 functionExpression: character function;
 
 something: NUMBER | ROUND | attribute;
@@ -129,7 +129,8 @@ STAY: 'stay';
 AT: 'at';
 
 EQUALS: '=' ;
-ABSOLUTE: '|';
+ABSOLUTESTART: '~|';
+ABSOLUTEEND: '|~';
 NEGATE: '!';
 BOOLCONNECTER: '||' | '&&' ;
 COMPARE: '==' | '!=' ;
