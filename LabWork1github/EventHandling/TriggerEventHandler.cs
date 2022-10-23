@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,13 @@ namespace LabWork1github.EventHandling
         public GameParamProvider GameParamProvider { get; set; }
         public CharacterType Owner { get; set; }
 
+        //TODO: The if might needs some fine tuning
         public virtual void OnEvent(object sender, TriggerEvent args)
         {
             if (args.EventType.Equals(TriggeringEvent.EventType) && args.TargetCharacter == TriggeringEvent.TargetCharacter) {
-                if ((TriggeringEvent.Amount == 0 || TriggeringEvent.Amount == args.Amount)
-                    && (TriggeringEvent.SourcePlace == null || (TriggeringEvent.SourcePlace.X.Equals(args.SourcePlace.X) && TriggeringEvent.SourcePlace.Y.Equals(args.SourcePlace.Y)) )
+                if ((TriggeringEvent.Amount == StaticStartValues.PLACEHOLDER_AMOUNT || TriggeringEvent.Amount == args.Amount)
+                    && (TriggeringEvent.SourcePlace == null || (TriggeringEvent.SourcePlace.DirectionTo(args.SourcePlace) == Directions.COLLISION))
+                    && (TriggeringEvent.TargetPlace == null || (TriggeringEvent.TargetPlace.DirectionTo(args.TargetPlace) == Directions.COLLISION))
                     && (TriggeringEvent.SourceCharacter == null || TriggeringEvent.SourceCharacter.GetType().Equals(args.SourceCharacter.GetType())) )
                 {
                     Character backupActualCharacter = GameParamProvider.GetMe();

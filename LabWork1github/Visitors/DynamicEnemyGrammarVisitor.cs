@@ -94,12 +94,18 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            else if(CreationStage.Equals(TypeCreationStage.ParameterDeclare))
-                Program.GetCharacterType(typeName).Health = int.Parse(context.NUMBER().GetText());
+            else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+            {
+                Program.GetCharacterType(typeName).Health = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
+                if(Program.GetCharacterType(typeName).Health == 0)
+                {
+                    Program.GetCharacterType(typeName).Health = StaticStartValues.PLACEHOLDER_HEALTH;
+                }
+            }
             else
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
-                newCommand.Number = int.Parse(context.NUMBER().GetText());
+                newCommand.Number = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
                 newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(HealthChange);
                 AddCommand(newCommand);
             }
@@ -115,11 +121,11 @@ namespace LabWork1github
                 ErrorFound = true;
             }
             else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
-                    Program.GetCharacterType(typeName).Heal = int.Parse(context.NUMBER().GetText());
+                    Program.GetCharacterType(typeName).Heal = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
             else
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
-                newCommand.Number = int.Parse(context.NUMBER().GetText());
+                newCommand.Number = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
                 newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(HealChange);
                 AddCommand(newCommand);
             }
@@ -129,11 +135,11 @@ namespace LabWork1github
         public override object VisitDamageAmountDeclaration([NotNull] DamageAmountDeclarationContext context)
         {
             if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
-                Program.GetCharacterType(typeName).Damage = int.Parse(context.NUMBER().GetText());
+                Program.GetCharacterType(typeName).Damage = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
             else
             {
                 NumberParameterDeclareCommand newCommand = new NumberParameterDeclareCommand();
-                newCommand.Number = int.Parse(context.NUMBER().GetText());
+                newCommand.Number = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
                 newCommand.NumberParameterDeclareDelegate = new NumberParameterDeclareDelegate(DamageChange);
                 AddCommand(newCommand);
             }
@@ -149,12 +155,11 @@ namespace LabWork1github
                 ErrorFound = true;
             }
             else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
-                Program.GetCharacterType(typeName).TeleportPlace =
-                    new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
+                Program.GetCharacterType(typeName).TeleportPlace = Parsers.PlaceParseFromNumbers(context.place());
             else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
-                newCommand.Place = new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
+                newCommand.Place = Parsers.PlaceParseFromNumbers(context.place());
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(TeleportPlaceChange);
                 AddCommand(newCommand);
             }
@@ -170,12 +175,11 @@ namespace LabWork1github
                 ErrorFound = true;
             }
             else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
-                Program.GetCharacterType(typeName).SpawnPlace =
-                    new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
+                Program.GetCharacterType(typeName).SpawnPlace = Parsers.PlaceParseFromNumbers(context.place());
             else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
-                newCommand.Place = new Place(int.Parse(context.place().x().GetText())-1, int.Parse(context.place().y().GetText())-1);
+                newCommand.Place = Parsers.PlaceParseFromNumbers(context.place());
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(SpawnPlaceChange);
                 AddCommand(newCommand);
             }
@@ -207,7 +211,7 @@ namespace LabWork1github
 
             MoveCommand newCommand = new MoveCommand();
             if (context.distanceDeclare() != null)
-                newCommand.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+                newCommand.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
             var direction = context.DIRECTION();
             if (direction != null)
             {
@@ -227,9 +231,7 @@ namespace LabWork1github
             PlaceContext place = context.place();
             if (place != null)
             {
-                int xPos = int.Parse(place.x().GetText()) -1;
-                int yPos = int.Parse(place.y().GetText()) -1;
-                newCommand.TargetPlace = new Place(xPos, yPos);
+                newCommand.TargetPlace = Parsers.PlaceParseFromNumbers(place);
                 newCommand.MoveDelegate = new MoveDelegate(MoveToPlace);
                 AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
@@ -281,13 +283,13 @@ namespace LabWork1github
             TeleportCommand newCommand = new TeleportCommand();
             if (context.place() != null)
             {
-                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText())-1,
-                                                    int.Parse(context.place().y().GetText())-1);
+                newCommand.TargetPlace = Parsers.PlaceParseFromNumbers(context.place());
             }
             else
             {
 
-                if (Program.GetCharacterType(typeName).TeleportPlace.Equals(new Place(-1, -1)) && context.RANDOM() == null)
+                if (Program.GetCharacterType(typeName).TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE) 
+                        == Directions.COLLISION &&  context.RANDOM() == null)
                 {
                     Error += ErrorMessages.TeleportError.TELEPORTING_WITHOUT_PLACE_GIVEN;
                     Error += context.GetText() + "\n";
@@ -343,12 +345,12 @@ namespace LabWork1github
             }
             if (context.place() != null)
             {
-                newCommand.TargetPlace = new Place(int.Parse(context.place().x().GetText())-1,
-                                                    int.Parse(context.place().y().GetText())-1);
+                newCommand.TargetPlace = Parsers.PlaceParseFromNumbers(context.place());
             }
             else
             {
-                if (Program.GetCharacterType(typeName).SpawnPlace.Equals(new Place(-1, -1)))
+                if (Program.GetCharacterType(typeName).SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE) 
+                        == Directions.COLLISION)
                 {
                     Error += ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN;
                     Error += context.GetText() + "\n";
@@ -613,15 +615,13 @@ namespace LabWork1github
             resultTrigger.SourceCharacter = new PlayerType();
             if (context.action().place() != null)
             {
-                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                       int.Parse(context.action().place().y().GetText())-1);
+                resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.PlayerMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
-                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                            int.Parse(context.action().place().y().GetText())-1);
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -634,7 +634,7 @@ namespace LabWork1github
                 EventCollection.PlayerShot += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
-                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                    resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
                 }
                 if (context.action().character() != null)
                 {
@@ -695,15 +695,13 @@ namespace LabWork1github
             resultTrigger.SourceCharacter = new MonsterType();
             if (context.action().place() != null)
             {
-                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                       int.Parse(context.action().place().y().GetText())-1);
+                resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.MonsterMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
-                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                            int.Parse(context.action().place().y().GetText())-1);
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -716,7 +714,7 @@ namespace LabWork1github
                 EventCollection.MonsterShot += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
-                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                    resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
                 }
                 if (context.action().character() != null)
                 {
@@ -781,15 +779,13 @@ namespace LabWork1github
             resultTrigger.SourceCharacter = new TrapType();
             if (context.action().place() != null)
             {
-                resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                       int.Parse(context.action().place().y().GetText()));
+                resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.TrapMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
-                    resultTrigger.SourcePlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                            int.Parse(context.action().place().y().GetText())-1);
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -809,7 +805,7 @@ namespace LabWork1github
                 EventCollection.TrapDamaged += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
-                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                    resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
                 }
                 if (context.action().character() != null)
                 {
@@ -839,7 +835,7 @@ namespace LabWork1github
                 EventCollection.TrapHealed += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
-                    resultTrigger.Amount = double.Parse(context.action().NUMBER().GetText());
+                    resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
                 }
                 if (context.action().character() != null)
                 {
@@ -879,12 +875,6 @@ namespace LabWork1github
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
-                if (context.action().place() != null)
-                {
-                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                           int.Parse(context.action().place().y().GetText())-1);
-                    return resultTrigger;
-                }
             }
             if (context.action().SPAWN() != null)
             {
@@ -905,12 +895,6 @@ namespace LabWork1github
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
-                if (context.action().place() != null)
-                {
-                    resultTrigger.TargetPlace = new Place(int.Parse(context.action().place().x().GetText())-1,
-                                           int.Parse(context.action().place().y().GetText())-1);
-                    return resultTrigger;
-                }
             }
             Error += ErrorMessages.EventError.UNEXPECTED_ERROR;
             Error += context.GetText() + "\n";
@@ -921,17 +905,17 @@ namespace LabWork1github
         {
 
             if (context.distanceDeclare() != null)
-                command.Distance = int.Parse(context.distanceDeclare().NUMBER().GetText());
+                command.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
 
             if (context.hpChangeAmountDeclaration() != null)
             {
                 if (context.hpChangeAmountDeclaration().damageAmountDeclaration() != null)
                 {
-                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().damageAmountDeclaration().NUMBER().GetText());
+                    command.HealthChangeAmount = Parsers.DoubleParseFromNumber(context.hpChangeAmountDeclaration().damageAmountDeclaration().NUMBER().GetText());
                 }
                 else
                 {
-                    command.HealthChangeAmount = int.Parse(context.hpChangeAmountDeclaration().healAmountDeclaration().NUMBER().GetText());
+                    command.HealthChangeAmount = Parsers.DoubleParseFromNumber(context.hpChangeAmountDeclaration().healAmountDeclaration().NUMBER().GetText());
                 }
             }
 
@@ -963,9 +947,7 @@ namespace LabWork1github
             PlaceContext place = context.place();
             if (place != null)
             {
-                int xPos = int.Parse(place.x().GetText()) -1;
-                int yPos = int.Parse(place.y().GetText()) -1;
-                command.TargetPlace = new Place(xPos, yPos);
+                command.TargetPlace = Parsers.PlaceParseFromNumbers(place);
                 if (command is ShootCommand)
                 {
                     ((ShootCommand)command).ShootDelegate = new ShootDelegate(ShootToPlace);
@@ -1322,6 +1304,8 @@ namespace LabWork1github
                     counter++;
                 }
             }
+            if (counter >= 10)
+                return;
             command.TargetPlace = new Place(XPos, YPos);
             MoveToPlace(provider, command);
         }
@@ -1405,7 +1389,12 @@ namespace LabWork1github
 
         public void ShootToPlace(GameParamProvider provider, ShootCommand command)
         {
-            TriggerEvent shootEvent = new TriggerEvent
+            if (command.TargetPlace.X < 0 || command.TargetPlace.X >= provider.GetBoard().Height ||
+                    command.TargetPlace.Y < 0 || command.TargetPlace.Y >= provider.GetBoard().Width)
+            {
+                return;
+            }
+                TriggerEvent shootEvent = new TriggerEvent
             {
                 EventType = EventType.Shoot,
                 SourceCharacter = new MonsterType(),
@@ -1564,6 +1553,11 @@ namespace LabWork1github
 
         public void DamageToPlace(GameParamProvider provider, DamageCommand command)
         {
+            if (command.TargetPlace.X < 0 || command.TargetPlace.X >= provider.GetBoard().Height ||
+                    command.TargetPlace.Y < 0 || command.TargetPlace.Y >= provider.GetBoard().Width)
+            {
+                return;
+            }
             TriggerEvent damageEvent = new TriggerEvent
             {
                 EventType = EventType.Damage,
@@ -1745,6 +1739,11 @@ namespace LabWork1github
 
         public void HealToPlace(GameParamProvider provider, HealCommand command)
         {
+            if (command.TargetPlace.X < 0 || command.TargetPlace.X >= provider.GetBoard().Height ||
+                command.TargetPlace.Y < 0 || command.TargetPlace.Y >= provider.GetBoard().Width)
+            {
+                return;
+            }
             TriggerEvent healEvent = new TriggerEvent
             {
                 EventType = EventType.Heal,

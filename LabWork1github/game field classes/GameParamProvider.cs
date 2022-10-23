@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace LabWork1github
         Game game;
         public int GetNear()
         {
-            return 2;
+            return StaticStartValues.STARTER_NEAR;
         }
         public Drawer GetDrawer()
         {
@@ -56,18 +57,6 @@ namespace LabWork1github
         public Trap GetTrap()
         {
             return game.GetClosestTrap();
-        }
-        public void NoExecution(int commandCount)
-        {
-            game.NoExecution = commandCount;
-        }
-        public void Execute(int commandCount)
-        {
-            game.ImmediateExecution = commandCount;
-        }
-        public void Repeat(int commandCount)
-        {
-            game.Repeat = commandCount;
         }
         public bool IsFreePlace(Place p)
         {

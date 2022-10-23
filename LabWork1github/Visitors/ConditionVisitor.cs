@@ -67,17 +67,17 @@ namespace LabWork1github.Visitors
         private bool CheckNumCompareExpression(BoolExpressionContext context)
         {
             if (context.numToBoolOperation().NUMCOMPARE().Equals("<"))
-                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) < CheckNumberAddExpression(context.numberExpression().ElementAt(1));
+                return CheckNumberExpression(context.numberExpression().ElementAt(0)) < CheckNumberExpression(context.numberExpression().ElementAt(1));
             else
-                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) > CheckNumberAddExpression(context.numberExpression().ElementAt(1));
+                return CheckNumberExpression(context.numberExpression().ElementAt(0)) > CheckNumberExpression(context.numberExpression().ElementAt(1));
         }
 
         public bool CheckCompareExpression(BoolExpressionContext context)
         {
             if (context.numToBoolOperation().COMPARE().Equals("!="))
-                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) != CheckNumberAddExpression(context.numberExpression().ElementAt(1));
+                return CheckNumberOrAttributeExpressionNotEquals(context.numberExpression().ElementAt(0), context.numberExpression().ElementAt(1));
             else
-                return CheckNumberAddExpression(context.numberExpression().ElementAt(0)) == CheckNumberAddExpression(context.numberExpression().ElementAt(1));
+                return CheckNumberOrAttributeExpressionEquals(context.numberExpression().ElementAt(0), context.numberExpression().ElementAt(1));
         }
 
         private bool CheckFunctionExpression(FunctionExpressionContext functionExpressionContext)
@@ -146,94 +146,85 @@ namespace LabWork1github.Visitors
                 return boolExp && CheckBoolExpression(context.boolExpression());
         }
 
-        public double CheckNumberAddExpression(NumberExpressionContext context)
+        public double CheckNumberExpression(NumberExpressionContext context)
         {
-            double firstExpressionValue = CheckNumberMultipExpression(context.numberMultipExpression());
-
-            if(context.nextNumberExpression() != null)
+            if (context.PARENTHESISSTART() != null)
+                return CheckNumberExpression(context.numberExpression().ElementAt(0));
+            if(context.ABSOLUTESTART() != null)
             {
-
+                return Math.Abs(CheckNumberExpression(context.numberExpression().ElementAt(0)));
             }
-            if(context.NUMCONNECTERADD().Length > 0)
+            if(context.NUMCONNECTERMULTIP() != null)
             {
-                for(int i=0; i<context.NUMCONNECTERADD().Length; i++)
-                {
-                    if (context.NUMCONNECTERADD().Equals("+"))
-                        expressionValue += CheckNumberMultipExpression(context.numberMultipExpression().ElementAt(1));
-                    if (context.NUMCONNECTERADD().Equals("-"))
-                        expressionValue -= CheckNumberMultipExpression(context.numberMultipExpression().ElementAt(1));
-                }
+                if (context.NUMCONNECTERMULTIP().GetText().Equals("*"))
+                    return CheckNumberExpression(context.numberExpression().ElementAt(0)) *
+                            CheckNumberExpression(context.numberExpression().ElementAt(1));
+                if (context.NUMCONNECTERMULTIP().GetText().Equals("/"))
+                    return CheckNumberExpression(context.numberExpression().ElementAt(0)) /
+                            CheckNumberExpression(context.numberExpression().ElementAt(1));
+                if (context.NUMCONNECTERMULTIP().GetText().Equals("%"))
+                    return CheckNumberExpression(context.numberExpression().ElementAt(0)) %
+                            CheckNumberExpression(context.numberExpression().ElementAt(1));
             }
-
-            return expressionValue;
+            if(context.NUMCONNECTERADD() != null)
+            {
+                if(context.NUMCONNECTERADD().GetText().Equals("+"))
+                    return CheckNumberExpression(context.numberExpression().ElementAt(0)) +
+                            CheckNumberExpression(context.numberExpression().ElementAt(1));
+                if (context.NUMCONNECTERADD().GetText().Equals("-"))
+                    return CheckNumberExpression(context.numberExpression().ElementAt(0)) -
+                            CheckNumberExpression(context.numberExpression().ElementAt(1));
+            }
+            if (context.something() != null)
+                return CheckNumberSomething(context.something());
+            ErrorList += ErrorMessages.ConditionError.UNRECOGNIZED_EXPRESSION;
+            ErrorList += (context.GetText() + "\n");
+            ErrorFound = true;
+            return -1;
         }
 
-        private double CheckNumberMultipExpression(NumberMultipExpressionContext context)
+        private double CheckNumberSomething(SomethingContext context)
         {
-            double expressionValue = CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(0));
-
-            if (context.NUMCONNECTERMULTIP().Length > 0)
-            {
-                for (int i = 0; i < context.NUMCONNECTERMULTIP().Length; i++)
-                {
-                    if (context.NUMCONNECTERMULTIP().Equals("/"))
-                        expressionValue /= CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(1));
-                    if (context.NUMCONNECTERMULTIP().Equals("*"))
-                        expressionValue *= CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(1));
-                    if (context.NUMCONNECTERMULTIP().Equals("%"))
-                        expressionValue %= CheckNumberFirstExpression(context.numberFirstExpression().ElementAt(1));
-                }
-            }
-
-            return expressionValue;
-        }
-
-        private double CheckNumberFirstExpression(NumberFirstExpressionContext context)
-        {
-            if (context.PARENTHESISCLOSE() != null)
-                return CheckNumberAddExpression(context.numberExpression());
-            if (context.ABSOLUTE().Length > 0)
-                return Math.Abs(CheckNumberAddExpression(context.numberExpression()));
-            if (context.something().ROUND() != null)
+            if (context.ROUND() != null)
                 return Provider.GetRound();
-            if (context.something().NUMBER() != null)
-                return Double.Parse(context.something().NUMBER().GetText());
-            if (context.something().attribute() != null)
-                return CheckNumberAttributeExpression(context.something().attribute());
 
-            throw new ArgumentException(ErrorMessages.ConditionError.UNRECOGNIZED_NUMBER+context.GetText());
+            if(context.NUMBER() != null)
+            {
+                double outputDouble;
+                if (double.TryParse(context.NUMBER().GetText(), out outputDouble))
+                {
+                    return outputDouble;
+                }
+            }
+                
+            if (context.attribute() != null)
+            {
+                return CheckNumberAttributeExpression(context.attribute());
+            }
+
+            ErrorList += ErrorMessages.ConditionError.UNRECOGNIZED_EXPRESSION;
+            ErrorList += (context.GetText() + "\n");
+            ErrorFound = true;
+            return -1;
         }
 
         public double CheckNumberAttributeExpression(AttributeContext context)
         {
             if (context.character().PLAYER() != null)
             {
-                return PlayerAttribute(context);
+                return PlayerNumberAttribute(context);
             }
             if (context.character().MONSTER() != null)
             {
-                return MonsterAttribute(context);
+                return MonsterNumberAttribute(context);
             }
             if(context.character().TRAP() != null)
             {
-                return TrapAttribute(context);
+                return TrapNumberAttribute(context);
             }
             if(context.character().ME() != null)
             {
-                //although it is unlikely for a player to become ME in this context
-                if(Provider.GetMe().GetCharacterType() is PlayerType)
-                {
-                    return PlayerAttribute(context);
-                }
-
-                if(Provider.GetMe().GetCharacterType() is MonsterType)
-                {
-                    return MonsterAttribute(context);
-                }
-                if (Provider.GetMe().GetCharacterType() is TrapType)
-                {
-                    return TrapAttribute(context);
-                }
+                return MeNumberAttribute(context);
             }
             if(context.character().PARTNER() != null)
             {
@@ -246,15 +237,15 @@ namespace LabWork1github.Visitors
                 }
                 if (Provider.GetPartner() is Monster)
                 {
-                    return MonsterAttribute(context);
+                    return MonsterNumberAttribute(context);
                 }
                 if (Provider.GetPartner() is Trap)
                 {
-                    return TrapAttribute(context);
+                    return TrapNumberAttribute(context);
                 }
                 if (Provider.GetPartner() is Player)
                 {
-                    return PlayerAttribute(context);
+                    return PlayerNumberAttribute(context);
                 }
             }
             ErrorList += ErrorMessages.ConditionError.UNRECOGNIZED_ATTRIBUTE_ERROR;
@@ -263,7 +254,7 @@ namespace LabWork1github.Visitors
             return -1;
         }
 
-        public bool CheckBoolAttributeExpression(BoolExpressionContext context)
+        public bool CheckPlaceAttributeExpression(BoolExpressionContext context)
         {
             //monster is the first character
             if(context.attribute().ElementAt(0).character().MONSTER() != null || 
@@ -1239,13 +1230,13 @@ namespace LabWork1github.Visitors
         }
 
         //if the ME is a player, that can't theoretically happen, then, since only 1 player exists, this still does the same
-        public double PlayerAttribute(AttributeContext context)
+        public double PlayerNumberAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("damage"))
                 return Provider.GetPlayer().GetCharacterType().Damage;
             if (context.possibleAttributes().GetText().Equals("health"))
                 return Provider.GetPlayer().GetHealth();
-            if (context.possibleAttributes().GetText().Equals("place"))
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
             {
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                     return Provider.GetPlayer().Place.X;
@@ -1259,16 +1250,223 @@ namespace LabWork1github.Visitors
             return -1;
         }
 
-        public double TrapAttribute(AttributeContext context)
+        private double MeNumberAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("damage"))
             {
-                if(context.character().ME() != null)
+                if (Provider.GetMe().GetCharacterType().Damage == StaticStartValues.PLACEHOLDER_DAMAGE)
                 {
+                    ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                return Provider.GetMe().GetCharacterType().Damage;
+            }
+            if (context.possibleAttributes().GetText().Equals("heal"))
+            {
+                if (Provider.GetMe().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_DAMAGE)
+                {
+                    ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if(Provider.GetMe() is Monster)
+                {
+                    ErrorList += (ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                return Provider.GetMe().GetCharacterType().Heal;
+            }
+            if (context.possibleAttributes().GetText().Equals("health"))
+            {
+                if (Provider.GetMe() is Trap)
+                {
+                    ErrorList += (ErrorMessages.ParameterDeclarationError.TRAP_HAS_NO_HEALTH);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                return Provider.GetMe().GetHealth();
+            }
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetMe().Place.X;
+                return Provider.GetMe().Place.Y;
+            }
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
+            {
+                if (Provider.GetMe() is Monster)
+                {
+                    ErrorList += (ErrorMessages.TeleportError.ONLY_TRAP_CAN_TELEPORT);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetMe().GetCharacterType().TeleportPlace.X;
+                return Provider.GetMe().GetCharacterType().TeleportPlace.Y;
+            }
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
+            {
+                if (Provider.GetMe() is Monster)
+                {
+                    ErrorList += (ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                    return Provider.GetMe().GetCharacterType().SpawnPlace.X;
+                return Provider.GetMe().GetCharacterType().SpawnPlace.Y;
+            }
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
+            {
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                {
+                    if (Provider.GetMe().GetCharacterType().Damage == StaticStartValues.PLACEHOLDER_DAMAGE)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Provider.GetMe().GetCharacterType().Damage;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
+                {
+                    if (Provider.GetMe().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_DAMAGE)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    if (Provider.GetMe() is Monster)
+                    {
+                        ErrorList += (ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Provider.GetMe().GetCharacterType().Heal;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                {
+                    if (Provider.GetMe().GetCharacterType().Health == StaticStartValues.PLACEHOLDER_HEALTH)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Provider.GetMe().GetCharacterType().Health;
+                }
+            }
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
+            {
+                if (Provider.GetMe() is Monster)
+                {
+                    ErrorList += (ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                    return Provider.GetMe().GetCharacterType().SpawnType.Damage;
+                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                {
+                    return Provider.GetMe().GetCharacterType().SpawnType.Health;
+                }
+            }
+            if (Provider.GetMe() is Trap)
+                ErrorList += (ErrorMessages.ConditionError.TRAP_ATTRIBUTE_ERROR);
+            if (Provider.GetMe() is Monster)
+                ErrorList += (ErrorMessages.ConditionError.MONSTER_ATTRIBUTE_ERROR);
+            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+            ErrorList += (context.GetText() + "\n");
+            ErrorFound = true;
+            return -1;
+        }
+
+
+        public double TrapNumberAttribute(AttributeContext context)
+        {
+            if (context.character().PARTNER() != null)
+            {
+                if (context.possibleAttributes().GetText().Equals("damage"))
+                    return Provider.GetPartner().GetCharacterType().Damage;
+                if (context.possibleAttributes().GetText().Equals("heal"))
+                    return Provider.GetPartner().GetCharacterType().Heal;
+                if (context.possibleAttributes().GetText().Equals("health"))
+                {
+                    ErrorList += (ErrorMessages.ConditionError.TRAP_HAS_NO_HEALTH);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetPartner().Place.X;
+                    else
+                        return Provider.GetPartner().Place.Y;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetPartner().GetCharacterType().TeleportPlace.X;
+                    else
+                        return Provider.GetPartner().GetCharacterType().TeleportPlace.Y;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetPartner().GetCharacterType().SpawnPlace.X;
+                    else
+                        return Provider.GetPartner().GetCharacterType().SpawnPlace.Y;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
+                {
+                    if (context.possibleAttributes().GetText().Equals("damage"))
+                        return Provider.GetMe().GetCharacterType().Damage;
+                    if (context.possibleAttributes().GetText().Equals("heal"))
+                        return Provider.GetMe().GetCharacterType().Heal;
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.TRAP_HAS_NO_HEALTH);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                }
+            }
+            if(context.character().PARTNER() != null)
+            {
+
+            }
+            if(context.character().TRAP() != null)
+            {
+
+            }
+                if (context.possibleAttributes().GetText().Equals("damage"))
+            {
+
                     if (Provider.GetMe().GetCharacterType().Damage == -1)
                         return 0;
                     return Provider.GetMe().GetCharacterType().Damage;
-                }
+
                 if (Provider.GetTrap().GetCharacterType().Damage == -1)
                     return 0;
                 return Provider.GetTrap().GetCharacterType().Damage;
@@ -1426,7 +1624,7 @@ namespace LabWork1github.Visitors
             return -1;
         }
 
-        public double MonsterAttribute(AttributeContext context)
+        public double MonsterNumberAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("damage")) {
 

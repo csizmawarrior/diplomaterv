@@ -569,58 +569,6 @@ public partial class DynamicEnemyGrammarBaseListener : IDynamicEnemyGrammarListe
 	public virtual void ExitNumberExpression([NotNull] DynamicEnemyGrammarParser.NumberExpressionContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNextNumberExpression([NotNull] DynamicEnemyGrammarParser.NextNumberExpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNextNumberExpression([NotNull] DynamicEnemyGrammarParser.NextNumberExpressionContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberMultipExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumberMultipExpression([NotNull] DynamicEnemyGrammarParser.NumberMultipExpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberMultipExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumberMultipExpression([NotNull] DynamicEnemyGrammarParser.NumberMultipExpressionContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberMultipExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNextNumberMultipExpression([NotNull] DynamicEnemyGrammarParser.NextNumberMultipExpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.nextNumberMultipExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNextNumberMultipExpression([NotNull] DynamicEnemyGrammarParser.NextNumberMultipExpressionContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberFirstExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumberFirstExpression([NotNull] DynamicEnemyGrammarParser.NumberFirstExpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="DynamicEnemyGrammarParser.numberFirstExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumberFirstExpression([NotNull] DynamicEnemyGrammarParser.NumberFirstExpressionContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="DynamicEnemyGrammarParser.functionExpression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

@@ -11,7 +11,11 @@ namespace LabWork1github.static_constants
         public static class BoardError
         {
             public const string UNDEFINED_MONSTER_TYPE = "The Monster type is undefined at place:\n";
+            public const string ZERO_WIDTH = "The given width is zero at place:\n";
+            public const string ZERO_HEIGHT = "The given height is zero at place:\n";
+            public const string ZERO_AS_COORDINATE = "The coordinate given is zero at place:\n";
             public const string UNDEFINED_TRAP_TYPE = "The Trap type is undefined at place:\n";
+            public const string PARTNER_CANNOT_BE_THE_PLAYER = "The character with the following name tried to adress the player as its partner:\n";
         }
 
         public static class HealthChangeError
@@ -38,6 +42,7 @@ namespace LabWork1github.static_constants
         public static class MoveError
         {
             public const string WRONG_DIRECTION = "Wrong direction used:\n";
+            public const string NEGATIVE_DIRECTION = "Negative or zero Distance is not supported!\n";
         }
         public static class ShootError
         {
@@ -73,6 +78,12 @@ namespace LabWork1github.static_constants
             public const string CHARACTER_HAS_NON_EXISTANT_PARTNER = "The following character has a referenced non existant partner, give a valid partner name for this character: ";
             public const string PLACE_OUT_OF_BOUNDS = "A referenced place is out of bounds.\n";
         }
+        public static class ParseError
+        {
+            public const string UNABLE_TO_PARSE_DOUBLE = "The entered number is not recognized as a number.";
+            public const string UNABLE_TO_PARSE_INT = "The entered number is not recognized as an integer.";
+            public const string UNABLE_TO_PARSE_PLACE = "The entered numbers do not represent a valid place, make sure to use positive integers.";
+        }
         public static class TypeCreationError
         {
             public const string TYPE_DOES_NOT_EXIST = "The type with the following name doesn't exist: ";
@@ -80,9 +91,10 @@ namespace LabWork1github.static_constants
         public static class ExpressionError
         {
             public const string TYPE_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute \"type\" can only be compared with \"type\" attributes, at:\n";
-            public const string PLACE_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute place can only be compared with place attributes, at:\n";
+            public const string PLACE_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute \"place\" can only be compared with \"place\" attributes, at:\n";
+            public const string NAME_COMPARED_WITH_OTHER_ATTRIBUTE = "The attribute \"name\" can only be compared with \"name\" attributes, at:\n";
             public const string NOT_A_NUMBER = "The referenced attribute is not a number, number expected at:\n";
-            public const string DIVIDING_WITH_ZERO = "The expression want to divide with zero.\n";
+            public const string DIVIDING_WITH_ZERO = "The expression want to divide with zero.\n"+ErrorMessages.ConditionError.IN_PLACE;
             public const string NOT_NUMBER_EXPRESSION_COMPARED_WITH_NUMBER = "The expressions compared don't match type, one is number, the other isn't at:\n";
             public const string NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER = "At least one of the referenced number exppressions does not calculate to a number at:\n";
             public const string NOT_NUMBER_EXPRESSION_HANDLED_AS_NUMBER = "The referenced number exppression does not calculate to a number at:\n";
@@ -102,8 +114,11 @@ namespace LabWork1github.static_constants
             public const string PLAYER_ATTRIBUTE_ERROR = "A player attribute caused error!\n";
             public const string TRAP_ATTRIBUTE_ERROR = "A trap attribute caused error!\n";
             public const string MONSTER_ATTRIBUTE_ERROR = "A monster attribute caused error!\n";
-            public const string MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED = "The referenced Monster type has no Damage attribute defined!\n";
+            public const string CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED = "The referenced type has no Damage attribute defined!\n";
+            public const string CHARACTER_TYPE_HAS_NO_HEAL_DEFINED = "The referenced type has no Heal attribute defined!\n";
+            public const string CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED = "The referenced type has no Health attribute defined!\n";
             public const string TRAP_HAS_NO_HEALTH = "Trap type has no health attribute\n";
+            public const string UNRECOGNIZED_EXPRESSION = "Unrecognized number expression:\n";
             public const string ONLY_TRAP_CAN_HEAL = "Only Trap type can heal, no heal attribute for other types!\n";
             public const string IN_PLACE = "In place:\n";
             public const string TYPE_MISMATCH = "The two types aren't both Monster type or Trap type, so incompatible to compare!\n";

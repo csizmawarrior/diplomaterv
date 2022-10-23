@@ -9,6 +9,8 @@ namespace LabWork1github.static_constants
     public abstract class MathSymbol
     {
         public abstract bool IsStrongerThan(MathSymbol symbol);
+        public abstract MathSymbol EndSymbol();
+        public abstract MathSymbol StartSymbol();
         public abstract double CountResult(double param1, double param2);
     }
 }

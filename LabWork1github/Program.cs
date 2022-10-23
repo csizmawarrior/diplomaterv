@@ -14,8 +14,6 @@ namespace LabWork1github
         public static List<EventHandler> EventHandlers = new List<EventHandler>();
         public static Drawer Drawer = new Drawer();
         public static Board Board = new Board();
-        
-        public static int starterHP = 200;
 
         static void Main(string[] args)
         {

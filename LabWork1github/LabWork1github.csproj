@@ -66,6 +66,9 @@
     <Compile Include="g4 files\BoardGrammar.g4.parser.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
+    <Compile Include="MathsCount\AddSymbol.cs" />
+    <Compile Include="MathsCount\MultiplySymbol.cs" />
+    <Compile Include="MathsCount\SubstractSymbol.cs" />
     <Compile Include="PlayerMove.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -76,6 +79,7 @@
     <Compile Include="static constants\ErrorMessages.cs" />
     <Compile Include="MathsCount\MathSymbol.cs" />
     <Compile Include="static constants\PlayerInteractionMessages.cs" />
+    <Compile Include="static constants\StaticStartValues.cs" />
     <Compile Include="Symbols\Scope.cs" />
     <Compile Include="Symbols\Symbol.cs" />
     <Compile Include="Visitors\BoardGrammarVisitor.cs" />
@@ -107,6 +111,7 @@
     <Compile Include="g4 files\PlayerGrammar.g4.parser.cs">
       <DependentUpon>PlayerGrammar.g4</DependentUpon>
     </Compile>
+    <Compile Include="Visitors\Parsers.cs" />
     <Compile Include="Visitors\PlayerGrammarVisitor.cs" />
     <Compile Include="types\charactertypes\PlayerType.cs" />
     <Compile Include="Program.cs" />

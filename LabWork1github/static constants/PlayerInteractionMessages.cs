@@ -16,5 +16,6 @@ namespace LabWork1github.static_constants
         public const string PROVIDE_A_COMMAND = "Give a command!";
         public const string PLAYER_HEALTH_MESSAGE = "The player's health is: ";
         public const string PLAYER_DAMAGE_MESSAGE = "The player's damage is: ";
+        public const string PLAYER_BUMP_INTO_DOUBLE_TRAP = "Invalid move, bumping into two Traps standing on each other, you damaged yourself, try again next turn!";
     }
 }

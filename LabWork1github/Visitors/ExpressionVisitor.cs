@@ -47,8 +47,8 @@ namespace LabWork1github
                 }
                 if (context.numToBoolOperation().COMPARE() != null)
                 {
-                    if(context.numberExpression().ElementAt(0).nextNumberExpression() != null ||
-                        context.numberExpression().ElementAt(1).nextNumberExpression() != null)
+                    if(context.numberExpression().ElementAt(0).numberExpression() != null ||
+                        context.numberExpression().ElementAt(1).numberExpression() != null)
                     {
                         if (!IsNumberExpressionNumber(context.numberExpression().ElementAt(0)) ||
                         !IsNumberExpressionNumber(context.numberExpression().ElementAt(1)))
@@ -73,20 +73,18 @@ namespace LabWork1github
                     //if a NumberExpression is not a number, then there is no "nextNumberExpression" and such
                     //and there must be an attribute, if there isn't then a check failed and we mustn't check
                     //a failed expression again
-                    if(context.numberExpression().ElementAt(0).numberMultipExpression()
-                        .numberFirstExpression().something().attribute() != null &&
-                        context.numberExpression().ElementAt(1).numberMultipExpression()
-                        .numberFirstExpression().something().attribute() != null)
+                    if(context.numberExpression().ElementAt(0).something().attribute() != null &&
+                        context.numberExpression().ElementAt(1).something().attribute() != null)
                     {
-                        if (context.numberExpression().ElementAt(0).numberMultipExpression().numberFirstExpression()
-                            .something().attribute().possibleAttributes().Equals("type") ||
-                           context.numberExpression().ElementAt(0).numberMultipExpression().numberFirstExpression()
-                            .something().attribute().possibleAttributes().Equals("spawn_type"))
+                        if (context.numberExpression().ElementAt(0).something().attribute()
+                            .possibleAttributes().Equals("type") ||
+                           context.numberExpression().ElementAt(0).something().attribute()
+                            .possibleAttributes().Equals("spawn_type"))
                         {
-                            if ( ! (context.numberExpression().ElementAt(1).numberMultipExpression().numberFirstExpression()
-                                    .something().attribute().possibleAttributes().Equals("type") ||
-                                context.numberExpression().ElementAt(1).numberMultipExpression().numberFirstExpression()
-                                    .something().attribute().possibleAttributes().Equals("spawn_type")))
+                            if ( ! (context.numberExpression().ElementAt(1).something().attribute()
+                                .possibleAttributes().Equals("type") ||
+                                context.numberExpression().ElementAt(1).something().attribute()
+                                .possibleAttributes().Equals("spawn_type")))
                             {
                                 ErrorList += ErrorMessages.ExpressionError.TYPE_COMPARED_WITH_OTHER_ATTRIBUTE;
                                 ErrorList += context.GetText() + "\n";
@@ -94,21 +92,34 @@ namespace LabWork1github
                             }
                         }
 
-                        if (context.numberExpression().ElementAt(0).numberMultipExpression().numberFirstExpression()
-                            .something().attribute().possibleAttributes().Equals("place") ||
-                           context.numberExpression().ElementAt(0).numberMultipExpression().numberFirstExpression()
+                        if (context.numberExpression().ElementAt(0).something().attribute()
+                            .possibleAttributes().Equals("place") || context.numberExpression().ElementAt(0)
                             .something().attribute().possibleAttributes().Equals("spawn_place") ||
-                            context.numberExpression().ElementAt(0).numberMultipExpression().numberFirstExpression()
-                            .something().attribute().possibleAttributes().Equals("teleport_place"))
+                            context.numberExpression().ElementAt(0).something().attribute()
+                            .possibleAttributes().Equals("teleport_place"))
                         {
-                            if ( ! (context.numberExpression().ElementAt(1).numberMultipExpression().numberFirstExpression()
-                                    .something().attribute().possibleAttributes().Equals("type") ||
-                                context.numberExpression().ElementAt(1).numberMultipExpression().numberFirstExpression()
-                                    .something().attribute().possibleAttributes().Equals("spawn_type") ||
-                                context.numberExpression().ElementAt(1).numberMultipExpression().numberFirstExpression()
-                                    .something().attribute().possibleAttributes().Equals("teleport_place")))
+                            if ( ! (context.numberExpression().ElementAt(1).something().attribute()
+                                .possibleAttributes().Equals("type") || context.numberExpression().ElementAt(1)
+                                .something().attribute().possibleAttributes().Equals("spawn_type") ||
+                                context.numberExpression().ElementAt(1).something().attribute()
+                                .possibleAttributes().Equals("teleport_place")))
                             {
                                 ErrorList += ErrorMessages.ExpressionError.PLACE_COMPARED_WITH_OTHER_ATTRIBUTE;
+                                ErrorList += context.GetText() + "\n";
+                                CheckFailed = true;
+                            }
+                        }
+                        if(context.numberExpression().ElementAt(0).something().attribute()
+                            .possibleAttributes().Equals("name") ||
+                           context.numberExpression().ElementAt(0).something().attribute()
+                            .possibleAttributes().Equals("name"))
+                        {
+                            if( ! (context.numberExpression().ElementAt(1).something().attribute()
+                            .possibleAttributes().Equals("name") ||
+                           context.numberExpression().ElementAt(1).something().attribute()
+                            .possibleAttributes().Equals("name") ))
+                            {
+                                ErrorList += ErrorMessages.ExpressionError.NAME_COMPARED_WITH_OTHER_ATTRIBUTE;
                                 ErrorList += context.GetText() + "\n";
                                 CheckFailed = true;
                             }
@@ -120,105 +131,69 @@ namespace LabWork1github
         }
         public bool IsNumberExpressionNumber([NotNull] NumberExpressionContext context)
         {
-            bool isfirstExpressionNumber = IsNumberMultipExpressionNumber(context.numberMultipExpression(), true);
-            if (context.nextNumberExpression() != null)
-            {
-                if (!isfirstExpressionNumber ||
-                        !IsNumberExpressionNumber(context.nextNumberExpression().numberExpression()))
-                {
-                    ErrorList += ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER;
-                    ErrorList += context.GetText() + "\n";
-                    CheckFailed = true;
-                    return false;
-                }
-            }
-            return isfirstExpressionNumber;
-        }
-        public bool IsNumberMultipExpressionNumber([NotNull] NumberMultipExpressionContext context, bool isZeroAllowed)
-        {
-            bool isfirstExpressionNumber = IsNumberFirstExpressionValidNumber(context.numberFirstExpression(), isZeroAllowed);
-            if(context.nextNumberMultipExpression() != null)
-            {
-                if (context.nextNumberMultipExpression().NUMCONNECTERMULTIP().GetText().Equals("*"))
-                {
-                    if (!isfirstExpressionNumber ||
-                        !IsNumberMultipExpressionNumber(context.nextNumberMultipExpression().numberMultipExpression(), true))
-                    {
-                        ErrorList += ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER;
-                        ErrorList += context.GetText() + "\n";
-                        CheckFailed = true;
-                        return false;
-                    }
-                }
-                else
-                {
-                    if (!isfirstExpressionNumber ||
-                        !IsNumberMultipExpressionNumber(context.nextNumberMultipExpression().numberMultipExpression(), false))
-                    {
-                        ErrorList += ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER;
-                        ErrorList += context.GetText() + "\n";
-                        CheckFailed = true;
-                        return false;
-                    }
-                }
-            }
-            return isfirstExpressionNumber;
-        }
-        public bool IsNumberFirstExpressionValidNumber([NotNull] NumberFirstExpressionContext context, bool isZeroAllowed)
-        {
-            if(context.PARENTHESISSTART() != null || (context.ABSOLUTESTART() != null && context.ABSOLUTEEND() != null))
-            {
-                bool isInsideExpressionNumber = IsNumberExpressionNumber(context.numberExpression());
-                if (!isInsideExpressionNumber && (context.ABSOLUTESTART() != null && context.ABSOLUTEEND() != null))
+            if(context.ABSOLUTESTART() != null)
+                if ( ! IsNumberExpressionNumber(context.numberExpression().ElementAt(0)))
                 {
                     ErrorList += ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_HANDLED_AS_NUMBER;
                     ErrorList += context.GetText() + "\n";
                     CheckFailed = true;
                     return false;
                 }
-                return isInsideExpressionNumber;
+            if (context.PARENTHESISSTART() != null || context.ABSOLUTESTART() != null)
+                return IsNumberExpressionNumber(context.numberExpression().ElementAt(0));
+            if(context.NUMCONNECTERADD() != null || context.NUMCONNECTERMULTIP() != null)
+            {
+                if( ! IsNumberExpressionNumber(context.numberExpression().ElementAt(0)) ||
+                    !IsNumberExpressionNumber(context.numberExpression().ElementAt(1)))
+                {
+                    ErrorList += ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER;
+                    ErrorList += context.GetText() + "\n";
+                    CheckFailed = true;
+                }
+                if(context.NUMCONNECTERMULTIP() != null && (context.NUMCONNECTERMULTIP().GetText().Equals("%") ||
+                    context.NUMCONNECTERMULTIP().GetText().Equals("/")))
+                    if (!IsNumberExpressionNumber(context.numberExpression().ElementAt(1)))
+                    {
+                        ErrorList += ErrorMessages.ExpressionError.DIVIDING_WITH_ZERO;
+                        ErrorList += context.numberExpression().ElementAt(1).GetText() + "\n";
+                        CheckFailed = true;
+                    }
+                return IsNumberExpressionNumber(context.numberExpression().ElementAt(0)) &&
+                    IsNumberExpressionNumber(context.numberExpression().ElementAt(1));
             }
-            if (context.something().NUMBER() != null)
+            if(context.something() != null)
+                return IsSomethingNumber(context.something());
+            return false;
+        }
+        public bool IsSomethingNumber([NotNull] SomethingContext context)
+        {
+            if (context.NUMBER() != null)
             {
                 int output;
-                if (int.TryParse(context.something().NUMBER().GetText(), out output))
+                if (int.TryParse(context.NUMBER().GetText(), out output))
                 {
-                    if (output == 0)
-                    {
-                        if (!isZeroAllowed)
-                        {
-                            ErrorList += ErrorMessages.ExpressionError.DIVIDING_WITH_ZERO;
-                            CheckFailed = true;
-                        }
-                        return isZeroAllowed;
-                    }
+                    return true;
                 }
                 double outputDouble;
-                if (double.TryParse(context.something().NUMBER().GetText(), out outputDouble))
+                if (double.TryParse(context.NUMBER().GetText(), out outputDouble))
                 {
-                    if (output == 0.0)
-                    {
-                        if (isZeroAllowed)
-                        {
-                            ErrorList += ErrorMessages.ExpressionError.DIVIDING_WITH_ZERO;
-                            CheckFailed = true;
-                        }
-                        return isZeroAllowed;
-                    }
+                    return true;
                 }
             }
             //because then it is ROUND
-            if (context.something().attribute() == null)
+            if (context.attribute() == null && context.ROUND() != null)
                 return true;
 
-            if (context.something().attribute().possibleAttributes().GetText().Equals("type") ||
-                context.something().attribute().possibleAttributes().GetText().Equals("spwan_type") ||
-                context.something().attribute().possibleAttributes().GetText().Equals("place") ||
-                context.something().attribute().possibleAttributes().GetText().Equals("spawn_place") ||
-                context.something().attribute().possibleAttributes().GetText().Equals("teleport_place"))
+            if (context.attribute().possibleAttributes().GetText().Equals("type") ||
+                context.attribute().possibleAttributes().GetText().Equals("spwan_type") ||
+                context.attribute().possibleAttributes().GetText().Equals("place") ||
+                context.attribute().possibleAttributes().GetText().Equals("spawn_place") ||
+                context.attribute().possibleAttributes().GetText().Equals("teleport_place") ||
+                context.attribute().possibleAttributes().GetText().Equals("name"))
             {
                     return false;
             }
+            //We consider that the VisitAttribute
             return true;
         }
 
@@ -227,7 +202,8 @@ namespace LabWork1github
             if (context.character().GetText().Equals(Types.MONSTER) || (context.character().GetText().Equals(Types.ME) && CharacterType.Equals(Types.MONSTER)) )
             {
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
-                    context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("type")))
+                    context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("type") ||
+                    context.possibleAttributes().GetText().Equals("name")))
                 {
                     if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
@@ -250,7 +226,7 @@ namespace LabWork1github
             if (context.character().GetText().Equals(Types.PLAYER))
             {
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
-                    context.possibleAttributes().GetText().Equals("damage")))
+                    context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("name")))
                 {
                     if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
@@ -274,7 +250,8 @@ namespace LabWork1github
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("damage") ||
                       context.possibleAttributes().GetText().Equals("type") || context.possibleAttributes().GetText().Equals("teleport_place") ||
                       context.possibleAttributes().GetText().Equals("spawn_place") || context.possibleAttributes().GetText().Equals("spawn_type") ||
-                      context.possibleAttributes().GetText().Equals("heal") || context.possibleAttributes().GetText().Equals("health")))
+                      context.possibleAttributes().GetText().Equals("heal") || context.possibleAttributes().GetText().Equals("health") ||
+                      context.possibleAttributes().GetText().Equals("name")))
                 {
                     if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
@@ -300,11 +277,13 @@ namespace LabWork1github
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("damage") || 
                     context.possibleAttributes().GetText().Equals("type") || context.possibleAttributes().GetText().Equals("teleport_place") || 
                     context.possibleAttributes().GetText().Equals("spawn_place") ||  context.possibleAttributes().GetText().Equals("spawn_type") ||
-                    context.possibleAttributes().GetText().Equals("heal")))
+                    context.possibleAttributes().GetText().Equals("heal") || context.possibleAttributes().GetText().Equals("name")))
                 {
                     if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
                         if(! (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place") ||
+                            context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place") ||
+                            context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type")))
                         {
@@ -343,7 +322,8 @@ namespace LabWork1github
                     if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
                     {
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health") ||
-                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage")))
+                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage") ||
+                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("name")))
                         {
                             ErrorList += ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE;
                             ErrorList += context.GetText() + "\n";
@@ -354,7 +334,8 @@ namespace LabWork1github
                     {
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal") ||
-                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage")))
+                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage") ||
+                            context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("name")))
                         {
                             ErrorList += ErrorMessages.ExpressionError.ENEMY_DOES_NOT_HAVE_THIS_ATTRIBUTE;
                             ErrorList += context.GetText() + "\n";

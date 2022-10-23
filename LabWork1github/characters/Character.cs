@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,16 +15,16 @@ namespace LabWork1github
 
         public abstract Character GetPartner();
 
-        public string Name { get; set; }
+        public string Name { get; set; } = StaticStartValues.PLACEHOLDER_NAME;
 
-        public string PartnerName { get; set; } = "";
+        public string PartnerName { get; set; } = StaticStartValues.PLACEHOLDER_PARTNER_NAME;
 
         public Character Partner { get; set; } = null;
 
-        public abstract int GetHealth();
+        public abstract double GetHealth();
 
-        public abstract void Damage(int amount);
+        public abstract void Damage(double amount);
 
-        public abstract void Heal(int amount);
+        public abstract void Heal(double amount);
     }
 }

@@ -10,7 +10,7 @@ namespace LabWork1github
 {
     public class Player : Character
     {
-        public Player(Place p, int hp)
+        public Player(Place p, double hp)
         {
             health = hp;
             Place = p;
@@ -18,14 +18,14 @@ namespace LabWork1github
 
         public PlayerType Type { get; } = new PlayerType();
 
-        private int health = 0;
+        private double health = 0;
 
-        public override void Damage(int amount)
+        public override void Damage(double amount)
         {
             health -= amount;
         }
 
-        public override int GetHealth()
+        public override double GetHealth()
         {
             return health;
         }
@@ -35,11 +35,11 @@ namespace LabWork1github
             return Type;
         }
 
-        public override void Heal(int amount)
+        public override void Heal(double amount)
         {
             health += amount;
-            if (health > Program.starterHP)
-                health = Program.starterHP;
+            if (health > StaticStartValues.STARTER_PLAYER_HP)
+                health = StaticStartValues.STARTER_PLAYER_HP;
         }
 
         public void Move(string direction)

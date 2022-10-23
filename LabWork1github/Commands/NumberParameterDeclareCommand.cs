@@ -10,7 +10,7 @@ namespace LabWork1github.Commands
 
     public class NumberParameterDeclareCommand : HealthChangerCommand
     {
-        public int Number { get; set; }
+        public double Number { get; set; }
 
         public NumberParameterDeclareDelegate NumberParameterDeclareDelegate { get; set; }
 

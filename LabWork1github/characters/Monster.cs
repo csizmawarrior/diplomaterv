@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,24 @@ namespace LabWork1github
 {
     public class Monster : Character
     {
-        public Monster(int hp, MonsterType type, Place place)
+        public Monster(double hp, MonsterType type, Place place)
         {
-            Health = hp;
             Type = (MonsterType)Program.GetCharacterType(type.Name);
+            if (Type.Health != StaticStartValues.PLACEHOLDER_HEALTH)
+                Health = Type.Health;
+            else
+                Health = hp;
             Place = place;
         }
-        public int Health { get; set; }
+        public double Health { get; set; } = StaticStartValues.STARTER_MONSTER_HP;
         public MonsterType Type { get; private set; }
 
-        public override void Damage(int amount)
+        public override void Damage(double amount)
         {
             Health -= amount;
         }
 
-        public override int GetHealth()
+        public override double GetHealth()
         {
             return Health;
         }
@@ -32,7 +36,7 @@ namespace LabWork1github
             return Type;
         }
 
-        public override void Heal(int amount)
+        public override void Heal(double amount)
         {
             Health += amount;
         }

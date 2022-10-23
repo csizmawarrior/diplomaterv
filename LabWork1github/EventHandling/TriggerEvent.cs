@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace LabWork1github.EventHandling
         public Place SourcePlace { get; set; } = null;
         public CharacterType SourceCharacter { get; set; } = null;
         public CharacterType TargetCharacter { get; set; } = null;
-        public double Amount { get; set; } = 0;
+        public double Amount { get; set; } = StaticStartValues.PLACEHOLDER_AMOUNT;
 
     }   
 }

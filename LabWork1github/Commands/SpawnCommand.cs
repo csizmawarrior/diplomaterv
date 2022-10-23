@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace LabWork1github
 
     public class SpawnCommand : Command
     {
-        public Place TargetPlace { get; set; } = new Place(-1, -1);
+        public Place TargetPlace { get; set; } = StaticStartValues.PLACEHOLDER_PLACE;
 
         public int Round { get; set; }
 

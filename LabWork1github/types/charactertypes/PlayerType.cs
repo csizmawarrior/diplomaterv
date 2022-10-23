@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace LabWork1github
 
         public PlayerType()
         {
-            this.Damage = 50;
+            this.Damage = StaticStartValues.STARTER_PLAYER_DAMAGE;
         }
 
         public override void Step(GameParamProvider provider)

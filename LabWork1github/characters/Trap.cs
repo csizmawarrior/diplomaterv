@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,14 @@ namespace LabWork1github
             Place = place;
         }
         public TrapType Type { get; private set; }
-        public int Health { get; } = 1;
+        public double Health { get; } = StaticStartValues.TRAP_HEALTH;
 
-        public override void Damage(int amount)
+        public override void Damage(double amount)
         {
             return;
         }
 
-        public override int GetHealth()
+        public override double GetHealth()
         {
             return Health;
         }
@@ -31,7 +32,7 @@ namespace LabWork1github
             return Type;
         }
 
-        public override void Heal(int amount)
+        public override void Heal(double amount)
         {
             return;
         }

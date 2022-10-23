@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using LabWork1github.static_constants;
+using LabWork1github.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,9 +35,23 @@ namespace LabWork1github
         public override object VisitBoardCreation([NotNull] BoardCreationContext context)
         {
             PlaceContext place = context.place();
-            Program.Board.Height = int.Parse(place.x().GetText());
-            Program.Board.Width = int.Parse(place.y().GetText());
-            if(context.nameDeclaration() != null)
+            Program.Board.Height = Parsers.IntParseFromNumber(place.x().GetText());
+            if(Program.Board.Height == 0)
+            {
+                ErrorFound = true;
+                ErrorList += ErrorMessages.BoardError.ZERO_HEIGHT;
+                ErrorList += context.GetText() + "\n";
+            }
+
+            Program.Board.Width = Parsers.IntParseFromNumber(place.y().GetText());
+            if (Program.Board.Width == 0)
+            {
+                ErrorFound = true;
+                ErrorList += ErrorMessages.BoardError.ZERO_WIDTH;
+                ErrorList += context.GetText() + "\n";
+            }
+
+            if (context.nameDeclaration() != null)
             {
                 Program.Board.Name = context.nameDeclaration().ID().GetText();
             }
@@ -46,9 +61,15 @@ namespace LabWork1github
         public override object VisitPlayerPlacement([NotNull] PlayerPlacementContext context)
         {
             PlaceContext place = context.place();
-            int xPos = int.Parse(place.x().GetText());
-            int yPos = int.Parse(place.y().GetText());
-            Program.Board.Player = new Player(new Place(xPos-1, yPos-1), Program.starterHP);
+            int xPos = Parsers.IntParseFromNumber(place.x().GetText());
+            int yPos = Parsers.IntParseFromNumber(place.y().GetText());
+            if(xPos == 0 || yPos == 0)
+            {
+                ErrorFound = true;
+                ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
+                ErrorList += context.GetText() + "\n";
+            }
+            Program.Board.Player = new Player(new Place(xPos, yPos), StaticStartValues.STARTER_PLAYER_HP);
             if (context.nameDeclaration() != null)
                 Program.Board.Player.Name = context.nameDeclaration().ID().GetText();
             Program.Characters.Add(Program.Board.Player);
@@ -57,11 +78,17 @@ namespace LabWork1github
         public override object VisitMonsterPlacement([NotNull] MonsterPlacementContext context)
         {
             PlaceContext place = context.place();
-            int xPos = int.Parse(place.x().GetText());
-            int yPos = int.Parse(place.y().GetText());
+            int xPos = Parsers.IntParseFromNumber(place.x().GetText());
+            int yPos = Parsers.IntParseFromNumber(place.y().GetText());
+            if (xPos == 0 || yPos == 0)
+            {
+                ErrorFound = true;
+                ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
+                ErrorList += context.GetText() + "\n";
+            }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is MonsterType) {
-                Monster m = new Monster(Program.starterHP, (MonsterType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+                Monster m = new Monster(StaticStartValues.STARTER_MONSTER_HP, (MonsterType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
 
                 if(context.nameDeclaration() != null)
                 {
@@ -87,8 +114,14 @@ namespace LabWork1github
         public override object VisitTrapPlacement([NotNull] TrapPlacementContext context)
         {
             PlaceContext place = context.place();
-            int xPos = int.Parse(place.x().GetText());
-            int yPos = int.Parse(place.y().GetText());
+            int xPos = Parsers.IntParseFromNumber(place.x().GetText());
+            int yPos = Parsers.IntParseFromNumber(place.y().GetText());
+            if (xPos == 0 || yPos == 0)
+            {
+                ErrorFound = true;
+                ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
+                ErrorList += context.GetText() + "\n";
+            }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is TrapType)
             {
@@ -124,12 +157,17 @@ namespace LabWork1github
                     ErrorFound = true;
                     ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS+character.Name;
                 }
-                if (!character.PartnerName.Equals(""))
+                if (!character.PartnerName.Equals(StaticStartValues.PLACEHOLDER_PARTNER_NAME))
                 {
                     foreach (Character m in Program.Characters)
                     {
                         if (m.Name.Equals(character.PartnerName))
                         {
+                            if(m is Player)
+                            {
+                                ErrorFound = true;
+                                ErrorList += ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + character.Name;
+                            }
                             character.Partner = m;
                             break;
                         }

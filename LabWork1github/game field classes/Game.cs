@@ -13,8 +13,6 @@ namespace LabWork1github
 
     public class Game
     {
-        public static int CharacterNameCount = 0;
-
         public Board Board { get; set; }
 
         public Player Player { get; set; }
@@ -36,12 +34,6 @@ namespace LabWork1github
         public bool spawned = false;
 
         public Character ActualCharacter { get; set; }
-
-        public int NoExecution { get; set; } = 0;
-
-        public int ImmediateExecution { get; set; } = 0;
-
-        public int Repeat { get; set; } = 0;
 
         private GameParamProvider Provider;
 
@@ -179,7 +171,17 @@ namespace LabWork1github
                         if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
                         {
                             Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_BUMP_INTO_MONSTER);
-                            Player.Damage(25);
+                            Player.Damage(StaticStartValues.BUMPING_INTO_MONSTER_DAMAGE);
+                            wrongMove = true;
+                            break;
+                        }
+                    }
+                    foreach(Trap trap in Traps)
+                    {
+                        if (Player.Place.DirectionTo(trap.Place) == move.Direction)
+                        {
+                            Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_BUMP_INTO_DOUBLE_TRAP);
+                            Player.Damage(StaticStartValues.BUMPING_INTO_DOUBLE_TRAP_DAMAGE);
                             wrongMove = true;
                             break;
                         }
@@ -218,14 +220,10 @@ namespace LabWork1github
 
         public void SpawnMonster(Monster monster)
         {
-            if (monster.Place.X >= 0 && monster.Place.X < Board.Height && monster.Place.Y >= 0 && monster.Place.Y < Board.Width)
-            {
                 spawned = true;
                 this.Monsters.Add(monster);
                 if(!this.Board.Monsters.Contains(monster))
                     this.Board.Monsters.Add(monster);
-            }
-            else
                 Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS);
         }
         public bool IsOccupiedOrOutOfBounds(Place p)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +11,16 @@ namespace LabWork1github
 
     public class MoveCommand : Command
     {
-        private int _distance =1 ;
+        private int _distance = StaticStartValues.STARTER_DISTANCE ;
 
         public int Distance
         {
             get { return _distance; }
             set
             {
+                //TODO: Filter this in the Visitor
                 if (value <= 0)
-                    throw new NotSupportedException("Negative or zero Distance is not supported!");
+                    throw new NotSupportedException(ErrorMessages.MoveError.NEGATIVE_DIRECTION);
                 _distance = value;
             }
         }

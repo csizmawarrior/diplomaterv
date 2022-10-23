@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabWork1github.static_constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace LabWork1github
 {
     public class Board
     {
-        private int width = 0;
-        private int height = 0;
+        private int width = StaticStartValues.PLACEHOLDER_WIDTH;
+        private int height = StaticStartValues.PLACEHOLDER_HEIGHT;
 
         public Player Player { get; set; }
 
@@ -27,10 +28,8 @@ namespace LabWork1github
             }
             set
             {
-                if (width == 0)
-                    width = value;
-                if (value < 0)
-                    throw new NullReferenceException("negative width");
+                if (value == 0)
+                    throw new NullReferenceException(ErrorMessages.BoardError.ZERO_WIDTH);
             }
         }
         public int Height
@@ -44,7 +43,7 @@ namespace LabWork1github
                 if (height == 0)
                     height = value;
                 if (value < 0)
-                    throw new NullReferenceException("negative width");
+                    throw new NullReferenceException(ErrorMessages.BoardError.ZERO_HEIGHT);
             }
         }
     }

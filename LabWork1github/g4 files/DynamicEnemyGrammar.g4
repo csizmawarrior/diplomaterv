@@ -78,11 +78,8 @@ boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpress
             | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression?;
 nextBoolExpression: BOOLCONNECTER boolExpression;
 
-numberExpression: numberMultipExpression nextNumberExpression?;
-nextNumberExpression: NUMCONNECTERADD numberExpression;
-numberMultipExpression: numberFirstExpression nextNumberMultipExpression?;
-nextNumberMultipExpression: NUMCONNECTERMULTIP numberMultipExpression;
-numberFirstExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTESTART numberExpression ABSOLUTEEND | something;
+numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTESTART numberExpression PARENTHESISCLOSE | numberExpression NUMCONNECTERADD numberExpression |
+                    numberExpression NUMCONNECTERMULTIP numberExpression | something;
 functionExpression: character function;
 
 something: NUMBER | ROUND | attribute;
@@ -129,8 +126,7 @@ STAY: 'stay';
 AT: 'at';
 
 EQUALS: '=' ;
-ABSOLUTESTART: '~|';
-ABSOLUTEEND: '|~';
+ABSOLUTESTART: ('Abs'PARENTHESISSTART);
 NEGATE: '!';
 BOOLCONNECTER: '||' | '&&' ;
 COMPARE: '==' | '!=' ;

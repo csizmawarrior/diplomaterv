@@ -1,4 +1,5 @@
 ﻿using LabWork1github.EventHandling;
+using LabWork1github.static_constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace LabWork1github
     public abstract class CharacterType
     {
 
-        public int Health { get; set; } = -1;
-        public int Heal { get; set; } = -1;
-        public int Damage { get; set; } = -1;
-        public Place TeleportPlace { get; set; } = new Place(-1, -1);
-        public Place SpawnPlace { get; set; } = new Place(-1, -1);
+        public double Health { get; set; } = StaticStartValues.PLACEHOLDER_HEALTH;
+        public double Heal { get; set; } = StaticStartValues.PLACEHOLDER_HEAL;
+        public double Damage { get; set; } = StaticStartValues.PLACEHOLDER_DAMAGE;
+        public Place TeleportPlace { get; set; } = StaticStartValues.PLACEHOLDER_PLACE;
+        public Place SpawnPlace { get; set; } = StaticStartValues.PLACEHOLDER_PLACE;
         public CharacterType SpawnType { get; set; } = null;
         public string Name { get; set; }
         public List<Command> Commands { get; set; } = new List<Command>();

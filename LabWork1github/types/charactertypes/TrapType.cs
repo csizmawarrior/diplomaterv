@@ -20,9 +20,9 @@ namespace LabWork1github
         {
         }
 
-        public TrapType(string _name)
+        public TrapType(string name)
         {
-            this.Name = _name;
+            this.Name = name;
         }
 
         public int MoveRound { get; set; }
