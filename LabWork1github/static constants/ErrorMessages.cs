@@ -117,9 +117,13 @@ namespace LabWork1github.static_constants
             public const string CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED = "The referenced type has no Damage attribute defined!\n";
             public const string CHARACTER_TYPE_HAS_NO_HEAL_DEFINED = "The referenced type has no Heal attribute defined!\n";
             public const string CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED = "The referenced type has no Health attribute defined!\n";
+            public const string CHARACTER_TYPE_HAS_NO_TELEPORT_PLACE_DEFINED = "The referenced type has no \"teleport_place\" attribute defined!\n";
+            public const string CHARACTER_TYPE_HAS_NO_SPAWN_PLACE_DEFINED = "The referenced type has no \"spawn_place\" attribute defined!\n";
+            public const string CHARACTER_TYPE_HAS_NO_SPAWN_TYPE_DEFINED = "The referenced type has no \"spawn_type\" attribute defined!\n";
             public const string TRAP_HAS_NO_HEALTH = "Trap type has no health attribute\n";
             public const string UNRECOGNIZED_EXPRESSION = "Unrecognized number expression:\n";
             public const string ONLY_TRAP_CAN_HEAL = "Only Trap type can heal, no heal attribute for other types!\n";
+            public const string SPAWN_TYPE_NOT_GIVEN = "The given Trap type has no \"spawn_type\" attribute defined.\n";
             public const string IN_PLACE = "In place:\n";
             public const string TYPE_MISMATCH = "The two types aren't both Monster type or Trap type, so incompatible to compare!\n";
             public const string TYPE_MISMATCH_UNEXPECTED = "Unexpected error: The two types aren't compatible to compare!\n";

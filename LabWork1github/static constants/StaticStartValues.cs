@@ -25,6 +25,6 @@ namespace LabWork1github.static_constants
         public static double STARTER_PLAYER_HP = 200;
         public static double BUMPING_INTO_MONSTER_DAMAGE = 20;
         public static double BUMPING_INTO_DOUBLE_TRAP_DAMAGE = 20;
-        public static double TRAP_HEALTH = 1;
+        public static double TRAP_HEALTH = -1;
     }
 }

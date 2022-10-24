@@ -24,7 +24,7 @@ namespace LabWork1github.Visitors
         public List<MathSymbol> SymbolList { get; set; } = new List<MathSymbol>();
 
         public ConditionVisitor(GameParamProvider provider, BoolExpressionContext context)
-        { 
+        {
             this.BoolExpressionContext = context;
             this.Provider = provider;
         }
@@ -46,11 +46,11 @@ namespace LabWork1github.Visitors
             {
                 expressionValue = !CheckBoolExpression(context.boolExpression());
             }
-            if (context.functionExpression() != null) 
+            if (context.functionExpression() != null)
             {
                 expressionValue = CheckFunctionExpression(context.functionExpression());
             }
-            if(context.numberExpression() != null && context.numberExpression().Length > 1)
+            if (context.numberExpression() != null && context.numberExpression().Length > 1)
             {
                 if (context.numToBoolOperation().NUMCOMPARE() != null)
                     expressionValue = CheckNumCompareExpression(context);
@@ -122,7 +122,7 @@ namespace LabWork1github.Visitors
                 }
 
             }
-            if(functionExpressionContext.function().ALIVE() != null)
+            if (functionExpressionContext.function().ALIVE() != null)
             {
                 if (functionExpressionContext.character().ME() != null)
                     return Provider.GetMe().GetHealth() > 0;
@@ -150,11 +150,11 @@ namespace LabWork1github.Visitors
         {
             if (context.PARENTHESISSTART() != null)
                 return CheckNumberExpression(context.numberExpression().ElementAt(0));
-            if(context.ABSOLUTESTART() != null)
+            if (context.ABSOLUTESTART() != null)
             {
                 return Math.Abs(CheckNumberExpression(context.numberExpression().ElementAt(0)));
             }
-            if(context.NUMCONNECTERMULTIP() != null)
+            if (context.NUMCONNECTERMULTIP() != null)
             {
                 if (context.NUMCONNECTERMULTIP().GetText().Equals("*"))
                     return CheckNumberExpression(context.numberExpression().ElementAt(0)) *
@@ -166,9 +166,9 @@ namespace LabWork1github.Visitors
                     return CheckNumberExpression(context.numberExpression().ElementAt(0)) %
                             CheckNumberExpression(context.numberExpression().ElementAt(1));
             }
-            if(context.NUMCONNECTERADD() != null)
+            if (context.NUMCONNECTERADD() != null)
             {
-                if(context.NUMCONNECTERADD().GetText().Equals("+"))
+                if (context.NUMCONNECTERADD().GetText().Equals("+"))
                     return CheckNumberExpression(context.numberExpression().ElementAt(0)) +
                             CheckNumberExpression(context.numberExpression().ElementAt(1));
                 if (context.NUMCONNECTERADD().GetText().Equals("-"))
@@ -188,7 +188,7 @@ namespace LabWork1github.Visitors
             if (context.ROUND() != null)
                 return Provider.GetRound();
 
-            if(context.NUMBER() != null)
+            if (context.NUMBER() != null)
             {
                 double outputDouble;
                 if (double.TryParse(context.NUMBER().GetText(), out outputDouble))
@@ -196,7 +196,7 @@ namespace LabWork1github.Visitors
                     return outputDouble;
                 }
             }
-                
+
             if (context.attribute() != null)
             {
                 return CheckNumberAttributeExpression(context.attribute());
@@ -218,15 +218,18 @@ namespace LabWork1github.Visitors
             {
                 return MonsterNumberAttribute(context);
             }
-            if(context.character().TRAP() != null)
+            if (context.character().TRAP() != null)
             {
                 return TrapNumberAttribute(context);
             }
-            if(context.character().ME() != null)
+            if (context.character().ME() != null)
             {
-                return MeNumberAttribute(context);
+                if (Provider.GetMe() is Monster)
+                    return MonsterNumberAttribute(context);
+                if (Provider.GetMe() is Trap)
+                    return TrapNumberAttribute(context);
             }
-            if(context.character().PARTNER() != null)
+            if (context.character().PARTNER() != null)
             {
                 if (Provider.GetPartner() == null)
                 {
@@ -257,12 +260,12 @@ namespace LabWork1github.Visitors
         public bool CheckPlaceAttributeExpression(BoolExpressionContext context)
         {
             //monster is the first character
-            if(context.attribute().ElementAt(0).character().MONSTER() != null || 
+            if (context.attribute().ElementAt(0).character().MONSTER() != null ||
                 (context.attribute().ElementAt(0).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType) ||
                 (context.attribute().ElementAt(0).character().PARTNER() != null && Provider.GetPartner() != null && Provider.GetPartner() is Monster))
             {
                 //monster is the first character, type is the first attribute
-                if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") && 
+                if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("type") &&
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
                 {
                     if (context.attribute().ElementAt(1).character().TRAP() != null)
@@ -297,9 +300,9 @@ namespace LabWork1github.Visitors
                                 return Provider.GetPartner().GetCharacterType() != Provider.GetTrap().GetCharacterType().SpawnType;
                         }
                     }
-                    if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
-                        if(context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
+                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("type"))
                         {
                             ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
                             ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
@@ -323,7 +326,7 @@ namespace LabWork1github.Visitors
                             return false;
                         }
                     }
-                    if(context.attribute().ElementAt(1).character().MONSTER() != null)
+                    if (context.attribute().ElementAt(1).character().MONSTER() != null)
                     {
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
@@ -359,10 +362,10 @@ namespace LabWork1github.Visitors
                     }
                 }
                 //monster is the first character, place is the attribute
-                if(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") &&
+                if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") &&
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
                 {
-                    if(context.attribute().ElementAt(1).character().PLAYER() != null)
+                    if (context.attribute().ElementAt(1).character().PLAYER() != null)
                     {
                         if (context.attribute().ElementAt(0).character().MONSTER() != null)
                         {
@@ -379,7 +382,7 @@ namespace LabWork1github.Visitors
                                 return Provider.GetMe().Place == Provider.GetPlayer().Place;
                         }
                     }
-                    if(context.attribute().ElementAt(1).character().TRAP() != null)
+                    if (context.attribute().ElementAt(1).character().TRAP() != null)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
                         {
@@ -433,9 +436,10 @@ namespace LabWork1github.Visitors
                             }
                         }
                     }
-                    if(context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
-                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place")) { 
+                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
+                        {
                             if (context.attribute().ElementAt(0).character().MONSTER() != null)
                             {
                                 if (context.COMPARE().GetText().Equals("=="))
@@ -563,11 +567,11 @@ namespace LabWork1github.Visitors
                     if ((context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType) ||
                         context.attribute().ElementAt(1).character().MONSTER() != null)
                     {
-                            ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
-                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                            ErrorList += (context.GetText() + "\n");
-                            ErrorFound = true;
-                            return false;
+                        ErrorList += (ErrorMessages.ConditionError.TYPE_MISMATCH);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return false;
                     }
                 }
                 //first character is trap and the attribute is spawn type
@@ -1141,80 +1145,80 @@ namespace LabWork1github.Visitors
                 }
             }
             //if the first character is Player, it can't be "ME"
-            if(context.attribute().ElementAt(0).character().PLAYER() != null)
+            if (context.attribute().ElementAt(0).character().PLAYER() != null)
             {
                 //first character is placer, attribute is place
-                if(context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") &&
+                if (context.attribute().ElementAt(0).possibleAttributes().GetText().Equals("place") &&
                     context.attribute().ElementAt(0).possibleAttributes().possibleAttributes().Length == 0)
                 {
                     if (context.attribute().ElementAt(1).character().PLAYER() != null)
                     {
-                            if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetPlayer().Place == Provider.GetPlayer().Place;
-                            if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetPlayer().Place != Provider.GetPlayer().Place;
+                        if (context.COMPARE().GetText().Equals("=="))
+                            return Provider.GetPlayer().Place == Provider.GetPlayer().Place;
+                        if (context.COMPARE().GetText().Equals("!="))
+                            return Provider.GetPlayer().Place != Provider.GetPlayer().Place;
                     }
                     if (context.attribute().ElementAt(1).character().TRAP() != null)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
                         {
-                                if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetTrap().Place;
-                                if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetTrap().Place;
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetPlayer().Place == Provider.GetTrap().Place;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetPlayer().Place != Provider.GetTrap().Place;
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("teleport_place"))
                         {
-                                if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
-                                if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetTrap().GetCharacterType().TeleportPlace;
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetPlayer().Place == Provider.GetTrap().GetCharacterType().TeleportPlace;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetPlayer().Place != Provider.GetTrap().GetCharacterType().TeleportPlace;
                         }
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
                         {
-                                if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
-                                if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetTrap().GetCharacterType().SpawnPlace;
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetPlayer().Place == Provider.GetTrap().GetCharacterType().SpawnPlace;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetPlayer().Place != Provider.GetTrap().GetCharacterType().SpawnPlace;
                         }
                     }
                     if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is TrapType)
                     {
                         if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("place"))
                         {
-                                if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetMe().Place;
-                                if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetMe().Place;
-                        }
-                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("teleport_place"))
-                        {
-                                if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetMe().GetCharacterType().TeleportPlace;
-                                if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetMe().GetCharacterType().TeleportPlace;
-                        }
-                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
-                        {
-                                if (context.COMPARE().GetText().Equals("=="))
-                                    return Provider.GetPlayer().Place == Provider.GetMe().GetCharacterType().SpawnPlace;
-                                if (context.COMPARE().GetText().Equals("!="))
-                                    return Provider.GetPlayer().Place != Provider.GetMe().GetCharacterType().SpawnPlace;
-                        }
-                    }
-                    if (context.attribute().ElementAt(1).character().MONSTER() != null)
-                    {
-                            if (context.COMPARE().GetText().Equals("=="))
-                                return Provider.GetPlayer().Place == Provider.GetMonster().Place;
-                            if (context.COMPARE().GetText().Equals("!="))
-                                return Provider.GetPlayer().Place != Provider.GetMonster().Place;
-                    }
-                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
-                    {
                             if (context.COMPARE().GetText().Equals("=="))
                                 return Provider.GetPlayer().Place == Provider.GetMe().Place;
                             if (context.COMPARE().GetText().Equals("!="))
                                 return Provider.GetPlayer().Place != Provider.GetMe().Place;
+                        }
+                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("teleport_place"))
+                        {
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetPlayer().Place == Provider.GetMe().GetCharacterType().TeleportPlace;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetPlayer().Place != Provider.GetMe().GetCharacterType().TeleportPlace;
+                        }
+                        if (context.attribute().ElementAt(1).possibleAttributes().GetText().Equals("spawn_place"))
+                        {
+                            if (context.COMPARE().GetText().Equals("=="))
+                                return Provider.GetPlayer().Place == Provider.GetMe().GetCharacterType().SpawnPlace;
+                            if (context.COMPARE().GetText().Equals("!="))
+                                return Provider.GetPlayer().Place != Provider.GetMe().GetCharacterType().SpawnPlace;
+                        }
+                    }
+                    if (context.attribute().ElementAt(1).character().MONSTER() != null)
+                    {
+                        if (context.COMPARE().GetText().Equals("=="))
+                            return Provider.GetPlayer().Place == Provider.GetMonster().Place;
+                        if (context.COMPARE().GetText().Equals("!="))
+                            return Provider.GetPlayer().Place != Provider.GetMonster().Place;
+                    }
+                    if (context.attribute().ElementAt(1).character().ME() != null && Provider.GetMe().GetCharacterType() is MonsterType)
+                    {
+                        if (context.COMPARE().GetText().Equals("=="))
+                            return Provider.GetPlayer().Place == Provider.GetMe().Place;
+                        if (context.COMPARE().GetText().Equals("!="))
+                            return Provider.GetPlayer().Place != Provider.GetMe().Place;
                     }
                 }
                 //first character is player, and the first attribute isn'T a place or type
@@ -1266,17 +1270,10 @@ namespace LabWork1github.Visitors
             }
             if (context.possibleAttributes().GetText().Equals("heal"))
             {
-                if (Provider.GetMe().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_DAMAGE)
+                if (Provider.GetMe().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_HEAL)
                 {
                     ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
                     ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return -1;
-                }
-                if(Provider.GetMe() is Monster)
-                {
-                    ErrorList += (ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
@@ -1285,13 +1282,6 @@ namespace LabWork1github.Visitors
             }
             if (context.possibleAttributes().GetText().Equals("health"))
             {
-                if (Provider.GetMe() is Trap)
-                {
-                    ErrorList += (ErrorMessages.ParameterDeclarationError.TRAP_HAS_NO_HEALTH);
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return -1;
-                }
                 return Provider.GetMe().GetHealth();
             }
             if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
@@ -1302,9 +1292,11 @@ namespace LabWork1github.Visitors
             }
             if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
             {
-                if (Provider.GetMe() is Monster)
+                if (Provider.GetMe().GetCharacterType().TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
+                        == Directions.COLLISION)
                 {
-                    ErrorList += (ErrorMessages.TeleportError.ONLY_TRAP_CAN_TELEPORT);
+                    ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_TELEPORT_PLACE_DEFINED);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
@@ -1315,9 +1307,11 @@ namespace LabWork1github.Visitors
             }
             if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
             {
-                if (Provider.GetMe() is Monster)
+                if (Provider.GetMe().GetCharacterType().SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
+                        == Directions.COLLISION)
                 {
-                    ErrorList += (ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN);
+                    ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_SPAWN_PLACE_DEFINED);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
@@ -1342,17 +1336,10 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                 {
-                    if (Provider.GetMe().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_DAMAGE)
+                    if (Provider.GetMe().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_HEAL)
                     {
                         ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
                         ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                        ErrorList += (context.GetText() + "\n");
-                        ErrorFound = true;
-                        return -1;
-                    }
-                    if (Provider.GetMe() is Monster)
-                    {
-                        ErrorList += (ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
                         return -1;
@@ -1374,18 +1361,47 @@ namespace LabWork1github.Visitors
             }
             if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
             {
-                if (Provider.GetMe() is Monster)
+                if (Provider.GetMe().GetCharacterType().SpawnType == null)
                 {
-                    ErrorList += (ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN);
+                    ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_SPAWN_TYPE_DEFINED);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                    ErrorList += (context.GetText() + "\n");
+                    ErrorFound = true;
+                    return -1;
+                }
+                if (Program.GetCharacterType(Provider.GetMe().GetCharacterType().SpawnType.Name) == null)
+                {
+                    ErrorList += (ErrorMessages.ConditionError.SPAWN_TYPE_NOT_GIVEN);
+                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
-                    return Provider.GetMe().GetCharacterType().SpawnType.Damage;
+                {
+                    if (Program.GetCharacterType(Provider.GetMe().GetCharacterType().SpawnType.Name).Damage
+                            == StaticStartValues.PLACEHOLDER_DAMAGE)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Program.GetCharacterType(Provider.GetMe().GetCharacterType().SpawnType.Name).Damage;
+                }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
                 {
-                    return Provider.GetMe().GetCharacterType().SpawnType.Health;
+                    if (Program.GetCharacterType(Provider.GetMe().GetCharacterType().SpawnType.Name).Health
+                            == StaticStartValues.PLACEHOLDER_HEALTH)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Program.GetCharacterType(Provider.GetMe().GetCharacterType().SpawnType.Name).Health;
                 }
             }
             if (Provider.GetMe() is Trap)
@@ -1398,22 +1414,47 @@ namespace LabWork1github.Visitors
             return -1;
         }
 
-
         public double TrapNumberAttribute(AttributeContext context)
         {
+            if (context.possibleAttributes().GetText().Equals("health") ||
+                    (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type") &&
+                        context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health")))
+            {
+                ErrorList += (ErrorMessages.ConditionError.TRAP_HAS_NO_HEALTH);
+                ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                ErrorList += (context.GetText() + "\n");
+                ErrorFound = true;
+                return -1;
+            }
             if (context.character().PARTNER() != null)
             {
                 if (context.possibleAttributes().GetText().Equals("damage"))
+                {
+                    if (Provider.GetPartner().GetCharacterType().Damage == StaticStartValues.PLACEHOLDER_DAMAGE)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
                     return Provider.GetPartner().GetCharacterType().Damage;
+                }
                 if (context.possibleAttributes().GetText().Equals("heal"))
+                {
+                    if (Provider.GetPartner().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_HEAL)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
                     return Provider.GetPartner().GetCharacterType().Heal;
+                }
                 if (context.possibleAttributes().GetText().Equals("health"))
                 {
-                    ErrorList += (ErrorMessages.ConditionError.TRAP_HAS_NO_HEALTH);
-                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return -1;
+                    return Provider.GetPartner().GetHealth();
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                 {
@@ -1424,6 +1465,15 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
                 {
+                    if (Provider.GetPartner().GetCharacterType().TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
+                            == Directions.COLLISION)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_TELEPORT_PLACE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                         return Provider.GetPartner().GetCharacterType().TeleportPlace.X;
                     else
@@ -1431,6 +1481,15 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
                 {
+                    if (Provider.GetPartner().GetCharacterType().SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
+                            == Directions.COLLISION)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_SPAWN_PLACE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                         return Provider.GetPartner().GetCharacterType().SpawnPlace.X;
                     else
@@ -1438,182 +1497,223 @@ namespace LabWork1github.Visitors
                 }
                 if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
-                    if (context.possibleAttributes().GetText().Equals("damage"))
-                        return Provider.GetMe().GetCharacterType().Damage;
-                    if (context.possibleAttributes().GetText().Equals("heal"))
-                        return Provider.GetMe().GetCharacterType().Heal;
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
                     {
-                        ErrorList += (ErrorMessages.ConditionError.TRAP_HAS_NO_HEALTH);
-                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                        ErrorList += (context.GetText() + "\n");
-                        ErrorFound = true;
-                        return -1;
-                    }
-                }
-            }
-            if(context.character().PARTNER() != null)
-            {
-
-            }
-            if(context.character().TRAP() != null)
-            {
-
-            }
-                if (context.possibleAttributes().GetText().Equals("damage"))
-            {
-
-                    if (Provider.GetMe().GetCharacterType().Damage == -1)
-                        return 0;
-                    return Provider.GetMe().GetCharacterType().Damage;
-
-                if (Provider.GetTrap().GetCharacterType().Damage == -1)
-                    return 0;
-                return Provider.GetTrap().GetCharacterType().Damage;
-            }
-            //assuming that traps return a default 0 for heal or damage when e.g. they only teleport
-            if (context.possibleAttributes().GetText().Equals("heal"))
-            {
-                if(context.character().ME() != null)
-                {
-                    if (Provider.GetMe().GetCharacterType().Heal == -1)
-                        return 0;
-                    return Provider.GetMe().GetCharacterType().Heal;
-                }
-                if (Provider.GetTrap().GetCharacterType().Heal == -1)
-                    return 0;
-                return Provider.GetTrap().GetCharacterType().Heal;
-            }
-            if (context.possibleAttributes().GetText().Equals("place"))
-            {
-                if(context.character().ME() != null)
-                {
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                        return Provider.GetMe().Place.X;
-                    else
-                        return Provider.GetMe().Place.Y;
-                }
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                    return Provider.GetTrap().Place.X;
-                else
-                    return Provider.GetTrap().Place.Y;
-            }
-            if (context.possibleAttributes().GetText().Equals("teleport_place"))
-            {
-                if(context.character().ME() != null)
-                {
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                        return Provider.GetMe().GetCharacterType().TeleportPlace.X;
-                    else
-                        return Provider.GetMe().GetCharacterType().TeleportPlace.Y;
-                }
-
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                    return Provider.GetTrap().GetCharacterType().TeleportPlace.X;
-                else
-                    return Provider.GetTrap().GetCharacterType().TeleportPlace.Y;
-            }
-            if (context.possibleAttributes().GetText().Equals("spawn_place"))
-            {
-                if(context.character().ME() != null)
-                {
-                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                        return Provider.GetMe().GetCharacterType().SpawnPlace.X;
-                    else
-                        return Provider.GetMe().GetCharacterType().SpawnPlace.Y;
-                }
-
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                    return Provider.GetTrap().GetCharacterType().SpawnPlace.X;
-                else
-                    return Provider.GetTrap().GetCharacterType().SpawnPlace.Y;
-            }
-            if (context.possibleAttributes().GetText().Equals("type"))
-            {
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
-                {
-                    if(context.character().ME() != null)
-                    {
-                        if (Provider.GetMe().GetCharacterType().Damage == -1)
+                        if (Program.GetCharacterType(Provider.GetPartner().GetCharacterType().SpawnType.Name).Damage
+                                == StaticStartValues.PLACEHOLDER_DAMAGE)
                         {
-                            return 0;
-                        }
-                        return Provider.GetMe().GetCharacterType().Damage;
-                    }
-
-                    if (Provider.GetTrap().GetCharacterType().Damage == -1)
-                    {
-                        return 0;
-                    }
-                    return Provider.GetTrap().GetCharacterType().Damage;
-                }
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
-                {
-                    ErrorList += (ErrorMessages.ConditionError.TRAP_HAS_NO_HEALTH);
-                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return -1;
-                }
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
-                {
-                    if(context.character().ME() != null)
-                    {
-                        if (Provider.GetMe().GetCharacterType().Heal == -1)
-                        {
-                            return 0;
-                        }
-                        return Provider.GetMe().GetCharacterType().Heal;
-                    }
-
-                    if (Provider.GetTrap().GetCharacterType().Heal == -1)
-                    {
-                        return 0;
-                    }
-                    return Provider.GetTrap().GetCharacterType().Heal;
-                }
-            }
-            if (context.possibleAttributes().GetText().Equals("spawn_type"))
-            {
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
-                {
-                    if(context.character().ME() != null)
-                    {
-                        if (Provider.GetMe().GetCharacterType().SpawnType.Damage == -1)
-                        {
-                            ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
                             ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return -1;
                         }
-                        return Provider.GetMe().GetCharacterType().SpawnType.Damage;
+                        return Provider.GetPartner().GetCharacterType().Damage;
                     }
-
-                    if (Provider.GetTrap().GetCharacterType().SpawnType.Damage == -1)
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
                     {
-                        ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        if (Provider.GetPartner().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_HEAL)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetPartner().GetCharacterType().Heal;
+                    }
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
+                {
+                    if (Provider.GetPartner().GetCharacterType().SpawnType == null)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_SPAWN_TYPE_DEFINED);
                         ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
                         return -1;
                     }
-                    return Provider.GetTrap().GetCharacterType().SpawnType.Damage;
+                    if (Program.GetCharacterType(Provider.GetPartner().GetCharacterType().SpawnType.Name) == null)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.SPAWN_TYPE_NOT_GIVEN);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                    {
+                        if (Program.GetCharacterType(Provider.GetPartner().GetCharacterType().SpawnType.Name).Damage
+                                == StaticStartValues.PLACEHOLDER_DAMAGE)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Program.GetCharacterType(Provider.GetPartner().GetCharacterType().SpawnType.Name).Damage;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                    {
+                        if (Program.GetCharacterType(Provider.GetPartner().GetCharacterType().SpawnType.Name).Health
+                                == StaticStartValues.PLACEHOLDER_HEALTH)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Program.GetCharacterType(Provider.GetPartner().GetCharacterType().SpawnType.Name).Health;
+                    }
                 }
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+            }
+            if (context.character().ME() != null)
+            {
+                return MeNumberAttribute(context);
+            }
+            if (context.character().TRAP() != null)
+            {
+                if (context.possibleAttributes().GetText().Equals("damage"))
                 {
-                    if (context.character().ME() != null)
-                        return Provider.GetMe().GetCharacterType().SpawnType.Health;
-
-                    return Provider.GetTrap().GetCharacterType().SpawnType.Health;
+                    if (Provider.GetTrap().GetCharacterType().Damage == StaticStartValues.PLACEHOLDER_DAMAGE)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Provider.GetTrap().GetCharacterType().Damage;
                 }
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
+                if (context.possibleAttributes().GetText().Equals("heal"))
                 {
-                    ErrorList += (ErrorMessages.ConditionError.ONLY_TRAP_CAN_HEAL);
-                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return -1;
+                    if (Provider.GetTrap().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_HEAL)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    return Provider.GetTrap().GetCharacterType().Heal;
+                }
+                if (context.possibleAttributes().GetText().Equals("health"))
+                {
+                    return Provider.GetTrap().GetHealth();
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetTrap().Place.X;
+                    else
+                        return Provider.GetTrap().Place.Y;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
+                {
+                    if (Provider.GetTrap().GetCharacterType().TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
+                            == Directions.COLLISION)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_TELEPORT_PLACE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetTrap().GetCharacterType().TeleportPlace.X;
+                    else
+                        return Provider.GetTrap().GetCharacterType().TeleportPlace.Y;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
+                {
+                    if (Provider.GetTrap().GetCharacterType().SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
+                            == Directions.COLLISION)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_SPAWN_PLACE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetTrap().GetCharacterType().SpawnPlace.X;
+                    else
+                        return Provider.GetTrap().GetCharacterType().SpawnPlace.Y;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                    {
+                        if (Program.GetCharacterType(Provider.GetTrap().GetCharacterType().SpawnType.Name).Damage
+                                == StaticStartValues.PLACEHOLDER_DAMAGE)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetTrap().GetCharacterType().Damage;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
+                    {
+                        if (Provider.GetTrap().GetCharacterType().Heal == StaticStartValues.PLACEHOLDER_HEAL)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEAL_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetTrap().GetCharacterType().Heal;
+                    }
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
+                {
+                    if (Provider.GetTrap().GetCharacterType().SpawnType == null)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_SPAWN_TYPE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    if (Program.GetCharacterType(Provider.GetTrap().GetCharacterType().SpawnType.Name) == null)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.SPAWN_TYPE_NOT_GIVEN);
+                        ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                        ErrorList += (context.GetText() + "\n");
+                        ErrorFound = true;
+                        return -1;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                    {
+                        if (Program.GetCharacterType(Provider.GetTrap().GetCharacterType().SpawnType.Name).Damage
+                                == StaticStartValues.PLACEHOLDER_DAMAGE)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Program.GetCharacterType(Provider.GetTrap().GetCharacterType().SpawnType.Name).Damage;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                    {
+                        if (Program.GetCharacterType(Provider.GetTrap().GetCharacterType().SpawnType.Name).Health
+                                == StaticStartValues.PLACEHOLDER_HEALTH)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Program.GetCharacterType(Provider.GetTrap().GetCharacterType().SpawnType.Name).Health;
+                    }
                 }
             }
 
@@ -1626,76 +1726,98 @@ namespace LabWork1github.Visitors
 
         public double MonsterNumberAttribute(AttributeContext context)
         {
-            if (context.possibleAttributes().GetText().Equals("damage")) {
-
-                if(context.character().ME() != null)
+            if (context.possibleAttributes().GetText().Equals("heal") ||
+                    (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type") &&
+                        context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal")))
+            {
+                ErrorList += (ErrorMessages.ConditionError.ONLY_TRAP_CAN_HEAL);
+                ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                ErrorList += (context.GetText() + "\n");
+                ErrorFound = true;
+                return -1;
+            }
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
+            {
+                ErrorList += (ErrorMessages.TeleportError.ONLY_TRAP_CAN_TELEPORT);
+                ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                ErrorList += (context.GetText() + "\n");
+                ErrorFound = true;
+                return -1;
+            }
+            if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place") ||
+                context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
+            {
+                ErrorList += (ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN);
+                ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                ErrorList += (context.GetText() + "\n");
+                ErrorFound = true;
+                return -1;
+            }
+            if (context.character().PARTNER() != null)
+            {
+                if (context.possibleAttributes().GetText().Equals("damage"))
                 {
-                    if (Provider.GetMe().GetCharacterType().Damage == -1)
+                    if (Provider.GetPartner().GetCharacterType().Damage == StaticStartValues.PLACEHOLDER_DAMAGE)
                     {
-                        ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
                         ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
                         return -1;
                     }
-                    else
-                        return Provider.GetMe().GetCharacterType().Damage;
+                    return Provider.GetPartner().GetCharacterType().Damage;
                 }
-
-                if (Provider.GetMonster().GetCharacterType().Damage == -1)
+                if (context.possibleAttributes().GetText().Equals("health"))
                 {
-                    ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
-                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return -1;
+                    return Provider.GetPartner().GetHealth();
                 }
-                else
-                    return Provider.GetMonster().GetCharacterType().Damage;
-            }
-            if (context.possibleAttributes().GetText().Equals("health"))
-            {
-                if (context.character().ME() != null)
-                    return Provider.GetMe().GetHealth();
-
-                return Provider.GetMonster().GetHealth();
-            }
-            if (context.possibleAttributes().GetText().Equals("place"))
-            {
-                if(context.character().ME() != null)
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                        return Provider.GetMe().Place.X;
+                        return Provider.GetPartner().Place.X;
                     else
-                        return Provider.GetMe().Place.Y;
+                        return Provider.GetPartner().Place.Y;
                 }
-
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
-                    return Provider.GetMonster().Place.X;
-                else
-                    return Provider.GetMonster().Place.Y;
-            }
-            if (context.possibleAttributes().GetText().Equals("type"))
-            {
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
-                    if(context.character().ME() != null)
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
                     {
-                        if (Provider.GetMe().GetCharacterType().Damage == -1)
+                        if (Program.GetCharacterType(Provider.GetPartner().GetCharacterType().SpawnType.Name).Damage
+                                == StaticStartValues.PLACEHOLDER_DAMAGE)
                         {
-                            ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
                             ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                             ErrorList += (context.GetText() + "\n");
                             ErrorFound = true;
                             return -1;
                         }
-                        return Provider.GetMe().GetCharacterType().Damage;
+                        return Provider.GetPartner().GetCharacterType().Damage;
                     }
-
-
-                    if (Provider.GetMonster().GetCharacterType().Damage == -1)
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
                     {
-                        ErrorList += (ErrorMessages.ConditionError.MONSTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                        if (Provider.GetPartner().GetCharacterType().Health == StaticStartValues.PLACEHOLDER_HEALTH)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetPartner().GetCharacterType().Health;
+                    }
+                }
+            }
+            if (context.character().ME() != null)
+            {
+                return MeNumberAttribute(context);
+            }
+            if (context.character().MONSTER() != null)
+            {
+                if (context.possibleAttributes().GetText().Equals("damage"))
+                {
+                    if (Provider.GetMonster().GetCharacterType().Damage == StaticStartValues.PLACEHOLDER_DAMAGE)
+                    {
+                        ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
                         ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
                         ErrorList += (context.GetText() + "\n");
                         ErrorFound = true;
@@ -1703,20 +1825,44 @@ namespace LabWork1github.Visitors
                     }
                     return Provider.GetMonster().GetCharacterType().Damage;
                 }
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                if (context.possibleAttributes().GetText().Equals("health"))
                 {
-                    if(context.character().ME() != null)
-                        return Provider.GetMe().GetCharacterType().Health;
-
-                    return Provider.GetMonster().GetCharacterType().Health;
+                    return Provider.GetMonster().GetHealth();
                 }
-                if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal"))
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                 {
-                    ErrorList += (ErrorMessages.ConditionError.ONLY_TRAP_CAN_HEAL);
-                    ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
-                    ErrorList += (context.GetText() + "\n");
-                    ErrorFound = true;
-                    return -1;
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
+                        return Provider.GetMonster().Place.X;
+                    else
+                        return Provider.GetMonster().Place.Y;
+                }
+                if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
+                {
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
+                    {
+                        if (Program.GetCharacterType(Provider.GetMonster().GetCharacterType().SpawnType.Name).Damage
+                                == StaticStartValues.PLACEHOLDER_DAMAGE)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetMonster().GetCharacterType().Damage;
+                    }
+                    if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health"))
+                    {
+                        if (Provider.GetMonster().GetCharacterType().Health == StaticStartValues.PLACEHOLDER_HEALTH)
+                        {
+                            ErrorList += (ErrorMessages.ConditionError.CHARACTER_TYPE_HAS_NO_HEALTH_DEFINED);
+                            ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
+                            ErrorList += (context.GetText() + "\n");
+                            ErrorFound = true;
+                            return -1;
+                        }
+                        return Provider.GetMonster().GetCharacterType().Health;
+                    }
                 }
             }
 
@@ -1726,5 +1872,5 @@ namespace LabWork1github.Visitors
             ErrorFound = true;
             return -1;
         }
-        }
+    }
 }
