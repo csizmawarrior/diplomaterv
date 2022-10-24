@@ -31,5 +31,9 @@ namespace LabWork1github
                 return Directions.FORWARD;
             return Directions.AWAY;
         }
+        public override bool Equals(object obj)
+        {
+            return this.DirectionTo((Place)obj) == Directions.COLLISION;
+        }
     }
 }

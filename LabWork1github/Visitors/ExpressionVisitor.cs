@@ -77,14 +77,14 @@ namespace LabWork1github
                         context.numberExpression().ElementAt(1).something().attribute() != null)
                     {
                         if (context.numberExpression().ElementAt(0).something().attribute()
-                            .possibleAttributes().Equals("type") ||
+                            .possibleAttributes().GetText().Equals("type") ||
                            context.numberExpression().ElementAt(0).something().attribute()
-                            .possibleAttributes().Equals("spawn_type"))
+                            .possibleAttributes().GetText().Equals("spawn_type"))
                         {
                             if ( ! (context.numberExpression().ElementAt(1).something().attribute()
-                                .possibleAttributes().Equals("type") ||
+                                .possibleAttributes().GetText().Equals("type") ||
                                 context.numberExpression().ElementAt(1).something().attribute()
-                                .possibleAttributes().Equals("spawn_type")))
+                                .possibleAttributes().GetText().Equals("spawn_type")))
                             {
                                 ErrorList += ErrorMessages.ExpressionError.TYPE_COMPARED_WITH_OTHER_ATTRIBUTE;
                                 ErrorList += context.GetText() + "\n";
@@ -93,16 +93,16 @@ namespace LabWork1github
                         }
 
                         if (context.numberExpression().ElementAt(0).something().attribute()
-                            .possibleAttributes().Equals("place") || context.numberExpression().ElementAt(0)
-                            .something().attribute().possibleAttributes().Equals("spawn_place") ||
+                            .possibleAttributes().GetText().Equals("place") || context.numberExpression().ElementAt(0)
+                            .something().attribute().possibleAttributes().GetText().Equals("spawn_place") ||
                             context.numberExpression().ElementAt(0).something().attribute()
-                            .possibleAttributes().Equals("teleport_place"))
+                            .possibleAttributes().GetText().Equals("teleport_place"))
                         {
                             if ( ! (context.numberExpression().ElementAt(1).something().attribute()
-                                .possibleAttributes().Equals("type") || context.numberExpression().ElementAt(1)
-                                .something().attribute().possibleAttributes().Equals("spawn_type") ||
+                                .possibleAttributes().GetText().Equals("place") || context.numberExpression().ElementAt(1)
+                                .something().attribute().possibleAttributes().GetText().Equals("spawn_place") ||
                                 context.numberExpression().ElementAt(1).something().attribute()
-                                .possibleAttributes().Equals("teleport_place")))
+                                .possibleAttributes().GetText().Equals("teleport_place")))
                             {
                                 ErrorList += ErrorMessages.ExpressionError.PLACE_COMPARED_WITH_OTHER_ATTRIBUTE;
                                 ErrorList += context.GetText() + "\n";
@@ -110,14 +110,14 @@ namespace LabWork1github
                             }
                         }
                         if(context.numberExpression().ElementAt(0).something().attribute()
-                            .possibleAttributes().Equals("name") ||
+                            .possibleAttributes().GetText().Equals("name") ||
                            context.numberExpression().ElementAt(0).something().attribute()
-                            .possibleAttributes().Equals("name"))
+                            .possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("name"))
                         {
                             if( ! (context.numberExpression().ElementAt(1).something().attribute()
-                            .possibleAttributes().Equals("name") ||
+                            .possibleAttributes().GetText().Equals("name") ||
                            context.numberExpression().ElementAt(1).something().attribute()
-                            .possibleAttributes().Equals("name") ))
+                            .possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("name")))
                             {
                                 ErrorList += ErrorMessages.ExpressionError.NAME_COMPARED_WITH_OTHER_ATTRIBUTE;
                                 ErrorList += context.GetText() + "\n";
@@ -150,14 +150,6 @@ namespace LabWork1github
                     ErrorList += context.GetText() + "\n";
                     CheckFailed = true;
                 }
-                if(context.NUMCONNECTERMULTIP() != null && (context.NUMCONNECTERMULTIP().GetText().Equals("%") ||
-                    context.NUMCONNECTERMULTIP().GetText().Equals("/")))
-                    if (!IsNumberExpressionNumber(context.numberExpression().ElementAt(1)))
-                    {
-                        ErrorList += ErrorMessages.ExpressionError.DIVIDING_WITH_ZERO;
-                        ErrorList += context.numberExpression().ElementAt(1).GetText() + "\n";
-                        CheckFailed = true;
-                    }
                 return IsNumberExpressionNumber(context.numberExpression().ElementAt(0)) &&
                     IsNumberExpressionNumber(context.numberExpression().ElementAt(1));
             }
@@ -169,15 +161,18 @@ namespace LabWork1github
         {
             if (context.NUMBER() != null)
             {
-                int output;
-                if (int.TryParse(context.NUMBER().GetText(), out output))
-                {
-                    return true;
-                }
                 double outputDouble;
                 if (double.TryParse(context.NUMBER().GetText(), out outputDouble))
                 {
                     return true;
+                }
+                else
+                {
+                    int output;
+                    if (int.TryParse(context.NUMBER().GetText(), out output))
+                    {
+                        return true;
+                    }
                 }
             }
             //because then it is ROUND
