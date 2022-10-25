@@ -46,8 +46,8 @@ namespace LabWork1github
             AntlrInputStream inputStream = new AntlrInputStream(text);
             DynamicEnemyGrammarLexer MonsterGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(MonsterGrammarLexer_);
-            DynamicEnemyGrammarParser MonsterGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
-            DynamicEnemyGrammarParser.DefinitionContext chatContext = MonsterGrammarParser.definition();
+            DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
+            DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(chatContext);
             if (visitor.ErrorFound)

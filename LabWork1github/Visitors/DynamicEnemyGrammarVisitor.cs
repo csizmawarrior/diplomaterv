@@ -407,6 +407,13 @@ namespace LabWork1github
 
         public override object VisitBlock([NotNull] BlockContext context)
         {
+            if (CreationStage != TypeCreationStage.CommandListing && CreationStage != TypeCreationStage.ParameterDeclare)
+            {
+                foreach (var child in context.statement())
+                {
+                    Visit(child);
+                }
+            }
             return null;
         }
 
@@ -530,6 +537,7 @@ namespace LabWork1github
                 CreationStage = TypeCreationStage.EventCommandBlock;
                 TriggerEventHandler = EventHandler;
                 VisitBlock(context.block());
+                EventHandler = TriggerEventHandler;
                 TriggerEventHandler = null;
                 CreationStage = TypeCreationStage.CommandListing;
                 Program.GetCharacterType(this.typeName).EventHandlers.Add(EventHandler);

@@ -200,7 +200,7 @@ namespace LabWork1github
                     context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("type") ||
                     context.possibleAttributes().GetText().Equals("name")))
                 {
-                    if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
+                    if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type")))
@@ -223,7 +223,7 @@ namespace LabWork1github
                 if (!(context.possibleAttributes().GetText().Equals("place") || context.possibleAttributes().GetText().Equals("health") ||
                     context.possibleAttributes().GetText().Equals("damage") || context.possibleAttributes().GetText().Equals("name")))
                 {
-                    if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
+                    if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
                         if (!context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                         {
@@ -248,7 +248,7 @@ namespace LabWork1github
                       context.possibleAttributes().GetText().Equals("heal") || context.possibleAttributes().GetText().Equals("health") ||
                       context.possibleAttributes().GetText().Equals("name")))
                 {
-                    if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
+                    if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
                         if (!(context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place") ||
                                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type") ||
@@ -274,7 +274,7 @@ namespace LabWork1github
                     context.possibleAttributes().GetText().Equals("spawn_place") ||  context.possibleAttributes().GetText().Equals("spawn_type") ||
                     context.possibleAttributes().GetText().Equals("heal") || context.possibleAttributes().GetText().Equals("name")))
                 {
-                    if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
+                    if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && context.possibleAttributes().possibleAttributes().Length > 1)
                     {
                         if(! (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place") ||
                             context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place") ||
@@ -296,7 +296,7 @@ namespace LabWork1github
                 }
             }
             if (context.possibleAttributes() != null)
-                if (context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1)
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && context.possibleAttributes().possibleAttributes().Length > 1)
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place") || 
                         context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place") ||

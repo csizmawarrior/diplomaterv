@@ -66,7 +66,6 @@
     <Compile Include="g4 files\BoardGrammar.g4.parser.cs">
       <DependentUpon>BoardGrammar.g4</DependentUpon>
     </Compile>
-    <Compile Include="Listeners\DynamicEnemyGrammarListener.cs" />
     <Compile Include="MathsCount\AddSymbol.cs" />
     <Compile Include="MathsCount\MultiplySymbol.cs" />
     <Compile Include="MathsCount\SubstractSymbol.cs" />

@@ -17,7 +17,7 @@ namespace LabWork1github.EventHandling
         //TODO: The if might needs some fine tuning
         public virtual void OnEvent(object sender, TriggerEvent args)
         {
-            if (args.EventType.Equals(TriggeringEvent.EventType) && args.TargetCharacter == TriggeringEvent.TargetCharacter) {
+            if (args.EventType.Equals(TriggeringEvent.EventType) && (TriggeringEvent.TargetCharacter == null || (args.TargetCharacter.GetType().Equals(TriggeringEvent.TargetCharacter.GetType())))) {
                 if ((TriggeringEvent.Amount == StaticStartValues.PLACEHOLDER_AMOUNT || TriggeringEvent.Amount == args.Amount)
                     && (TriggeringEvent.SourcePlace == null || (TriggeringEvent.SourcePlace.DirectionTo(args.SourcePlace) == Directions.COLLISION))
                     && (TriggeringEvent.TargetPlace == null || (TriggeringEvent.TargetPlace.DirectionTo(args.TargetPlace) == Directions.COLLISION))

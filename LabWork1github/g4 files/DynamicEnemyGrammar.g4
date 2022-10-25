@@ -78,8 +78,9 @@ boolExpression: PARENTHESISSTART boolExpression PARENTHESISCLOSE nextBoolExpress
             | numberExpression numToBoolOperation numberExpression nextBoolExpression? | functionExpression nextBoolExpression?;
 nextBoolExpression: BOOLCONNECTER boolExpression;
 
-numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTESTART numberExpression PARENTHESISCLOSE | numberExpression NUMCONNECTERADD numberExpression |
-                    numberExpression NUMCONNECTERMULTIP numberExpression | something;
+numberExpression: PARENTHESISSTART numberExpression PARENTHESISCLOSE | ABSOLUTESTART numberExpression PARENTHESISCLOSE |
+                      numberExpression NUMCONNECTERMULTIP numberExpression | numberExpression NUMCONNECTERADD numberExpression |
+						something;
 functionExpression: character function;
 
 something: NUMBER | ROUND | attribute;

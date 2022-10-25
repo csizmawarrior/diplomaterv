@@ -376,7 +376,7 @@ namespace LabWork1github.Visitors
                 return Provider.GetPlayer().GetCharacterType().Damage;
             if (context.possibleAttributes().GetText().Equals("health"))
                 return Provider.GetPlayer().GetHealth();
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
             {
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
@@ -421,14 +421,14 @@ namespace LabWork1github.Visitors
             {
                 return Provider.GetMe().GetHealth();
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
             {
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
                     return Provider.GetMe().Place.X;
                 return Provider.GetMe().Place.Y;
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
             {
                 if (Provider.GetMe().GetCharacterType().TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
@@ -444,7 +444,7 @@ namespace LabWork1github.Visitors
                     return Provider.GetMe().GetCharacterType().TeleportPlace.X;
                 return Provider.GetMe().GetCharacterType().TeleportPlace.Y;
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
             {
                 if (Provider.GetMe().GetCharacterType().SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
@@ -460,7 +460,7 @@ namespace LabWork1github.Visitors
                     return Provider.GetMe().GetCharacterType().SpawnPlace.X;
                 return Provider.GetMe().GetCharacterType().SpawnPlace.Y;
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
             {
                 if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
@@ -500,7 +500,7 @@ namespace LabWork1github.Visitors
                     return Provider.GetMe().GetCharacterType().Health;
                 }
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
             {
                 if (Provider.GetMe().GetCharacterType().SpawnType == null)
@@ -559,7 +559,7 @@ namespace LabWork1github.Visitors
         public double MonsterNumberAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("heal") ||
-                    (context.possibleAttributes().possibleAttributes() != null &&
+                    ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) &&
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type") &&
                         context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal")))
             {
@@ -569,7 +569,7 @@ namespace LabWork1github.Visitors
                 ErrorFound = true;
                 return -1;
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
             {
                 ErrorList += (ErrorMessages.TeleportError.ONLY_TRAP_CAN_TELEPORT);
@@ -578,7 +578,7 @@ namespace LabWork1github.Visitors
                 ErrorFound = true;
                 return -1;
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 (context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place") ||
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type")))
             {
@@ -606,7 +606,7 @@ namespace LabWork1github.Visitors
                 {
                     return Provider.GetPartner().GetHealth();
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
@@ -614,7 +614,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetPartner().Place.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
@@ -666,7 +666,7 @@ namespace LabWork1github.Visitors
                 {
                     return Provider.GetMonster().GetHealth();
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
@@ -674,7 +674,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetMonster().Place.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
@@ -715,7 +715,7 @@ namespace LabWork1github.Visitors
         public double TrapNumberAttribute(AttributeContext context)
         {
             if (context.possibleAttributes().GetText().Equals("health") ||
-                    (context.possibleAttributes().possibleAttributes() != null && 
+                    ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type") &&
                         context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health")))
             {
@@ -755,7 +755,7 @@ namespace LabWork1github.Visitors
                 {
                     return Provider.GetPartner().GetHealth();
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
@@ -763,7 +763,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetPartner().Place.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
                 {
                     if (Provider.GetPartner().GetCharacterType().TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
@@ -780,7 +780,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetPartner().GetCharacterType().TeleportPlace.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
                 {
                     if (Provider.GetPartner().GetCharacterType().SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
@@ -797,7 +797,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetPartner().GetCharacterType().SpawnPlace.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
@@ -826,7 +826,7 @@ namespace LabWork1github.Visitors
                         return Provider.GetPartner().GetCharacterType().Heal;
                     }
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
                 {
                     if (Provider.GetPartner().GetCharacterType().SpawnType == null)
@@ -907,7 +907,7 @@ namespace LabWork1github.Visitors
                 {
                     return Provider.GetTrap().GetHealth();
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x"))
@@ -915,7 +915,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetTrap().Place.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place"))
                 {
                     if (Provider.GetTrap().GetCharacterType().TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
@@ -932,7 +932,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetTrap().GetCharacterType().TeleportPlace.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place"))
                 {
                     if (Provider.GetTrap().GetCharacterType().SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE)
@@ -949,7 +949,7 @@ namespace LabWork1github.Visitors
                     else
                         return Provider.GetTrap().GetCharacterType().SpawnPlace.Y;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     if (context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))
@@ -978,7 +978,7 @@ namespace LabWork1github.Visitors
                         return Provider.GetTrap().GetCharacterType().Heal;
                     }
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
                 {
                     if (Provider.GetTrap().GetCharacterType().SpawnType == null)
@@ -1283,7 +1283,7 @@ namespace LabWork1github.Visitors
 
         private string PlayerNameAttribute(AttributeContext context)
         {
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
             {
                 return Provider.GetPlayer().GetCharacterType().Name;
@@ -1318,12 +1318,12 @@ namespace LabWork1github.Visitors
                 }
                 return Provider.GetMe().Name;
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
             {
                 return Provider.GetMe().GetCharacterType().Name;
             }
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
             {
                 if (Provider.GetMe().GetCharacterType().SpawnType == null)
@@ -1352,7 +1352,7 @@ namespace LabWork1github.Visitors
 
         public string MonsterNameAttribute(AttributeContext context)
         {
-            if (context.possibleAttributes().possibleAttributes() != null && 
+            if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                 context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
             {
                 ErrorList += ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN;
@@ -1373,7 +1373,7 @@ namespace LabWork1github.Visitors
                     }
                     return Provider.GetPartner().Name;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     return Provider.GetPartner().GetCharacterType().Name;
@@ -1396,7 +1396,7 @@ namespace LabWork1github.Visitors
                     }
                     return Provider.GetMonster().Name;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     return Provider.GetMonster().GetCharacterType().Name;
@@ -1423,12 +1423,12 @@ namespace LabWork1github.Visitors
                     }
                     return Provider.GetPartner().Name;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     return Provider.GetPartner().GetCharacterType().Name;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
                 {
                     if (Provider.GetPartner().GetCharacterType().SpawnType == null)
@@ -1467,12 +1467,12 @@ namespace LabWork1github.Visitors
                     }
                     return Provider.GetTrap().Name;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type"))
                 {
                     return Provider.GetTrap().GetCharacterType().Name;
                 }
-                if (context.possibleAttributes().possibleAttributes() != null && 
+                if ((context.possibleAttributes().possibleAttributes() != null && context.possibleAttributes().possibleAttributes().Length > 1) && 
                     context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
                 {
                     if (Provider.GetTrap().GetCharacterType().SpawnType == null)

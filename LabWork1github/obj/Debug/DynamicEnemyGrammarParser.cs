@@ -2945,8 +2945,8 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		}
 		public ITerminalNode PARENTHESISCLOSE() { return GetToken(DynamicEnemyGrammarParser.PARENTHESISCLOSE, 0); }
 		public ITerminalNode ABSOLUTESTART() { return GetToken(DynamicEnemyGrammarParser.ABSOLUTESTART, 0); }
-		public ITerminalNode NUMCONNECTERADD() { return GetToken(DynamicEnemyGrammarParser.NUMCONNECTERADD, 0); }
 		public ITerminalNode NUMCONNECTERMULTIP() { return GetToken(DynamicEnemyGrammarParser.NUMCONNECTERMULTIP, 0); }
+		public ITerminalNode NUMCONNECTERADD() { return GetToken(DynamicEnemyGrammarParser.NUMCONNECTERADD, 0); }
 		public SomethingContext something() {
 			return GetRuleContext<SomethingContext>(0);
 		}
@@ -3035,7 +3035,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 						PushNewRecursionContext(_localctx, _startState, RULE_numberExpression);
 						State = 451;
 						if (!(Precpred(_ctx, 3))) throw new FailedPredicateException(this, "Precpred(_ctx, 3)");
-						State = 452; Match(NUMCONNECTERADD);
+						State = 452; Match(NUMCONNECTERMULTIP);
 						State = 453; numberExpression(4);
 						}
 						break;
@@ -3046,7 +3046,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 						PushNewRecursionContext(_localctx, _startState, RULE_numberExpression);
 						State = 454;
 						if (!(Precpred(_ctx, 2))) throw new FailedPredicateException(this, "Precpred(_ctx, 2)");
-						State = 455; Match(NUMCONNECTERMULTIP);
+						State = 455; Match(NUMCONNECTERADD);
 						State = 456; numberExpression(3);
 						}
 						break;
@@ -3563,8 +3563,8 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		"\x1BC\x1BD\a/\x2\x2\x1BD\x1C4\x3\x2\x2\x2\x1BE\x1BF\a\'\x2\x2\x1BF\x1C0"+
 		"\x5R*\x2\x1C0\x1C1\a/\x2\x2\x1C1\x1C4\x3\x2\x2\x2\x1C2\x1C4\x5V,\x2\x1C3"+
 		"\x1B9\x3\x2\x2\x2\x1C3\x1BE\x3\x2\x2\x2\x1C3\x1C2\x3\x2\x2\x2\x1C4\x1CD"+
-		"\x3\x2\x2\x2\x1C5\x1C6\f\x5\x2\x2\x1C6\x1C7\a-\x2\x2\x1C7\x1CC\x5R*\x6"+
-		"\x1C8\x1C9\f\x4\x2\x2\x1C9\x1CA\a,\x2\x2\x1CA\x1CC\x5R*\x5\x1CB\x1C5\x3"+
+		"\x3\x2\x2\x2\x1C5\x1C6\f\x5\x2\x2\x1C6\x1C7\a,\x2\x2\x1C7\x1CC\x5R*\x6"+
+		"\x1C8\x1C9\f\x4\x2\x2\x1C9\x1CA\a-\x2\x2\x1CA\x1CC\x5R*\x5\x1CB\x1C5\x3"+
 		"\x2\x2\x2\x1CB\x1C8\x3\x2\x2\x2\x1CC\x1CF\x3\x2\x2\x2\x1CD\x1CB\x3\x2"+
 		"\x2\x2\x1CD\x1CE\x3\x2\x2\x2\x1CES\x3\x2\x2\x2\x1CF\x1CD\x3\x2\x2\x2\x1D0"+
 		"\x1D1\x5\x42\"\x2\x1D1\x1D2\x5\\/\x2\x1D2U\x3\x2\x2\x2\x1D3\x1D7\a\x35"+
