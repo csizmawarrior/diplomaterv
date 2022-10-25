@@ -17,7 +17,7 @@ namespace LabWork1github
         public Place TeleportPlace { get; set; } = StaticStartValues.PLACEHOLDER_PLACE;
         public Place SpawnPlace { get; set; } = StaticStartValues.PLACEHOLDER_PLACE;
         public CharacterType SpawnType { get; set; } = null;
-        public string Name { get; set; }
+        public string Name { get; set; } = StaticStartValues.PLACEHOLDER_NAME;
         public List<Command> Commands { get; set; } = new List<Command>();
         public List<TriggerEventHandler> EventHandlers { get; set; } = new List<TriggerEventHandler>();
 

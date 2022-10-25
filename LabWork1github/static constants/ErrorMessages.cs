@@ -112,6 +112,8 @@ namespace LabWork1github.static_constants
             public const string NON_EXISTANT_PARTNER = "The partner of the character is not existing, give a real partner to the character with the name:\n";
             public const string UNRECOGNIZED_ATTRIBUTE_ERROR = "An attribute caused error!\n" + ErrorMessages.ConditionError.IN_PLACE;
             public const string PLAYER_ATTRIBUTE_ERROR = "A player attribute caused error!\n";
+            public const string PLAYER_HAS_NO_NAME = "The player in the game has no name, assign it one in the board creation script!\n";
+            public const string CHARACTER_HAS_NO_NAME = "The referenced character has no name, assign it one in the board creation script!\n";
             public const string TRAP_ATTRIBUTE_ERROR = "A trap attribute caused error!\n";
             public const string MONSTER_ATTRIBUTE_ERROR = "A monster attribute caused error!\n";
             public const string CHARACTER_TYPE_HAS_NO_DAMAGE_DEFINED = "The referenced type has no Damage attribute defined!\n";
@@ -123,7 +125,7 @@ namespace LabWork1github.static_constants
             public const string TRAP_HAS_NO_HEALTH = "Trap type has no health attribute\n";
             public const string UNRECOGNIZED_EXPRESSION = "Unrecognized number expression:\n";
             public const string ONLY_TRAP_CAN_HEAL = "Only Trap type can heal, no heal attribute for other types!\n";
-            public const string SPAWN_TYPE_NOT_GIVEN = "The given Trap type has no \"spawn_type\" attribute defined.\n";
+            public const string SPAWN_TYPE_NOT_FOUND = "The given Trap type's \"spawn_type\" cannot be found, give a valid type.\n";
             public const string IN_PLACE = "In place:\n";
             public const string TYPE_MISMATCH = "The two types aren't both Monster type or Trap type, so incompatible to compare!\n";
             public const string TYPE_MISMATCH_UNEXPECTED = "Unexpected error: The two types aren't compatible to compare!\n";

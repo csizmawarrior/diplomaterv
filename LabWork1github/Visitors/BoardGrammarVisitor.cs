@@ -151,12 +151,6 @@ namespace LabWork1github
         {
             foreach (Character character in Program.Characters)
             {
-                if (character.Place.X > Program.Board.Height || character.Place.Y > Program.Board.Width)
-                {
-                    Program.Characters.Remove(character);
-                    ErrorFound = true;
-                    ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS+character.Name;
-                }
                 if (!character.PartnerName.Equals(StaticStartValues.PLACEHOLDER_PARTNER_NAME))
                 {
                     foreach (Character m in Program.Characters)

@@ -13,6 +13,7 @@ namespace LabWork1github
         public PlayerType()
         {
             this.Damage = StaticStartValues.STARTER_PLAYER_DAMAGE;
+            this.Name = StaticStartValues.PLAYER_TYPE_NAME;
         }
 
         public override void Step(GameParamProvider provider)

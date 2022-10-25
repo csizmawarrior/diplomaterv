@@ -47,6 +47,7 @@ namespace LabWork1github
             Traps = Board.Traps;
             move = new PlayerMove();
             Player = Board.Player;
+            CheckOutOfBoundCharacters();
             foreach (Character character in Characters)
             {
                 if(character.GetCharacterType().EventHandlers.Count > 0)
@@ -56,6 +57,8 @@ namespace LabWork1github
                 }
             }
         }
+
+
         //hmm these checks might be able to go into the board visitor
 
         public void Start()
@@ -142,6 +145,23 @@ namespace LabWork1github
                 return false;
         }
 
+        private void CheckOutOfBoundCharacters()
+        {
+            List<Character> deleteCandidates = new List<Character>();
+            foreach (Character character in Characters)
+            {
+                if (character.Place.X > Board.Height || character.Place.Y > Board.Width)
+                {
+                    deleteCandidates.Add(character);
+                    Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + character.Name);
+                }
+            }
+            foreach(Character c in deleteCandidates)
+            {
+                Characters.Remove(c);
+            }
+        }
+
         public void PlayerCommand()
         {
             Drawer.WriteCommand(PlayerInteractionMessages.PROVIDE_A_COMMAND);
@@ -224,7 +244,6 @@ namespace LabWork1github
                 this.Monsters.Add(monster);
                 if(!this.Board.Monsters.Contains(monster))
                     this.Board.Monsters.Add(monster);
-                Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS);
         }
         public bool IsOccupiedOrOutOfBounds(Place p)
         {

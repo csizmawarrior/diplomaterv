@@ -9,8 +9,6 @@ namespace LabWork1github
 {
     public class Board
     {
-        private int width = StaticStartValues.PLACEHOLDER_WIDTH;
-        private int height = StaticStartValues.PLACEHOLDER_HEIGHT;
 
         public Player Player { get; set; }
 
@@ -20,31 +18,7 @@ namespace LabWork1github
         
         public List<Trap> Traps { get; set; } = new List<Trap>();
 
-        public int Width
-        {
-            get
-            {
-                return width;
-            }
-            set
-            {
-                if (value == 0)
-                    throw new NullReferenceException(ErrorMessages.BoardError.ZERO_WIDTH);
-            }
-        }
-        public int Height
-        {
-            get
-            {
-                return height;
-            }
-            set
-            {
-                if (height == 0)
-                    height = value;
-                if (value < 0)
-                    throw new NullReferenceException(ErrorMessages.BoardError.ZERO_HEIGHT);
-            }
-        }
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 }
