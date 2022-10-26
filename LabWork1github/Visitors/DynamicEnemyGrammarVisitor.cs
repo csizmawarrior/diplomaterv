@@ -43,37 +43,39 @@ namespace LabWork1github
         }
         public override object VisitTrapNameDeclaration([NotNull] TrapNameDeclarationContext context)
         {
+            typeName = context.name().GetText();
             if (Program.GetCharacterType(typeName) != null)
             {
                 Error += ErrorMessages.ParameterDeclarationError.TRAP_TYPE_ALREADY_EXISTS;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
+                return null;
             }
             else
             {
                 type = Types.TRAP;
-                Program.CharacterTypes.Add(new TrapType(context.name().GetText()));
+                Program.CharacterTypes.Add(new TrapType(typeName));
             }
-            typeName = context.name().GetText();
-            Program.GetCharacterType(typeName).Damage = Program.GetCharacterType(Types.DEFAULT_TRAP).Damage;
+            Program.GetCharacterType(typeName).Damage = StaticStartValues.STARTER_TRAP_DAMAGE;
             return base.VisitTrapNameDeclaration(context);
         }
         public override object VisitMonsterNameDeclaration([NotNull] MonsterNameDeclarationContext context)
         {
+            typeName = context.name().GetText();
             if (Program.GetCharacterType(typeName) != null)
             {
                 Error += ErrorMessages.ParameterDeclarationError.MONSTER_TYPE_ALREADY_EXISTS;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
+                return null;
             }
             else
             {
                 type = Types.MONSTER;
-                Program.CharacterTypes.Add(new MonsterType(context.name().GetText()));
+                Program.CharacterTypes.Add(new MonsterType(typeName));
             }
-            typeName = context.name().GetText();
-            Program.GetCharacterType(typeName).Health = Program.GetCharacterType(Types.DEFAULT_MONSTER).Health;
-            Program.GetCharacterType(typeName).Health = Program.GetCharacterType(Types.DEFAULT_MONSTER).Damage;
+            Program.GetCharacterType(typeName).Health = StaticStartValues.STARTER_MONSTER_HP;
+            Program.GetCharacterType(typeName).Damage = StaticStartValues.STARTER_MONSTER_DAMAGE;
             return base.VisitMonsterNameDeclaration(context);
         }
         public override object VisitDeclarations([NotNull] DeclarationsContext context)
@@ -1131,13 +1133,15 @@ namespace LabWork1github
         {
 
             if (context.distanceDeclare() != null)
-                command.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
-            if (command.Distance <= 0)
             {
-                Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
-                command.Distance = StaticStartValues.STARTER_DISTANCE;
+                command.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
+                if (command.Distance <= 0)
+                {
+                    Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                    command.Distance = StaticStartValues.STARTER_DISTANCE;
+                }
             }
 
             if (context.hpChangeAmountDeclaration() != null)

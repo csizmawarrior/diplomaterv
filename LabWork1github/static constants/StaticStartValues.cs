@@ -19,6 +19,8 @@ namespace LabWork1github.static_constants
         public static Place PLACEHOLDER_PLACE = new Place(-1, -1);
         public static double BASE_HEALTH_CHANGE = 50;
         public static double STARTER_PLAYER_DAMAGE = 50;
+        public static double STARTER_TRAP_DAMAGE = 50.5;
+        public static double STARTER_MONSTER_DAMAGE = 50;
         public static double STARTER_MONSTER_HP = 200;
         public static int STARTER_DISTANCE = 1;
         public static int STARTER_NEAR = 2;
