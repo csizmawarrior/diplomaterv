@@ -11,19 +11,8 @@ namespace LabWork1github
 
     public class MoveCommand : Command
     {
-        private int _distance = StaticStartValues.STARTER_DISTANCE ;
 
-        public int Distance
-        {
-            get { return _distance; }
-            set
-            {
-                //TODO: Filter this in the Visitor
-                if (value <= 0)
-                    throw new NotSupportedException(ErrorMessages.MoveError.NEGATIVE_DIRECTION);
-                _distance = value;
-            }
-        }
+        public int Distance { get; set; }
 
         public int Round { get; set; }
 

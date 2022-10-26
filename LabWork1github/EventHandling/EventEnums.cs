@@ -17,4 +17,13 @@ namespace LabWork1github.EventHandling
         HealthCheck,
         Die
     }
+    public enum CharacterOptions
+    {
+        NULL,
+        Me,
+        Monster,
+        Partner,
+        Player,
+        Trap
+    }
 }

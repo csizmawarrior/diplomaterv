@@ -162,6 +162,11 @@ namespace LabWork1github
                                 ErrorFound = true;
                                 ErrorList += ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + character.Name;
                             }
+                            if (character.Equals(m))
+                            {
+                                ErrorFound = true;
+                                ErrorList += ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER + character.Name;
+                            }
                             character.Partner = m;
                             break;
                         }
@@ -169,7 +174,7 @@ namespace LabWork1github
                     if (character.Partner == null)
                     {
                         ErrorFound = true;
-                        ErrorList += ErrorMessages.GameError.CHARACTER_HAS_NON_EXISTANT_PARTNER + character.Name;
+                        ErrorList += ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + character.Name;
                     }
                 }
                 foreach (Character c in Program.Characters)

@@ -52,8 +52,19 @@ namespace LabWork1github
             {
                 if(character.GetCharacterType().EventHandlers.Count > 0)
                 {
+                    List<TriggerEventHandler> deleteCandidates = new List<TriggerEventHandler>();
                     foreach (TriggerEventHandler eventHandler in character.GetCharacterType().EventHandlers)
+                    {
+                        if (eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner ||
+                            eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
+                            if (!IsEventHandlerValid(eventHandler, character))
+                                deleteCandidates.Add(eventHandler);
                         eventHandler.GameParamProvider = Provider;
+                    }
+                    foreach(TriggerEventHandler eventHandler in deleteCandidates)
+                    {
+                        character.GetCharacterType().EventHandlers.Remove(eventHandler);
+                    }
                 }
             }
         }
@@ -74,10 +85,10 @@ namespace LabWork1github
                 TriggerEvent dieEvent = new TriggerEvent
                 {
                     EventType = EventType.Die,
-                    SourceCharacter = new PlayerType(),
+                    SourceCharacter = CharacterOptions.Player,
                     SourcePlace = new Place(Player.Place.X, Player.Place.Y)
                 };
-                EventCollection.InvokePlayerDied(Player, dieEvent);
+                EventCollection.InvokeSomeoneDied(Player, dieEvent);
                 Drawer.WriteCommand(PlayerInteractionMessages.YOU_LOST);
             }
             else
@@ -104,17 +115,18 @@ namespace LabWork1github
 
             foreach (Monster monster in Monsters)
             {
+                ActualCharacter = monster;
                 if (monster.Health <= 0)
                 {
                     TriggerEvent dieEvent = new TriggerEvent
                     {
                         EventType = EventType.Die,
-                        SourceCharacter = new MonsterType(),
+                        SourceCharacter = CharacterOptions.Monster,
                         SourcePlace = new Place(monster.Place.X, monster.Place.Y)
                     };
                     Monsters.Remove(monster);
                     Characters.Remove(monster);
-                    EventCollection.InvokeMonsterDied(monster, dieEvent);
+                    EventCollection.InvokeSomeoneDied(monster, dieEvent);
                     break;
                 }
             }
@@ -173,7 +185,7 @@ namespace LabWork1github
                     TriggerEvent healthCheckEvent = new TriggerEvent
                     {
                         EventType = EventType.HealthCheck,
-                        SourceCharacter = new PlayerType(),
+                        SourceCharacter = CharacterOptions.Player,
                         SourcePlace = new Place(Player.Place.X, Player.Place.Y)
                     };
                     Drawer.WriteHealths(Monsters);
@@ -213,7 +225,7 @@ namespace LabWork1github
                     TriggerEvent shootEvent = new TriggerEvent
                     {
                         EventType = EventType.Shoot,
-                        SourceCharacter = new PlayerType(),
+                        SourceCharacter = CharacterOptions.Player,
                         SourcePlace = new Place(Player.Place.X, Player.Place.Y)
                     };
                     for (int i = 0; i < Monsters.Count; i++)
@@ -221,11 +233,12 @@ namespace LabWork1github
                         if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
                         {
                             Monsters.ElementAt(i).Damage(Player.Type.Damage);
-                            shootEvent.TargetCharacter = new MonsterType();
+                            shootEvent.TargetCharacterOption = CharacterOptions.Monster;
+                            shootEvent.TargetCharacter = Monsters.ElementAt(i);
                             shootEvent.TargetPlace = new Place(Monsters.ElementAt(i).Place.X, Monsters.ElementAt(i).Place.Y);
                         }
                     }
-                    EventCollection.InvokePlayerShot(Player, shootEvent);
+                    EventCollection.InvokeSomeoneShot(Player, shootEvent);
                     break;
                 case CommandType.help:
                     wrongMove = true;
@@ -313,6 +326,82 @@ namespace LabWork1github
                 }
             }
             return closestTrap;
+        }
+
+        private bool IsEventHandlerValid(TriggerEventHandler eventHandler, Character character)
+        {
+            if(character.GetPartner() == null)
+            {
+                Drawer.WriteCommand(ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + character.Name);
+                return false;
+            }
+            if(character.GetPartner() is Monster)
+            {
+                if (eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner)
+                {
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Damage)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.DamageError.ONLY_TRAP_CAN_DAMAGE);
+                        return false;
+                    }
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Heal)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL);
+                        return false;
+                    }
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Teleport)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.TeleportError.ONLY_TRAP_CAN_TELEPORT);
+                        return false;
+                    }
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Spawn)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN);
+                        return false;
+                    }
+                }
+                if(eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
+                {
+                    if(eventHandler.TriggeringEvent.EventType == EventType.Shoot &&
+                        (eventHandler.TriggeringEvent.SourceCharacter != CharacterOptions.Player))
+                    {
+                        Drawer.WriteCommand(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER);
+                        return false;
+                    }
+                }
+            }
+            if(Provider.GetPartner() is Trap)
+            {
+                if (eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner)
+                {
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Shoot)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.EventError.ONLY_MONSTER_CAN_SHOOT);
+                        return false;
+                    }
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Die)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.EventError.TRAPS_DO_NOT_DIE);
+                        return false;
+                    }
+                }
+                if(eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
+                {
+                    if(eventHandler.TriggeringEvent.EventType == EventType.Shoot ||
+                        eventHandler.TriggeringEvent.EventType == EventType.Damage ||
+                        eventHandler.TriggeringEvent.EventType == EventType.Heal)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH);
+                        return false;
+                    }
+                    if(eventHandler.TriggeringEvent.EventType == EventType.Spawn)
+                    {
+                        Drawer.WriteCommand(ErrorMessages.EventError.TRAP_SPAWNING_TRAP);
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

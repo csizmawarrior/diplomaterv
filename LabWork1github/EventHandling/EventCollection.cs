@@ -10,14 +10,10 @@ namespace LabWork1github.EventHandling
     {
         public delegate void EventDelegate(object sender, TriggerEvent args);
 
-        public static event EventDelegate PlayerMoved = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate PlayerShot = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate PlayerDied = new EventDelegate(DefaultDelegate);
         public static event EventDelegate PlayerHealthCheck = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate MonsterMoved = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate MonsterShot = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate MonsterDied = new EventDelegate(DefaultDelegate);
-        public static event EventDelegate TrapMoved = new EventDelegate(DefaultDelegate);
+        public static event EventDelegate SomeoneMoved = new EventDelegate(DefaultDelegate);
+        public static event EventDelegate SomeoneShot = new EventDelegate(DefaultDelegate);
+        public static event EventDelegate SomeoneDied = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapDamaged = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapHealed = new EventDelegate(DefaultDelegate);
         public static event EventDelegate TrapTeleported = new EventDelegate(DefaultDelegate);
@@ -27,37 +23,21 @@ namespace LabWork1github.EventHandling
         {
             return;
         }
-        public static void InvokePlayerMoved(object sender, TriggerEvent triggerEvent)
+        public static void InvokeSomeoneMoved(object sender, TriggerEvent triggerEvent)
         {
-            PlayerMoved.Invoke(sender, triggerEvent);
+            SomeoneMoved.Invoke(sender, triggerEvent);
         }
-        public static void InvokePlayerShot(object sender, TriggerEvent triggerEvent)
+        public static void InvokeSomeoneShot(object sender, TriggerEvent triggerEvent)
         {
-            PlayerShot.Invoke(sender, triggerEvent);
+            SomeoneShot.Invoke(sender, triggerEvent);
         }
-        public static void InvokePlayerDied(object sender, TriggerEvent triggerEvent)
+        public static void InvokeSomeoneDied(object sender, TriggerEvent triggerEvent)
         {
-            PlayerDied.Invoke(sender, triggerEvent);
+            SomeoneDied.Invoke(sender, triggerEvent);
         }
         public static void InvokePlayerHealthCheck(object sender, TriggerEvent triggerEvent)
         {
             PlayerHealthCheck.Invoke(sender, triggerEvent);
-        }
-        public static void InvokeMonsterMoved(object sender, TriggerEvent triggerEvent)
-        {
-            MonsterMoved.Invoke(sender, triggerEvent);
-        }
-        public static void InvokeMonsterShot(object sender, TriggerEvent triggerEvent)
-        {
-            MonsterShot.Invoke(sender, triggerEvent);
-        }
-        public static void InvokeMonsterDied(object sender, TriggerEvent triggerEvent)
-        {
-            MonsterDied.Invoke(sender, triggerEvent);
-        }
-        public static void InvokeTrapMoved(object sender, TriggerEvent triggerEvent)
-        {
-            TrapMoved.Invoke(sender, triggerEvent);
         }
         public static void InvokeTrapDamaged(object sender, TriggerEvent triggerEvent)
         {

@@ -35,5 +35,9 @@ namespace LabWork1github
         {
             return this.DirectionTo((Place)obj) == Directions.COLLISION;
         }
+        public override int GetHashCode()
+        {
+            return X+Y+base.GetHashCode();
+        }
     }
 }

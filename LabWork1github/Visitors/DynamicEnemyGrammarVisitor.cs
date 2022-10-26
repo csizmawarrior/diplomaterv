@@ -23,7 +23,7 @@ namespace LabWork1github
         public string Error = "";
         public bool ErrorFound = false;
         public Scope CurrentScope { get; set; } = new Scope(null);
-
+        //TODO: integrate partner to every instance of character, either with error or valid step
         public override object VisitDefinition([NotNull] DefinitionContext context)
         {
             foreach (var child in context.statementList())
@@ -212,6 +212,13 @@ namespace LabWork1github
             MoveCommand newCommand = new MoveCommand();
             if (context.distanceDeclare() != null)
                 newCommand.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
+            if (newCommand.Distance <= 0)
+            {
+                Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+                
+            }
             var direction = context.DIRECTION();
             if (direction != null)
             {
@@ -313,7 +320,11 @@ namespace LabWork1github
                         newCommand.TeleportDelegate = new TeleportDelegate(TeleportTrap);
                         AddCommand(newCommand);
                         break;
-                    case "me":
+                    case Types.PARTNER:
+                        newCommand.TeleportDelegate = new TeleportDelegate(TeleportPartner);
+                        AddCommand(newCommand);
+                        break;
+                    case Types.ME:
                         Error += ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF;
                         Error += context.GetText() + "\n";
                         ErrorFound = true;
@@ -417,15 +428,6 @@ namespace LabWork1github
             return null;
         }
 
-        public void VisitMyBlock([NotNull] BlockContext context)
-        {
-            if(CreationStage.Equals(TypeCreationStage.ConditionalCommandBlock) || CreationStage.Equals(TypeCreationStage.EventCommandBlock))
-                foreach (var child in context.statement())
-                {
-                    VisitStatement(child);
-                }
-        }
-
         public override object VisitIfExpression([NotNull] IfExpressionContext context)
         {
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
@@ -447,7 +449,7 @@ namespace LabWork1github
                 {
                     CreationStage = TypeCreationStage.ConditionalCommandBlock;
                     ConditionalCommand = newCommand;
-                    VisitMyBlock(context.block());
+                    VisitBlock(context.block());
                     ConditionalCommand = null;
                     CreationStage = TypeCreationStage.CommandListing;
                     AddCommand(newCommand);
@@ -577,7 +579,7 @@ namespace LabWork1github
             if(context.HEALTH_CHECK() != null)
             {
                 EventCollection.PlayerHealthCheck += eventHandler.OnEvent;
-                resultTrigger.SourceCharacter = new PlayerType();
+                resultTrigger.SourceCharacter = CharacterOptions.Player;
                 resultTrigger.EventType = EventType.HealthCheck;
                 return resultTrigger;
             }
@@ -595,11 +597,15 @@ namespace LabWork1github
                 {
                     resultTrigger = VisitTrapActionContext(context, resultTrigger, eventHandler);
                 }
-                if(context.character().ME() != null)
+                if (context.character().PARTNER() != null)
+                {
+                    resultTrigger = VisitPartnerActionContext(context, resultTrigger, eventHandler);
+                }
+                if (context.character().ME() != null)
                 {
                     if(type.Equals(Types.MONSTER))
                         resultTrigger = VisitMonsterActionContext(context, resultTrigger, eventHandler);
-                    if(type.Equals(Types.TRAP))
+                    if (type.Equals(Types.TRAP))
                         resultTrigger = VisitTrapActionContext(context, resultTrigger, eventHandler);
                 }
             }
@@ -620,26 +626,26 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            resultTrigger.SourceCharacter = new PlayerType();
+            resultTrigger.SourceCharacter = CharacterOptions.Player;
             if (context.action().place() != null)
             {
                 resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
             }
             if (context.action().MOVE() != null)
             {
-                EventCollection.PlayerMoved += eventHandler.OnEvent;
+                EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                     resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
             {
-                EventCollection.PlayerDied += eventHandler.OnEvent;
+                EventCollection.SomeoneDied += eventHandler.OnEvent;
                 return resultTrigger;
             }
             if (context.action().SHOOT() != null)
             {
-                EventCollection.PlayerShot += eventHandler.OnEvent;
+                EventCollection.SomeoneShot += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
                     resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
@@ -653,9 +659,19 @@ namespace LabWork1github
                         ErrorFound = true;
                     }
                     if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null))
-                        resultTrigger.TargetCharacter = new MonsterType();
+                    {
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                        if (context.action().character().ME() != null)
+                            resultTrigger.TargetCharacterOption = CharacterOptions.Me;
+                    }
+                    if(context.action().character().PARTNER() != null)
+                            resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
                     if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null))
-                        resultTrigger.TargetCharacter = new TrapType();
+                    {
+                        Error += ErrorMessages.EventError.PLAYER_SHOOTING_TRAP;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
                     return resultTrigger;
                 }
                 if (context.action().place() == null)
@@ -700,26 +716,29 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            resultTrigger.SourceCharacter = new MonsterType();
+            if(context.character().MONSTER() != null)
+                resultTrigger.SourceCharacter = CharacterOptions.Monster;
+            if (context.character().ME() != null)
+                resultTrigger.SourceCharacter = CharacterOptions.Me;
             if (context.action().place() != null)
             {
                 resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
             }
             if (context.action().MOVE() != null)
             {
-                EventCollection.MonsterMoved += eventHandler.OnEvent;
+                EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                     resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
             {
-                EventCollection.MonsterDied += eventHandler.OnEvent;
+                EventCollection.SomeoneDied += eventHandler.OnEvent;
                 return resultTrigger;
             }
             if (context.action().SHOOT() != null)
             {
-                EventCollection.MonsterShot += eventHandler.OnEvent;
+                EventCollection.SomeoneShot += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
                     resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
@@ -727,13 +746,15 @@ namespace LabWork1github
                 if (context.action().character() != null)
                 {
                     if (context.action().character().PLAYER() != null)
-                        resultTrigger.TargetCharacter = new PlayerType();
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Player;
                     if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
                     {
                         Error += ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER;
                         Error += context.GetText() + "\n";
                         ErrorFound = true;
                     }
+                    if (context.action().character().PARTNER() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
                     if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                     {
                         Error += ErrorMessages.EventError.MONSTER_SHOOTING_TRAP;
@@ -784,14 +805,17 @@ namespace LabWork1github
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            resultTrigger.SourceCharacter = new TrapType();
+            if(context.character().TRAP() != null)
+                resultTrigger.SourceCharacter = CharacterOptions.Trap;
+            if (context.character().ME() != null)
+                resultTrigger.SourceCharacter = CharacterOptions.Me;
             if (context.action().place() != null)
             {
                 resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
             }
             if (context.action().MOVE() != null)
             {
-                EventCollection.TrapMoved += eventHandler.OnEvent;
+                EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                     resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
                 return resultTrigger;
@@ -818,12 +842,196 @@ namespace LabWork1github
                 if (context.action().character() != null)
                 {
                     if (context.action().character().PLAYER() != null)
-                        resultTrigger.TargetCharacter = new PlayerType();
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Player;
                     if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
                     {
-                        resultTrigger.TargetCharacter = new MonsterType();
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                        if (context.action().character().ME() != null)
+                            resultTrigger.TargetCharacterOption = CharacterOptions.Me;
                     }
+                    if (context.action().character().PARTNER() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
                     if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                    {
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Trap;
+                        if (context.action().character().ME() != null)
+                        {
+                            Error += ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF;
+                            Error += context.GetText() + "\n";
+                            ErrorFound = true;
+                        }
+                    }
+                    return resultTrigger;
+                }
+                if (context.action().place() == null)
+                {
+                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().HEAL() != null)
+            {
+                EventCollection.TrapHealed += eventHandler.OnEvent;
+                if (context.action().NUMBER() != null)
+                {
+                    resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
+                }
+                if (context.action().character() != null)
+                {
+                    if (context.action().character().PLAYER() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Player;
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                    {
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                        if (context.action().character().ME() != null)
+                            resultTrigger.TargetCharacterOption = CharacterOptions.Me;
+                    }
+                    if (context.action().character().PARTNER() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                    {
+                        Error += ErrorMessages.EventError.TRAP_HEALING_TRAP;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    return resultTrigger;
+                }
+                if (context.action().place() == null)
+                {
+                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().TELEPORT_T() != null)
+            {
+                EventCollection.TrapTeleported += eventHandler.OnEvent;
+                if (context.action().character().PLAYER() != null)
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Player;
+                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                {
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                    if (context.action().character().ME() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Me;
+                }
+                if (context.action().character().PARTNER() != null)
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
+                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                {
+                    Error += ErrorMessages.EventError.TRAP_TELEPORTING_TRAP;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().SPAWN() != null)
+            {
+                EventCollection.TrapTeleported += eventHandler.OnEvent;
+                if (context.action().character().PLAYER() != null)
+                {
+                    Error += ErrorMessages.EventError.TRAP_SPAWNING_PLAYER;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                {
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                    if (context.action().character().ME() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Me;
+                }
+                if (context.action().character().PARTNER() != null)
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
+                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                {
+                    Error += ErrorMessages.EventError.TRAP_SPAWNING_TRAP;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            Error += ErrorMessages.EventError.UNEXPECTED_ERROR;
+            Error += context.GetText() + "\n";
+            ErrorFound = true;
+            return resultTrigger;
+        }
+
+        private TriggerEvent VisitPartnerActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        {
+            if (context.action() == null)
+            {
+                Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+            }
+            if(context.character().PARTNER() != null)
+                resultTrigger.SourceCharacter = CharacterOptions.Partner;
+            if (context.action().place() != null)
+            {
+                resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
+            }
+            if (context.action().MOVE() != null)
+            {
+                EventCollection.SomeoneMoved += eventHandler.OnEvent;
+                if (context.action().fromPlace() != null)
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                return resultTrigger;
+            }
+            if (context.action().DIE() != null)
+            {
+                EventCollection.SomeoneDied += eventHandler.OnEvent;
+                return resultTrigger;
+            }
+            if (context.action().SHOOT() != null)
+            {
+                EventCollection.SomeoneShot += eventHandler.OnEvent;
+                if (context.action().NUMBER() != null)
+                {
+                    resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
+                }
+                if (context.action().character() != null)
+                {
+                    if (context.action().character().PLAYER() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Player;
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null) ||
+                            context.action().character().PARTNER() != null)
+                    {
+                        Error += ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null))
+                    {
+                        Error += ErrorMessages.EventError.MONSTER_SHOOTING_TRAP;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    return resultTrigger;
+                }
+                if (context.action().place() == null)
+                {
+                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
+            if (context.action().DAMAGE() != null)
+            {
+                EventCollection.TrapDamaged += eventHandler.OnEvent;
+                if (context.action().NUMBER() != null)
+                {
+                    resultTrigger.Amount = Parsers.DoubleParseFromNumber(context.action().NUMBER().GetText());
+                }
+                if (context.action().character() != null)
+                {
+                    if (context.action().character().PLAYER() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Player;
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null))
+                    {
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                        if (context.action().character().ME() != null)
+                            resultTrigger.TargetCharacterOption = CharacterOptions.Me;
+                    }
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null) ||
+                            context.action().character().PARTNER() != null)
                     {
                         Error += ErrorMessages.EventError.TRAP_DAMAGING_TRAP;
                         Error += context.GetText() + "\n";
@@ -848,12 +1056,15 @@ namespace LabWork1github
                 if (context.action().character() != null)
                 {
                     if (context.action().character().PLAYER() != null)
-                        resultTrigger.TargetCharacter = new PlayerType();
-                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Player;
+                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null))
                     {
-                        resultTrigger.TargetCharacter = new MonsterType();
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                        if (context.action().character().ME() != null)
+                            resultTrigger.TargetCharacterOption = CharacterOptions.Me;
                     }
-                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                    if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null) ||
+                            context.action().character().PARTNER() != null)
                     {
                         Error += ErrorMessages.EventError.TRAP_HEALING_TRAP;
                         Error += context.GetText() + "\n";
@@ -872,16 +1083,19 @@ namespace LabWork1github
             {
                 EventCollection.TrapTeleported += eventHandler.OnEvent;
                 if (context.action().character().PLAYER() != null)
-                    resultTrigger.TargetCharacter = new PlayerType();
-                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Player;
+                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null))
                 {
-                    resultTrigger.TargetCharacter = new MonsterType();
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                    if (context.action().character().ME() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Me;
                 }
-                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null) ||
+                        context.action().character().PARTNER() != null)
                 {
-                    Error += ErrorMessages.EventError.TRAP_TELEPORTING_TRAP;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Trap;
+                    if (context.action().character().ME() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Me;
                 }
             }
             if (context.action().SPAWN() != null)
@@ -893,11 +1107,13 @@ namespace LabWork1github
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
-                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null ))
+                if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null))
                 {
-                    resultTrigger.TargetCharacter = new MonsterType();
+                    resultTrigger.TargetCharacterOption = CharacterOptions.Monster;
+                    if (context.action().character().ME() != null)
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Me;
                 }
-                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
+                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null))
                 {
                     Error += ErrorMessages.EventError.TRAP_SPAWNING_TRAP;
                     Error += context.GetText() + "\n";
@@ -909,11 +1125,19 @@ namespace LabWork1github
             ErrorFound = true;
             return resultTrigger;
         }
+
         public HealthChangerCommand VisitHealthChangeOption([NotNull] HealthChangeOptionContext context, HealthChangerCommand command)
         {
 
             if (context.distanceDeclare() != null)
                 command.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
+            if (command.Distance <= 0)
+            {
+                Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
+                command.Distance = StaticStartValues.STARTER_DISTANCE;
+            }
 
             if (context.hpChangeAmountDeclaration() != null)
             {
@@ -973,7 +1197,8 @@ namespace LabWork1github
 
             if (context.character() != null)
             {
-                if (context.character().TRAP() != null || context.character().ME() != null)
+                if (context.character().TRAP() != null || context.character().ME() != null || 
+                        context.character().PARTNER() != null)
                 {
                     Error += ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH;
                     Error += context.GetText() + "\n";
@@ -996,6 +1221,8 @@ namespace LabWork1github
                         ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToMonster);
                     if (context.character().PLAYER() != null)
                         ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPlayer);
+                    if(context.character().PARTNER() != null)
+                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DamageToPartner);
                 }
                 if (command is HealCommand)
                 {
@@ -1054,8 +1281,8 @@ namespace LabWork1github
         {
             TriggerEvent spawnEvent = new TriggerEvent
             {
-                SourceCharacter = new TrapType(),
-                TargetCharacter = new MonsterType()
+                SourceCharacter = CharacterOptions.Trap,
+                TargetCharacterOption = CharacterOptions.Monster
             };
 
             if ( ! provider.IsFreePlace(command.TargetPlace))
@@ -1110,8 +1337,8 @@ namespace LabWork1github
             TriggerEvent teleportEvent = new TriggerEvent
             {
                 EventType = EventType.Teleport,
-                TargetCharacter = new TrapType(),
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
+                TargetCharacterOption = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
             foreach (Trap Trap in provider.GetTraps())
@@ -1139,8 +1366,8 @@ namespace LabWork1github
             TriggerEvent teleportEvent = new TriggerEvent
             {
                 EventType = EventType.Teleport,
-                TargetCharacter = new MonsterType(),
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
+                TargetCharacterOption = CharacterOptions.Monster,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
             foreach (Monster monster in provider.GetMonsters()) {
@@ -1162,13 +1389,44 @@ namespace LabWork1github
                 }
             }
         }
+        public void TeleportPartner(GameParamProvider provider, TeleportCommand command)
+        {
+            TriggerEvent teleportEvent = new TriggerEvent
+            {
+                EventType = EventType.Teleport,
+                SourceCharacter = CharacterOptions.Trap,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
+            };
+            if (provider.GetPartner() == null)
+                return;
+            if (provider.GetPartner() is Monster)
+                teleportEvent.TargetCharacterOption = CharacterOptions.Monster;
+            if (provider.GetPartner() is Trap)
+                teleportEvent.TargetCharacterOption = CharacterOptions.Trap;
+            if (provider.GetPartner().Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
+            {
+                if (command.Random)
+                {
+                    Random rand = new Random();
+                    int XPos = (int)(rand.Next() % provider.GetBoard().Height);
+                    int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                    command.TargetPlace = new Place(XPos, YPos);
+                }
+                if (provider.IsFreePlace(command.TargetPlace))
+                {
+                    teleportEvent.TargetPlace = command.TargetPlace;
+                    provider.GetPartner().Place = command.TargetPlace;
+                    EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
+                }
+            }
+        }
         public void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
             TriggerEvent teleportEvent = new TriggerEvent
             {
                 EventType = EventType.Teleport,
-                TargetCharacter = new PlayerType(),
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
+                TargetCharacterOption = CharacterOptions.Player,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
             if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
@@ -1197,8 +1455,11 @@ namespace LabWork1github
             {
                 EventType = EventType.Move,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
-                SourceCharacter = provider.GetMe().GetCharacterType()
             };
+            if (provider.GetMe() is Monster)
+                moveEvent.SourceCharacter = CharacterOptions.Monster;
+            if (provider.GetMe() is Trap)
+                moveEvent.SourceCharacter = CharacterOptions.Trap;
             switch (command.Direction)
             {
                 case Directions.FORWARD:
@@ -1219,14 +1480,7 @@ namespace LabWork1github
                     break;
             }
             moveEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y);
-            if (provider.GetMe().GetCharacterType() is MonsterType)
-            {
-                EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
-            }
-            if (provider.GetMe().GetCharacterType() is TrapType)
-            {
-                EventCollection.InvokeTrapMoved(provider.GetMe(), moveEvent);
-            }
+            EventCollection.InvokeSomeoneMoved(provider.GetMe(), moveEvent);
         }
         public void MoveToPlace(GameParamProvider provider, MoveCommand command)
         {
@@ -1234,20 +1488,17 @@ namespace LabWork1github
             {
                 EventType = EventType.Move,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
-                SourceCharacter = provider.GetMe().GetCharacterType()
             };
-            if(provider.IsFreePlace(command.TargetPlace))
+            if (provider.GetMe() is Monster)
+                moveEvent.SourceCharacter = CharacterOptions.Monster;
+            if (provider.GetMe() is Trap)
+                moveEvent.SourceCharacter = CharacterOptions.Trap;
+            if (provider.IsFreePlace(command.TargetPlace))
                 provider.GetMe().Place = command.TargetPlace;
 
             moveEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y);
-            if (provider.GetMe().GetCharacterType() is MonsterType)
-            {
-                EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
-            }
-            if (provider.GetMe().GetCharacterType() is TrapType)
-            {
-                EventCollection.InvokeTrapMoved(provider.GetMe(), moveEvent);
-            }
+            EventCollection.InvokeSomeoneMoved(provider.GetMe(), moveEvent);
+
         }
 
         public void MoveToPlayer(GameParamProvider provider, MoveCommand command)
@@ -1256,9 +1507,11 @@ namespace LabWork1github
             {
                 EventType = EventType.Move,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
-                SourceCharacter = provider.GetMe().GetCharacterType()
             };
-
+            if (provider.GetMe() is Monster)
+                moveEvent.SourceCharacter = CharacterOptions.Monster;
+            if (provider.GetMe() is Trap)
+                moveEvent.SourceCharacter = CharacterOptions.Trap;
             Random rand = new Random();
                 if(provider.GetMe().Place.X < provider.GetPlayer().Place.X)
                 {
@@ -1286,14 +1539,7 @@ namespace LabWork1github
                 }
 
             moveEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y);
-            if (provider.GetMe().GetCharacterType() is MonsterType)
-            {
-                EventCollection.InvokeMonsterMoved(provider.GetMe(), moveEvent);
-            }
-            if (provider.GetMe().GetCharacterType() is TrapType)
-            {
-                EventCollection.InvokeTrapMoved(provider.GetMe(), moveEvent);
-            }
+            EventCollection.InvokeSomeoneMoved(provider.GetMe(), moveEvent);
         }
         public void MoveRandom(GameParamProvider provider, MoveCommand command)
         {
@@ -1323,7 +1569,7 @@ namespace LabWork1github
             TriggerEvent shootEvent = new TriggerEvent
             {
                 EventType = EventType.Shoot,
-                SourceCharacter = new MonsterType(),
+                SourceCharacter = CharacterOptions.Monster,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount
         };
@@ -1337,10 +1583,10 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                shootEvent.TargetCharacter = new PlayerType();
+                                shootEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
-                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                            EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
                         }
                     }
                     break;
@@ -1353,10 +1599,10 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                shootEvent.TargetCharacter = new PlayerType();
+                                shootEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
-                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                            EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
                         }
                     }
                     break;
@@ -1369,10 +1615,10 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                shootEvent.TargetCharacter = new PlayerType();
+                                shootEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
-                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                            EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
                         }
                     }
                     break;
@@ -1385,10 +1631,10 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.X != provider.GetMe().Place.X)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                shootEvent.TargetCharacter = new PlayerType();
+                                shootEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
-                            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+                            EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
                         }
                     }
                     break;
@@ -1405,7 +1651,7 @@ namespace LabWork1github
                 TriggerEvent shootEvent = new TriggerEvent
             {
                 EventType = EventType.Shoot,
-                SourceCharacter = new MonsterType(),
+                SourceCharacter = CharacterOptions.Monster,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 TargetPlace = command.TargetPlace,
                 Amount = command.HealthChangeAmount
@@ -1413,9 +1659,9 @@ namespace LabWork1github
             if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                shootEvent.TargetCharacter = new PlayerType();
+                shootEvent.TargetCharacterOption = CharacterOptions.Player;
             }
-            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+            EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
         }
 
         public void ShootToPlayer(GameParamProvider provider, ShootCommand command)
@@ -1423,14 +1669,14 @@ namespace LabWork1github
             TriggerEvent shootEvent = new TriggerEvent
             {
                 EventType = EventType.Shoot,
-                SourceCharacter = new MonsterType(),
+                SourceCharacter = CharacterOptions.Monster,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
-                TargetCharacter = new PlayerType(),
+                TargetCharacterOption = CharacterOptions.Player,
                 TargetPlace = new Place(provider.GetPlayer().Place.X, provider.GetPlayer().Place.Y),
                 Amount = command.HealthChangeAmount
             };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
-            EventCollection.InvokeMonsterShot(provider.GetMe(), shootEvent);
+            EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
         }
 
         public void ShootRandom(GameParamProvider provider, ShootCommand command)
@@ -1449,7 +1695,7 @@ namespace LabWork1github
             TriggerEvent damageEvent = new TriggerEvent
             {
                 EventType = EventType.Damage,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount
             };
@@ -1465,7 +1711,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                damageEvent.TargetCharacter = new PlayerType();
+                                damageEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach(Monster monster in provider.GetMonsters())
                             {
@@ -1473,7 +1719,7 @@ namespace LabWork1github
                                     && monster.Place.Y == provider.GetMe().Place.Y)
                                 {
                                     monster.Damage(command.HealthChangeAmount);
-                                    damageEvent.TargetCharacter = new MonsterType();
+                                    damageEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
@@ -1490,7 +1736,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                damageEvent.TargetCharacter = new PlayerType();
+                                damageEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -1498,7 +1744,7 @@ namespace LabWork1github
                                     && monster.Place.Y == provider.GetMe().Place.Y)
                                 {
                                     monster.Damage(command.HealthChangeAmount);
-                                    damageEvent.TargetCharacter = new MonsterType();
+                                    damageEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
@@ -1515,7 +1761,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                damageEvent.TargetCharacter = new PlayerType();
+                                damageEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -1523,7 +1769,7 @@ namespace LabWork1github
                                     && monster.Place.X == provider.GetMe().Place.X)
                                 {
                                     monster.Damage(command.HealthChangeAmount);
-                                    damageEvent.TargetCharacter = new MonsterType();
+                                    damageEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
@@ -1540,7 +1786,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X) 
                             { 
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                                damageEvent.TargetCharacter = new PlayerType();
+                                damageEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -1548,7 +1794,7 @@ namespace LabWork1github
                                     && monster.Place.X == provider.GetMe().Place.X)
                                 {
                                     monster.Damage(command.HealthChangeAmount);
-                                    damageEvent.TargetCharacter = new MonsterType();
+                                    damageEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
@@ -1569,7 +1815,7 @@ namespace LabWork1github
             TriggerEvent damageEvent = new TriggerEvent
             {
                 EventType = EventType.Damage,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = command.TargetPlace
@@ -1577,14 +1823,14 @@ namespace LabWork1github
             if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
-                damageEvent.TargetCharacter = new PlayerType();
+                damageEvent.TargetCharacterOption = CharacterOptions.Player;
             }
             foreach(Monster monster in provider.GetMonsters())
             {
                 if (monster.Place.X == (command.TargetPlace.X) && monster.Place.Y == (command.TargetPlace.Y))
                 {
                     monster.Damage(command.HealthChangeAmount);
-                    damageEvent.TargetCharacter = new MonsterType();
+                    damageEvent.TargetCharacterOption = CharacterOptions.Monster;
                 }
             }
             EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
@@ -1595,13 +1841,38 @@ namespace LabWork1github
             TriggerEvent damageEvent = new TriggerEvent
             {
                 EventType = EventType.Damage,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = new Place(provider.GetPlayer().Place.X, provider.GetPlayer().Place.Y),
-                TargetCharacter = new PlayerType()
+                TargetCharacterOption = CharacterOptions.Player
             };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
+            EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
+        }
+
+        public void DamageToPartner(GameParamProvider provider, DamageCommand command)
+        {
+            if(provider.GetPartner() == null)
+            {
+                provider.GetDrawer().WriteCommand(ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + provider.GetMe().Name);
+                return;
+            }
+            if(provider.GetPartner() is Trap)
+            {
+                provider.GetDrawer().WriteCommand(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH);
+                return;
+            }
+            TriggerEvent damageEvent = new TriggerEvent
+            {
+                EventType = EventType.Damage,
+                SourceCharacter = CharacterOptions.Trap,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
+                Amount = command.HealthChangeAmount,
+                TargetPlace = new Place(provider.GetPartner().Place.X, provider.GetPartner().Place.Y),
+                TargetCharacterOption = CharacterOptions.Monster
+            };
+            provider.GetPartner().Damage(command.HealthChangeAmount);
             EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
         }
 
@@ -1610,11 +1881,11 @@ namespace LabWork1github
             TriggerEvent damageEvent = new TriggerEvent
             {
                 EventType = EventType.Damage,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = new Place(provider.GetMonster().Place.X, provider.GetMonster().Place.Y),
-                TargetCharacter = new MonsterType()
+                TargetCharacterOption = CharacterOptions.Monster
             };
             provider.GetMonster().Damage(command.HealthChangeAmount);
             EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
@@ -1635,7 +1906,7 @@ namespace LabWork1github
             TriggerEvent healEvent = new TriggerEvent
             {
                 EventType = EventType.Heal,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount
             };
@@ -1651,7 +1922,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
-                                healEvent.TargetCharacter = new PlayerType();
+                                healEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -1659,7 +1930,7 @@ namespace LabWork1github
                                 && monster.Place.Y == provider.GetMe().Place.Y)
                                 {
                                     monster.Heal(command.HealthChangeAmount);
-                                    healEvent.TargetCharacter = new MonsterType();
+                                    healEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
@@ -1676,7 +1947,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
-                                healEvent.TargetCharacter = new PlayerType();
+                                healEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -1684,7 +1955,7 @@ namespace LabWork1github
                                     && monster.Place.Y == provider.GetMe().Place.Y)
                                 {
                                     monster.Heal(command.HealthChangeAmount);
-                                    healEvent.TargetCharacter = new MonsterType();
+                                    healEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
@@ -1701,7 +1972,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
-                                healEvent.TargetCharacter = new PlayerType();
+                                healEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -1709,7 +1980,7 @@ namespace LabWork1github
                                     && monster.Place.X == provider.GetMe().Place.X)
                                 {
                                     monster.Heal(command.HealthChangeAmount);
-                                    healEvent.TargetCharacter = new MonsterType();
+                                    healEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
@@ -1726,7 +1997,7 @@ namespace LabWork1github
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
-                                healEvent.TargetCharacter = new PlayerType();
+                                healEvent.TargetCharacterOption = CharacterOptions.Player;
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -1734,7 +2005,7 @@ namespace LabWork1github
                                     && monster.Place.X == provider.GetMe().Place.X)
                                 {
                                     monster.Heal(command.HealthChangeAmount);
-                                    healEvent.TargetCharacter = new MonsterType();
+                                    healEvent.TargetCharacterOption = CharacterOptions.Monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
@@ -1755,7 +2026,7 @@ namespace LabWork1github
             TriggerEvent healEvent = new TriggerEvent
             {
                 EventType = EventType.Heal,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = command.TargetPlace
@@ -1763,14 +2034,14 @@ namespace LabWork1github
             if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
             {
                 provider.GetPlayer().Heal(command.HealthChangeAmount);
-                healEvent.TargetCharacter = new PlayerType();
+                healEvent.TargetCharacterOption = CharacterOptions.Player;
             }
             foreach (Monster monster in provider.GetMonsters())
             {
                 if (monster.Place.X == (command.TargetPlace.X) && monster.Place.Y == (command.TargetPlace.Y))
                 {
                     monster.Heal(command.HealthChangeAmount);
-                    healEvent.TargetCharacter = new MonsterType();
+                    healEvent.TargetCharacterOption = CharacterOptions.Monster;
                 }
             }
             EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
@@ -1781,13 +2052,38 @@ namespace LabWork1github
             TriggerEvent healEvent = new TriggerEvent
             {
                 EventType = EventType.Heal,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = new Place(provider.GetPlayer().Place.X, provider.GetPlayer().Place.Y),
-                TargetCharacter = new PlayerType()
+                TargetCharacterOption = CharacterOptions.Player
             };
             provider.GetPlayer().Heal(command.HealthChangeAmount);
+            EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
+        }
+
+        public void HealToPartner(GameParamProvider provider, HealCommand command)
+        {
+            if (provider.GetPartner() == null)
+            {
+                provider.GetDrawer().WriteCommand(ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + provider.GetMe().Name);
+                return;
+            }
+            if (provider.GetPartner() is Trap)
+            {
+                provider.GetDrawer().WriteCommand(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH);
+                return;
+            }
+            TriggerEvent healEvent = new TriggerEvent
+            {
+                EventType = EventType.Heal,
+                SourceCharacter = CharacterOptions.Trap,
+                SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
+                Amount = command.HealthChangeAmount,
+                TargetPlace = new Place(provider.GetPartner().Place.X, provider.GetPartner().Place.Y),
+                TargetCharacterOption = CharacterOptions.Monster
+            };
+            provider.GetPartner().Heal(command.HealthChangeAmount);
             EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
         }
 
@@ -1796,11 +2092,11 @@ namespace LabWork1github
             TriggerEvent healEvent = new TriggerEvent
             {
                 EventType = EventType.Heal,
-                SourceCharacter = new TrapType(),
+                SourceCharacter = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
                 Amount = command.HealthChangeAmount,
                 TargetPlace = new Place(provider.GetMonster().Place.X, provider.GetMonster().Place.Y),
-                TargetCharacter = new MonsterType()
+                TargetCharacterOption = CharacterOptions.Monster
             };
             provider.GetMonster().Heal(command.HealthChangeAmount);
             EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);

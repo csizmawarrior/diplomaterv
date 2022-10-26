@@ -16,6 +16,7 @@ namespace LabWork1github.static_constants
             public const string ZERO_AS_COORDINATE = "The coordinate given is zero at place:\n";
             public const string UNDEFINED_TRAP_TYPE = "The Trap type is undefined at place:\n";
             public const string PARTNER_CANNOT_BE_THE_PLAYER = "The character with the following name tried to adress the player as its partner:\n";
+            public const string CANNOT_BE_YOUR_OWN_PARTNER = "The character with the following name tried to adress itself as its partner:\n";
         }
 
         public static class HealthChangeError
@@ -42,7 +43,7 @@ namespace LabWork1github.static_constants
         public static class MoveError
         {
             public const string WRONG_DIRECTION = "Wrong direction used:\n";
-            public const string NEGATIVE_DIRECTION = "Negative or zero Distance is not supported!\n";
+            public const string NEGATIVE_DISTANCE = "Negative or zero Distance is not supported!\n";
         }
         public static class ShootError
         {
@@ -75,7 +76,6 @@ namespace LabWork1github.static_constants
             public const string CHARACTER_SPAWNED_ON_TRAP = "A character wwith the following name spawns on a trap, give a valid board: ";
             public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.\n";
             public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.\n";
-            public const string CHARACTER_HAS_NON_EXISTANT_PARTNER = "The following character has a referenced non existant partner, give a valid partner name for this character: ";
             public const string PLACE_OUT_OF_BOUNDS = "A referenced place is out of bounds.\n";
         }
         public static class ParseError
@@ -83,6 +83,10 @@ namespace LabWork1github.static_constants
             public const string UNABLE_TO_PARSE_DOUBLE = "The entered number is not recognized as a number.";
             public const string UNABLE_TO_PARSE_INT = "The entered number is not recognized as an integer.";
             public const string UNABLE_TO_PARSE_PLACE = "The entered numbers do not represent a valid place, make sure to use positive integers.";
+        }
+        public static class PartnerError {
+            public const string NON_EXISTANT_PARTNER = "The partner of the referenced character is not existing, give a real enemy partner to the character with the name:\n";
+            public const string PLAYER_CANNOT_BE_PARTNER = "The partner of the referenced character is the player, give a real enemy partner to the character with the name:\n";
         }
         public static class TypeCreationError
         {
@@ -109,7 +113,6 @@ namespace LabWork1github.static_constants
         {
             public const string CONDITION_CHECK_FAIL = "Condition check failed\n";
             public const string UNRECOGNIZED_NUMBER = "Unrecognized number expression at:\n";
-            public const string NON_EXISTANT_PARTNER = "The partner of the character is not existing, give a real partner to the character with the name:\n";
             public const string UNRECOGNIZED_ATTRIBUTE_ERROR = "An attribute caused error!\n" + ErrorMessages.ConditionError.IN_PLACE;
             public const string PLAYER_ATTRIBUTE_ERROR = "A player attribute caused error!\n";
             public const string PLAYER_HAS_NO_NAME = "The player in the game has no name, assign it one in the board creation script!\n";
@@ -136,6 +139,7 @@ namespace LabWork1github.static_constants
             public const string ACTION_WITHOUT_CHARACTER_OR_PLACE = "When command action doesn't have character nor place at:\n";
             public const string ACTION_WITHOUT_CHARACTER = "When command action doesn't have character at:\n";
             public const string PLAYER_SHOOTING_ITSELF = "When command action error, player can't shoot itself:\n";
+            public const string PLAYER_SHOOTING_TRAP = "When command action error, player can't shoot trap:\n";
             public const string MONSTER_SHOOTING_MONSTER = "When command action error, monster can't shoot itself or another monster:\n";
             public const string MONSTER_SHOOTING_TRAP = "When command action error, monster can't shoot a trap:\n";
             public const string ONLY_TRAP_CAN_DAMAGE = "When command action error, only Trap type can damage, try shoot instead at:\n";

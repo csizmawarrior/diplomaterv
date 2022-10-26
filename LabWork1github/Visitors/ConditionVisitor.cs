@@ -9,9 +9,8 @@ using static LabWork1github.DynamicEnemyGrammarParser;
 namespace LabWork1github.Visitors
 {
     class ConditionVisitor : DynamicEnemyGrammarBaseVisitor<object>
-    {   //TODO: Partner integration
-        //TODO: While refactoring pay attention to possible type errors
-        //TODO: Check double int mismatches or just remove double-ness, it has to be integrated to a lot of places
+    {
+        //TODO: Check double int mismatches with tests
         public BoolExpressionContext BoolExpressionContext { get; set; }
 
         public GameParamProvider Provider { get; set; }
@@ -350,7 +349,7 @@ namespace LabWork1github.Visitors
             {
                 if (Provider.GetPartner() == null)
                 {
-                    ErrorList += ErrorMessages.ConditionError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
+                    ErrorList += ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return -1;
@@ -1058,7 +1057,7 @@ namespace LabWork1github.Visitors
             {
                 if (Provider.GetPartner() == null)
                 {
-                    ErrorList += ErrorMessages.ConditionError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
+                    ErrorList += ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return StaticStartValues.PLACEHOLDER_PLACE;
@@ -1261,7 +1260,7 @@ namespace LabWork1github.Visitors
             {
                 if (Provider.GetPartner() == null)
                 {
-                    ErrorList += ErrorMessages.ConditionError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
+                    ErrorList += ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return StaticStartValues.PLACEHOLDER_NAME;
@@ -1525,7 +1524,7 @@ namespace LabWork1github.Visitors
             {
                 if (Provider.GetPartner() == null)
                 {
-                    ErrorList += ErrorMessages.ConditionError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
+                    ErrorList += ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + Provider.GetMe().Name;
                     ErrorList += (context.GetText() + "\n");
                     ErrorFound = true;
                     return null;

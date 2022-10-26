@@ -47,7 +47,7 @@ namespace LabWork1github
             TriggerEvent moveEvent = new TriggerEvent
             {
                 EventType = EventType.Move,
-                SourceCharacter = new PlayerType(),
+                SourceCharacter = CharacterOptions.Player,
                 SourcePlace = new Place(Place.X, Place.Y)
             };
             switch (direction)
@@ -69,7 +69,7 @@ namespace LabWork1github
                     moveEvent.TargetPlace = new Place(Place.X, Place.Y);
                     break;
             }
-            EventCollection.InvokePlayerMoved(this, moveEvent);
+            EventCollection.InvokeSomeoneMoved(this, moveEvent);
         }
 
         public override Character GetPartner()
