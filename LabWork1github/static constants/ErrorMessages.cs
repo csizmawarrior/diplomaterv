@@ -34,6 +34,7 @@ namespace LabWork1github.static_constants
         {
             public const string TRAP_TYPE_ALREADY_EXISTS = "Trap with this type already exists:\n";
             public const string MONSTER_TYPE_ALREADY_EXISTS = "Monster with this type already exists:\n";
+            public const string MONSTER_ZERO_HEALTH = "Monster type cannot have zero health as default at:\n";
             public const string TRAP_HAS_NO_HEALTH = "Trap doesn't have health:\n";
             public const string ONLY_TRAP_CAN_HEAL = "Only Traps have heal attribute:\n";
             public const string ONLY_TRAP_CAN_TELEPORT = "Only Traps have teleport point attribute:\n";

@@ -101,6 +101,9 @@ namespace LabWork1github
                 Program.GetCharacterType(typeName).Health = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
                 if(Program.GetCharacterType(typeName).Health == 0)
                 {
+                    Error += ErrorMessages.ParameterDeclarationError.MONSTER_ZERO_HEALTH;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
                     Program.GetCharacterType(typeName).Health = StaticStartValues.PLACEHOLDER_HEALTH;
                 }
             }

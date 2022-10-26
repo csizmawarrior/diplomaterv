@@ -4,6 +4,7 @@ using LabWork1github.Commands;
 using LabWork1github.static_constants;
 using LabWork1github.Visitors;
 using NUnit.Framework;
+using System;
 
 namespace UnitTest
 {
@@ -76,6 +77,17 @@ namespace UnitTest
             Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.TRAP_HAS_NO_HEALTH + "health=20" + "\n");
         }
         [Test]
+        public void AssigningMonsterZeroHealth()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health=0;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.MONSTER_ZERO_HEALTH + "health=0" + "\n");
+            Assert.AreEqual(StaticStartValues.PLACEHOLDER_HEALTH, Program.GetCharacterType("testmonster").Health);
+
+        }
+        [Test]
         public void AssigningTrapsHealthAsCommand()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: health=20;");
@@ -110,6 +122,14 @@ namespace UnitTest
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_TELEPORT + "teleport_place=1,1" + "\n");
+        }
+        [Test]
+        public void AssigningMonsterTeleportPointDoubleNumbers()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; teleport_place=1.3,1.2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            
+            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_TELEPORT + "teleport_place=1.3,1.2" + "\n");
         }
         [Test]
         public void AssigningMonsterTeleportPointAsCommand()
@@ -184,11 +204,11 @@ namespace UnitTest
         [Test]
         public void AssignMonsterHealthOnce()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 5.50; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
-            Assert.AreEqual(50, Program.GetCharacterType("testmonster").Health);
+            Assert.AreEqual(5.50, Program.GetCharacterType("testmonster").Health);
         }
         [Test]
         public void AssignMonsterHealthTwice()
@@ -214,13 +234,13 @@ namespace UnitTest
         [Test]
         public void AssignMonsterHealthAsCommandAndParameter()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30; commands: health = 30; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30; commands: health = 3.33; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.AreEqual(30, Program.GetCharacterType("testmonster").Health);
             Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
-                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 30
+                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 3.33
                 && ((NumberParameterDeclareCommand)x).NumberParameterDeclareDelegate.Equals(
                     new NumberParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.HealthChange))) != null);
         }
@@ -244,11 +264,11 @@ namespace UnitTest
         [Test]
         public void AssignMonsterDamageOnce()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; damage = 50; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; damage = 5.50; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
-            Assert.AreEqual(50, Program.GetCharacterType("testmonster").Damage);
+            Assert.AreEqual(5.50, Program.GetCharacterType("testmonster").Damage);
         }
         [Test]
         public void AssignMonsterDamageTwice()
@@ -274,13 +294,13 @@ namespace UnitTest
         [Test]
         public void AssignMonsterDamageAsCommandAndParameter()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; damage = 30; commands: damage = 30; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; damage = 30; commands: damage = 3.33; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.AreEqual(30, Program.GetCharacterType("testmonster").Damage);
             Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
-                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 30
+                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 3.33
                 && ((NumberParameterDeclareCommand)x).NumberParameterDeclareDelegate.Equals(
                     new NumberParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.DamageChange))) != null);
         }
@@ -313,7 +333,7 @@ namespace UnitTest
         [Test]
         public void AssignTrapHealTwice()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 50; heal = 30; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 5.50; heal = 30; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
@@ -322,12 +342,12 @@ namespace UnitTest
         [Test]
         public void AssignTrapHealAsCommand()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: heal = 30; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: heal = 3.33; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
-                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 30
+                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 3.33
                 && ((NumberParameterDeclareCommand)x).NumberParameterDeclareDelegate.Equals(
                     new NumberParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.HealChange))) != null);
         }
@@ -373,7 +393,7 @@ namespace UnitTest
         [Test]
         public void AssignTrapDamageTwice()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; damage = 50; damage = 30; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; damage = 5.50; damage = 30; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
@@ -382,12 +402,12 @@ namespace UnitTest
         [Test]
         public void AssignTrapDamageAsCommand()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: damage = 30; ");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: damage = 3.33; ");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
-                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 30
+                .Find(x => x is NumberParameterDeclareCommand && ((NumberParameterDeclareCommand)x).Number == 3.33
                 && ((NumberParameterDeclareCommand)x).NumberParameterDeclareDelegate.Equals(
                     new NumberParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.DamageChange))) != null);
         }

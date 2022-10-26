@@ -54,6 +54,7 @@ namespace LabWork1github.Visitors
                 throw new InvalidCastException(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE);
             }
         }
+        //TODO: return sth else for place instead of throwing an error
         public static Place PlaceParseFromNumbers(DynamicEnemyGrammarParser.PlaceContext context)
         {
             int xCoordinate;
