@@ -333,7 +333,7 @@ namespace LabWork1github
             if(character.GetPartner() == null)
             {
                 Drawer.WriteCommand(ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + character.Name);
-                return false;
+                return true;
             }
             if(character.GetPartner() is Monster)
             {
@@ -370,7 +370,7 @@ namespace LabWork1github
                     }
                 }
             }
-            if(Provider.GetPartner() is Trap)
+            if(character.GetPartner() is Trap)
             {
                 if (eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner)
                 {

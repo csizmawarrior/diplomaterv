@@ -60,7 +60,7 @@ namespace LabWork1github.Visitors
             int yCoordinate;
             if (int.TryParse(context.x().GetText(), out xCoordinate))
             {
-                if (int.TryParse(context.x().GetText(), out yCoordinate))
+                if (int.TryParse(context.y().GetText(), out yCoordinate))
                 {
                     return new Place(xCoordinate-1, yCoordinate-1);
                 }

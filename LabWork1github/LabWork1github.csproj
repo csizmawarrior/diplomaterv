@@ -95,6 +95,7 @@
     <Compile Include="Visitors\ConditionVisitor.cs" />
     <Compile Include="Visitors\DynamicEnemyGrammarVisitor.cs" />
     <Compile Include="types\charactertypes\CharacterType.cs" />
+    <Compile Include="Visitors\DynamicEnemyGrammarVisitorDelegates.cs" />
     <Compile Include="Visitors\ExpressionVisitor.cs" />
     <Compile Include="game field classes\Game.cs" />
     <Compile Include="game field classes\GameParamProvider.cs" />

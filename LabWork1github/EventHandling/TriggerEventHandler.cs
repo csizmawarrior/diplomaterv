@@ -50,7 +50,7 @@ namespace LabWork1github.EventHandling
                                 (TriggeringEvent.TargetCharacterOption == CharacterOptions.Me && !c.Equals(args.TargetCharacter)) ||
                                 (TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner && args.TargetCharacter.Equals(c.GetPartner()))
                                 )
-                                return;
+                                continue;
 
                                 GameParamProvider.SetActualCharacter(c);
 

@@ -12,7 +12,7 @@ namespace LabWork1github
     public class MoveCommand : Command
     {
 
-        public int Distance { get; set; }
+        public int Distance { get; set; } = StaticStartValues.STARTER_DISTANCE;
 
         public int Round { get; set; }
 
