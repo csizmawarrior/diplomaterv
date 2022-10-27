@@ -245,15 +245,16 @@ namespace LabWork1github
             if (context.distanceDeclare() != null)
             {
                 newCommand.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
-                if (newCommand.Distance <= 0)
-                {
-                    Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
                 if (newCommand.Distance == StaticStartValues.PLACEHOLDER_INT)
                 {
                     Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                    newCommand.Distance = StaticStartValues.STARTER_DISTANCE;
+                }
+                if (newCommand.Distance <= 0)
+                {
+                    Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                     newCommand.Distance = StaticStartValues.STARTER_DISTANCE;
