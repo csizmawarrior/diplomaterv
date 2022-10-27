@@ -11,6 +11,8 @@ namespace LabWork1github.static_constants
         public static double PLACEHOLDER_HEALTH = -1;
         public static double PLACEHOLDER_HEAL = -1;
         public static double PLACEHOLDER_DAMAGE = -1;
+        public static double PLACEHOLDER_DOUBLE = -1;
+        public static int PLACEHOLDER_INT = -1;
         public static double PLACEHOLDER_AMOUNT = 0;
         public static int PLACEHOLDER_HEIGHT = 0;
         public static int PLACEHOLDER_WIDTH = 0;

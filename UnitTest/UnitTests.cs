@@ -124,12 +124,22 @@ namespace UnitTest
             Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_TELEPORT + "teleport_place=1,1" + "\n");
         }
         [Test]
-        public void AssigningMonsterTeleportPointDoubleNumbers()
+        public void AssigningTrapTeleportPointDoubleNumbers()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; teleport_place=1.3,1.2;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; teleport_place=1.3,1.2;");
             LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
-            
-            Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_TELEPORT + "teleport_place=1.3,1.2" + "\n");
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "teleport_place=1.3,1.2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssigningTrapTeleportPointAsCommandWithDoubleNumbers()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: teleport_place=1.3,1.2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "teleport_place=1.3,1.2" + "\n", visitor.Error);
         }
         [Test]
         public void AssigningMonsterTeleportPointAsCommand()
@@ -148,6 +158,24 @@ namespace UnitTest
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(visitor.Error, ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TO_PLACE + "spawn_place=1,1" + "\n");
+        }
+        [Test]
+        public void AssigningTrapSpawnPointDoubleNumbers()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place=1.3,1.2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "spawn_place=1.3,1.2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssigningTrapSpawnPointAsCommandWithDoubleNumbers()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: spawn_place=1.3,1.2;");
+            LabWork1github.DynamicEnemyGrammarVisitor visitor = new LabWork1github.DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "spawn_place=1.3,1.2" + "\n", visitor.Error);
         }
         [Test]
         public void AssigningMonsterSpawnPointAsCommand()

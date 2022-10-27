@@ -14,7 +14,6 @@ namespace LabWork1github.EventHandling
         public GameParamProvider GameParamProvider { get; set; }
         public CharacterType Owner { get; set; }
 
-        //TODO: The if might needs some fine tuning
         public virtual void OnEvent(object sender, TriggerEvent args)
         {
 

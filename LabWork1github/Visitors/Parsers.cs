@@ -19,7 +19,7 @@ namespace LabWork1github.Visitors
             }
             else
             {
-                throw new InvalidCastException(ErrorMessages.ParseError.UNABLE_TO_PARSE_DOUBLE);
+                return StaticStartValues.PLACEHOLDER_DOUBLE;
             }
         }
         public static int IntParseFromNumber(string numberText)
@@ -31,27 +31,7 @@ namespace LabWork1github.Visitors
             }
             else
             {
-                throw new InvalidCastException(ErrorMessages.ParseError.UNABLE_TO_PARSE_INT);
-            }
-        }
-        public static Place PlaceParseFromNumbers(PlaceContext context)
-        {
-            int xCoordinate;
-            int yCoordinate;
-            if (int.TryParse(context.x().GetText(), out xCoordinate))
-            {
-                if (int.TryParse(context.x().GetText(), out yCoordinate))
-                {
-                    return new Place(xCoordinate, yCoordinate);
-                }
-                else
-                {
-                    throw new InvalidCastException(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE);
-                }
-            }
-            else
-            {
-                throw new InvalidCastException(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE);
+                return StaticStartValues.PLACEHOLDER_INT;
             }
         }
         //TODO: return sth else for place instead of throwing an error
@@ -67,12 +47,12 @@ namespace LabWork1github.Visitors
                 }
                 else
                 {
-                    throw new InvalidCastException(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE);
+                    return StaticStartValues.PLACEHOLDER_PLACE;
                 }
             }
             else
             {
-                throw new InvalidCastException(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE);
+                return StaticStartValues.PLACEHOLDER_PLACE;
             }
         }
     }

@@ -42,6 +42,12 @@ namespace LabWork1github
                 ErrorList += ErrorMessages.BoardError.ZERO_HEIGHT;
                 ErrorList += context.GetText() + "\n";
             }
+            if (Program.Board.Height == StaticStartValues.PLACEHOLDER_INT)
+            {
+                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                ErrorList += context.GetText() + "\n";
+                ErrorFound = true;
+            }
 
             Program.Board.Width = Parsers.IntParseFromNumber(place.y().GetText());
             if (Program.Board.Width == 0)
@@ -49,6 +55,12 @@ namespace LabWork1github
                 ErrorFound = true;
                 ErrorList += ErrorMessages.BoardError.ZERO_WIDTH;
                 ErrorList += context.GetText() + "\n";
+            }
+            if (Program.Board.Width == StaticStartValues.PLACEHOLDER_INT)
+            {
+                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                ErrorList += context.GetText() + "\n";
+                ErrorFound = true;
             }
 
             if (context.nameDeclaration() != null)
@@ -69,6 +81,12 @@ namespace LabWork1github
                 ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
                 ErrorList += context.GetText() + "\n";
             }
+            if (xPos == StaticStartValues.PLACEHOLDER_INT || yPos == StaticStartValues.PLACEHOLDER_INT)
+            {
+                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                ErrorList += context.GetText() + "\n";
+                ErrorFound = true;
+            }
             Program.Board.Player = new Player(new Place(xPos, yPos), StaticStartValues.STARTER_PLAYER_HP);
             if (context.nameDeclaration() != null)
                 Program.Board.Player.Name = context.nameDeclaration().ID().GetText();
@@ -85,6 +103,12 @@ namespace LabWork1github
                 ErrorFound = true;
                 ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
                 ErrorList += context.GetText() + "\n";
+            }
+            if (xPos == StaticStartValues.PLACEHOLDER_INT || yPos == StaticStartValues.PLACEHOLDER_INT)
+            {
+                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                ErrorList += context.GetText() + "\n";
+                ErrorFound = true;
             }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is MonsterType) {
@@ -121,6 +145,12 @@ namespace LabWork1github
                 ErrorFound = true;
                 ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
                 ErrorList += context.GetText() + "\n";
+            }
+            if (xPos == StaticStartValues.PLACEHOLDER_INT || yPos == StaticStartValues.PLACEHOLDER_INT)
+            {
+                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                ErrorList += context.GetText() + "\n";
+                ErrorFound = true;
             }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is TrapType)

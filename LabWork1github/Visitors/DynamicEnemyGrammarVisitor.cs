@@ -23,7 +23,6 @@ namespace LabWork1github
         public string Error = "";
         public bool ErrorFound = false;
         public Scope CurrentScope { get; set; } = new Scope(null);
-        //TODO: integrate partner to every instance of character, either with error or valid step
         public override object VisitDefinition([NotNull] DefinitionContext context)
         {
             foreach (var child in context.statementList())
@@ -160,11 +159,25 @@ namespace LabWork1github
                 ErrorFound = true;
             }
             else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+            {
                 Program.GetCharacterType(typeName).TeleportPlace = Parsers.PlaceParseFromNumbers(context.place());
+                if (Program.GetCharacterType(typeName).TeleportPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
             else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
                 newCommand.Place = Parsers.PlaceParseFromNumbers(context.place());
+                if (newCommand.Place.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlaceChange);
                 AddCommand(newCommand);
             }
@@ -180,11 +193,25 @@ namespace LabWork1github
                 ErrorFound = true;
             }
             else if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
+            {
                 Program.GetCharacterType(typeName).SpawnPlace = Parsers.PlaceParseFromNumbers(context.place());
+                if (Program.GetCharacterType(typeName).SpawnPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
+            }
             else
             {
                 PlaceParameterDeclareCommand newCommand = new PlaceParameterDeclareCommand();
                 newCommand.Place = Parsers.PlaceParseFromNumbers(context.place());
+                if (newCommand.Place.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
                 newCommand.PlaceParameterDeclareDelegate = new PlaceParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.SpawnPlaceChange);
                 AddCommand(newCommand);
             }
@@ -224,6 +251,13 @@ namespace LabWork1github
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
+                if (newCommand.Distance == StaticStartValues.PLACEHOLDER_INT)
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                    newCommand.Distance = StaticStartValues.STARTER_DISTANCE;
+                }
             }
             var direction = context.DIRECTION();
             if (direction != null)
@@ -245,6 +279,12 @@ namespace LabWork1github
             if (place != null)
             {
                 newCommand.TargetPlace = Parsers.PlaceParseFromNumbers(place);
+                if (newCommand.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
                 newCommand.MoveDelegate = new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlace);
                 AddCommand(newCommand);
                 return base.VisitMoveDeclaration(context);
@@ -297,6 +337,12 @@ namespace LabWork1github
             if (context.place() != null)
             {
                 newCommand.TargetPlace = Parsers.PlaceParseFromNumbers(context.place());
+                if (newCommand.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
             }
             else
             {
@@ -363,6 +409,12 @@ namespace LabWork1github
             if (context.place() != null)
             {
                 newCommand.TargetPlace = Parsers.PlaceParseFromNumbers(context.place());
+                if (newCommand.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
             }
             else
             {
@@ -636,12 +688,26 @@ namespace LabWork1github
             if (context.action().place() != null)
             {
                 resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                if (resultTrigger.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
+                {
                     resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                    {
+                        Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                }
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -729,12 +795,26 @@ namespace LabWork1github
             if (context.action().place() != null)
             {
                 resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                if (resultTrigger.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
+                {
                     resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                    {
+                        Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                }
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -818,12 +898,26 @@ namespace LabWork1github
             if (context.action().place() != null)
             {
                 resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                if (resultTrigger.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
+                {
                     resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                    {
+                        Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                }
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -973,12 +1067,26 @@ namespace LabWork1github
             if (context.action().place() != null)
             {
                 resultTrigger.TargetPlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                if (resultTrigger.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
             }
             if (context.action().MOVE() != null)
             {
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
+                {
                     resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                    {
+                        Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                }
                 return resultTrigger;
             }
             if (context.action().DIE() != null)
@@ -1145,6 +1253,13 @@ namespace LabWork1github
                     ErrorFound = true;
                     command.Distance = StaticStartValues.STARTER_DISTANCE;
                 }
+                if (command.Distance == StaticStartValues.PLACEHOLDER_INT)
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                    command.Distance = StaticStartValues.STARTER_DISTANCE;
+                }
             }
 
             if (context.hpChangeAmountDeclaration() != null)
@@ -1188,6 +1303,12 @@ namespace LabWork1github
             if (place != null)
             {
                 command.TargetPlace = Parsers.PlaceParseFromNumbers(place);
+                if (command.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                {
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
+                    Error += context.GetText() + "\n";
+                    ErrorFound = true;
+                }
                 if (command is ShootCommand)
                 {
                     ((ShootCommand)command).ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlace);
