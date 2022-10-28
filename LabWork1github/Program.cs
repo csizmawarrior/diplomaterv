@@ -27,9 +27,11 @@ namespace LabWork1github
 
 
             //  MonsterTypeLoader();
-            TrapTypeLoader();
-            MonsterTypeLoader();
-            BoardLoader();
+            if (TrapTypeLoader() || MonsterTypeLoader() || BoardLoader())
+            {
+                Drawer.WriteCommand(ErrorMessages.GameError.ERRORS_OCCURED_CONTINUE);
+                Console.ReadKey();
+            }
 
 
             Game theGame = new Game();
@@ -40,7 +42,7 @@ namespace LabWork1github
 
         }
 
-        public static void MonsterTypeLoader()
+        public static bool MonsterTypeLoader()
         {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/DefaultMonster.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
@@ -52,9 +54,10 @@ namespace LabWork1github
             visitor.Visit(chatContext);
             if (visitor.ErrorFound)
                 Drawer.WriteCommand(visitor.Error);
+            return visitor.ErrorFound;
         }
 
-        public static void BoardLoader()
+        public static bool BoardLoader()
         {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/BoardCreation.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
@@ -64,9 +67,12 @@ namespace LabWork1github
             BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
             BoardGrammarVisitor visitor = new BoardGrammarVisitor();
             visitor.Visit(chatContext);
+            if (visitor.ErrorFound)
+                Drawer.WriteCommand(visitor.ErrorList);
+            return visitor.ErrorFound;
         }
 
-        public static void TrapTypeLoader()
+        public static bool TrapTypeLoader()
         {
             string text = System.IO.File.ReadAllText("C:/Users/Dana/antlrworks/DefaultTrap.txt");
             AntlrInputStream inputStream = new AntlrInputStream(text);
@@ -78,6 +84,7 @@ namespace LabWork1github
             visitor.Visit(chatContext);
             if(visitor.ErrorFound)
                 Drawer.WriteCommand(visitor.Error);
+            return visitor.ErrorFound;
         }
 
         public static CharacterType GetCharacterType(string name)
@@ -86,12 +93,10 @@ namespace LabWork1github
                 return null;
             if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count > 1)
             {
-                Drawer.WriteCommand(ErrorMessages.TypeCreationError.TYPE_DOES_NOT_EXIST + name);
                 return null;
             }   
             else if (CharacterTypes.FindAll(e => e.Name.Equals(name)).Count < 1)
             {
-                Drawer.WriteCommand(ErrorMessages.TypeCreationError.TYPE_DOES_NOT_EXIST + name);
                 return null;
             }
             return CharacterTypes.Find(e => e.Name.Equals(name));
