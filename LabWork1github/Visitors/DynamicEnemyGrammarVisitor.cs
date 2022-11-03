@@ -84,7 +84,9 @@ namespace LabWork1github
                 VisitDeclareStatements(child);
             }
             if (context.COMMANDS() != null)
+            {
                 CreationStage = TypeCreationStage.CommandListing;
+            }
             return null;
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
@@ -254,7 +256,7 @@ namespace LabWork1github
                 }
                 if (newCommand.Distance <= 0)
                 {
-                    Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
+                    Error += ErrorMessages.MoveError.ZERO_DISTANCE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                     newCommand.Distance = StaticStartValues.STARTER_DISTANCE;
@@ -262,15 +264,7 @@ namespace LabWork1github
             }
             var direction = context.DIRECTION();
             if (direction != null)
-            {
-                if (!(direction.GetText().Equals(Directions.FORWARD) || direction.GetText().Equals(Directions.LEFT) || direction.GetText().Equals(Directions.BACKWARDS) ||
-                    direction.GetText().Equals(Directions.RIGHT)))
-                {
-                    Error += ErrorMessages.MoveError.WRONG_DIRECTION;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
-                    
+            {       
                 newCommand.Direction = direction.GetText();
                 newCommand.MoveDelegate = new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection);
                 AddCommand(newCommand);
@@ -1247,16 +1241,16 @@ namespace LabWork1github
             if (context.distanceDeclare() != null)
             {
                 command.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
-                if (command.Distance <= 0)
+                if (command.Distance == StaticStartValues.PLACEHOLDER_INT)
                 {
-                    Error += ErrorMessages.MoveError.NEGATIVE_DISTANCE;
+                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                     command.Distance = StaticStartValues.STARTER_DISTANCE;
                 }
-                if (command.Distance == StaticStartValues.PLACEHOLDER_INT)
+                if (command.Distance <= 0)
                 {
-                    Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
+                    Error += ErrorMessages.MoveError.ZERO_DISTANCE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                     command.Distance = StaticStartValues.STARTER_DISTANCE;
@@ -1278,13 +1272,6 @@ namespace LabWork1github
             var direction = context.DIRECTION();
             if (direction != null)
             {
-                if (!(direction.GetText().Equals(Directions.FORWARD) || direction.GetText().Equals(Directions.LEFT) ||
-                    direction.GetText().Equals(Directions.BACKWARDS) || direction.GetText().Equals(Directions.RIGHT)))
-                {
-                    Error += ErrorMessages.HealthChangeError.WRONG_DIRECTION;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
                 command.Direction = direction.GetText();
                 if (command is ShootCommand)
                 {
@@ -1298,7 +1285,7 @@ namespace LabWork1github
                 {
                     ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection);
                 }
-                return command; ;
+                return command;
             }
             PlaceContext place = context.place();
             if (place != null)
@@ -1361,7 +1348,7 @@ namespace LabWork1github
                     if (context.character().PLAYER() != null)
                         ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer);
                 }
-                return command; ;
+                return command;
             }
 
             var random = context.RANDOM();

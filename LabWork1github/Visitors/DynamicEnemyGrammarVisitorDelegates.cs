@@ -219,6 +219,8 @@ namespace LabWork1github.Visitors
         }
         public static void MoveToPlace(GameParamProvider provider, MoveCommand command)
         {
+            if (command.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                return;
             TriggerEvent moveEvent = new TriggerEvent
             {
                 EventType = EventType.Move,

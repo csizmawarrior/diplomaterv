@@ -44,7 +44,7 @@ namespace LabWork1github.static_constants
         public static class MoveError
         {
             public const string WRONG_DIRECTION = "Wrong direction used:\n";
-            public const string NEGATIVE_DISTANCE = "Negative or zero Distance is not supported!\n";
+            public const string ZERO_DISTANCE = "Negative or zero Distance is not supported!\n";
         }
         public static class ShootError
         {
