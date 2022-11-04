@@ -694,11 +694,12 @@ namespace UnitTest
             Assert.AreEqual(ErrorMessages.MoveError.ZERO_DISTANCE + "moveFdistance=0\n", visitor.Error);
         }
         [Test]
-        public void AssignMonsterMoveCommandWrongDiraction()
+        public void AssignMonsterMoveCommandWrongDirection()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: move J distance = 2;");
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
             Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
         }
         [Test]
@@ -976,7 +977,20 @@ namespace UnitTest
             Assert.AreEqual(ErrorMessages.TeleportError.TELEPORTING_WITHOUT_PLACE_GIVEN + "teleportme" + "\n" +
                                 ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "teleportme" + "\n", visitor.Error);
         }
-
+        [Test]
+        public void AssignMonsterSpawnCommandMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: spawn;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is SpawnCommand command && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn))) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN + "spawn" + "\n" +
+                                ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN + "spawn" + "\n" +
+                                ErrorMessages.SpawnError.SPAWN_WITHOUT_TYPE_GIVEN + "spawn" + "\n", visitor.Error);
+        }
 
 
         //Command tests happy path

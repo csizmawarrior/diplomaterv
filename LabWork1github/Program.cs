@@ -27,7 +27,11 @@ namespace LabWork1github
 
 
             //  MonsterTypeLoader();
-            if (TrapTypeLoader() || MonsterTypeLoader() || BoardLoader())
+            bool trapInit = TrapTypeLoader();
+            bool monsterInit = MonsterTypeLoader();
+            bool boardInit = BoardLoader();
+
+            if (trapInit || monsterInit || boardInit)
             {
                 Drawer.WriteCommand(ErrorMessages.GameError.ERRORS_OCCURED_CONTINUE);
                 Console.ReadKey();

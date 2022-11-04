@@ -42,6 +42,10 @@ namespace LabWork1github
         }
         public override object VisitTrapNameDeclaration([NotNull] TrapNameDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             typeName = context.name().GetText();
             if (Program.GetCharacterType(typeName) != null)
             {
@@ -60,6 +64,10 @@ namespace LabWork1github
         }
         public override object VisitMonsterNameDeclaration([NotNull] MonsterNameDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             typeName = context.name().GetText();
             if (Program.GetCharacterType(typeName) != null)
             {
@@ -79,7 +87,11 @@ namespace LabWork1github
         }
         public override object VisitDeclarations([NotNull] DeclarationsContext context)
         {
-            foreach(var child in context.declareStatements())
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
+            foreach (var child in context.declareStatements())
             {
                 VisitDeclareStatements(child);
             }
@@ -91,6 +103,10 @@ namespace LabWork1github
         }
         public override object VisitHealthDeclaration([NotNull] HealthDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type == Types.TRAP)
             {
                 Error += ErrorMessages.ParameterDeclarationError.TRAP_HAS_NO_HEALTH;
@@ -120,6 +136,10 @@ namespace LabWork1github
         }
         public override object VisitHealAmountDeclaration([NotNull] HealAmountDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type != Types.TRAP)
             {
                 Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_HEAL;
@@ -140,6 +160,10 @@ namespace LabWork1github
         }
         public override object VisitDamageAmountDeclaration([NotNull] DamageAmountDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (CreationStage.Equals(TypeCreationStage.ParameterDeclare))
                 Program.GetCharacterType(typeName).Damage = Parsers.DoubleParseFromNumber(context.NUMBER().GetText());
             else
@@ -154,6 +178,10 @@ namespace LabWork1github
         }
         public override object VisitTeleportPointDeclaration([NotNull] TeleportPointDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type != Types.TRAP)
             {
                 Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_TELEPORT;
@@ -188,6 +216,10 @@ namespace LabWork1github
         }
         public override object VisitSpawnPointDeclaration([NotNull] SpawnPointDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type != Types.TRAP)
             {
                 Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TO_PLACE;
@@ -222,6 +254,10 @@ namespace LabWork1github
         }
         public override object VisitSpawnTypeDeclaration([NotNull] SpawnTypeDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type != Types.TRAP)
             {
                 Error += ErrorMessages.ParameterDeclarationError.ONLY_TRAP_CAN_SPAWN_TYPE;
@@ -242,7 +278,10 @@ namespace LabWork1github
         }
         public override object VisitMoveDeclaration([NotNull] MoveDeclarationContext context)
         {
-
+            if(String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             MoveCommand newCommand = new MoveCommand();
             if (context.distanceDeclare() != null)
             {
@@ -305,6 +344,10 @@ namespace LabWork1github
 
         public override object VisitShootDeclaration([NotNull] ShootDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type.Equals(Types.TRAP))
             {
                 Error += ErrorMessages.ShootError.ONLY_MONSTER_CAN_SHOOT;
@@ -321,6 +364,10 @@ namespace LabWork1github
 
         public override object VisitTeleportDeclaration([NotNull] TeleportDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (!type.Equals(Types.TRAP))
             {
                 Error += ErrorMessages.TeleportError.ONLY_TRAP_CAN_TELEPORT;
@@ -384,13 +431,16 @@ namespace LabWork1github
 
         public override object VisitSpawnDeclaration([NotNull] SpawnDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (!type.Equals(Types.TRAP))
             {
                 Error += ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN;
                 Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
-
             SpawnCommand newCommand = new SpawnCommand();
             if (context.RANDOM() != null)
             {
@@ -442,6 +492,10 @@ namespace LabWork1github
 
         public override object VisitDamageDeclaration([NotNull] DamageDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type.Equals(Types.MONSTER))
             {
                 Error += ErrorMessages.DamageError.ONLY_TRAP_CAN_DAMAGE;
@@ -455,6 +509,10 @@ namespace LabWork1github
 
         public override object VisitHealDeclaration([NotNull] HealDeclarationContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (type.Equals(Types.MONSTER))
             {
                 Error += ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL;
@@ -468,6 +526,10 @@ namespace LabWork1github
 
         public override object VisitBlock([NotNull] BlockContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (CreationStage != TypeCreationStage.CommandListing && CreationStage != TypeCreationStage.ParameterDeclare)
             {
                 foreach (var child in context.statement())
@@ -480,6 +542,10 @@ namespace LabWork1github
 
         public override object VisitIfExpression([NotNull] IfExpressionContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
             ConditionHelper.CheckBool(context.boolExpression());
             if (ConditionHelper.CheckFailed)
@@ -528,6 +594,10 @@ namespace LabWork1github
 
         public override object VisitWhileExpression([NotNull] WhileExpressionContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             //It doesn't seem to contain the whole while expression, or doesn't recognize it
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
             ConditionHelper.CheckBool(context.boolExpression());
@@ -577,6 +647,10 @@ namespace LabWork1github
         }
         public override object VisitWhenExpression([NotNull] WhenExpressionContext context)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             TriggerEventHandler EventHandler = new TriggerEventHandler
             {
                 Owner = Program.GetCharacterType(this.typeName)
@@ -625,6 +699,10 @@ namespace LabWork1github
 
         public TriggerEvent VisitEvent(TriggerEventContext context, TriggerEventHandler eventHandler)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             TriggerEvent resultTrigger = new TriggerEvent();
             if(context.HEALTH_CHECK() != null)
             {
@@ -670,6 +748,10 @@ namespace LabWork1github
 
         private TriggerEvent VisitPlayerActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (context.action() == null)
             {
                 Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
@@ -774,6 +856,10 @@ namespace LabWork1github
 
         private TriggerEvent VisitMonsterActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (context.action() == null)
             {
                 Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
@@ -877,6 +963,10 @@ namespace LabWork1github
 
         private TriggerEvent VisitTrapActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (context.action() == null)
             {
                 Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
@@ -1048,6 +1138,10 @@ namespace LabWork1github
 
         private TriggerEvent VisitPartnerActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
         {
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (context.action() == null)
             {
                 Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
@@ -1234,7 +1328,10 @@ namespace LabWork1github
 
         public HealthChangerCommand VisitHealthChangeOption([NotNull] HealthChangeOptionContext context, HealthChangerCommand command)
         {
-
+            if (String.IsNullOrEmpty(context.GetText()))
+            {
+                ErrorFound = true;
+            }
             if (context.distanceDeclare() != null)
             {
                 command.Distance = Parsers.IntParseFromNumber(context.distanceDeclare().NUMBER().GetText());
