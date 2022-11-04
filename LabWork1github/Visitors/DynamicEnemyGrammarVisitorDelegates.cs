@@ -13,6 +13,8 @@ namespace LabWork1github.Visitors
     {
         public static void Spawn(GameParamProvider provider, SpawnCommand command)
         {
+            if (!(provider.GetMe() is Trap))
+                return;
             TriggerEvent spawnEvent = new TriggerEvent
             {
                 SourceCharacter = CharacterOptions.Trap,
@@ -68,6 +70,8 @@ namespace LabWork1github.Visitors
 
         public static void TeleportTrap(GameParamProvider provider, TeleportCommand command)
         {
+            if (!(provider.GetMe() is Trap))
+                return;
             TriggerEvent teleportEvent = new TriggerEvent
             {
                 EventType = EventType.Teleport,
@@ -97,6 +101,8 @@ namespace LabWork1github.Visitors
         }
         public static void TeleportMonster(GameParamProvider provider, TeleportCommand command)
         {
+            if (!(provider.GetMe() is Trap))
+                return;
             TriggerEvent teleportEvent = new TriggerEvent
             {
                 EventType = EventType.Teleport,
@@ -126,6 +132,8 @@ namespace LabWork1github.Visitors
         }
         public static void TeleportPartner(GameParamProvider provider, TeleportCommand command)
         {
+            if (! (provider.GetMe() is Trap))
+                return;
             TriggerEvent teleportEvent = new TriggerEvent
             {
                 EventType = EventType.Teleport,
@@ -157,6 +165,8 @@ namespace LabWork1github.Visitors
         }
         public static void TeleportPlayer(GameParamProvider provider, TeleportCommand command)
         {
+            if (!(provider.GetMe() is Trap))
+                return;
             TriggerEvent teleportEvent = new TriggerEvent
             {
                 EventType = EventType.Teleport,

@@ -341,7 +341,6 @@ namespace LabWork1github
             }
             else
             {
-
                 if (Program.GetCharacterType(typeName).TeleportPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE) 
                         == Directions.COLLISION &&  context.RANDOM() == null)
                 {
@@ -349,7 +348,8 @@ namespace LabWork1github
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
-                newCommand.TargetPlace = Program.GetCharacterType(typeName).TeleportPlace;
+                else
+                    newCommand.TargetPlace = Program.GetCharacterType(typeName).TeleportPlace;
             }
             if(context.character() != null)
             {
@@ -357,19 +357,15 @@ namespace LabWork1github
                 {
                     case Types.PLAYER:
                         newCommand.TeleportDelegate = new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer);
-                        AddCommand(newCommand);
                         break;
                     case Types.MONSTER:
                         newCommand.TeleportDelegate = new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportMonster);
-                        AddCommand(newCommand);
                         break;
                     case Types.TRAP:
                         newCommand.TeleportDelegate = new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap);
-                        AddCommand(newCommand);
                         break;
                     case Types.PARTNER:
                         newCommand.TeleportDelegate = new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner);
-                        AddCommand(newCommand);
                         break;
                     case Types.ME:
                         Error += ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF;
@@ -382,6 +378,7 @@ namespace LabWork1github
             {
                 newCommand.Random = true;
             }
+                AddCommand(newCommand);
             return base.VisitTeleportDeclaration(context);
         }
 
