@@ -34,7 +34,6 @@ namespace LabWork1github.Visitors
                 return StaticStartValues.PLACEHOLDER_INT;
             }
         }
-        //TODO: return sth else for place instead of throwing an error
         public static Place PlaceParseFromNumbers(DynamicEnemyGrammarParser.PlaceContext context)
         {
             int xCoordinate;
