@@ -359,7 +359,7 @@ namespace LabWork1github
                 ShootCommand newCommand = new ShootCommand();
                 AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
             }
-            return base.VisitShootDeclaration(context);
+            return null;
         }
 
         public override object VisitTeleportDeclaration([NotNull] TeleportDeclarationContext context)
@@ -502,7 +502,7 @@ namespace LabWork1github
             }
             DamageCommand newCommand = new DamageCommand();
             AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
-            return base.VisitDamageDeclaration(context);
+            return null;
         }
 
         public override object VisitHealDeclaration([NotNull] HealDeclarationContext context)
@@ -519,7 +519,7 @@ namespace LabWork1github
             }
             HealCommand newCommand = new HealCommand();
             AddCommand(VisitHealthChangeOption(context.healthChangeOption(), newCommand));
-            return base.VisitHealDeclaration(context);
+            return null;
         }
 
         public override object VisitBlock([NotNull] BlockContext context)

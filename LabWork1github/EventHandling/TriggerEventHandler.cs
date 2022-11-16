@@ -24,8 +24,7 @@ namespace LabWork1github.EventHandling
                     return;
                 }
             }
-            if ( TriggeringEvent.TargetCharacterOption != CharacterOptions.NULL && (TriggeringEvent.TargetCharacterOption != args.TargetCharacterOption || 
-                    args.TargetCharacter == null))
+            if ( TriggeringEvent.TargetCharacterOption != CharacterOptions.NULL && TriggeringEvent.TargetCharacterOption != args.TargetCharacterOption)
             {
                 if ( ! (TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner || TriggeringEvent.TargetCharacterOption == CharacterOptions.Me))
                     return;

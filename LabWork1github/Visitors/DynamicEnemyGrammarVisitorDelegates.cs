@@ -45,6 +45,7 @@ namespace LabWork1github.Visitors
             spawnEvent.TargetPlace = command.TargetPlace;
 
             provider.SpawnMonster(newMonster);
+            spawnEvent.TargetCharacter = newMonster;
             EventCollection.InvokeTrapSpawned(provider.GetMe(), spawnEvent);
         }
 
@@ -79,9 +80,9 @@ namespace LabWork1github.Visitors
                 TargetCharacterOption = CharacterOptions.Trap,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
-            foreach (Trap Trap in provider.GetTraps())
+            foreach (Trap trap in provider.GetTraps())
             {
-                if (Trap.Place.DirectionTo(provider.GetMe().Place).Equals(Directions.COLLISION) && !Trap.Equals(provider.GetMe()))
+                if (trap.Place.DirectionTo(provider.GetMe().Place).Equals(Directions.COLLISION) && !trap.Equals(provider.GetMe()))
                 {
                     if (command.Random)
                     {
@@ -93,7 +94,8 @@ namespace LabWork1github.Visitors
                     if (provider.IsFreePlace(command.TargetPlace))
                     {
                         teleportEvent.TargetPlace = command.TargetPlace;
-                        Trap.Place = command.TargetPlace;
+                        trap.Place = command.TargetPlace;
+                        teleportEvent.TargetCharacter = trap;
                         EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
                     }
                 }
@@ -112,7 +114,7 @@ namespace LabWork1github.Visitors
             };
             foreach (Monster monster in provider.GetMonsters())
             {
-                if (monster.Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
+                if (monster.Place.DirectionTo(provider.GetMe().Place).Equals(Directions.COLLISION))
                 {
                     if (command.Random)
                     {
@@ -125,6 +127,7 @@ namespace LabWork1github.Visitors
                     {
                         teleportEvent.TargetPlace = command.TargetPlace;
                         monster.Place = command.TargetPlace;
+                        teleportEvent.TargetCharacter = monster;
                         EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
                     }
                 }
@@ -146,7 +149,7 @@ namespace LabWork1github.Visitors
                 teleportEvent.TargetCharacterOption = CharacterOptions.Monster;
             if (provider.GetPartner() is Trap)
                 teleportEvent.TargetCharacterOption = CharacterOptions.Trap;
-            if (provider.GetPartner().Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
+            if (provider.GetPartner().Place.DirectionTo(provider.GetMe().Place).Equals(Directions.COLLISION))
             {
                 if (command.Random)
                 {
@@ -174,7 +177,7 @@ namespace LabWork1github.Visitors
                 TargetCharacterOption = CharacterOptions.Player,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
-            if (provider.GetPlayer().Place.DirectionTo(provider.GetTrap().Place).Equals(Directions.COLLISION))
+            if (provider.GetPlayer().Place.DirectionTo(provider.GetMe().Place).Equals(Directions.COLLISION))
             {
                 if (command.Random)
                 {
@@ -187,6 +190,7 @@ namespace LabWork1github.Visitors
                 {
                     teleportEvent.TargetPlace = command.TargetPlace;
                     provider.GetPlayer().Place = command.TargetPlace;
+                    teleportEvent.TargetCharacter = provider.GetPlayer();
                     EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
                 }
             }
@@ -332,6 +336,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 shootEvent.TargetCharacterOption = CharacterOptions.Player;
+                                shootEvent.TargetCharacter = provider.GetPlayer();
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
                             EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
@@ -348,6 +353,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 shootEvent.TargetCharacterOption = CharacterOptions.Player;
+                                shootEvent.TargetCharacter = provider.GetPlayer();
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
                             EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
@@ -364,6 +370,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 shootEvent.TargetCharacterOption = CharacterOptions.Player;
+                                shootEvent.TargetCharacter = provider.GetPlayer();
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
                             EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
@@ -380,6 +387,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 shootEvent.TargetCharacterOption = CharacterOptions.Player;
+                                shootEvent.TargetCharacter = provider.GetPlayer();
                             }
                             shootEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
                             EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
@@ -408,6 +416,7 @@ namespace LabWork1github.Visitors
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                 shootEvent.TargetCharacterOption = CharacterOptions.Player;
+                shootEvent.TargetCharacter = provider.GetPlayer();
             }
             EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
         }
@@ -424,6 +433,7 @@ namespace LabWork1github.Visitors
                 Amount = command.HealthChangeAmount
             };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
+            shootEvent.TargetCharacter = provider.GetPlayer();
             EventCollection.InvokeSomeoneShot(provider.GetMe(), shootEvent);
         }
 
@@ -460,6 +470,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 damageEvent.TargetCharacterOption = CharacterOptions.Player;
+                                damageEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -468,6 +479,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Damage(command.HealthChangeAmount);
                                     damageEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    damageEvent.TargetCharacter = monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
@@ -485,6 +497,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 damageEvent.TargetCharacterOption = CharacterOptions.Player;
+                                damageEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -493,6 +506,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Damage(command.HealthChangeAmount);
                                     damageEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    damageEvent.TargetCharacter = monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
@@ -510,6 +524,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 damageEvent.TargetCharacterOption = CharacterOptions.Player;
+                                damageEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -518,6 +533,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Damage(command.HealthChangeAmount);
                                     damageEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    damageEvent.TargetCharacter = monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
@@ -536,6 +552,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 damageEvent.TargetCharacterOption = CharacterOptions.Player;
+                                damageEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -544,6 +561,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Damage(command.HealthChangeAmount);
                                     damageEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    damageEvent.TargetCharacter = monster;
                                 }
                             }
                             damageEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
@@ -573,6 +591,7 @@ namespace LabWork1github.Visitors
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                 damageEvent.TargetCharacterOption = CharacterOptions.Player;
+                damageEvent.TargetCharacter = provider.GetPlayer();
             }
             foreach (Monster monster in provider.GetMonsters())
             {
@@ -580,6 +599,7 @@ namespace LabWork1github.Visitors
                 {
                     monster.Damage(command.HealthChangeAmount);
                     damageEvent.TargetCharacterOption = CharacterOptions.Monster;
+                    damageEvent.TargetCharacter = monster;
                 }
             }
             EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
@@ -597,6 +617,7 @@ namespace LabWork1github.Visitors
                 TargetCharacterOption = CharacterOptions.Player
             };
             provider.GetPlayer().Damage(command.HealthChangeAmount);
+            damageEvent.TargetCharacter = provider.GetPlayer();
             EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
         }
 
@@ -637,6 +658,7 @@ namespace LabWork1github.Visitors
                 TargetCharacterOption = CharacterOptions.Monster
             };
             provider.GetMonster().Damage(command.HealthChangeAmount);
+            damageEvent.TargetCharacter = provider.GetMonster();
             EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
         }
         public static void DamageRandom(GameParamProvider provider, DamageCommand command)
@@ -672,6 +694,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                                 healEvent.TargetCharacterOption = CharacterOptions.Player;
+                                healEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -680,6 +703,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Heal(command.HealthChangeAmount);
                                     healEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    healEvent.TargetCharacter = monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X - i, provider.GetMe().Place.Y);
@@ -697,6 +721,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                                 healEvent.TargetCharacterOption = CharacterOptions.Player;
+                                healEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -705,6 +730,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Heal(command.HealthChangeAmount);
                                     healEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    healEvent.TargetCharacter = monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X + i, provider.GetMe().Place.Y);
@@ -722,6 +748,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                                 healEvent.TargetCharacterOption = CharacterOptions.Player;
+                                healEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -730,6 +757,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Heal(command.HealthChangeAmount);
                                     healEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    healEvent.TargetCharacter = monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - i);
@@ -747,6 +775,7 @@ namespace LabWork1github.Visitors
                             {
                                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                                 healEvent.TargetCharacterOption = CharacterOptions.Player;
+                                healEvent.TargetCharacter = provider.GetPlayer();
                             }
                             foreach (Monster monster in provider.GetMonsters())
                             {
@@ -755,6 +784,7 @@ namespace LabWork1github.Visitors
                                 {
                                     monster.Heal(command.HealthChangeAmount);
                                     healEvent.TargetCharacterOption = CharacterOptions.Monster;
+                                    healEvent.TargetCharacter = monster;
                                 }
                             }
                             healEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + i);
@@ -784,6 +814,7 @@ namespace LabWork1github.Visitors
             {
                 provider.GetPlayer().Heal(command.HealthChangeAmount);
                 healEvent.TargetCharacterOption = CharacterOptions.Player;
+                healEvent.TargetCharacter = provider.GetPlayer();
             }
             foreach (Monster monster in provider.GetMonsters())
             {
@@ -791,6 +822,7 @@ namespace LabWork1github.Visitors
                 {
                     monster.Heal(command.HealthChangeAmount);
                     healEvent.TargetCharacterOption = CharacterOptions.Monster;
+                    healEvent.TargetCharacter = monster;
                 }
             }
             EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
@@ -808,6 +840,7 @@ namespace LabWork1github.Visitors
                 TargetCharacterOption = CharacterOptions.Player
             };
             provider.GetPlayer().Heal(command.HealthChangeAmount);
+            healEvent.TargetCharacter = provider.GetPlayer();
             EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
         }
 
@@ -848,6 +881,7 @@ namespace LabWork1github.Visitors
                 TargetCharacterOption = CharacterOptions.Monster
             };
             provider.GetMonster().Heal(command.HealthChangeAmount);
+            healEvent.TargetCharacter = provider.GetMonster();
             EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
         }
         public static void HealRandom(GameParamProvider provider, HealCommand command)

@@ -1774,7 +1774,7 @@ namespace UnitTest
             Program.Characters.Clear();
             Program.CharacterTypes.Clear();
             Program.Board = new Board();
-            Program.TrapTypeLoader();
+            Program.TrapTypeLoader("C:/Users/Dana/antlrworks/DefaultTrap.txt");
             Program.MonsterTypeLoader("C:/Users/Dana/antlrworks/DefaultMonster.txt");
             Program.BoardLoader("C:/Users/Dana/antlrworks/BoardCreation.txt");
             testGame = new Game();

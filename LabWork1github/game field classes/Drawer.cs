@@ -38,6 +38,8 @@ namespace LabWork1github
         }
         public void DrawBoard(Board board, Player player, List<Monster> monsters, List<Trap> traps)
         {
+            Console.WriteLine("\n--------------------------------\n");
+
             List<Place> places = new List<Place>();
             places.Add(player.Place);
             foreach(Monster monster in monsters)
