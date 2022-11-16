@@ -1,2 +1,1 @@
-Errors occured, while processing the input scrips, if you wish to continue press a button.
-
+Give a command!

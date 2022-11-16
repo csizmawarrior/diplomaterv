@@ -458,18 +458,16 @@ namespace LabWork1github
                     ErrorFound = true;
                 }
             }
-            else
+            if (Program.GetCharacterType(typeName).SpawnPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) 
+                    && (newCommand.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)))
             {
-                if (Program.GetCharacterType(typeName).SpawnPlace.DirectionTo(StaticStartValues.PLACEHOLDER_PLACE) 
-                        == Directions.COLLISION)
-                {
-                    Error += ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
-                else
-                    newCommand.TargetPlace = Program.GetCharacterType(typeName).SpawnPlace;
+                Error += ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN;
+                Error += context.GetText() + "\n";
+                ErrorFound = true;
             }
+            else
+                if(newCommand.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
+                    newCommand.TargetPlace = Program.GetCharacterType(typeName).SpawnPlace;
             if (context.MONSTER() != null)
             {
                 newCommand.TargetCharacterType = new MonsterType(context.name().GetText());

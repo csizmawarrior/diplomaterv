@@ -13,7 +13,7 @@ namespace LabWork1github
         {
             try
             {
-                File.WriteAllText("error_log.txt", message + "\n");
+                File.WriteAllText("C:/Users/Dana/antlrworks/error_log.txt", message + "\n");
             }
             catch (IOException e)
             {

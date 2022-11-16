@@ -16,8 +16,9 @@ namespace UnitTest
             Program.Characters.Clear();
             Program.CharacterTypes.Clear();
             Program.Board = new Board();
-            Program.TrapTypeLoader();
-            Program.MonsterTypeLoader();
+            Program.TrapTypeLoader("C:/Users/Dana/antlrworks/DefaultTrap.txt");
+            Program.MonsterTypeLoader("C:/Users/Dana/antlrworks/DefaultMonster.txt");
+            Program.BoardLoader("C:/Users/Dana/antlrworks/BoardCreation.txt");
         }
 
         public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
@@ -1046,7 +1047,7 @@ namespace UnitTest
                         ErrorMessages.SpawnError.SPAWN_WITHOUT_TYPE_GIVEN + "spawnto1,2" + "\n", visitor.Error);
         }
         [Test]
-        public void AssignMonsterSpawnCommandMonsterToDpublePlace()
+        public void AssignMonsterSpawnCommandMonsterToDoublePlace()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: spawn to 1.3,2;");
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
@@ -1058,6 +1059,7 @@ namespace UnitTest
             Assert.AreEqual(1, Program.GetCharacterType("testmonster").Commands.Count);
             Assert.AreEqual(ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN + "spawnto1.3,2" + "\n" +
                         ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "spawnto1.3,2" + "\n" +
+                        ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN + "spawnto1.3,2" + "\n" +
                         ErrorMessages.SpawnError.SPAWN_WITHOUT_TYPE_GIVEN + "spawnto1.3,2" + "\n", visitor.Error);
         }
         [Test]
@@ -1110,8 +1112,72 @@ namespace UnitTest
                 .Find(x => x is SpawnCommand command && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn))
                         && ((SpawnCommand)x).TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
             Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
-            Assert.AreEqual(ErrorMessages.SpawnError.SPAWN_WITHOUT_TYPE_GIVEN + "spawnto1.3,2" + "\n" +
-                               ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "spawnto1.3,2" + "\n", visitor.Error);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "spawnto1.3,2" + "\n" +
+                        ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN + "spawnto1.3,2" + "\n" +
+                        ErrorMessages.SpawnError.SPAWN_WITHOUT_TYPE_GIVEN + "spawnto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapSpawnCommandWithOnlyType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: spawn monster SpawnMonster;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is SpawnCommand command && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn))
+                        && ((SpawnCommand)x).TargetCharacterType.Name.Equals("SpawnMonster")) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN + "spawnmonsterSpawnMonster" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapSpawnCommandWithOnlyTypeAsAttribute()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_type = SpawnTypeMonster ; commands: spawn;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is SpawnCommand command && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn))
+                        && ((SpawnCommand)x).TargetCharacterType.Name.Equals("SpawnTypeMonster")) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN + "spawn" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterDamageCommandToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: damage to 1.3,2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is DamageCommand command && command.DamageDelegate.Equals(new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace))
+                    && command.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.DamageError.ONLY_TRAP_CAN_DAMAGE + "damageto1.3,2" + "\n" +
+                        ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterDamageCommandToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: damage to player;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is DamageCommand command && command.DamageDelegate.Equals(new DamageDelegate(
+                            DynamicEnemyGrammarVisitorDelegates.DamageToPlayer))) != null);
+            Assert.AreEqual(ErrorMessages.DamageError.ONLY_TRAP_CAN_DAMAGE + "damagetoplayer" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterDamageCommandRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: damage random;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is DamageCommand command && command.DamageDelegate.Equals(new DamageDelegate(
+                            DynamicEnemyGrammarVisitorDelegates.DamageRandom))) != null);
+            Assert.AreEqual(ErrorMessages.DamageError.ONLY_TRAP_CAN_DAMAGE + "damagerandom" + "\n", visitor.Error);
         }
 
 
@@ -1492,6 +1558,17 @@ namespace UnitTest
                  ((TeleportCommand)x).TargetPlace.X == 2 && ((TeleportCommand)x).TargetPlace.Y == 0) != null);
         }
         [Test]
+        public void AssignTrapTeleportCommandPlayerAndPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; teleport_place = 3,1; commands: teleport player to 2,2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is TeleportCommand command && command.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
+                 command.TargetPlace.X == 1 && command.TargetPlace.Y == 1) != null);
+        }
+        [Test]
         public void AssignTrapTeleportCommandMonsterOnly()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; teleport_place = 2,4; commands: teleport monster;");
@@ -1648,6 +1725,42 @@ namespace UnitTest
                  ((SpawnCommand)x).TargetPlace.X == 3 && ((SpawnCommand)x).TargetPlace.Y == 0 &&
                  ((SpawnCommand)x).TargetCharacterType.Name.Equals("UnrealMonster")) != null);
         }
+        [Test]
+        public void AssignTrapSpawnCommandWithPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: spawn to 2,2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
+                 ((SpawnCommand)x).TargetPlace.X == 1 && ((SpawnCommand)x).TargetPlace.Y == 1 &&
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("UnrealMonster")) != null);
+        }
+        [Test]
+        public void AssignTrapSpawnCommandWithPlaceAndType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: spawn monster SpawnMonsterType to 2,2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
+                 ((SpawnCommand)x).TargetPlace.X == 1 && ((SpawnCommand)x).TargetPlace.Y == 1 &&
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("SpawnMonsterType")) != null);
+        }
+        [Test]
+        public void AssignTrapSpawnCommandWithType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: spawn monster SpawnMonsterType;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is SpawnCommand && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
+                 ((SpawnCommand)x).TargetPlace.X == 3 && ((SpawnCommand)x).TargetPlace.Y == 0 &&
+                 ((SpawnCommand)x).TargetCharacterType.Name.Equals("SpawnMonsterType")) != null);
+        }
 
     }
 
@@ -1662,7 +1775,8 @@ namespace UnitTest
             Program.CharacterTypes.Clear();
             Program.Board = new Board();
             Program.TrapTypeLoader();
-            Program.MonsterTypeLoader();
+            Program.MonsterTypeLoader("C:/Users/Dana/antlrworks/DefaultMonster.txt");
+            Program.BoardLoader("C:/Users/Dana/antlrworks/BoardCreation.txt");
             testGame = new Game();
         }
 

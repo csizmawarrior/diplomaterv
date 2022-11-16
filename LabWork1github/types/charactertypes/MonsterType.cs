@@ -21,7 +21,10 @@ namespace LabWork1github
 
         public override void Step(GameParamProvider provider)
         {
-            Commands.ElementAt(provider.GetRound()).Execute(provider);
+            if (provider.GetRound() < Commands.Count)
+            {
+                Commands.ElementAt(provider.GetRound()).Execute(provider);
+            }
         }
     }
 }
