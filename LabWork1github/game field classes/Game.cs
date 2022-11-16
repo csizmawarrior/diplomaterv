@@ -208,14 +208,19 @@ namespace LabWork1github
                             break;
                         }
                     }
+                    int trapCounter = 0;
                     foreach(Trap trap in Traps)
                     {
                         if (Player.Place.DirectionTo(trap.Place) == move.Direction)
                         {
-                            Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_BUMP_INTO_DOUBLE_TRAP);
-                            Player.Damage(StaticStartValues.BUMPING_INTO_DOUBLE_TRAP_DAMAGE);
-                            wrongMove = true;
-                            break;
+                            trapCounter++;
+                            if (trapCounter >= 2)
+                            {
+                                Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_BUMP_INTO_DOUBLE_TRAP);
+                                Player.Damage(StaticStartValues.BUMPING_INTO_DOUBLE_TRAP_DAMAGE);
+                                wrongMove = true;
+                                break;
+                            }
                         }
                     }
                     if (!wrongMove)

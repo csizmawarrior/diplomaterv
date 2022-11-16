@@ -87,7 +87,7 @@ namespace LabWork1github
                 ErrorList += context.GetText() + "\n";
                 ErrorFound = true;
             }
-            Program.Board.Player = new Player(new Place(xPos, yPos), StaticStartValues.STARTER_PLAYER_HP);
+            Program.Board.Player = new Player(new Place(xPos -1, yPos -1), StaticStartValues.STARTER_PLAYER_HP);
             if (context.nameDeclaration() != null)
                 Program.Board.Player.Name = context.nameDeclaration().ID().GetText();
             Program.Characters.Add(Program.Board.Player);
@@ -112,7 +112,8 @@ namespace LabWork1github
             }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is MonsterType) {
-                Monster m = new Monster(StaticStartValues.STARTER_MONSTER_HP, (MonsterType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+                Monster m = new Monster(StaticStartValues.STARTER_MONSTER_HP, 
+                                    (MonsterType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
 
                 if(context.nameDeclaration() != null)
                 {

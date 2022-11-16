@@ -65,7 +65,7 @@ namespace LabWork1github.Visitors
 
         private bool CheckNumCompareExpression(BoolExpressionContext context)
         {
-            if (context.numToBoolOperation().NUMCOMPARE().Equals("<"))
+            if (context.numToBoolOperation().NUMCOMPARE().GetText().Equals("<"))
                 return CheckNumberExpression(context.numberExpression().ElementAt(0)) < CheckNumberExpression(context.numberExpression().ElementAt(1));
             else
                 return CheckNumberExpression(context.numberExpression().ElementAt(0)) > CheckNumberExpression(context.numberExpression().ElementAt(1));
@@ -73,7 +73,7 @@ namespace LabWork1github.Visitors
 
         public bool CheckCompareExpression(BoolExpressionContext context)
         {
-            if (context.numToBoolOperation().COMPARE().Equals("!="))
+            if (context.numToBoolOperation().COMPARE().GetText().Equals("!="))
                 return CheckNumberOrAttributeExpressionNotEquals(context.numberExpression().ElementAt(0), context.numberExpression().ElementAt(1));
             else
                 return CheckNumberOrAttributeExpressionEquals(context.numberExpression().ElementAt(0), context.numberExpression().ElementAt(1));
@@ -139,7 +139,7 @@ namespace LabWork1github.Visitors
 
         public bool CheckNextBoolExpression(bool boolExp, NextBoolExpressionContext context)
         {
-            if (context.BOOLCONNECTER().Equals("||"))
+            if (context.BOOLCONNECTER().GetText().Equals("||"))
                 return boolExp || CheckBoolExpression(context.boolExpression());
             else
                 return boolExp && CheckBoolExpression(context.boolExpression());

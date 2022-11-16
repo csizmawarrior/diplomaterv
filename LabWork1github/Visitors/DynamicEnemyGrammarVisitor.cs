@@ -769,6 +769,7 @@ namespace LabWork1github
             }
             if (context.action().MOVE() != null)
             {
+                resultTrigger.EventType = EventType.Move;
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
@@ -784,11 +785,13 @@ namespace LabWork1github
             }
             if (context.action().DIE() != null)
             {
+                resultTrigger.EventType = EventType.Die;
                 EventCollection.SomeoneDied += eventHandler.OnEvent;
                 return resultTrigger;
             }
             if (context.action().SHOOT() != null)
             {
+                resultTrigger.EventType = EventType.Shoot;
                 EventCollection.SomeoneShot += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
@@ -880,6 +883,7 @@ namespace LabWork1github
             }
             if (context.action().MOVE() != null)
             {
+                resultTrigger.EventType = EventType.Move;
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
@@ -895,11 +899,13 @@ namespace LabWork1github
             }
             if (context.action().DIE() != null)
             {
+                resultTrigger.EventType = EventType.Die;
                 EventCollection.SomeoneDied += eventHandler.OnEvent;
                 return resultTrigger;
             }
             if (context.action().SHOOT() != null)
             {
+                resultTrigger.EventType = EventType.Shoot;
                 EventCollection.SomeoneShot += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
@@ -987,6 +993,7 @@ namespace LabWork1github
             }
             if (context.action().MOVE() != null)
             {
+                resultTrigger.EventType = EventType.Move;
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
@@ -1014,6 +1021,7 @@ namespace LabWork1github
             }
             if (context.action().DAMAGE() != null)
             {
+                resultTrigger.EventType = EventType.Damage;
                 EventCollection.TrapDamaged += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
@@ -1052,6 +1060,7 @@ namespace LabWork1github
             }
             if (context.action().HEAL() != null)
             {
+                resultTrigger.EventType = EventType.Heal;
                 EventCollection.TrapHealed += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
@@ -1086,6 +1095,7 @@ namespace LabWork1github
             }
             if (context.action().TELEPORT_T() != null)
             {
+                resultTrigger.EventType = EventType.Teleport;
                 EventCollection.TrapTeleported += eventHandler.OnEvent;
                 if (context.action().character().PLAYER() != null)
                     resultTrigger.TargetCharacterOption = CharacterOptions.Player;
@@ -1106,6 +1116,7 @@ namespace LabWork1github
             }
             if (context.action().SPAWN() != null)
             {
+                resultTrigger.EventType = EventType.Spawn;
                 EventCollection.TrapTeleported += eventHandler.OnEvent;
                 if (context.action().character().PLAYER() != null)
                 {
@@ -1160,6 +1171,7 @@ namespace LabWork1github
             }
             if (context.action().MOVE() != null)
             {
+                resultTrigger.EventType = EventType.Move;
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
@@ -1175,11 +1187,13 @@ namespace LabWork1github
             }
             if (context.action().DIE() != null)
             {
+                resultTrigger.EventType = EventType.Die;
                 EventCollection.SomeoneDied += eventHandler.OnEvent;
                 return resultTrigger;
             }
             if (context.action().SHOOT() != null)
             {
+                resultTrigger.EventType = EventType.Shoot;
                 EventCollection.SomeoneShot += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
@@ -1213,6 +1227,7 @@ namespace LabWork1github
             }
             if (context.action().DAMAGE() != null)
             {
+                resultTrigger.EventType = EventType.Damage;
                 EventCollection.TrapDamaged += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
@@ -1246,6 +1261,7 @@ namespace LabWork1github
             }
             if (context.action().HEAL() != null)
             {
+                resultTrigger.EventType = EventType.Heal;
                 EventCollection.TrapHealed += eventHandler.OnEvent;
                 if (context.action().NUMBER() != null)
                 {
@@ -1279,6 +1295,7 @@ namespace LabWork1github
             }
             if (context.action().TELEPORT_T() != null)
             {
+                resultTrigger.EventType = EventType.Teleport;
                 EventCollection.TrapTeleported += eventHandler.OnEvent;
                 if (context.action().character().PLAYER() != null)
                     resultTrigger.TargetCharacterOption = CharacterOptions.Player;
@@ -1298,6 +1315,7 @@ namespace LabWork1github
             }
             if (context.action().SPAWN() != null)
             {
+                resultTrigger.EventType = EventType.Spawn;
                 EventCollection.TrapTeleported += eventHandler.OnEvent;
                 if (context.action().character().PLAYER() != null)
                 {
