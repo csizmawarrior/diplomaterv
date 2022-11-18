@@ -692,7 +692,7 @@ namespace UnitTest
             Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
                 .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection))
                     && ((MoveCommand)x).Distance == StaticStartValues.STARTER_DISTANCE) != null);
-            Assert.AreEqual(ErrorMessages.MoveError.ZERO_DISTANCE + "moveFdistance=0\n", visitor.Error);
+            Assert.AreEqual(ErrorMessages.DistanceError.ZERO_DISTANCE + "moveFdistance=0\n", visitor.Error);
         }
         [Test]
         public void AssignMonsterMoveCommandWrongDirection()
@@ -757,7 +757,7 @@ namespace UnitTest
             Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
                 .Find(x => x is ShootCommand command && command.ShootDelegate.Equals(new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootDirection))
                     && command.Distance == StaticStartValues.STARTER_DISTANCE) != null);
-            Assert.AreEqual(ErrorMessages.MoveError.ZERO_DISTANCE + "Fdistance=0\n", visitor.Error);
+            Assert.AreEqual(ErrorMessages.DistanceError.ZERO_DISTANCE + "Fdistance=0\n", visitor.Error);
         }
         [Test]
         public void AssignMonsterShootCommandDoublePlace()
@@ -1143,7 +1143,7 @@ namespace UnitTest
             Assert.AreEqual(ErrorMessages.SpawnError.SPAWN_WITHOUT_PLACE_GIVEN + "spawn" + "\n", visitor.Error);
         }
         [Test]
-        public void AssignMonsterDamageCommandToPlace()
+        public void AssignMonsterDamageCommandToDoublePlace()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: damage to 1.3,2;");
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
@@ -1179,6 +1179,520 @@ namespace UnitTest
                             DynamicEnemyGrammarVisitorDelegates.DamageRandom))) != null);
             Assert.AreEqual(ErrorMessages.DamageError.ONLY_TRAP_CAN_DAMAGE + "damagerandom" + "\n", visitor.Error);
         }
+        [Test]
+        public void AssignTrapDamageDirectionDoubleDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: damage F distance = 3.1;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is DamageCommand command && ((DamageCommand)x).DamageDelegate.Equals(
+                        new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection))
+                        && ((DamageCommand)x).Distance == StaticStartValues.STARTER_DISTANCE
+                        && ((DamageCommand)x).Direction.Equals("F")) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_INT + "Fdistance=3.1" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapDamageDirectionZeroDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: damage F distance = 0 damage = 2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is DamageCommand command && ((DamageCommand)x).DamageDelegate.Equals(
+                        new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection))
+                        && ((DamageCommand)x).Distance == StaticStartValues.STARTER_DISTANCE
+                        && ((DamageCommand)x).Direction.Equals("F")) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.DistanceError.ZERO_DISTANCE + "Fdistance=0damage=2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapDamageToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: damage to 1.3,2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is DamageCommand command && ((DamageCommand)x).DamageDelegate.Equals(
+                        new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace))
+                        && ((DamageCommand)x).TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapDamageToDoublePlaceDamageGiven()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: damage to 1.3,2 damage = 30;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is DamageCommand command && ((DamageCommand)x).DamageDelegate.Equals(
+                        new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace))
+                        && ((DamageCommand)x).TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)
+                        && ((DamageCommand)x).HealthChangeAmount == 30) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "to1.3,2damage=30" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapDamageToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: damage to trap;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is DamageCommand command) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH + "totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapDamageToMeTypeDefinedDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; damage = 30 ; commands: damage to me;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is DamageCommand command && ((DamageCommand)x).HealthChangeAmount == 30) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH + "tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterHeaCommandToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: heal to 1.3,2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is HealCommand command && command.HealDelegate.Equals(new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace))
+                    && command.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL + "healto1.3,2" + "\n" +
+                        ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterHealCommandToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: heal to player;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is HealCommand command && command.HealDelegate.Equals(new HealDelegate(
+                            DynamicEnemyGrammarVisitorDelegates.HealToPlayer))) != null);
+            Assert.AreEqual(ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL + "healtoplayer" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterHealCommandRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 50; commands: heal random;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is HealCommand command && command.HealDelegate.Equals(new HealDelegate(
+                            DynamicEnemyGrammarVisitorDelegates.HealRandom))) != null);
+            Assert.AreEqual(ErrorMessages.HealError.ONLY_TRAP_CAN_HEAL + "healrandom" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapHealDirectionDoubleDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: heal F distance = 3.1;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is HealCommand command && ((HealCommand)x).HealDelegate.Equals(
+                        new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection))
+                        && ((HealCommand)x).Distance == StaticStartValues.STARTER_DISTANCE
+                        && ((HealCommand)x).Direction.Equals("F")) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_INT + "Fdistance=3.1" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapHealDirectionZeroDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: heal F distance = 0 heal = 2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is HealCommand command && ((HealCommand)x).HealDelegate.Equals(
+                        new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection))
+                        && ((HealCommand)x).Distance == StaticStartValues.STARTER_DISTANCE
+                        && ((HealCommand)x).Direction.Equals("F")) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.DistanceError.ZERO_DISTANCE + "Fdistance=0heal=2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapHealToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: heal to 1.3,2;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is HealCommand command && ((HealCommand)x).HealDelegate.Equals(
+                        new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace))
+                        && ((HealCommand)x).TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapHealToDoublePlaceHealGiven()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: heal to 1.3,2 heal = 30;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is HealCommand command && ((HealCommand)x).HealDelegate.Equals(
+                        new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace))
+                        && ((HealCommand)x).TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)
+                        && ((HealCommand)x).HealthChangeAmount == 30) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "to1.3,2heal=30" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapHealToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: heal to trap;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is HealCommand command) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH + "totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapHealToMeTypeDefinedHeal()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: heal to me;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is HealCommand command && ((HealCommand)x).HealthChangeAmount == 30) != null);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH + "tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareNumberToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if(3 == me.place){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_COMPARED_WITH_NUMBER
+                                + "3==me.place" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandNumCompareNumberToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if(3 < me.place){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_HANDLED_AS_NUMBER
+                                + "3<me.place" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareNumberToABbsoluteType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( 1 != Abs(monster.type) ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_HANDLED_AS_NUMBER
+                            + "Abs(monster.type)" + "\n" + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER
+                                + "1!=Abs(monster.type)" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareSpawnTypeToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.spawn_type != monster.place ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.TYPE_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.spawn_type!=monster.place" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareTypeToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.type != monster.place ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.TYPE_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.type!=monster.place" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandComparePlaceToName()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.place != monster.name ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.PLACE_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.place!=monster.name" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareTeleportPlaceToName()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.teleport_place != monster.name ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.PLACE_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.teleport_place!=monster.name" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterIfCommandCompareSpawnPlaceToName()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: if( me.spawn_place != monster.name ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.PLACE_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.spawn_place!=monster.name" + "\n" + ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "me.spawn_place" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterIfCommandCompareNameToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: if( me.name != monster.place ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NAME_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.name!=monster.place" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareSpawnTypeNameToType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.spawn_type.name != monster.type ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NAME_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.spawn_type.name!=monster.type" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareTypeNameToSpawnType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.type.name != monster.spawn_type ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NAME_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.type.name!=monster.spawn_type" + "\n" + ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "monster.spawn_type" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareNonExistantNameToType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.dog.name != monster.type ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NAME_COMPARED_WITH_OTHER_ATTRIBUTE
+                            + "me.dog.name!=monster.type" + "\n" + ErrorMessages.ExpressionError.TRAP_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "me.dog.name" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareNonExistantNameToTypeName()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.dog.name != monster.type.name ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.TRAP_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "me.dog.name" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandAddAndMultiplyNameAndPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.name+monster.name == monster.place*me.place ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER
+                            + "me.name+monster.name" + "\n" + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER
+                            + "monster.place*me.place" + "\n" + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER
+                            + "me.name+monster.name==monster.place*me.place" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandSubstractTypeToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( me.type-5 == 10 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER
+                            + "me.type-5" + "\n" + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSIONS_HANDLED_AS_NUMBER
+                            + "me.type-5==10" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterIfCommandCompareSpawnPlaceXToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: if( me.spawn_place.x < 4 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "me.spawn_place.x" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterIfCommandComparePlayerTypeNameToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: if( player.type.name == 4 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_COMPARED_WITH_NUMBER
+                            + "player.type.name==4" + "\n" + ErrorMessages.ExpressionError.PLAYER_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "player.type.name" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterIfCommandComparePlayerHandCountToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: if( player.hand_count == me.place ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.PLAYER_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "player.hand_count" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareNonExistantAttributeToTypeName()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( trap.spikes.name != monster.type.name ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.TRAP_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "trap.spikes.name" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandCompareHealthToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( trap.health + 12 > 3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.TRAP_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "trap.health" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapIfCommandComparePartnerTypoToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: if( partner.typo != me.heal ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_COMPARED_WITH_NUMBER
+                        + "partner.typo!=me.heal" + "\n" + ErrorMessages.ExpressionError.NOBODY_HAS_THIS_ATTRIBUTE
+                            + "partner.typo" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandComparePartnerTypeOfTypoToType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: while( partner.typo.type != me.type ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOBODY_HAS_THIS_ATTRIBUTE
+                            + "partner.typo.type" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandComparePlaceTypeToType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: while( partner.place.type != me.type ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.PLACE_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "partner.place.type" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandCompareTeleportPlaceZToType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: while( partner.teleport_place.Z != me.type ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.PLACE_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "partner.teleport_place.Z" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandCompareSpawnPlaceDogToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: while( partner.spawn_place.dog < me.damage ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_HANDLED_AS_NUMBER
+                        + "partner.spawn_place.dog<me.damage" + "\n" + ErrorMessages.ExpressionError.PLACE_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "partner.spawn_place.dog" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandCompareTypeDogToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: while( partner.type.dog == me.damage ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.NOT_NUMBER_EXPRESSION_COMPARED_WITH_NUMBER
+                        + "partner.type.dog==me.damage" + "\n" + ErrorMessages.ExpressionError.ENEMY_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "partner.type.dog" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhileCommandCompareSpawnTypeHealToNumber()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: while( partner.spawn_type.heal == me.damage ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE
+                            + "partner.spawn_type.heal" + "\n", visitor.Error);
+        }
+
+
+
 
 
         //Command tests happy path
@@ -1418,6 +1932,17 @@ namespace UnitTest
                 ((DamageCommand)x).HealthChangeAmount == 55) != null);
         }
         [Test]
+        public void AssignTrapDamageCommandToPartnerAndDam()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands:  damage to partner damage = 55;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is DamageCommand && ((DamageCommand)x).DamageDelegate.Equals(new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPartner)) &&
+                ((DamageCommand)x).HealthChangeAmount == 55) != null);
+        }
+        [Test]
         public void AssignTrapDamageCommandDirAndDistAndDam()
         {
             DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands:  damage F distance = 3 damage = 70;");
@@ -1502,6 +2027,16 @@ namespace UnitTest
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
                 .Find(x => x is HealCommand && ((HealCommand)x).HealDelegate.Equals(new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer))) != null);
+        }
+        [Test]
+        public void AssignTrapHealCommandToPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands:  heal to partner;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is HealCommand && ((HealCommand)x).HealDelegate.Equals(new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner))) != null);
         }
         [Test]
         public void AssignTrapHealCommandToMonster()

@@ -311,17 +311,26 @@ namespace LabWork1github.Visitors
             if (context.attribute() == null && context.ROUND() != null)
                 return true;
 
-            if (context.attribute().possibleAttributes().GetText().Equals("type") ||
-                context.attribute().possibleAttributes().GetText().Equals("spwan_type") ||
-                context.attribute().possibleAttributes().GetText().Equals("place") ||
-                context.attribute().possibleAttributes().GetText().Equals("spawn_place") ||
-                context.attribute().possibleAttributes().GetText().Equals("teleport_place") ||
-                context.attribute().possibleAttributes().GetText().Equals("name"))
+            if (context.attribute().possibleAttributes().GetText().Equals("health") ||
+                context.attribute().possibleAttributes().GetText().Equals("heal") ||
+                context.attribute().possibleAttributes().GetText().Equals("damage") ||
+                (context.attribute().possibleAttributes().possibleAttributes() != null &&
+                context.attribute().possibleAttributes().possibleAttributes().Length > 1 &&
+                (((context.attribute().possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("type") ||
+                context.attribute().possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type")) &&
+                (context.attribute().possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health") ||
+                context.attribute().possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("heal") ||
+                context.attribute().possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("damage"))) ||
+                ((context.attribute().possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("place") ||
+                context.attribute().possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_place") ||
+                context.attribute().possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("teleport_place")) &&
+                (context.attribute().possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("x") ||
+                context.attribute().possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("y"))))))
             {
-                return false;
+                return true;
             }
-            //We consider that the VisitAttribute
-            return true;
+
+            return false;
         }
 
         public double CheckNumberAttributeExpression(AttributeContext context)

@@ -21,7 +21,6 @@ namespace LabWork1github.static_constants
 
         public static class HealthChangeError
         {
-            public const string WRONG_DIRECTION = "Wrong direction used:\n";
             public const string CHARACTER_HAS_NO_HEALTH = "The character has no health, or you can't change its health yourself:\n";
         }
 
@@ -41,9 +40,8 @@ namespace LabWork1github.static_constants
             public const string ONLY_TRAP_CAN_SPAWN_TO_PLACE = "Only Traps have spawn point attribute:\n";
             public const string ONLY_TRAP_CAN_SPAWN_TYPE = "Only Traps have spawn type attribute:\n";
         }
-        public static class MoveError
+        public static class DistanceError
         {
-            public const string WRONG_DIRECTION = "Wrong direction used:\n";
             public const string ZERO_DISTANCE = "Negative or zero Distance is not supported!\n";
         }
         public static class ShootError

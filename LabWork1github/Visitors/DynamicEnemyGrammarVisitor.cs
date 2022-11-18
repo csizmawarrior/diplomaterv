@@ -295,7 +295,7 @@ namespace LabWork1github
                 }
                 if (newCommand.Distance <= 0)
                 {
-                    Error += ErrorMessages.MoveError.ZERO_DISTANCE;
+                    Error += ErrorMessages.DistanceError.ZERO_DISTANCE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                     newCommand.Distance = StaticStartValues.STARTER_DISTANCE;
@@ -1360,7 +1360,7 @@ namespace LabWork1github
                 }
                 if (command.Distance <= 0)
                 {
-                    Error += ErrorMessages.MoveError.ZERO_DISTANCE;
+                    Error += ErrorMessages.DistanceError.ZERO_DISTANCE;
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                     command.Distance = StaticStartValues.STARTER_DISTANCE;
@@ -1377,6 +1377,13 @@ namespace LabWork1github
                 {
                     command.HealthChangeAmount = Parsers.DoubleParseFromNumber(context.hpChangeAmountDeclaration().healAmountDeclaration().NUMBER().GetText());
                 }
+            }
+            else
+            {
+                if(command is HealCommand)
+                    command.HealthChangeAmount = Program.GetCharacterType(typeName).Heal;
+                else
+                    command.HealthChangeAmount = Program.GetCharacterType(typeName).Damage;
             }
 
             var direction = context.DIRECTION();
@@ -1425,7 +1432,7 @@ namespace LabWork1github
             if (context.character() != null)
             {
                 if (context.character().TRAP() != null || context.character().ME() != null || 
-                        context.character().PARTNER() != null)
+                        (context.character().PARTNER() != null && command is ShootCommand ) )
                 {
                     Error += ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH;
                     Error += context.GetText() + "\n";
@@ -1457,6 +1464,8 @@ namespace LabWork1github
                         ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToMonster);
                     if (context.character().PLAYER() != null)
                         ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer);
+                    if (context.character().PARTNER() != null)
+                        ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner);
                 }
                 return command;
             }
