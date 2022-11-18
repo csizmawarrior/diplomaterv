@@ -557,7 +557,7 @@ namespace LabWork1github
                 IfCommand newCommand = new IfCommand
                 {
                     MyContext = context.boolExpression(),
-                    Condition = (GetCondition)
+                    Condition = (DynamicEnemyGrammarVisitorDelegates.GetCondition)
                 };
                 if (CreationStage.Equals(TypeCreationStage.CommandListing))
                 {
@@ -610,7 +610,7 @@ namespace LabWork1github
                 WhileCommand newCommand = new WhileCommand
                 {
                     MyContext = context.boolExpression(),
-                    Condition = (GetCondition)
+                    Condition = (DynamicEnemyGrammarVisitorDelegates.GetCondition)
                 };
                 if (CreationStage.Equals(TypeCreationStage.CommandListing))
                 {
@@ -735,12 +735,6 @@ namespace LabWork1github
                         resultTrigger = VisitTrapActionContext(context, resultTrigger, eventHandler);
                 }
             }
-            else
-            {
-                Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER;
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
-            }
             return resultTrigger;
         }
 
@@ -748,12 +742,6 @@ namespace LabWork1github
         {
             if (String.IsNullOrEmpty(context.GetText()))
             {
-                ErrorFound = true;
-            }
-            if (context.action() == null)
-            {
-                Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
-                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             resultTrigger.SourceCharacter = CharacterOptions.Player;
@@ -773,7 +761,7 @@ namespace LabWork1github
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
-                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().fromPlace().place());
                     if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
                     {
                         Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
@@ -861,12 +849,6 @@ namespace LabWork1github
             {
                 ErrorFound = true;
             }
-            if (context.action() == null)
-            {
-                Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
-            }
             if(context.character().MONSTER() != null)
                 resultTrigger.SourceCharacter = CharacterOptions.Monster;
             if (context.character().ME() != null)
@@ -887,7 +869,7 @@ namespace LabWork1github
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
-                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().fromPlace().place());
                     if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
                     {
                         Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
@@ -922,7 +904,11 @@ namespace LabWork1github
                         ErrorFound = true;
                     }
                     if (context.action().character().PARTNER() != null)
-                        resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
+                    {
+                        Error += ErrorMessages.EventError.MONSTER_SHOOTING_PARTNER;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
                     if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                     {
                         Error += ErrorMessages.EventError.MONSTER_SHOOTING_TRAP;
@@ -971,12 +957,6 @@ namespace LabWork1github
             {
                 ErrorFound = true;
             }
-            if (context.action() == null)
-            {
-                Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
-                Error += context.GetText() + "\n";
-                ErrorFound = true;
-            }
             if(context.character().TRAP() != null)
                 resultTrigger.SourceCharacter = CharacterOptions.Trap;
             if (context.character().ME() != null)
@@ -997,7 +977,7 @@ namespace LabWork1github
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
-                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().fromPlace().place());
                     if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
                     {
                         Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
@@ -1041,21 +1021,11 @@ namespace LabWork1github
                         resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
                     if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                     {
-                        resultTrigger.TargetCharacterOption = CharacterOptions.Trap;
-                        if (context.action().character().ME() != null)
-                        {
-                            Error += ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF;
+                        Error += ErrorMessages.EventError.TRAP_DAMAGING_TRAP;
                             Error += context.GetText() + "\n";
                             ErrorFound = true;
-                        }
                     }
                     return resultTrigger;
-                }
-                if (context.action().place() == null)
-                {
-                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
                 }
             }
             if (context.action().HEAL() != null)
@@ -1086,12 +1056,6 @@ namespace LabWork1github
                     }
                     return resultTrigger;
                 }
-                if (context.action().place() == null)
-                {
-                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
             }
             if (context.action().TELEPORT_T() != null)
             {
@@ -1109,9 +1073,14 @@ namespace LabWork1github
                     resultTrigger.TargetCharacterOption = CharacterOptions.Partner;
                 if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null ))
                 {
-                    Error += ErrorMessages.EventError.TRAP_TELEPORTING_TRAP;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
+                    if (context.action().character().ME() != null)
+                    {
+                        Error += ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    else
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Trap;
                 }
             }
             if (context.action().SPAWN() != null)
@@ -1139,9 +1108,6 @@ namespace LabWork1github
                     ErrorFound = true;
                 }
             }
-            Error += ErrorMessages.EventError.UNEXPECTED_ERROR;
-            Error += context.GetText() + "\n";
-            ErrorFound = true;
             return resultTrigger;
         }
 
@@ -1149,12 +1115,6 @@ namespace LabWork1github
         {
             if (String.IsNullOrEmpty(context.GetText()))
             {
-                ErrorFound = true;
-            }
-            if (context.action() == null)
-            {
-                Error += ErrorMessages.EventError.EVENT_WITHOUT_ACTION;
-                Error += context.GetText() + "\n";
                 ErrorFound = true;
             }
             if(context.character().PARTNER() != null)
@@ -1175,7 +1135,7 @@ namespace LabWork1github
                 EventCollection.SomeoneMoved += eventHandler.OnEvent;
                 if (context.action().fromPlace() != null)
                 {
-                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().place());
+                    resultTrigger.SourcePlace = Parsers.PlaceParseFromNumbers(context.action().fromPlace().place());
                     if (resultTrigger.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
                     {
                         Error += ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE;
@@ -1336,9 +1296,6 @@ namespace LabWork1github
                     ErrorFound = true;
                 }
             }
-            Error += ErrorMessages.EventError.UNEXPECTED_ERROR;
-            Error += context.GetText() + "\n";
-            ErrorFound = true;
             return resultTrigger;
         }
 
@@ -1482,11 +1439,6 @@ namespace LabWork1github
                 return command;
             }
             return command;
-        }
-        public bool GetCondition(GameParamProvider provider, [NotNull] BoolExpressionContext context)
-        {
-            ConditionVisitor visitor = new ConditionVisitor(provider, context);
-            return visitor.CheckConditions();
         }
 
 

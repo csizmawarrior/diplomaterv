@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github.Visitors
 {
@@ -931,13 +932,18 @@ namespace LabWork1github.Visitors
         }
         public static void SpawnTypeChange(GameParamProvider provider, TypeParameterDeclareCommand command)
         {
-            if(Program.GetCharacterType(command.CharacterType.Name) == null)
+            if (Program.GetCharacterType(command.CharacterType.Name) == null)
             {
                 provider.GetDrawer().WriteCommand(ErrorMessages.TypeCreationError.TYPE_DOES_NOT_EXIST);
                 return;
             }
             provider.GetMe().GetCharacterType().SpawnType = command.CharacterType;
-            
+
+        }
+        public static bool GetCondition(GameParamProvider provider, BoolExpressionContext context)
+        {
+            ConditionVisitor visitor = new ConditionVisitor(provider, context);
+            return visitor.CheckConditions();
         }
     }
 }

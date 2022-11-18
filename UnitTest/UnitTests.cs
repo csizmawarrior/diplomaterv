@@ -1690,7 +1690,1304 @@ namespace UnitTest
             Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE
                             + "partner.spawn_type.heal" + "\n", visitor.Error);
         }
-
+        [Test]
+        public void AssignTrapWhenExpressionPlayerMoveToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( player move to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move && 
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "playermoveto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShootToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( player shoot to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter == 
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "playershootto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerMoveToDoublePlaceFromDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( player move from 2.3,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) &&
+                        x.TriggeringEvent.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "playermovefrom2.3,3to1.3,2" 
+                            + "\n" + ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                            + "playermovefrom2.3,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShootToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( player shoot to player ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.PLAYER_SHOOTING_ITSELF 
+                    + "playershoottoplayer" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShootToMe()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( player shoot to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.PLAYER_SHOOTING_TRAP
+                    + "playershoottome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerShootToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player shoot to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.PLAYER_SHOOTING_TRAP
+                    + "playershoottotrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerDamageToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player damage to monster ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_DAMAGE
+                    + "playerdamagetomonster" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerHealToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player heal to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0,2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL
+                    + "playerhealto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerHealToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player heal to 1.3,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "playerhealto1.3,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL
+                    + "playerhealto1.3,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerTeleportMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player teleport monster to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT
+                    + "playerteleportmonsterto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerTeleportMonsterToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player teleport monster to 3.8,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "playerteleportmonsterto3.8,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT
+                    + "playerteleportmonsterto3.8,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerSpawnMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player spawn monster to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN
+                    + "playerspawnmonsterto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerSpawnMonsterToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( player spawn monster to 3.8,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Player &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "playerspawnmonsterto3.8,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN
+                    + "playerspawnmonsterto3.8,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterMoveToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( monster move to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "monstermoveto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterShootToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( monster shoot to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "monstershootto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterMoveToDoublePlaceFromDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( monster move from 2.3,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) &&
+                        x.TriggeringEvent.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "monstermovefrom2.3,3to1.3,2"
+                            + "\n" + ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                            + "monstermovefrom2.3,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterShootToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( monster shoot to monster ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER
+                    + "monstershoottomonster" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterShootToMe()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( monster shoot to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_TRAP
+                    + "monstershoottome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterShootToMe()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster shoot to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER
+                    + "monstershoottome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterShootToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster shoot to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_TRAP
+                    + "monstershoottotrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterShootToPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster shoot to partner ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_PARTNER
+                    + "monstershoottopartner" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterDamageToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster damage to monster ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_DAMAGE
+                    + "monsterdamagetomonster" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterHealToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster heal to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL
+                    + "monsterhealto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterHealToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster heal to 1.3,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "monsterhealto1.3,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL
+                    + "monsterhealto1.3,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterTeleportMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster teleport monster to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT
+                    + "monsterteleportmonsterto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterTeleportMonsterToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster teleport monster to 3.8,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "monsterteleportmonsterto3.8,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT
+                    + "monsterteleportmonsterto3.8,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterSpawnMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster spawn monster to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN
+                    + "monsterspawnmonsterto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterSpawnMonsterToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( monster spawn monster to 3.8,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Monster &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "monsterspawnmonsterto3.8,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN
+                    + "monsterspawnmonsterto3.8,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapMoveToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap move to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapmoveto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapMoveToDoublePlaceFromDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap move from 2.3,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapmovefrom2.3,3to1.3,2" + "\n" +
+                      ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapmovefrom2.3,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapMoveToDoublePlaceFromPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap move from 2,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.SourcePlace.Equals(new Place(1,2)) &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapmovefrom2,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapShootToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap shoot to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapshootto1.3,2" + "\n" +
+                ErrorMessages.EventError.ONLY_MONSTER_CAN_SHOOT + "trapshootto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapShootToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap shoot to player ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_MONSTER_CAN_SHOOT + "trapshoottoplayer" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapDie()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap die ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAPS_DO_NOT_DIE + "trapdie" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapDamageToDoublePlaceWitAmount()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap damage 30 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapdamage30to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapDamageToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap damage 30 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_DAMAGING_TRAP + "trapdamage30totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapDamageToItself()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap damage 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_DAMAGING_TRAP + "trapdamage30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapHealToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap heal 30 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Heal &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_HEALING_TRAP + "trapheal30totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapHealToItself()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap heal 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Heal &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_HEALING_TRAP + "trapheal30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapTeleportItself()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap teleport me to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0,1))) != null);
+            Assert.AreEqual(ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "trapteleportmeto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapTeleportItselfToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap teleport me to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapteleportmeto1.3,2" + "\n" + 
+                        ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "trapteleportmeto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapSpawnPlayerToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap spawn player to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapspawnplayerto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_PLAYER + "trapspawnplayerto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapSpawnPlayerToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap spawn player to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0,1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_PLAYER + "trapspawnplayerto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapSpawnTrapToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap spawn trap to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapspawntrapto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "trapspawntrapto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapSpawnTrapToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap spawn trap to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "trapspawntrapto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapSpawnItselfToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap spawn me to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapspawnmeto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "trapspawnmeto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapSpawnItselfToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( trap spawn me to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Trap &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "trapspawnmeto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeMoveToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me move to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "memoveto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeMoveToDoublePlaceFromDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me move from 2.3,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "memovefrom2.3,3to1.3,2" + "\n" +
+                      ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "memovefrom2.3,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeMoveToDoublePlaceFromPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me move from 2,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.SourcePlace.Equals(new Place(1, 2)) &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "memovefrom2,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeShootToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me shoot to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "meshootto1.3,2" + "\n" +
+                ErrorMessages.EventError.ONLY_MONSTER_CAN_SHOOT + "meshootto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeShootToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me shoot to player ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_MONSTER_CAN_SHOOT + "meshoottoplayer" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeDie()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me die ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAPS_DO_NOT_DIE + "medie" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeDamageToDoublePlaceWitAmount()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me damage 30 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "medamage30to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeDamageToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me damage 30 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_DAMAGING_TRAP + "medamage30totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeDamageToItself()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me damage 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_DAMAGING_TRAP + "medamage30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeHealToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me heal 30 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Heal &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_HEALING_TRAP + "meheal30totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeHealToItself()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me heal 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Heal &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_HEALING_TRAP + "meheal30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeTeleportItself()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me teleport me to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "meteleportmeto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeTeleportItselfToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me teleport me to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "meteleportmeto1.3,2" + "\n" +
+                        ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "meteleportmeto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeSpawnPlayerToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me spawn player to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "mespawnplayerto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_PLAYER + "mespawnplayerto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeSpawnPlayerToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me spawn player to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_PLAYER + "mespawnplayerto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeSpawnTrapToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me spawn trap to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "mespawntrapto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "mespawntrapto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeSpawnTrapToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me spawn trap to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "mespawntrapto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeSpawnItselfToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me spawn me to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "mespawnmeto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "mespawnmeto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeSpawnItselfToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( me spawn me to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "mespawnmeto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMonsterMoveToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me move to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "memoveto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeShootToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me shoot to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "meshootto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeMoveToDoublePlaceFromDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me move from 2.3,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) &&
+                        x.TriggeringEvent.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "memovefrom2.3,3to1.3,2"
+                            + "\n" + ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                            + "memovefrom2.3,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeShootToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me shoot to monster ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER
+                    + "meshoottomonster" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeShootToMeWithAmount()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me shoot 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER
+                    + "meshoot30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeShootToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me shoot 30.5 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot &&
+                        x.TriggeringEvent.Amount == 30.5) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_TRAP
+                    + "meshoot30.5totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeShootToPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me shoot to partner ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_PARTNER
+                    + "meshoottopartner" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeDamageToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me damage to monster ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_DAMAGE
+                    + "medamagetomonster" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeHealToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me heal to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL
+                    + "mehealto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeHealToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me heal to 1.3,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "mehealto1.3,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL
+                    + "mehealto1.3,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeTeleportMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me teleport monster to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT
+                    + "meteleportmonsterto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeTeleportMonsterToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me teleport monster to 3.8,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "meteleportmonsterto3.8,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_TELEPORT
+                    + "meteleportmonsterto3.8,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeSpawnMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me spawn monster to 1,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN
+                    + "mespawnmonsterto1,3" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeSpawnMonsterToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( me spawn monster to 3.8,3 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Me &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                    + "mespawnmonsterto3.8,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN
+                    + "mespawnmonsterto3.8,3" + "\n", visitor.Error);
+        }
 
 
 

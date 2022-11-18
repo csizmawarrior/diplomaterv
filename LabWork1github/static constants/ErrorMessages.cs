@@ -141,6 +141,7 @@ namespace LabWork1github.static_constants
             public const string PLAYER_SHOOTING_ITSELF = "When command action error, player can't shoot itself:\n";
             public const string PLAYER_SHOOTING_TRAP = "When command action error, player can't shoot trap:\n";
             public const string MONSTER_SHOOTING_MONSTER = "When command action error, monster can't shoot itself or another monster:\n";
+            public const string MONSTER_SHOOTING_PARTNER = "When command action error, monster can't shoot its partner:\n";
             public const string MONSTER_SHOOTING_TRAP = "When command action error, monster can't shoot a trap:\n";
             public const string ONLY_TRAP_CAN_DAMAGE = "When command action error, only Trap type can damage, try shoot instead at:\n";
             public const string ONLY_TRAP_CAN_HEAL = "When command action error, only Trap type can heal, try heal to monster/player instead at:\n";
