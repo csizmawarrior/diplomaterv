@@ -13,7 +13,9 @@ namespace LabWork1github
         {
             try
             {
-                File.WriteAllText("C:/Users/Dana/antlrworks/error_log.txt", message + "\n");
+                TextWriter tsw = new StreamWriter("C:/Users/Dana/antlrworks/error_log.txt", true);
+                tsw.WriteLine(message);
+                tsw.Close();
             }
             catch (IOException e)
             {
@@ -24,9 +26,9 @@ namespace LabWork1github
         public void WriteCommand(string message)
         {
             LogMessage(message);
-            Console.WriteLine("--------------------------------\n");
+            Console.WriteLine(PlayerInteractionMessages.COMMAND_SEPARATOR);
             Console.WriteLine(message+"\n");
-            Console.WriteLine("--------------------------------\n");
+            Console.WriteLine(PlayerInteractionMessages.COMMAND_SEPARATOR);
         }
 
         public void WriteHealths(List<Monster> monsters)
@@ -193,6 +195,13 @@ namespace LabWork1github
             Console.WriteLine("help: The guide for the game gets displayed to the screen.");
             Console.WriteLine("Available Directions: F B L R as forward, backwards, left and right");
             Console.WriteLine("Kill all monsters to win. If you die you lose.");
+        }
+
+        internal void WriteProvideCommand()
+        {
+            Console.WriteLine(PlayerInteractionMessages.COMMAND_SEPARATOR);
+            Console.WriteLine(PlayerInteractionMessages.PROVIDE_A_COMMAND);
+            Console.WriteLine(PlayerInteractionMessages.COMMAND_SEPARATOR);
         }
     }
 }

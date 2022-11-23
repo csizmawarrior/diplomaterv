@@ -1,6 +1,7 @@
 using Antlr4.Runtime;
 using LabWork1github;
 using LabWork1github.Commands;
+using LabWork1github.EventHandling;
 using LabWork1github.static_constants;
 using LabWork1github.Visitors;
 using NUnit.Framework;
@@ -1690,6 +1691,10 @@ namespace UnitTest
             Assert.AreEqual(ErrorMessages.ConditionError.CONDITION_CHECK_FAIL + ErrorMessages.ExpressionError.MONSTER_DOES_NOT_HAVE_THIS_ATTRIBUTE
                             + "partner.spawn_type.heal" + "\n", visitor.Error);
         }
+
+
+
+        //When expressions
         [Test]
         public void AssignTrapWhenExpressionPlayerMoveToDoublePlace()
         {
@@ -2988,6 +2993,349 @@ namespace UnitTest
                     + "mespawnmonsterto3.8,3" + "\n" + ErrorMessages.EventError.ONLY_TRAP_CAN_SPAWN
                     + "mespawnmonsterto3.8,3" + "\n", visitor.Error);
         }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerMoveToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( partner move to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnermoveto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerShootToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( partner shoot 22.5 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot &&
+                        x.TriggeringEvent.Amount == 22.5) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnershoot22.5to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerMoveToDoublePlaceFromDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( partner move from 2.3,3 to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) &&
+                        x.TriggeringEvent.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnermovefrom2.3,3to1.3,2"
+                            + "\n" + ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
+                            + "partnermovefrom2.3,3to1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerShootToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( partner shoot to monster ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER
+                    + "partnershoottomonster" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerShootToMeWithAmount()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( partner shoot 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER
+                    + "partnershoot30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerShootToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( partner shoot 30.5 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot &&
+                        x.TriggeringEvent.Amount == 30.5) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_TRAP
+                    + "partnershoot30.5totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerShootToPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; health = 30 ; commands: when( partner shoot to partner ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testmonster").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testmonster").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
+            Assert.AreEqual(ErrorMessages.EventError.MONSTER_SHOOTING_PARTNER
+                    + "partnershoottopartner" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerDamageToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner damage to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnerdamageto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerDamageToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner damage 30 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_DAMAGING_TRAP + "partnerdamage30totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerDamageToMe()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner damage 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Damage &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_DAMAGING_TRAP + "partnerdamage30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerHealToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner heal to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Heal) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnerhealto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerHealToTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner heal 30 to trap ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Heal &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_HEALING_TRAP + "partnerheal30totrap" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerHealToMe()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner heal 30 to me ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Heal &&
+                        x.TriggeringEvent.Amount == 30) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_HEALING_TRAP + "partnerheal30tome" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerTeleportItself()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner teleport partner to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "partnerteleportpartnerto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerTeleportItselfToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner teleport partner to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnerteleportpartnerto1.3,2" + "\n" +
+                        ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "partnerteleportpartnerto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerSpawnPlayerToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner spawn player to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnerspawnplayerto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_PLAYER + "partnerspawnplayerto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerSpawnPlayerToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner spawn player to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_PLAYER + "partnerspawnplayerto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerSpawnTrapToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner spawn trap to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnerspawntrapto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "partnerspawntrapto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerSpawnTrapToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner spawn trap to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "partnerspawntrapto1,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerSpawnItselfToDoublePlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner spawn partner to 1.3,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "partnerspawnpartnerto1.3,2" + "\n" +
+                        ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "partnerspawnpartnerto1.3,2" + "\n", visitor.Error);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerSpawnItselfToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; heal = 30 ; commands: when( partner spawn partner to 1,2 ){ move F; }");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
+            Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
+                        LabWork1github.EventHandling.CharacterOptions.Partner &&
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
+            Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "partnerspawnpartnerto1,2" + "\n", visitor.Error);
+        }
 
 
 
@@ -3469,7 +3817,7 @@ namespace UnitTest
         [Test]
         public void AssignTrapTeleportCommandPlayerToPlace()
         {
-            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: teleport player to 3,1;");
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; teleport_place = 2,2 ; commands: teleport player to 3,1;");
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
@@ -3498,6 +3846,28 @@ namespace UnitTest
             Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
                 .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
                  ((TeleportCommand)x).TargetPlace.X == 2 && ((TeleportCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [Test]
+        public void AssignTrapTeleportCommandPartnerToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: teleport partner to 3,3;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                 ((TeleportCommand)x).TargetPlace.X == 2 && ((TeleportCommand)x).TargetPlace.Y == 2) != null);
+        }
+        [Test]
+        public void AssignTrapTeleportCommandPartnerRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: teleport partner random;");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is TeleportCommand && ((TeleportCommand)x).TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                 ((TeleportCommand)x).Random) != null);
         }
         [Test]
         public void AssignTrapSpawnCommandTypeToPlace()
@@ -3593,54 +3963,1130 @@ namespace UnitTest
                  ((SpawnCommand)x).TargetPlace.X == 3 && ((SpawnCommand)x).TargetPlace.Y == 0 &&
                  ((SpawnCommand)x).TargetCharacterType.Name.Equals("SpawnMonsterType")) != null);
         }
-
-    }
-
-    public class InActionTests
+        [Test]
+        public void AssignTrapIfCommandFunctionPlayerNearMove()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: if( player is near ){ move L; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is MoveCommand && ((MoveCommand)y).Direction.Equals("L") &&
+                 ((MoveCommand)y).MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection))) 
+                 != null ) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandFunctionMeNearMoveDist()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: if( me is near ){ move L distance = 2; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is MoveCommand && ((MoveCommand)y).Direction.Equals("L") &&
+                 ((MoveCommand)y).MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection)) &&
+                 ((MoveCommand)y).Distance == 2) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandFunctionPartnerNearMoveToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: if( partner is near ){ move to 2,3; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is MoveCommand command &&
+                 command.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlace)) &&
+                 command.TargetPlace.Equals(new Place(1,2))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandFunctionTrapNearMoveToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: if( trap is near ){ move to player; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is MoveCommand command && command.MoveDelegate.Equals(
+                     new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlayer))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandFunctionMonsterNearMoveToRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; spawn_place = 4,1; spawn_type = UnrealMonster ; commands: if( trap is near ){ move to random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is MoveCommand command && command.MoveDelegate.Equals(
+                     new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveRandom))) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandFunctionPlayerAliveShootDirection()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( player is alive ){ shoot F; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootDirection)) &&
+                     command.Direction.Equals("F")) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandFunctionMeAliveShootDirectionDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( player is alive ){ shoot F distance = 3; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootDirection)) &&
+                     command.Direction.Equals("F") && command.Distance == 3) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandFunctionPartnerAliveShootDirectionDistanceDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( player is alive ){ shoot F distance = 3 damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootDirection)) &&
+                     command.Direction.Equals("F") && command.Distance == 3 && command.HealthChangeAmount == 30.5)
+                    != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandFunctionTrapAliveShootDirectionDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( trap is alive ){ shoot F damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootDirection)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandFunctionMonsterAliveShootToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( monster is alive ){ shoot to 2,4; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlace)) &&
+                     command.TargetPlace.Equals(new Place(1,3))) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandFunctionHealthCheckShootToPlaceDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( player health_check ){ shoot to 2,4 damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlace)) &&
+                     command.TargetPlace.Equals(new Place(1, 3)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhileCommandNumConnectNumbersDieShootToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: while( 2 < 4 ){ shoot to player; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlayer))) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhileCommandOtherNumConnectNumbersShootToPlayerDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: while( 2 > 4 ){ shoot to player damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlayer)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhileCommandNumConnecterAttributeNumberShootRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: while( 3 < player.health ){ shoot random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
+                     new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandOtherNumConnecterNumberAttributeDamageDirection()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( 3 > monster.damage ){ damage L; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection)) &&
+                     command.Direction.Equals("L")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandNumConnecterAttributesDamageDirectionDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( player.damage < monster.health ){ damage L damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection)) &&
+                     command.Direction.Equals("L") &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandOtherNumConnecterAttributesDamageDirectionDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( player.damage < monster.health ){ damage L distance = 3; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection)) &&
+                     command.Direction.Equals("L") && command.Distance == 3) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandEqualsNumbersDamageDirectionDistanceDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( 3 == 4 ){ damage L distance = 3 damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection)) &&
+                     command.Direction.Equals("L") && command.Distance == 3 &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandNotEqualsNumbersDamageToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( 3 != 4 ){ damage to 2,3; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace)) &&
+                     command.TargetPlace.Equals(new Place(1,2))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandEqualsNumberAttributeDamageToPlaceDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( 30 == trap.damage ){ damage to 2,3 damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace)) &&
+                     command.TargetPlace.Equals(new Place(1, 2)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandNotEqualsNumberAttributeDamageToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( 30 != trap.heal ){ damage to player; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlayer)))
+                 != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandEqualsNumberAttributesDamageToPlayerDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( player.place.y == trap.place.y ){ damage to player damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlayer)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandNotEqualsNumberAttributesDamageToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( me.place.x != trap.spawn_place.x ){ damage to monster; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToMonster))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandEqualsPlaceAttributesDamageToMonsterDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( me.place == trap.teleport_place ){ damage to monster damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToMonster)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandNotEqualsPlaceAttributesDamageToPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( partner.spawn_place != player.place ){ damage to partner; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPartner))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandEqualsTypeAttributesDamageToPartnerDamage()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( monster.type == trap.spawn_type ){ damage to partner damage = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPartner)) &&
+                    command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandNotEqualsTypeAttributesDamageRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( me.type != partner.type ){ damage random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
+                     new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageRandom))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhileCommandEqualsNameAttributesHealDirection()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: while( me.type.name == partner.type.name ){ heal B; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
+                 ((WhileCommand)x).CommandList.Find(y => y is HealCommand command && command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection)) &&
+                     command.Direction.Equals("B")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandNotEqualsNameAttributesHealDirectionDistance()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: if( me.name != monster.name ){ heal B distance = 2; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is HealCommand command && command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection)) &&
+                     command.Distance == 2 && command.Direction.Equals("B")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandEqualsOrSmallerNumbersHealDirectionDistanceHeal()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: if( 2 == 2.5 || 2 < 2.5 ){ heal B distance = 2 heal = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is HealCommand command && command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection)) &&
+                     command.Distance == 2 && command.HealthChangeAmount == 30.5 &&
+                     command.Direction.Equals("B")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandEqualsOrBiggerNumbersHealDirectionHeal()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: if( 2 == 2.5 || 2 > 2.5 ){ heal B heal = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is HealCommand command && command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection)) &&
+                     command.Direction.Equals("B") && command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandNegateEqualsOrBiggerNumbersHealToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: if( ! (2 == 2.5 || 2 > 2.5) ){ heal to 2,3; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is HealCommand command && command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace)) &&
+                     command.TargetPlace.Equals(new Place(1,2))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapIfCommandNegateFunctionPlayerIsNearHealToPlaceHeal()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: if( ! player is near ){ heal to 2,3 heal = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
+                .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
+                 ((IfCommand)x).CommandList.Find(y => y is HealCommand command && command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace)) &&
+                     command.TargetPlace.Equals(new Place(1, 2)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerMoveToPlaceHealToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( player move to 2,3 ){ heal to player; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler && ((TriggerEventHandler)x).Commands.Count == 1 &&
+                    ((TriggerEventHandler)x).TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    ((TriggerEventHandler)x).TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    ((TriggerEventHandler)x).TriggeringEvent.TargetPlace.Equals(new Place(1,2)) &&
+                 ((TriggerEventHandler)x).Commands.Find(y => y is HealCommand command && 
+                    command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerMoveToPlaceFromPlaceHealToPlayerHeal()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( player move from 3,3 to 2,3 ){ heal to player heal = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                    handler.TriggeringEvent.SourcePlace.Equals(new Place(2, 2)) &&
+                 handler.Commands.Find(y => y is HealCommand command &&
+                    command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeMoveToPlaceHealToMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me move to 2,3 ){ heal to monster; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                 handler.Commands.Find(y => y is HealCommand command &&
+                    command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToMonster))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeMoveToPlaceFromPlaceHealToMonsterHeal()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me move from 3,3 to 2,3 ){ heal to monster heal = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                    handler.TriggeringEvent.SourcePlace.Equals(new Place(2, 2)) &&
+                 handler.Commands.Find(y => y is HealCommand command &&
+                    command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToMonster)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
+        }
+    [Test]
+    public void AssignTrapWhenExpressionPartnerMoveToPlaceHealToPartner()
     {
-        public static Game testGame;
-
-        [SetUp]
-        public void Setup()
+        DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( partner move to 2,3 ){ heal to partner; };");
+        DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+        visitor.Visit(context);
+        Assert.IsFalse(visitor.ErrorFound);
+        Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+            .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+             handler.Commands.Find(y => y is HealCommand command &&
+                command.HealDelegate.Equals(
+                 new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner))) != null) != null);
+    }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerMoveToPlaceFromPlaceHealToPartnerHeal()
         {
-            Program.Characters.Clear();
-            Program.CharacterTypes.Clear();
-            Program.Board = new Board();
-            Program.TrapTypeLoader("C:/Users/Dana/antlrworks/DefaultTrap.txt");
-            Program.MonsterTypeLoader("C:/Users/Dana/antlrworks/DefaultMonster.txt");
-            Program.BoardLoader("C:/Users/Dana/antlrworks/BoardCreation.txt");
-            testGame = new Game();
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( partner move from 3,3 to 2,3 ){ heal to partner heal = 30.5; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.SourcePlace.Equals(new Place(2, 2)) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                 handler.Commands.Find(y => y is HealCommand command &&
+                    command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner)) &&
+                     command.HealthChangeAmount == 30.5) != null) != null);
         }
-
-        public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
+        [Test]
+        public void AssignTrapWhenExpressionTrapMoveToPlaceTeleportPlayer()
         {
-            AntlrInputStream inputStream = new AntlrInputStream(fileText);
-            DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
-            DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
-            DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
-            return chatContext;
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( trap move to 2,3 ){ teleport player; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Trap) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
+                    command.TargetPlace.Equals(new Place(2, 1))) != null) != null);
         }
-        public BoardGrammarParser.ProgramContext PreparingBoardGrammar(string fileText)
+        [Test]
+        public void AssignTrapWhenExpressionTrapMoveToPlaceFromPlaceTeleportPlayerToPlace()
         {
-            AntlrInputStream inputStream = new AntlrInputStream(fileText);
-            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
-            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
-            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
-            return chatContext;
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( trap move from 3,3 to 2,3 ){ teleport player to 4,1; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Trap) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                    handler.TriggeringEvent.SourcePlace.Equals(new Place(2, 2)) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
+                     command.TargetPlace.Equals(new Place(3,0))) != null) != null);
         }
-        public PlayerGrammarParser.StatementContext PreparingPlayerGrammar(string fileText)
+        [Test]
+        public void AssignTrapWhenExpressionMonsterMoveToPlaceTeleportPlayerToRandom()
         {
-            AntlrInputStream inputStream = new AntlrInputStream(fileText);
-            PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(PlayerGrammarLexer_);
-            PlayerGrammarParser PlayerGrammarParser = new PlayerGrammarParser(commonTokenStream);
-            PlayerGrammarParser.StatementContext chatContext = PlayerGrammarParser.statement();
-            return chatContext;
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster move to 2,3 ){ teleport player random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
+                     command.Random && command.TargetPlace.Equals(new Place(2, 1))) != null) != null);
         }
-
-        //Move tests
+    [Test]
+    public void AssignTrapWhenExpressionMonsterMoveToPlaceFromPlaceTeleportPartner()
+    {
+        DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster move from 3,3 to 2,3 ){ teleport partner; };");
+        DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+        visitor.Visit(context);
+        Assert.IsFalse(visitor.ErrorFound);
+        Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+            .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                handler.TriggeringEvent.SourcePlace.Equals(new Place(2, 2)) &&
+             handler.Commands.Find(y => y is TeleportCommand command &&
+                command.TeleportDelegate.Equals(
+                 new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                 command.TargetPlace.Equals(new Place(2,1))) != null) != null);
+    }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerDieTeleportPartnerToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( player die ){ teleport partner to 4,1; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Die) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                     command.TargetPlace.Equals(new Place(3, 0))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerDieTeleportPartnerToRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( partner die ){ teleport partner random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Die) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                     command.TargetPlace.Equals(new Place(2, 1)) && command.Random) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterDieTeleportMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster die ){ teleport monster; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Die) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportMonster)) &&
+                     command.TargetPlace.Equals(new Place(2, 1))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterShotToPlaceTeleportMonsterToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster shoot to 1,3 ){ teleport monster to 4,1; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0,2)) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportMonster)) &&
+                     command.TargetPlace.Equals(new Place(3, 0))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterShotToPlaceDamageTeleportMonsterToRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster shoot 50 to 1,3 ){ teleport monster random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0, 2)) &&
+                    handler.TriggeringEvent.Amount == 50 &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportMonster)) &&
+                     command.TargetPlace.Equals(new Place(2, 1)) && command.Random) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterShotToPlayerTeleportTrap()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster shoot to player ){ teleport trap; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Player) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
+                     command.TargetPlace.Equals(new Place(2, 1))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterShotToPlayerDamageTeleportTrapToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster shoot 50.5 to player ){ teleport trap to 4,1; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.Amount == 50.5 &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
+                     command.TargetPlace.Equals(new Place(3, 0))) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShotToPlaceTeleportTrapToRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( player shoot to 1,3 ){ teleport trap random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0,2)) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
+                     command.TargetPlace.Equals(new Place(2, 1)) && command.Random) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShotToPlaceDamageSpawn()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap spawn_place = 3,2; spawn_type = SpawnMonster; commands: when( player shoot 30.5 to 1,3 ){ spawn; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0, 2)) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is SpawnCommand command &&
+                    command.SpawnDelegate.Equals(
+                     new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
+                     command.TargetPlace.Equals(new Place(2, 1)) && 
+                     command.TargetCharacterType.Name.Equals("SpawnMonster")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShotToMonsterSpawnToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap spawn_place = 3,2; spawn_type = SpawnMonster; commands: when( player shoot to monster ){ spawn to 4,1; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Monster) &&
+                 handler.Commands.Find(y => y is SpawnCommand command &&
+                    command.SpawnDelegate.Equals(
+                     new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
+                     command.TargetPlace.Equals(new Place(3, 0)) &&
+                     command.TargetCharacterType.Name.Equals("SpawnMonster")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShotToMonsterDamageSpawnToType()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap spawn_place = 3,2; spawn_type = SpawnMonster; commands: when( player shoot 30.5 to monster ){ spawn monster SpawnyMonster; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is SpawnCommand command &&
+                    command.SpawnDelegate.Equals(
+                     new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
+                     command.TargetPlace.Equals(new Place(2,1)) &&
+                     command.TargetCharacterType.Name.Equals("SpawnyMonster")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShotToPartnerSpawnToTypeToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap spawn_place = 3,2; spawn_type = SpawnMonster ; commands: when( player shoot to partner ){ spawn monster SpawnyMonster to 4,1; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Partner) &&
+                 handler.Commands.Find(y => y is SpawnCommand command &&
+                    command.SpawnDelegate.Equals(
+                     new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
+                     command.TargetPlace.Equals(new Place(3, 0)) &&
+                     command.TargetCharacterType.Name.Equals("SpawnyMonster")) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionPlayerShotToPartnerDamageSpawnRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap spawn_place = 3,2; spawn_type = SpawnMonster ; commands: when( player shoot 30.5 to partner ){ spawn random; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is SpawnCommand command &&
+                    command.SpawnDelegate.Equals(
+                     new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.SpawnRandom))) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerShotToMeIfCommandMove()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( player shoot to me ){ if(1+1 == 2) {move R;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Me) &&
+                 handler.Commands.Find(y => y is IfCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is MoveCommand moveCommand &&
+                    moveCommand.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection)) &&
+                    moveCommand.Direction.Equals("R")) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPlayerShotToMeDamageIfCommandMove()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( player shoot 30.5 to me ){ if( ! 1+1 == 2 ) {move R;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is IfCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is MoveCommand moveCommand &&
+                    moveCommand.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection)) &&
+                    moveCommand.Direction.Equals("R")) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionMeShotToPlaceWhileCommandMoveRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( me shoot to 3,2 ){ while( (! (1+1 == 2)) || me.place.x > partner.place.y ) {move to random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2,1)) &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is MoveCommand moveCommand &&
+                    moveCommand.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveRandom))
+                    ) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerShotToPlayerDamageWhileCommandShootRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( partner shoot 30.5 to player ){ while( me.place.x > partner.place.y ) {shoot random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is ShootCommand shootCommand &&
+                    shootCommand.ShootDelegate.Equals(new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom))
+                    ) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerDamageToPlayerDamageWhileCommandShootRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( partner damage 30.5 to player ){ while( me.place.x > partner.place.y ) {shoot random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Damage) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is ShootCommand shootCommand &&
+                    shootCommand.ShootDelegate.Equals(new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom))
+                    ) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionTrapDamageToPlaceWhileCommandShootRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( partner damage to 3,2 ){ while( me.place.x > partner.place.y ) {shoot random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Damage) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2,1)) &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is ShootCommand shootCommand &&
+                    shootCommand.ShootDelegate.Equals(new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom))
+                    ) != null) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeDamageToMonsterDamageWhileCommandTeleportPlayerRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me damage 30.5 to monster ){ while( me.place.x > partner.place.y ) {teleport player random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Damage) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
+                    teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
+                    teleportCommand.Random) != null) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeDamageToPartnerWhileCommandTeleportTrapToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me damage to partner ){ while( me.place.x > partner.place.y ) {teleport trap to 4,1;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Damage) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Partner) &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
+                    teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
+                    teleportCommand.TargetPlace.Equals(new Place(3,0))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionPartnerHealToPlayerHealWhileCommandShootRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( partner heal 30.5 to player ){ while( me.place.x > partner.place.y ) {shoot random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Heal) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is ShootCommand shootCommand &&
+                    shootCommand.ShootDelegate.Equals(new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom))
+                    ) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionTrapHealToPlaceWhileCommandShootRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( partner heal to 3,2 ){ while( me.place.x > partner.place.y ) {shoot random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Heal) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2, 1)) &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is ShootCommand shootCommand &&
+                    shootCommand.ShootDelegate.Equals(new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom))
+                    ) != null) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeHealToMonsterHealWhileCommandTeleportPlayerRandom()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me heal 30.5 to monster ){ while( me.place.x > partner.place.y ) {teleport player random;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Heal) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.Amount == 30.5 &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
+                    teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
+                    teleportCommand.Random) != null) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeHealToPartnerWhileCommandTeleportTrapToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me heal to partner ){ while( me.place.x > partner.place.y ) {teleport trap to 4,1;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Heal) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Partner) &&
+                 handler.Commands.Find(y => y is WhileCommand command &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
+                    teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
+                    teleportCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeTeleportPartnerWhenCommandPlayerMoveToPlace()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me teleport partner to 3,2 ){ when( player move to 2,2 ) {teleport partner to 4,1;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Teleport) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2,1)) &&
+                 handler.Commands.Find(y => y is WhenCommand command &&
+                    command.TriggerEventHandler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    command.TriggerEventHandler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetPlace.Equals(new Place(1,1)) &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
+                    teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                    teleportCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionTrapTeleportMonsterWhenCommandTrapSpawnPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( trap teleport monster to 3,2 ){ when( trap spawn partner to 2,2 ) {teleport partner to 4,1;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Teleport) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Trap) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2, 1)) &&
+                 handler.Commands.Find(y => y is WhenCommand command &&
+                    command.TriggerEventHandler.TriggeringEvent.EventType.Equals(EventType.Spawn) &&
+                    command.TriggerEventHandler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Trap) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Partner) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetPlace.Equals(new Place(1, 1)) &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
+                    teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                    teleportCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignTrapWhenExpressionMeTeleportPlayerWhenCommandTrapSpawnMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( me teleport player to 3,2 ){ when( trap spawn monster to 2,2 ) {teleport partner to 4,1;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Teleport) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Player) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2, 1)) &&
+                 handler.Commands.Find(y => y is WhenCommand command &&
+                    command.TriggerEventHandler.TriggeringEvent.EventType.Equals(EventType.Spawn) &&
+                    command.TriggerEventHandler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Trap) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Monster) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetPlace.Equals(new Place(1, 1)) &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
+                    teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                    teleportCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhenExpressionTrapTeleportMeWhenCommandTrapSpawnMonster()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: when( trap teleport me to 3,2 ){ when( trap spawn me to 2,2 ) {move to 4,1;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Teleport) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Trap) &&
+                    handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Me) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2, 1)) &&
+                 handler.Commands.Find(y => y is WhenCommand command &&
+                    command.TriggerEventHandler.TriggeringEvent.EventType.Equals(EventType.Spawn) &&
+                    command.TriggerEventHandler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Trap) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Me) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetPlace.Equals(new Place(1, 1)) &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is MoveCommand moveCommand &&
+                    moveCommand.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlace)) &&
+                    moveCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
+        }
 
     }
 }

@@ -10,6 +10,7 @@ namespace LabWork1github.static_constants
     {
         public const string YOU_WON = "Congratulations! You won!";
         public const string YOU_LOST = "GAME OVER! You died!";
+        public const string COMMAND_SEPARATOR = "--------------------------------\n";
         public const string PLAYER_FALLING_OFF_BOARD = "Invalid move, falling off the board, try again next turn!";
         public const string PLAYER_BUMP_INTO_MONSTER = "Invalid move, bumping into Monster, you damaged yourself, try again next turn!";
         public const string PLAYER_INVALID_COMMAND = "Invalid command! Try again! Try the help command";

@@ -524,6 +524,10 @@ namespace LabWork1github
 
         public override object VisitBlock([NotNull] BlockContext context)
         {
+            return null;
+        }
+        public void MyVisitBlock([NotNull]BlockContext context)
+        {
             if (String.IsNullOrEmpty(context.GetText()))
             {
                 ErrorFound = true;
@@ -535,7 +539,6 @@ namespace LabWork1github
                     Visit(child);
                 }
             }
-            return null;
         }
 
         public override object VisitIfExpression([NotNull] IfExpressionContext context)
@@ -563,7 +566,7 @@ namespace LabWork1github
                 {
                     CreationStage = TypeCreationStage.ConditionalCommandBlock;
                     ConditionalCommand = newCommand;
-                    VisitBlock(context.block());
+                    MyVisitBlock(context.block());
                     ConditionalCommand = null;
                     CreationStage = TypeCreationStage.CommandListing;
                     AddCommand(newCommand);
@@ -572,7 +575,7 @@ namespace LabWork1github
                 {
                     Command previousConditionalCommand = ConditionalCommand;
                     ConditionalCommand = newCommand;
-                    VisitBlock(context.block());
+                    MyVisitBlock(context.block());
                     ConditionalCommand = previousConditionalCommand;
                     AddCommand(newCommand);
                 }
@@ -581,7 +584,7 @@ namespace LabWork1github
                     CreationStage = TypeCreationStage.ConditionalCommandBlock;
                     TriggerEventHandler previousEventHandler = TriggerEventHandler;
                     ConditionalCommand = newCommand;
-                    VisitBlock(context.block());
+                    MyVisitBlock(context.block());
                     TriggerEventHandler = previousEventHandler;
                     CreationStage = TypeCreationStage.EventCommandBlock;
                     AddCommand(newCommand);
@@ -616,7 +619,7 @@ namespace LabWork1github
                 {
                     CreationStage = TypeCreationStage.ConditionalCommandBlock;
                     ConditionalCommand = newCommand;
-                    VisitBlock(context.block());
+                    MyVisitBlock(context.block());
                     ConditionalCommand = null;
                     CreationStage = TypeCreationStage.CommandListing;
                     AddCommand(newCommand);
@@ -625,7 +628,7 @@ namespace LabWork1github
                 {
                     Command previousConditionalCommand = ConditionalCommand;
                     ConditionalCommand = newCommand;
-                    VisitBlock(context.block());
+                    MyVisitBlock(context.block());
                     ConditionalCommand = previousConditionalCommand;
                     AddCommand(newCommand);
                 }
@@ -634,7 +637,7 @@ namespace LabWork1github
                     CreationStage = TypeCreationStage.ConditionalCommandBlock;
                     TriggerEventHandler previousEventHandler = TriggerEventHandler;
                     ConditionalCommand = newCommand;
-                    VisitBlock(context.block());
+                    MyVisitBlock(context.block());
                     ConditionalCommand = null;
                     TriggerEventHandler = previousEventHandler;
                     CreationStage = TypeCreationStage.EventCommandBlock;
@@ -660,7 +663,7 @@ namespace LabWork1github
             {
                 CreationStage = TypeCreationStage.EventCommandBlock;
                 TriggerEventHandler = EventHandler;
-                VisitBlock(context.block());
+                MyVisitBlock(context.block());
                 EventHandler = TriggerEventHandler;
                 TriggerEventHandler = null;
                 CreationStage = TypeCreationStage.CommandListing;
@@ -674,7 +677,7 @@ namespace LabWork1github
                     TriggerEventHandler = EventHandler
                 };
                 ConditionalCommand = newCommand;
-                VisitBlock(context.block());
+                MyVisitBlock(context.block());
                 ConditionalCommand = previousConditionalCommand;
                 AddCommand(newCommand);
             }
@@ -686,7 +689,7 @@ namespace LabWork1github
                     TriggerEventHandler = EventHandler
                 };
                 ConditionalCommand = newCommand;
-                VisitBlock(context.block());
+                MyVisitBlock(context.block());
                 ConditionalCommand = null;
                 CreationStage = TypeCreationStage.EventCommandBlock;
                 AddCommand(newCommand);
@@ -1163,10 +1166,15 @@ namespace LabWork1github
                 {
                     if (context.action().character().PLAYER() != null)
                         resultTrigger.TargetCharacterOption = CharacterOptions.Player;
-                    if (context.action().character().MONSTER() != null || (type.Equals(Types.MONSTER) && context.action().character().ME() != null) ||
-                            context.action().character().PARTNER() != null)
+                    if (context.action().character().MONSTER() != null || type.Equals(Types.MONSTER) && context.action().character().ME() != null)
                     {
                         Error += ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    if(context.action().character().PARTNER() != null)
+                    {
+                        Error += ErrorMessages.EventError.MONSTER_SHOOTING_PARTNER;
                         Error += context.GetText() + "\n";
                         ErrorFound = true;
                     }
@@ -1177,12 +1185,6 @@ namespace LabWork1github
                         ErrorFound = true;
                     }
                     return resultTrigger;
-                }
-                if (context.action().place() == null)
-                {
-                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
                 }
             }
             if (context.action().DAMAGE() != null)
@@ -1212,12 +1214,6 @@ namespace LabWork1github
                     }
                     return resultTrigger;
                 }
-                if (context.action().place() == null)
-                {
-                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
             }
             if (context.action().HEAL() != null)
             {
@@ -1246,12 +1242,6 @@ namespace LabWork1github
                     }
                     return resultTrigger;
                 }
-                if (context.action().place() == null)
-                {
-                    Error += ErrorMessages.EventError.ACTION_WITHOUT_CHARACTER_OR_PLACE;
-                    Error += context.GetText() + "\n";
-                    ErrorFound = true;
-                }
             }
             if (context.action().TELEPORT_T() != null)
             {
@@ -1268,9 +1258,14 @@ namespace LabWork1github
                 if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null) ||
                         context.action().character().PARTNER() != null)
                 {
-                    resultTrigger.TargetCharacterOption = CharacterOptions.Trap;
-                    if (context.action().character().ME() != null)
-                        resultTrigger.TargetCharacterOption = CharacterOptions.Me;
+                    if (context.action().character().PARTNER() != null)
+                    {
+                        Error += ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF;
+                        Error += context.GetText() + "\n";
+                        ErrorFound = true;
+                    }
+                    else
+                        resultTrigger.TargetCharacterOption = CharacterOptions.Trap;
                 }
             }
             if (context.action().SPAWN() != null)
@@ -1289,7 +1284,8 @@ namespace LabWork1github
                     if (context.action().character().ME() != null)
                         resultTrigger.TargetCharacterOption = CharacterOptions.Me;
                 }
-                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null))
+                if (context.action().character().TRAP() != null || (type.Equals(Types.TRAP) && context.action().character().ME() != null) ||
+                    context.action().character().PARTNER() != null)
                 {
                     Error += ErrorMessages.EventError.TRAP_SPAWNING_TRAP;
                     Error += context.GetText() + "\n";

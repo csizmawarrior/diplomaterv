@@ -11,7 +11,7 @@ using static LabWork1github.BoardGrammarParser;
 
 namespace LabWork1github
 {
-    class BoardGrammarVisitor : BoardGrammarBaseVisitor<object>
+    public class BoardGrammarVisitor : BoardGrammarBaseVisitor<object>
     {
         public bool ErrorFound { get; set; }
 

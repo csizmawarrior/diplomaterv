@@ -31,5 +31,6 @@ namespace LabWork1github.static_constants
         public static double BUMPING_INTO_DOUBLE_TRAP_DAMAGE = 20;
         public static double TRAP_HEALTH = -1;
         public static string PLAYER_TYPE_NAME = "PlayerType";
+        public static string PLAYER_COMMAND_LOG = "Player command: ";
     }
 }

@@ -50,7 +50,7 @@ namespace LabWork1github
             CheckOutOfBoundCharacters();
             foreach (Character character in Characters)
             {
-                if(character.GetCharacterType().EventHandlers.Count > 0)
+                if (character.GetCharacterType().EventHandlers.Count > 0)
                 {
                     List<TriggerEventHandler> deleteCandidates = new List<TriggerEventHandler>();
                     foreach (TriggerEventHandler eventHandler in character.GetCharacterType().EventHandlers)
@@ -61,7 +61,7 @@ namespace LabWork1github
                                 deleteCandidates.Add(eventHandler);
                         eventHandler.GameParamProvider = Provider;
                     }
-                    foreach(TriggerEventHandler eventHandler in deleteCandidates)
+                    foreach (TriggerEventHandler eventHandler in deleteCandidates)
                     {
                         character.GetCharacterType().EventHandlers.Remove(eventHandler);
                     }
@@ -135,26 +135,26 @@ namespace LabWork1github
 
         private void CommandProcess(string inputCommand)
         {
-                AntlrInputStream inputStream = new AntlrInputStream(inputCommand);
-                PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
-                CommonTokenStream commonTokenStream = new CommonTokenStream(PlayerGrammarLexer_);
-                PlayerGrammarParser PlayerGrammarParser = new PlayerGrammarParser(commonTokenStream);
-                PlayerGrammarParser.StatementContext chatContext = PlayerGrammarParser.statement();
-                PlayerGrammarVisitor visitor = new PlayerGrammarVisitor();
-                visitor.Visit(chatContext);
+            AntlrInputStream inputStream = new AntlrInputStream(inputCommand);
+            PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(PlayerGrammarLexer_);
+            PlayerGrammarParser PlayerGrammarParser = new PlayerGrammarParser(commonTokenStream);
+            PlayerGrammarParser.StatementContext chatContext = PlayerGrammarParser.statement();
+            PlayerGrammarVisitor visitor = new PlayerGrammarVisitor();
+            visitor.Visit(chatContext);
         }
 
         private bool FallingCheck(Player player, PlayerMove move)
         {
-                if (Player.Place.Y == 0 && move.Direction == Directions.LEFT)
-                    return true;
-                if (Player.Place.Y == Board.Width - 1 && move.Direction == Directions.RIGHT)
-                    return true;
-                if (Player.Place.X == 0 && move.Direction == Directions.FORWARD)
-                    return true;
-                if (Player.Place.X == Board.Height - 1 && move.Direction == Directions.BACKWARDS)
-                    return true;
-                return false;
+            if (Player.Place.Y == 0 && move.Direction == Directions.LEFT)
+                return true;
+            if (Player.Place.Y == Board.Width - 1 && move.Direction == Directions.RIGHT)
+                return true;
+            if (Player.Place.X == 0 && move.Direction == Directions.FORWARD)
+                return true;
+            if (Player.Place.X == Board.Height - 1 && move.Direction == Directions.BACKWARDS)
+                return true;
+            return false;
         }
 
         private void CheckOutOfBoundCharacters()
@@ -168,7 +168,7 @@ namespace LabWork1github
                     Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + character.Name);
                 }
             }
-            foreach(Character c in deleteCandidates)
+            foreach (Character c in deleteCandidates)
             {
                 Characters.Remove(c);
             }
@@ -176,9 +176,10 @@ namespace LabWork1github
 
         public void PlayerCommand()
         {
-            Drawer.WriteCommand(PlayerInteractionMessages.PROVIDE_A_COMMAND);
+            Drawer.WriteProvideCommand();
             string inputLine = Console.ReadLine();
             CommandProcess(inputLine);
+            Drawer.LogMessage(StaticStartValues.PLAYER_COMMAND_LOG+inputLine);
             switch (move.CommandType)
             {
                 case CommandType.health:
@@ -209,7 +210,7 @@ namespace LabWork1github
                         }
                     }
                     int trapCounter = 0;
-                    foreach(Trap trap in Traps)
+                    foreach (Trap trap in Traps)
                     {
                         if (Player.Place.DirectionTo(trap.Place) == move.Direction)
                         {
@@ -258,20 +259,20 @@ namespace LabWork1github
 
         public void SpawnMonster(Monster monster)
         {
-                spawned = true;
-                this.Monsters.Add(monster);
-                if(!this.Board.Monsters.Contains(monster))
-                    this.Board.Monsters.Add(monster);
+            spawned = true;
+            this.Monsters.Add(monster);
+            if (!this.Board.Monsters.Contains(monster))
+                this.Board.Monsters.Add(monster);
         }
         public bool IsOccupiedOrOutOfBounds(Place p)
         {
             int counter = 0;
-            if(p.X < 0 || p.X >= Board.Height || p.Y < 0 || p.Y >= Board.Width)
+            if (p.X < 0 || p.X >= Board.Height || p.Y < 0 || p.Y >= Board.Width)
             {
                 Drawer.WriteCommand(ErrorMessages.GameError.PLACE_OUT_OF_BOUNDS);
                 return true;
             }
-            foreach(Character c in Characters)
+            foreach (Character c in Characters)
             {
                 if (c.Place.DirectionTo(p) == Directions.COLLISION)
                 {
@@ -293,11 +294,11 @@ namespace LabWork1github
 
         public Monster GetClosestMonster()
         {
-            int smallestDistance = Board.Height+Board.Width;
+            int smallestDistance = Board.Height + Board.Width;
             Monster closestMonster = null;
             int xDistance = smallestDistance;
             int yDistance = smallestDistance;
-            foreach(Monster m in Monsters)
+            foreach (Monster m in Monsters)
             {
                 if (m.Equals(ActualCharacter))
                     continue;
@@ -335,12 +336,12 @@ namespace LabWork1github
 
         private bool IsEventHandlerValid(TriggerEventHandler eventHandler, Character character)
         {
-            if(character.GetPartner() == null)
+            if (character.GetPartner() == null)
             {
                 Drawer.WriteCommand(ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + character.Name);
                 return true;
             }
-            if(character.GetPartner() is Monster)
+            if (character.GetPartner() is Monster)
             {
                 if (eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner)
                 {
@@ -365,9 +366,9 @@ namespace LabWork1github
                         return false;
                     }
                 }
-                if(eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
+                if (eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
                 {
-                    if(eventHandler.TriggeringEvent.EventType == EventType.Shoot &&
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Shoot &&
                         (eventHandler.TriggeringEvent.SourceCharacter != CharacterOptions.Player))
                     {
                         Drawer.WriteCommand(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER);
@@ -375,7 +376,7 @@ namespace LabWork1github
                     }
                 }
             }
-            if(character.GetPartner() is Trap)
+            if (character.GetPartner() is Trap)
             {
                 if (eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner)
                 {
@@ -390,16 +391,16 @@ namespace LabWork1github
                         return false;
                     }
                 }
-                if(eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
+                if (eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
                 {
-                    if(eventHandler.TriggeringEvent.EventType == EventType.Shoot ||
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Shoot ||
                         eventHandler.TriggeringEvent.EventType == EventType.Damage ||
                         eventHandler.TriggeringEvent.EventType == EventType.Heal)
                     {
                         Drawer.WriteCommand(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH);
                         return false;
                     }
-                    if(eventHandler.TriggeringEvent.EventType == EventType.Spawn)
+                    if (eventHandler.TriggeringEvent.EventType == EventType.Spawn)
                     {
                         Drawer.WriteCommand(ErrorMessages.EventError.TRAP_SPAWNING_TRAP);
                         return false;
