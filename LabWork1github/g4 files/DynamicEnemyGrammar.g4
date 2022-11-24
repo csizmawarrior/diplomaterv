@@ -10,28 +10,28 @@ statementList: nameDeclaration declarations statement*;
 declarations: declareStatements* COMMANDS COLON;
 
 statement: declareStatements
-		| healDeclaration ';'
-        | moveDeclaration ';'
-        | shootDeclaration ';'
-		| damageDeclaration ';'
-		| teleportDeclaration ';'
-		| spawnDeclaration ';'
+		| healDeclaration SEMI
+        | moveDeclaration SEMI
+        | shootDeclaration SEMI
+		| damageDeclaration SEMI
+		| teleportDeclaration SEMI
+		| spawnDeclaration SEMI
 		| ifExpression
 		| whileExpression
 		| whenExpression
         ;
 
-declareStatements: damageAmountDeclaration ';'
-		| healAmountDeclaration ';'
-		| healthDeclaration ';'
-		| teleportPointDeclaration ';'
-		| spawnPointDeclaration ';'
-		| spawnTypeDeclaration ';'
+declareStatements: damageAmountDeclaration SEMI
+		| healAmountDeclaration SEMI
+		| healthDeclaration SEMI
+		| teleportPointDeclaration SEMI
+		| spawnPointDeclaration SEMI
+		| spawnTypeDeclaration SEMI
 		;
 
 nameDeclaration: trapNameDeclaration | monsterNameDeclaration ;
-trapNameDeclaration: TRAP NAME_T EQUALS name ';' ;
-monsterNameDeclaration: MONSTER NAME_T EQUALS name ';' ;
+trapNameDeclaration: TRAP NAME_T EQUALS name SEMI ;
+monsterNameDeclaration: MONSTER NAME_T EQUALS name SEMI ;
 healthDeclaration: HEALTH EQUALS NUMBER ;
 healAmountDeclaration: HEAL EQUALS NUMBER;
 damageAmountDeclaration: DAMAGE EQUALS NUMBER;

@@ -383,6 +383,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public HealDeclarationContext healDeclaration() {
 			return GetRuleContext<HealDeclarationContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(DynamicEnemyGrammarParser.SEMI, 0); }
 		public MoveDeclarationContext moveDeclaration() {
 			return GetRuleContext<MoveDeclarationContext>(0);
 		}
@@ -527,6 +528,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public DamageAmountDeclarationContext damageAmountDeclaration() {
 			return GetRuleContext<DamageAmountDeclarationContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(DynamicEnemyGrammarParser.SEMI, 0); }
 		public HealAmountDeclarationContext healAmountDeclaration() {
 			return GetRuleContext<HealAmountDeclarationContext>(0);
 		}
@@ -696,6 +698,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(DynamicEnemyGrammarParser.SEMI, 0); }
 		public TrapNameDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -748,6 +751,7 @@ public partial class DynamicEnemyGrammarParser : Parser {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
+		public ITerminalNode SEMI() { return GetToken(DynamicEnemyGrammarParser.SEMI, 0); }
 		public MonsterNameDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
