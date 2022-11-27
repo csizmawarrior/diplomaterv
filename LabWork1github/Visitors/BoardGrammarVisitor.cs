@@ -42,12 +42,6 @@ namespace LabWork1github
                 ErrorList += ErrorMessages.BoardError.ZERO_HEIGHT;
                 ErrorList += context.GetText() + "\n";
             }
-            if (Program.Board.Height == StaticStartValues.PLACEHOLDER_INT)
-            {
-                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
-                ErrorList += context.GetText() + "\n";
-                ErrorFound = true;
-            }
 
             Program.Board.Width = Parsers.IntParseFromNumber(place.y().GetText());
             if (Program.Board.Width == 0)
@@ -55,12 +49,6 @@ namespace LabWork1github
                 ErrorFound = true;
                 ErrorList += ErrorMessages.BoardError.ZERO_WIDTH;
                 ErrorList += context.GetText() + "\n";
-            }
-            if (Program.Board.Width == StaticStartValues.PLACEHOLDER_INT)
-            {
-                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
-                ErrorList += context.GetText() + "\n";
-                ErrorFound = true;
             }
 
             if (context.nameDeclaration() != null)
@@ -81,16 +69,11 @@ namespace LabWork1github
                 ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
                 ErrorList += context.GetText() + "\n";
             }
-            if (xPos == StaticStartValues.PLACEHOLDER_INT || yPos == StaticStartValues.PLACEHOLDER_INT)
-            {
-                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
-                ErrorList += context.GetText() + "\n";
-                ErrorFound = true;
-            }
             Program.Board.Player = new Player(new Place(xPos -1, yPos -1), StaticStartValues.STARTER_PLAYER_HP);
             if (context.nameDeclaration() != null)
                 Program.Board.Player.Name = context.nameDeclaration().ID().GetText();
             Program.Characters.Add(Program.Board.Player);
+            Program.CharacterTypes.Add(new PlayerType());
             return base.VisitPlayerPlacement(context);
         }
         public override object VisitMonsterPlacement([NotNull] MonsterPlacementContext context)
@@ -103,12 +86,6 @@ namespace LabWork1github
                 ErrorFound = true;
                 ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
                 ErrorList += context.GetText() + "\n";
-            }
-            if (xPos == StaticStartValues.PLACEHOLDER_INT || yPos == StaticStartValues.PLACEHOLDER_INT)
-            {
-                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
-                ErrorList += context.GetText() + "\n";
-                ErrorFound = true;
             }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is MonsterType) {
@@ -146,12 +123,6 @@ namespace LabWork1github
                 ErrorFound = true;
                 ErrorList += ErrorMessages.BoardError.ZERO_AS_COORDINATE;
                 ErrorList += context.GetText() + "\n";
-            }
-            if (xPos == StaticStartValues.PLACEHOLDER_INT || yPos == StaticStartValues.PLACEHOLDER_INT)
-            {
-                ErrorList += ErrorMessages.ParseError.UNABLE_TO_PARSE_INT;
-                ErrorList += context.GetText() + "\n";
-                ErrorFound = true;
             }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is TrapType)
@@ -191,12 +162,12 @@ namespace LabWork1github
                             if(m is Player)
                             {
                                 ErrorFound = true;
-                                ErrorList += ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + character.Name;
+                                ErrorList += ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + character.Name + "\n";
                             }
                             if (character.Equals(m))
                             {
                                 ErrorFound = true;
-                                ErrorList += ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER + character.Name;
+                                ErrorList += ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER + character.Name + "\n";
                             }
                             character.Partner = m;
                             break;
@@ -205,7 +176,7 @@ namespace LabWork1github
                     if (character.Partner == null)
                     {
                         ErrorFound = true;
-                        ErrorList += ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + character.Name;
+                        ErrorList += ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + character.Name + "\n";
                     }
                 }
                 foreach (Character c in Program.Characters)

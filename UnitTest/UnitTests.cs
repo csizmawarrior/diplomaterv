@@ -19,7 +19,6 @@ namespace UnitTest
             Program.Board = new Board();
             Program.TrapTypeLoader("C:/Users/Dana/antlrworks/DefaultTrap.txt");
             Program.MonsterTypeLoader("C:/Users/Dana/antlrworks/DefaultMonster.txt");
-            Program.BoardLoader("C:/Users/Dana/antlrworks/BoardCreation.txt");
         }
 
         public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
@@ -5086,6 +5085,185 @@ namespace UnitTest
                     command.CommandList.Count == 1 && command.CommandList.Find(z => z is MoveCommand moveCommand &&
                     moveCommand.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlace)) &&
                     moveCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandWhenCommandPartnerHealPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( trap.teleport_place == me.place){ when( partner heal to player ) {move to 4,1;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand ifCommand && ifCommand.CommandList.Count == 1 &&
+                    ifCommand.CommandList.Find(y => y is WhenCommand command &&
+                    command.TriggerEventHandler.TriggeringEvent.EventType.Equals(EventType.Heal) &&
+                    command.TriggerEventHandler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Player) &&
+                    command.CommandList.Count == 1 && command.CommandList.Find(z => z is MoveCommand moveCommand &&
+                    moveCommand.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlace)) &&
+                    moveCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterIfCommandWhileCommandMoveToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: if( trap.teleport_place == me.place){ while( player.place.x > me.place.x ) {move to player;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is IfCommand ifCommand && ifCommand.CommandList.Count == 1 &&
+                    ifCommand.CommandList.Find(y => y is WhileCommand whileCommand &&
+                    whileCommand.CommandList.Count == 1 && whileCommand.CommandList.Find(
+                        z => z is MoveCommand moveCommand && moveCommand.MoveDelegate.Equals(
+                            new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlayer))) != null) != null) != null);
+        }
+        [Test]
+        public void AssignMonsterWhileCommandIfCommandMoveToPlayer()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("monster name = testmonster ; commands: while( trap.teleport_place == me.place){ if( player.place.x > me.place.x ) {move to player;} };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
+                .Find(x => x is WhileCommand whileCommand && whileCommand.CommandList.Count == 1 &&
+                    whileCommand.CommandList.Find(y => y is IfCommand ifCommand &&
+                    ifCommand.CommandList.Count == 1 && ifCommand.CommandList.Find(
+                        z => z is MoveCommand moveCommand && moveCommand.MoveDelegate.Equals(
+                            new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlayer))) != null) != null) != null);
+        }
+
+
+        //board tests
+        [Test]
+        public void BoardDeclareZeroWidthHeight()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 0,0;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(ErrorMessages.BoardError.ZERO_HEIGHT + "board0,0;" + "\n" +
+                            ErrorMessages.BoardError.ZERO_WIDTH + "board0,0;" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardPlayerPlacingZeroPlace()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player 0,3;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.AreEqual(ErrorMessages.BoardError.ZERO_AS_COORDINATE + "player0,3;" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardMonsterPlacingZeroPlace()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;monster DefaultMonster 3,0;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.AreEqual(ErrorMessages.BoardError.ZERO_AS_COORDINATE + "monsterDefaultMonster3,0;" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardTrapPlacingZeroPlace()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6 ; trap DefaultTrap 0,0;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.AreEqual(ErrorMessages.BoardError.ZERO_AS_COORDINATE + "trapDefaultTrap0,0;" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardUnrealMonsterPlacing()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;monster UnrealMonster 3,2;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.AreEqual(ErrorMessages.BoardError.UNDEFINED_MONSTER_TYPE + "monsterUnrealMonster3,2;" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardUnrealTrapPlacing()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;trap UnrealTrap 3,2;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.AreEqual(ErrorMessages.BoardError.UNDEFINED_TRAP_TYPE + "trapUnrealTrap3,2;" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardTrapPlayerAsPartner()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player name = P01 2,2; trap DefaultTrap name = T01, partner=P01 3,2;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
+            Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2,1))) != null);
+            Assert.AreEqual(2, Program.Characters.Count);
+            Assert.AreEqual(2, Program.CharacterTypes.Count);
+            Assert.AreEqual(ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + "T01" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardTrapItsOwnPartner()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player name = P01 2,2; trap DefaultTrap name = T01, partner=T01 3,2;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
+            Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2, 1))) != null);
+            Assert.AreEqual(2, Program.Characters.Count);
+            Assert.AreEqual(2, Program.CharacterTypes.Count);
+            Assert.AreEqual(ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER + "T01" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardTrapNonExistantPartner()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player name = P01 2,2; trap DefaultTrap name = T01, partner=M03 3,2;");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
+            Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2, 1))) != null);
+            Assert.AreEqual(2, Program.Characters.Count);
+            Assert.AreEqual(3, Program.CharacterTypes.Count);
+            Assert.AreEqual(ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + "T01" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardTrapMonsterPlayerSpawn()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player name = P01 2,2; trap DefaultTrap name = T01, partner=M03 3,2 ; monster DefaultMonster name = M03 4,3");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
+            Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2, 1))) != null);
+
+            Assert.IsTrue(Program.Characters.Find(m => m is Monster && m.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultMonster")) && m.Place.Equals(new Place(3, 2))) != null);
+            Assert.AreEqual(3, Program.Characters.Count);
+            Assert.AreEqual(3, Program.CharacterTypes.Count);
         }
 
     }

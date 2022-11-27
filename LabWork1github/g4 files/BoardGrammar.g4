@@ -14,8 +14,8 @@ x: COORDINATE;
 y: COORDINATE;
 boardCreation: BOARD (nameDeclaration)? place SEMI ;
 playerPlacement: PLAYER (nameDeclaration)? place SEMI;
-monsterPlacement: MONSTER  typeName (nameDeclaration)? (COMMA partnerDeclaration)? place SEMI;
-trapPlacement: TRAP  typeName (nameDeclaration)? (COMMA partnerDeclaration)? place SEMI;
+monsterPlacement: MONSTER  typeName (nameDeclaration (COMMA partnerDeclaration)?)? place SEMI;
+trapPlacement: TRAP  typeName (nameDeclaration (COMMA partnerDeclaration)?)? place SEMI;
 nameDeclaration: NAME_T EQUALS ID;
 partnerDeclaration: PARTNER EQUALS ID;
 
