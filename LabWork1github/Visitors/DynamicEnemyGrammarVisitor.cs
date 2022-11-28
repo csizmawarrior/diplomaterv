@@ -7,7 +7,6 @@ using Antlr4.Runtime.Misc;
 using LabWork1github.Commands;
 using LabWork1github.EventHandling;
 using LabWork1github.static_constants;
-using LabWork1github.Symbols;
 using LabWork1github.Visitors;
 using static LabWork1github.DynamicEnemyGrammarParser;
 
@@ -22,7 +21,6 @@ namespace LabWork1github
         private TypeCreationStage CreationStage { get; set; } = TypeCreationStage.ParameterDeclare;
         public string Error = "";
         public bool ErrorFound = false;
-        public Scope CurrentScope { get; set; } = new Scope(null);
         public override object VisitDefinition([NotNull] DefinitionContext context)
         {
             foreach (var child in context.statementList())

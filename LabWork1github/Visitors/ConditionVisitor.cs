@@ -20,7 +20,6 @@ namespace LabWork1github.Visitors
         public bool ErrorFound { get; set; }
 
         public List<double> NumberList { get; set; } = new List<double>();
-        public List<MathSymbol> SymbolList { get; set; } = new List<MathSymbol>();
 
         public ConditionVisitor(GameParamProvider provider, BoolExpressionContext context)
         {
