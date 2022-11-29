@@ -19,8 +19,8 @@ namespace LabWork1github
         private TriggerEventHandler TriggerEventHandler { get; set; } = null;
         private Command ConditionalCommand { get; set; } = null;
         private TypeCreationStage CreationStage { get; set; } = TypeCreationStage.ParameterDeclare;
-        public string Error = "";
-        public bool ErrorFound = false;
+        public string Error { get; set; }
+        public bool ErrorFound { get; set; }
         public override object VisitDefinition([NotNull] DefinitionContext context)
         {
             foreach (var child in context.statementList())
@@ -1341,17 +1341,17 @@ namespace LabWork1github
             if (direction != null)
             {
                 command.Direction = direction.GetText();
-                if (command is ShootCommand)
+                if (command is ShootCommand shootCommand)
                 {
-                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootDirection);
+                    shootCommand.ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootDirection);
                 }
-                if (command is DamageCommand)
+                if (command is DamageCommand damageCommand)
                 {
-                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection);
+                    damageCommand.DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageDirection);
                 }
-                if (command is HealCommand)
+                if (command is HealCommand healCommand)
                 {
-                    ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection);
+                    healCommand.HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealDirection);
                 }
                 return command;
             }
@@ -1365,19 +1365,19 @@ namespace LabWork1github
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
-                if (command is ShootCommand)
+                if (command is ShootCommand shootCommand)
                 {
-                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlace);
+                    shootCommand.ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlace);
                 }
-                if (command is DamageCommand)
+                if (command is DamageCommand damageCommand)
                 {
-                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace);
+                    damageCommand.DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace);
                 }
-                if (command is HealCommand)
+                if (command is HealCommand healCommand)
                 {
-                    ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace);
+                    healCommand.HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace);
                 }
-                return command; ;
+                return command; 
             }
 
             if (context.character() != null)
@@ -1389,7 +1389,7 @@ namespace LabWork1github
                     Error += context.GetText() + "\n";
                     ErrorFound = true;
                 }
-                if (command is ShootCommand)
+                if (command is ShootCommand shootCommand)
                 {
                     if (context.character().MONSTER() != null)
                     {
@@ -1398,25 +1398,25 @@ namespace LabWork1github
                         ErrorFound = true;
                     }
                     if (context.character().PLAYER() != null)
-                        ((ShootCommand)command).ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlayer);
+                        shootCommand.ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlayer);
                 }
-                if (command is DamageCommand)
+                if (command is DamageCommand damageCommand)
                 {
                     if (context.character().MONSTER() != null)
-                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToMonster);
+                        damageCommand.DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToMonster);
                     if (context.character().PLAYER() != null)
-                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlayer);
+                        damageCommand.DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlayer);
                     if(context.character().PARTNER() != null)
-                        ((DamageCommand)command).DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPartner);
+                        damageCommand.DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPartner);
                 }
-                if (command is HealCommand)
+                if (command is HealCommand healCommand)
                 {
                     if (context.character().MONSTER() != null)
-                        ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToMonster);
+                        healCommand.HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToMonster);
                     if (context.character().PLAYER() != null)
-                        ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer);
+                        healCommand.HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer);
                     if (context.character().PARTNER() != null)
-                        ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner);
+                        healCommand.HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner);
                 }
                 return command;
             }
@@ -1424,12 +1424,12 @@ namespace LabWork1github
             var random = context.RANDOM();
             if (random != null)
             {
-                if (command is ShootCommand)
-                    ((ShootCommand)command).ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom);
-                if (command is DamageCommand)
-                    ((DamageCommand)command).DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageRandom);
-                if (command is HealCommand)
-                    ((HealCommand)command).HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealRandom);
+                if (command is ShootCommand shootCommand)
+                    shootCommand.ShootDelegate = new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom);
+                if (command is DamageCommand damageCommand)
+                    damageCommand.DamageDelegate = new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageRandom);
+                if (command is HealCommand healCommand)
+                    healCommand.HealDelegate = new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealRandom);
                 return command;
             }
             return command;

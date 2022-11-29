@@ -23,15 +23,6 @@ namespace LabWork1github
             AfterBoardCreationCheck();
             return null;
         }
-
-        public override object VisitStatementList(StatementListContext context)
-        {
-            return base.VisitStatementList(context);
-        }
-        public override object VisitStatement([NotNull] StatementContext context)
-        {
-            return base.VisitStatement(context);
-        }
         public override object VisitBoardCreation([NotNull] BoardCreationContext context)
         {
             PlaceContext place = context.place();
@@ -88,9 +79,9 @@ namespace LabWork1github
                 ErrorList += context.GetText() + "\n";
             }
             string typeName = context.typeName().GetText();
-            if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is MonsterType) {
+            if (Program.GetCharacterType(typeName) is MonsterType type) {
                 Monster m = new Monster(StaticStartValues.STARTER_MONSTER_HP, 
-                                    (MonsterType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+                                    type, new Place(xPos - 1, yPos - 1));
 
                 if(context.nameDeclaration() != null)
                 {
@@ -125,9 +116,9 @@ namespace LabWork1github
                 ErrorList += context.GetText() + "\n";
             }
             string typeName = context.typeName().GetText();
-            if (Program.GetCharacterType(typeName) != null && Program.GetCharacterType(typeName) is TrapType)
+            if (Program.GetCharacterType(typeName) is TrapType type)
             {
-                Trap t = new Trap((TrapType)Program.GetCharacterType(typeName), new Place(xPos - 1, yPos - 1));
+                Trap t = new Trap(type, new Place(xPos - 1, yPos - 1));
 
                 if (context.nameDeclaration() != null)
                 {
@@ -155,24 +146,27 @@ namespace LabWork1github
             {
                 if (!character.PartnerName.Equals(StaticStartValues.PLACEHOLDER_PARTNER_NAME))
                 {
-                    foreach (Character m in Program.Characters)
+                    foreach(var c in Program.Characters.Where(c => c.Name.Equals(character.Name) && !c.Equals(character)))
                     {
-                        if (m.Name.Equals(character.PartnerName))
-                        {
-                            if(m is Player)
-                            {
-                                ErrorFound = true;
-                                ErrorList += ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + character.Name + "\n";
-                            }
-                            if (character.Equals(m))
-                            {
-                                ErrorFound = true;
-                                ErrorList += ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER + character.Name + "\n";
-                            }
-                            character.Partner = m;
-                            break;
-                        }
+                        c.Name = "";
                     }
+                    foreach (var m in Program.Characters.Where(m => m.Name.Equals(character.PartnerName)))
+                    {
+                        if (m is Player)
+                        {
+                            ErrorFound = true;
+                            ErrorList += $"{ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER}{character.Name}\n";
+                        }
+
+                        if (character.Equals(m))
+                        {
+                            ErrorFound = true;
+                            ErrorList += $"{ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER}{character.Name}\n";
+                        }
+
+                        character.Partner = m;
+                    }
+
                     if (character.Partner == null)
                     {
                         ErrorFound = true;
@@ -181,16 +175,20 @@ namespace LabWork1github
                 }
                 foreach (Character c in Program.Characters)
                 {
-                    if(character is Player)
-                            if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && !(c is Player))
-                                throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_CHARACTER);
-                    if ((c is Trap))
+                    if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && !(c is Player))
                     {
-                        if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && character != c)
-                            throw new NullReferenceException(ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + character.Name);
                         if (character is Player)
-                            if (c.Place.DirectionTo(character.Place) == Directions.COLLISION)
-                                throw new NullReferenceException(ErrorMessages.GameError.PLAYER_SPAWNED_ON_TRAP);
+                        {
+                            ErrorFound = true;
+                            ErrorList += ErrorMessages.GameError.PLAYER_SPAWNED_ON_CHARACTER + "\n";
+                        }
+                            if ((c is Trap))
+                        {
+                            ErrorFound = true;
+                            ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + "\n";
+                            if (character is Player)
+                                ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + "\n";
+                        }
                     }
                 }
             }

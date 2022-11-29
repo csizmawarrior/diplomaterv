@@ -39,15 +39,6 @@ namespace UnitTest
             BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
             return chatContext;
         }
-        public PlayerGrammarParser.StatementContext PreparingPlayerGrammar(string fileText)
-        {
-            AntlrInputStream inputStream = new AntlrInputStream(fileText);
-            PlayerGrammarLexer PlayerGrammarLexer_ = new PlayerGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(PlayerGrammarLexer_);
-            PlayerGrammarParser PlayerGrammarParser = new PlayerGrammarParser(commonTokenStream);
-            PlayerGrammarParser.StatementContext chatContext = PlayerGrammarParser.statement();
-            return chatContext;
-        }
 
         //Parameter set error tests
         [Test]
@@ -4399,11 +4390,11 @@ namespace UnitTest
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
-                .Find(x => x is TriggerEventHandler && ((TriggerEventHandler)x).Commands.Count == 1 &&
-                    ((TriggerEventHandler)x).TriggeringEvent.EventType.Equals(EventType.Move) &&
-                    ((TriggerEventHandler)x).TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
-                    ((TriggerEventHandler)x).TriggeringEvent.TargetPlace.Equals(new Place(1,2)) &&
-                 ((TriggerEventHandler)x).Commands.Find(y => y is HealCommand command && 
+                .Find(x => (x != null) && x.Commands.Count == 1 &&
+                    x.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    x.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
+                    x.TriggeringEvent.TargetPlace.Equals(new Place(1,2)) &&
+                    x.Commands.Find(y => y is HealCommand command && 
                     command.HealDelegate.Equals(
                      new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer))) != null) != null);
         }
@@ -5212,7 +5203,7 @@ namespace UnitTest
             Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
                                 Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2,1))) != null);
             Assert.AreEqual(2, Program.Characters.Count);
-            Assert.AreEqual(2, Program.CharacterTypes.Count);
+            Assert.AreEqual(3, Program.CharacterTypes.Count);
             Assert.AreEqual(ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + "T01" + "\n", visitor.ErrorList);
         }
         [Test]
@@ -5228,7 +5219,7 @@ namespace UnitTest
             Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
                                 Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2, 1))) != null);
             Assert.AreEqual(2, Program.Characters.Count);
-            Assert.AreEqual(2, Program.CharacterTypes.Count);
+            Assert.AreEqual(3, Program.CharacterTypes.Count);
             Assert.AreEqual(ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER + "T01" + "\n", visitor.ErrorList);
         }
         [Test]
