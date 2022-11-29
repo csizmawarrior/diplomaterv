@@ -10,7 +10,6 @@ namespace LabWork1github.Visitors
 {
     class ConditionVisitor : DynamicEnemyGrammarBaseVisitor<object>
     {
-        //TODO: Check double int mismatches with tests
         public BoolExpressionContext BoolExpressionContext { get; set; }
 
         public GameParamProvider Provider { get; set; }

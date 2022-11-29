@@ -16,9 +16,4 @@ namespace LabWork1github
         public const string DEFAULT_TRAP = "DefaultTrap";
         public const string DEFAULT_MONSTER = "DefaultMonster";
     }
-
-    public static class TypeParameters
-    {
-
-    }
 }
