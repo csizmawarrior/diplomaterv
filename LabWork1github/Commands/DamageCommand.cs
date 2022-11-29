@@ -10,7 +10,6 @@ namespace LabWork1github.Commands
 
     public class DamageCommand : HealthChangerCommand
     {
-
         public DamageDelegate DamageDelegate { get; set; }
 
         public override void Execute(GameParamProvider provider)

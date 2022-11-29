@@ -11,14 +11,9 @@ namespace LabWork1github
 
     public class MoveCommand : Command
     {
-
         public int Distance { get; set; } = StaticStartValues.STARTER_DISTANCE;
-
-        public int Round { get; set; }
-
         public Place TargetPlace { get; set; }
         public string Direction { get; set; }
-
         public MoveDelegate MoveDelegate { get; set; }
 
         public override void Execute(GameParamProvider provider)

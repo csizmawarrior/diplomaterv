@@ -6,14 +6,14 @@ namespace LabWork1github
 {
     public class Drawer
     {
-        bool occupied = false;
-        bool trapOccupied = false;
+        bool Occupied { get; set; } = false;
+        bool TrapOccupied { get; set; } = false;
         bool found = false;
         public static void LogMessage(string message)
         {
             try
             {
-                TextWriter tsw = new StreamWriter("C:/Users/Dana/antlrworks/error_log.txt", true);
+                TextWriter tsw = new StreamWriter(FileNames.ERROR_LOG_FILE_ADDRESS, true);
                 tsw.WriteLine(message);
                 tsw.Close();
             }
@@ -40,7 +40,7 @@ namespace LabWork1github
         }
         public void DrawBoard(Board board, Player player, List<Monster> monsters, List<Trap> traps)
         {
-            Console.WriteLine("\n--------------------------------\n");
+            Console.WriteLine(PlayerInteractionMessages.COMMAND_SEPARATOR);
 
             List<Place> places = new List<Place>();
             places.Add(player.Place);
@@ -58,20 +58,20 @@ namespace LabWork1github
 
                 for(int j = 0; j < board.Width; j++)
                 {
-                    occupied = false;
-                    trapOccupied = false;
+                    Occupied = false;
+                    TrapOccupied = false;
                     found = false;
 
                     foreach (Trap trap in traps)
                     {
-                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                        if (trap.Place.DirectionTo(new Place(i, j)) == Directions.COLLISION)
                         {
                             Console.Write(" TTT");
-                            trapOccupied = true;
+                            TrapOccupied = true;
                             break;
                         }
                     }
-                    if(!trapOccupied)
+                    if(!TrapOccupied)
                         Console.Write(" |||");
                     if(j == board.Width-1)
                         Console.Write("\n");
@@ -81,20 +81,20 @@ namespace LabWork1github
 
                 for (int j = 0; j < board.Width; j++)
                 {
-                    occupied = false;
-                    trapOccupied = false;
+                    Occupied = false;
+                    TrapOccupied = false;
                     found = false;
 
                     foreach (Trap trap in traps)
                     {
-                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                        if (trap.Place.DirectionTo(new Place(i, j)) == Directions.COLLISION)
                         {
-                            trapOccupied = true;
+                            TrapOccupied = true;
                             break;
                         }
                     }
 
-                    if (trapOccupied)
+                    if (TrapOccupied)
                     {
                         Console.Write(" T");
                     }
@@ -103,27 +103,27 @@ namespace LabWork1github
 
                     foreach (Place place in places)
                     {
-                        if (place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                        if (place.DirectionTo(new Place(i, j)) == Directions.COLLISION)
                         {
-                            occupied = true;
+                            Occupied = true;
                             break;
                         }
                     }
 
-                    if (!occupied)
+                    if (!Occupied)
                     {
                         Console.Write("||");
                         if (j == board.Width - 1)
                             Console.Write("\n");
                         continue;
                     }
-                    if (player.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                    if (player.Place.DirectionTo(new Place(i, j)) == Directions.COLLISION)
                         Console.Write("P");
                     else
                     {
                         foreach(Monster monster in monsters)
                         {
-                            if (monster.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                            if (monster.Place.DirectionTo(new Place(i, j)) == Directions.COLLISION)
                             {
                                 Console.Write("M");
                                 found = true;
@@ -133,7 +133,7 @@ namespace LabWork1github
                         int counter = 0;
                         foreach (Trap trap in traps)
                         {
-                            if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                            if (trap.Place.DirectionTo(new Place(i, j)) == Directions.COLLISION)
                             {
                                 counter++;
                                 if (counter == 2)
@@ -148,7 +148,7 @@ namespace LabWork1github
                             Console.Write(" ");
                     }
 
-                    if(trapOccupied)
+                    if(TrapOccupied)
                         Console.Write("T");
                     else
                         Console.Write("|");
@@ -159,18 +159,18 @@ namespace LabWork1github
 
                 for(int j = 0; j < board.Width; j++)
                 {
-                    trapOccupied = false;
+                    TrapOccupied = false;
 
                     foreach (Trap trap in traps)
                     {
-                        if (trap.Place.DirectionTo(new Place((int)i, (int)j)) == Directions.COLLISION)
+                        if (trap.Place.DirectionTo(new Place(i, j)) == Directions.COLLISION)
                         {
-                            trapOccupied = true;
+                            TrapOccupied = true;
                             break;
                         }
                     }
 
-                    if (trapOccupied)
+                    if (TrapOccupied)
                         Console.Write(" TTT");
                     else
                         Console.Write(" |||");

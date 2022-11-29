@@ -9,7 +9,7 @@ namespace LabWork1github
 {
     public class GameParamProvider
     {
-        Game game;
+        readonly Game game;
         public int GetNear()
         {
             return StaticStartValues.STARTER_NEAR;

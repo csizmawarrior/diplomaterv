@@ -11,7 +11,6 @@ namespace LabWork1github
 
     public class ShootCommand : HealthChangerCommand
     {
-
         public ShootDelegate ShootDelegate { get; set; }
 
         public override void Execute(GameParamProvider provider)

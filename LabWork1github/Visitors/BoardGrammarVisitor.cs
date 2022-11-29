@@ -175,7 +175,7 @@ namespace LabWork1github
                 }
                 foreach (Character c in Program.Characters)
                 {
-                    if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && !(c is Player))
+                    if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && !(c is Player) && !c.Equals(character))
                     {
                         if (character is Player)
                         {

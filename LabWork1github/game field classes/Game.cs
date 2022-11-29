@@ -21,17 +21,13 @@ namespace LabWork1github
 
         public List<Trap> Traps { get; set; }
 
-        public static PlayerMove move = new PlayerMove();
+        public static PlayerMove Move { get; set; } = new PlayerMove();
 
-        public static List<Character> Characters = new List<Character>();
-
+        public static List<Character> Characters { get; set; } = new List<Character>();
         public int Round { get; set; } = 0;
-
-        public bool wrongMove = false;
-
-        public Drawer Drawer;
-
-        public bool spawned = false;
+        public bool WrongMove { get; set; } = false;
+        public Drawer Drawer { get; set; }
+        public bool Spawned { get; set; } = false;
 
         public Character ActualCharacter { get; set; }
 
@@ -45,7 +41,7 @@ namespace LabWork1github
             Monsters = Board.Monsters;
             Characters = Program.Characters;
             Traps = Board.Traps;
-            move = new PlayerMove();
+            Move = new PlayerMove();
             Player = Board.Player;
             CheckOutOfBoundCharacters();
             foreach (Character character in Characters)
@@ -97,9 +93,9 @@ namespace LabWork1github
 
         public void Step()
         {
-            wrongMove = false;
-            move = new PlayerMove();
-            spawned = false;
+            WrongMove = false;
+            Move = new PlayerMove();
+            Spawned = false;
 
             foreach (Character character in Characters)
             {
@@ -107,9 +103,9 @@ namespace LabWork1github
                 character.GetCharacterType().Step(Provider);
             }
 
-            if (spawned)
+            if (Spawned)
                 Characters.Add(Monsters.ElementAt(Monsters.Count - 1));
-            if (wrongMove)
+            if (WrongMove)
                 return;
 
 
@@ -180,7 +176,7 @@ namespace LabWork1github
             string inputLine = Console.ReadLine();
             CommandProcess(inputLine);
             Drawer.LogMessage(StaticStartValues.PLAYER_COMMAND_LOG+inputLine);
-            switch (move.CommandType)
+            switch (Move.CommandType)
             {
                 case CommandType.health:
                     TriggerEvent healthCheckEvent = new TriggerEvent
@@ -193,39 +189,39 @@ namespace LabWork1github
                     EventCollection.InvokePlayerHealthCheck(Player, healthCheckEvent);
                     break;
                 case CommandType.move:
-                    if (FallingCheck(Player, move))
+                    if (FallingCheck(Player, Move))
                     {
                         Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_FALLING_OFF_BOARD);
-                        wrongMove = true;
+                        WrongMove = true;
                         break;
                     }
                     for (int i = 0; i < Monsters.Count; i++)
                     {
-                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
+                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == Move.Direction)
                         {
                             Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_BUMP_INTO_MONSTER);
                             Player.Damage(StaticStartValues.BUMPING_INTO_MONSTER_DAMAGE);
-                            wrongMove = true;
+                            WrongMove = true;
                             break;
                         }
                     }
                     int trapCounter = 0;
                     foreach (Trap trap in Traps)
                     {
-                        if (Player.Place.DirectionTo(trap.Place) == move.Direction)
+                        if (Player.Place.DirectionTo(trap.Place) == Move.Direction)
                         {
                             trapCounter++;
                             if (trapCounter >= 2)
                             {
                                 Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_BUMP_INTO_DOUBLE_TRAP);
                                 Player.Damage(StaticStartValues.BUMPING_INTO_DOUBLE_TRAP_DAMAGE);
-                                wrongMove = true;
+                                WrongMove = true;
                                 break;
                             }
                         }
                     }
-                    if (!wrongMove)
-                        Player.Move(move.Direction);
+                    if (!WrongMove)
+                        Player.Move(Move.Direction);
                     break;
                 case CommandType.shoot:
                     TriggerEvent shootEvent = new TriggerEvent
@@ -236,7 +232,7 @@ namespace LabWork1github
                     };
                     for (int i = 0; i < Monsters.Count; i++)
                     {
-                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == move.Direction)
+                        if (Player.Place.DirectionTo(Monsters.ElementAt(i).Place) == Move.Direction)
                         {
                             Monsters.ElementAt(i).Damage(Player.Type.Damage);
                             shootEvent.TargetCharacterOption = CharacterOptions.Monster;
@@ -247,19 +243,19 @@ namespace LabWork1github
                     EventCollection.InvokeSomeoneShot(Player, shootEvent);
                     break;
                 case CommandType.help:
-                    wrongMove = true;
+                    WrongMove = true;
                     Drawer.writeHelp();
                     break;
                 default:
                     Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_INVALID_COMMAND);
-                    wrongMove = true;
+                    WrongMove = true;
                     break;
             }
         }
 
         public void SpawnMonster(Monster monster)
         {
-            spawned = true;
+            Spawned = true;
             this.Monsters.Add(monster);
             if (!this.Board.Monsters.Contains(monster))
                 this.Board.Monsters.Add(monster);
@@ -286,7 +282,7 @@ namespace LabWork1github
                     return true;
                 }
             }
-            if (spawned)
+            if (Spawned)
                 if (Monsters.ElementAt(Monsters.Count - 1).Place.DirectionTo(p) == Directions.COLLISION)
                     return true;
             return false;
@@ -296,14 +292,12 @@ namespace LabWork1github
         {
             int smallestDistance = Board.Height + Board.Width;
             Monster closestMonster = null;
-            int xDistance = smallestDistance;
-            int yDistance = smallestDistance;
             foreach (Monster m in Monsters)
             {
                 if (m.Equals(ActualCharacter))
                     continue;
-                xDistance = Math.Abs(m.Place.X - ActualCharacter.Place.X);
-                yDistance = Math.Abs(m.Place.Y - ActualCharacter.Place.Y);
+                int xDistance = Math.Abs(m.Place.X - ActualCharacter.Place.X);
+                int yDistance = Math.Abs(m.Place.Y - ActualCharacter.Place.Y);
                 if (xDistance + yDistance < smallestDistance)
                 {
                     smallestDistance = xDistance + yDistance;
@@ -317,14 +311,12 @@ namespace LabWork1github
         {
             int smallestDistance = Board.Height + Board.Width;
             Trap closestTrap = null;
-            int xDistance = smallestDistance;
-            int yDistance = smallestDistance;
             foreach (Trap m in Traps)
             {
                 if (m.Equals(ActualCharacter))
                     continue;
-                xDistance = Math.Abs(m.Place.X - ActualCharacter.Place.X);
-                yDistance = Math.Abs(m.Place.Y - ActualCharacter.Place.Y);
+                int xDistance = Math.Abs(m.Place.X - ActualCharacter.Place.X);
+                int yDistance = Math.Abs(m.Place.Y - ActualCharacter.Place.Y);
                 if (xDistance + yDistance < smallestDistance)
                 {
                     smallestDistance = xDistance + yDistance;

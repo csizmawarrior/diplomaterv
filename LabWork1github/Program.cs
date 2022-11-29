@@ -27,9 +27,9 @@ namespace LabWork1github
 
 
             //  MonsterTypeLoader();
-            bool trapInit = TrapTypeLoader("C:/Users/Dana/antlrworks/ExampleTraps.txt");
-            bool monsterInit = MonsterTypeLoader("C:/Users/Dana/antlrworks/ExampleMonsters.txt");
-            bool boardInit = BoardLoader("C:/Users/Dana/antlrworks/ExampleBoard.txt");
+            bool trapInit = TrapTypeLoader(FileNames.EXAMPLE_TRAPS_FILE_ADDRESS);
+            bool monsterInit = MonsterTypeLoader(FileNames.EXAMPLE_MONSTERS_FILE_ADDRESS);
+            bool boardInit = BoardLoader(FileNames.EXAMPLE_BOARD_FILE_ADDRESS);
 
             if (trapInit || monsterInit || boardInit)
             {

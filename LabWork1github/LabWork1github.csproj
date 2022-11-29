@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="static constants\Directions.cs" />
     <Compile Include="static constants\ErrorMessages.cs" />
+    <Compile Include="static constants\FileNames.cs" />
     <Compile Include="static constants\PlayerInteractionMessages.cs" />
     <Compile Include="static constants\StaticStartValues.cs" />
     <Compile Include="Visitors\BoardGrammarVisitor.cs" />

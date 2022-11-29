@@ -11,9 +11,7 @@ namespace LabWork1github.Commands
     public class NumberParameterDeclareCommand : HealthChangerCommand
     {
         public double Number { get; set; }
-
         public NumberParameterDeclareDelegate NumberParameterDeclareDelegate { get; set; }
-
         public override void Execute(GameParamProvider provider)
         {
             NumberParameterDeclareDelegate(provider, this);

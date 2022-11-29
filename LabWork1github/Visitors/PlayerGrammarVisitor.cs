@@ -7,24 +7,24 @@ namespace LabWork1github
     {
         public override object VisitHealthCheckStatement([NotNull] HealthCheckStatementContext context)
         {
-            Game.move.CommandType = CommandType.health;
+            Game.Move.CommandType = CommandType.health;
             return base.VisitHealthCheckStatement(context);
         }
         public override object VisitMovingStatement([NotNull] MovingStatementContext context)
         {
-            Game.move.CommandType = CommandType.move;
-            Game.move.Direction = context.direction().GetText();
+            Game.Move.CommandType = CommandType.move;
+            Game.Move.Direction = context.direction().GetText();
             return base.VisitMovingStatement(context);
         }
         public override object VisitShootingStatement([NotNull] ShootingStatementContext context)
         {
-            Game.move.CommandType = CommandType.shoot;
-            Game.move.Direction = context.direction().GetText();
+            Game.Move.CommandType = CommandType.shoot;
+            Game.Move.Direction = context.direction().GetText();
             return base.VisitShootingStatement(context);
         }
         public override object VisitHelpStatement([NotNull] HelpStatementContext context)
         {
-            Game.move.CommandType = CommandType.help;
+            Game.Move.CommandType = CommandType.help;
             return base.VisitHelpStatement(context);
         }
     }

@@ -10,9 +10,7 @@ namespace LabWork1github.Commands
 
     public class HealCommand : HealthChangerCommand
     {
-
         public HealDelegate HealDelegate { get; set; }
-
         public override void Execute(GameParamProvider provider)
         {
             HealDelegate(provider, this);

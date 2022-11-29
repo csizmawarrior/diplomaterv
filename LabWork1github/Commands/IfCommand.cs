@@ -13,7 +13,6 @@ namespace LabWork1github
     {
         public BoolExpressionContext MyContext { get; set; }
         public Condition Condition { get; set; }
-
         public override void Execute(GameParamProvider provider)
         {
             if(Condition(provider, MyContext))

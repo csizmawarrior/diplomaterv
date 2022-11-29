@@ -11,7 +11,6 @@ namespace LabWork1github.Commands
     public class TypeParameterDeclareCommand : HealthChangerCommand
     {
         public CharacterType CharacterType { get; set; }
-
         public TypeParameterDeclareDelegate TypeParameterDeclareDelegate { get; set; }
 
         public override void Execute(GameParamProvider provider)

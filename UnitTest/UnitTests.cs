@@ -17,8 +17,8 @@ namespace UnitTest
             Program.Characters.Clear();
             Program.CharacterTypes.Clear();
             Program.Board = new Board();
-            Program.TrapTypeLoader("C:/Users/Dana/antlrworks/DefaultTrap.txt");
-            Program.MonsterTypeLoader("C:/Users/Dana/antlrworks/DefaultMonster.txt");
+            Program.TrapTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
+            Program.MonsterTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
         }
 
         public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)

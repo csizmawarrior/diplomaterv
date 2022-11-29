@@ -88,8 +88,8 @@ namespace LabWork1github.Visitors
                     if (command.Random)
                     {
                         Random rand = new Random();
-                        int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-                        int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                        int XPos = (rand.Next() % provider.GetBoard().Height);
+                        int YPos = (rand.Next() % provider.GetBoard().Width);
                         command.TargetPlace = new Place(XPos, YPos);
                     }
                     if (provider.IsFreePlace(command.TargetPlace))
