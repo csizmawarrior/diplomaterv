@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-
     public class MonsterType : CharacterType
     {
         public MonsterType()

@@ -42,10 +42,10 @@ spawnTypeDeclaration: SPAWN_TYPE EQUALS name;
 
 distanceDeclare: DISTANCE EQUALS NUMBER;
 
-moveDeclaration: MOVE DIRECTION | MOVE TO place | MOVE DIRECTION distanceDeclare | MOVE TO PLAYER | MOVE TO RANDOM ;
+moveDeclaration: MOVE DIRECTION (distanceDeclare)? | MOVE TO place | MOVE TO PLAYER | MOVE TO RANDOM ;
 
-healthChangeOption: DIRECTION | DIRECTION distanceDeclare | DIRECTION hpChangeAmountDeclaration | DIRECTION distanceDeclare hpChangeAmountDeclaration |
-					TO place | TO place hpChangeAmountDeclaration | TO character | TO character hpChangeAmountDeclaration | RANDOM;
+healthChangeOption: DIRECTION | DIRECTION (distanceDeclare)? (hpChangeAmountDeclaration)? | RANDOM |
+					TO place (hpChangeAmountDeclaration)? | TO character (hpChangeAmountDeclaration)?;
 shootDeclaration: SHOOT healthChangeOption;
 damageDeclaration: DAMAGE healthChangeOption ;
 healDeclaration: HEAL healthChangeOption;

@@ -53,14 +53,14 @@ namespace LabWork1github.Visitors
         public static void SpawnRandom(GameParamProvider provider, SpawnCommand command)
         {
             Random rand = new Random();
-            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            int XPos = (rand.Next() % provider.GetBoard().Height);
+            int YPos = (rand.Next() % provider.GetBoard().Width);
             command.TargetPlace = new Place(XPos, YPos);
 
             bool found = false;
             while (!found)
             {
-                int index = (int)(rand.Next() % Program.CharacterTypes.Count);
+                int index = (rand.Next() % Program.CharacterTypes.Count);
                 if (Program.CharacterTypes.ElementAt(index) is MonsterType)
                 {
                     command.TargetCharacterType = Program.CharacterTypes.ElementAt(index);
@@ -120,8 +120,8 @@ namespace LabWork1github.Visitors
                     if (command.Random)
                     {
                         Random rand = new Random();
-                        int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-                        int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                        int XPos = (rand.Next() % provider.GetBoard().Height);
+                        int YPos = (rand.Next() % provider.GetBoard().Width);
                         command.TargetPlace = new Place(XPos, YPos);
                     }
                     if (provider.IsFreePlace(command.TargetPlace))
@@ -155,8 +155,8 @@ namespace LabWork1github.Visitors
                 if (command.Random)
                 {
                     Random rand = new Random();
-                    int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-                    int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                    int XPos = (rand.Next() % provider.GetBoard().Height);
+                    int YPos = (rand.Next() % provider.GetBoard().Width);
                     command.TargetPlace = new Place(XPos, YPos);
                 }
                 if (provider.IsFreePlace(command.TargetPlace))
@@ -183,8 +183,8 @@ namespace LabWork1github.Visitors
                 if (command.Random)
                 {
                     Random rand = new Random();
-                    int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-                    int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                    int XPos = (rand.Next() % provider.GetBoard().Height);
+                    int YPos = (rand.Next() % provider.GetBoard().Width);
                     command.TargetPlace = new Place(XPos, YPos);
                 }
                 if (provider.IsFreePlace(command.TargetPlace))
@@ -198,7 +198,6 @@ namespace LabWork1github.Visitors
 
         }
 
-        //TODO: check with test if fall check this way okay or not
         public static void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
             TriggerEvent moveEvent = new TriggerEvent
@@ -213,20 +212,20 @@ namespace LabWork1github.Visitors
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    if (provider.IsFreePlace(new Place((int)provider.GetMe().Place.X - command.Distance, (int)provider.GetMe().Place.Y)))
-                        provider.GetMe().Place.X -= (int)command.Distance;
+                    if (provider.IsFreePlace(new Place(provider.GetMe().Place.X - command.Distance, provider.GetMe().Place.Y)))
+                        provider.GetMe().Place.X -= command.Distance;
                     break;
                 case Directions.BACKWARDS:
-                    if (provider.IsFreePlace(new Place((int)provider.GetMe().Place.X + command.Distance, (int)provider.GetMe().Place.Y)))
-                        provider.GetMe().Place.X += (int)command.Distance;
+                    if (provider.IsFreePlace(new Place(provider.GetMe().Place.X + command.Distance, provider.GetMe().Place.Y)))
+                        provider.GetMe().Place.X += command.Distance;
                     break;
                 case Directions.LEFT:
-                    if (provider.IsFreePlace(new Place((int)provider.GetMe().Place.X, (int)provider.GetMe().Place.Y - command.Distance)))
-                        provider.GetMe().Place.Y -= (int)command.Distance;
+                    if (provider.IsFreePlace(new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y - command.Distance)))
+                        provider.GetMe().Place.Y -= command.Distance;
                     break;
                 case Directions.RIGHT:
-                    if (provider.IsFreePlace(new Place((int)provider.GetMe().Place.X, (int)provider.GetMe().Place.Y + command.Distance)))
-                        provider.GetMe().Place.Y += (int)command.Distance;
+                    if (provider.IsFreePlace(new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y + command.Distance)))
+                        provider.GetMe().Place.Y += command.Distance;
                     break;
             }
             moveEvent.TargetPlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y);
@@ -441,9 +440,9 @@ namespace LabWork1github.Visitors
         public static void ShootRandom(GameParamProvider provider, ShootCommand command)
         {
             Random rand = new Random();
-            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
-            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 2);
+            int XPos = (rand.Next() % provider.GetBoard().Height);
+            int YPos = (rand.Next() % provider.GetBoard().Width);
             command.HealthChangeAmount = damage;
             command.TargetPlace = new Place(XPos, YPos);
             ShootToPlace(provider, command);
@@ -464,7 +463,7 @@ namespace LabWork1github.Visitors
                     //distance is 1 as default value
                     for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.X - i >= 0)
+                        if (provider.GetMe().Place.X - i >= 0)
                         {
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
@@ -491,7 +490,7 @@ namespace LabWork1github.Visitors
                 case Directions.BACKWARDS:
                     for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
+                        if (provider.GetMe().Place.X + i < provider.GetBoard().Height)
                         {
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
@@ -518,7 +517,7 @@ namespace LabWork1github.Visitors
                 case Directions.LEFT:
                     for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y - i >= 0)
+                        if (provider.GetMe().Place.Y - i >= 0)
                         {
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
@@ -545,7 +544,7 @@ namespace LabWork1github.Visitors
                 case Directions.RIGHT:
                     for (int i = 0; i <= command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
+                        if (provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                         {
 
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i
@@ -666,8 +665,8 @@ namespace LabWork1github.Visitors
         {
             Random rand = new Random();
             int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
-            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            int XPos = (rand.Next() % provider.GetBoard().Height);
+            int YPos = (rand.Next() % provider.GetBoard().Width);
             command.HealthChangeAmount = damage;
             command.TargetPlace = new Place(XPos, YPos);
             DamageToPlace(provider, command);
@@ -688,7 +687,7 @@ namespace LabWork1github.Visitors
                     //distance is 1 as default value
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.X - i >= 0)
+                        if (provider.GetMe().Place.X - i >= 0)
                         {
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X - i
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
@@ -715,7 +714,7 @@ namespace LabWork1github.Visitors
                 case Directions.BACKWARDS:
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.X + i < provider.GetBoard().Height)
+                        if (provider.GetMe().Place.X + i < provider.GetBoard().Height)
                         {
                             if (provider.GetPlayer().Place.X == provider.GetMe().Place.X + i
                                 && provider.GetPlayer().Place.Y == provider.GetMe().Place.Y)
@@ -742,7 +741,7 @@ namespace LabWork1github.Visitors
                 case Directions.LEFT:
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y - i >= 0)
+                        if (provider.GetMe().Place.Y - i >= 0)
                         {
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y - i
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
@@ -769,7 +768,7 @@ namespace LabWork1github.Visitors
                 case Directions.RIGHT:
                     for (int i = 0; i < command.Distance; i++)
                     {
-                        if ((int)provider.GetMe().Place.Y + i < provider.GetBoard().Width)
+                        if (provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                         {
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i
                                 && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
@@ -889,8 +888,8 @@ namespace LabWork1github.Visitors
         {
             Random rand = new Random();
             int Heal = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 5);
-            int XPos = (int)(rand.Next() % provider.GetBoard().Height);
-            int YPos = (int)(rand.Next() % provider.GetBoard().Width);
+            int XPos = (rand.Next() % provider.GetBoard().Height);
+            int YPos = (rand.Next() % provider.GetBoard().Width);
             command.HealthChangeAmount = Heal;
             command.TargetPlace = new Place(XPos, YPos);
             HealToPlace(provider, command);

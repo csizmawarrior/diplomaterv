@@ -37,7 +37,8 @@ namespace LabWork1github
         }
         public override int GetHashCode()
         {
-            return X+Y+base.GetHashCode();
+            Random random = new Random();
+            return X + Y + random.Next();
         }
     }
 }

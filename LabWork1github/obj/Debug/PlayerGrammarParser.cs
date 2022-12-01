@@ -225,6 +225,10 @@ public partial class PlayerGrammarParser : Parser {
 	}
 
 	public partial class DirectionContext : ParserRuleContext {
+		public ITerminalNode FORWARD() { return GetToken(PlayerGrammarParser.FORWARD, 0); }
+		public ITerminalNode LEFT() { return GetToken(PlayerGrammarParser.LEFT, 0); }
+		public ITerminalNode RIGHT() { return GetToken(PlayerGrammarParser.RIGHT, 0); }
+		public ITerminalNode BACKWARD() { return GetToken(PlayerGrammarParser.BACKWARD, 0); }
 		public DirectionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{

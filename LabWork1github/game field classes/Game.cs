@@ -43,7 +43,11 @@ namespace LabWork1github
             Traps = Board.Traps;
             Move = new PlayerMove();
             Player = Board.Player;
-            CheckOutOfBoundCharacters();
+            if (Board.Player == null)
+            {
+                Player = new Player(StaticStartValues.PLACEHOLDER_PLACE,0);
+                Drawer.WriteCommand(PlayerInteractionMessages.NO_PLAYER_PROVIDED);
+            }
             foreach (Character character in Characters)
             {
                 if (character.GetCharacterType().EventHandlers.Count > 0)
@@ -51,9 +55,9 @@ namespace LabWork1github
                     List<TriggerEventHandler> deleteCandidates = new List<TriggerEventHandler>();
                     foreach (TriggerEventHandler eventHandler in character.GetCharacterType().EventHandlers)
                     {
-                        if (eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner ||
-                            eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
-                            if (!IsEventHandlerValid(eventHandler, character))
+                        if ((eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner ||
+                            eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner) 
+                            && !IsEventHandlerValid(eventHandler, character))
                                 deleteCandidates.Add(eventHandler);
                         eventHandler.GameParamProvider = Provider;
                     }
@@ -88,7 +92,12 @@ namespace LabWork1github
                 Drawer.WriteCommand(PlayerInteractionMessages.YOU_LOST);
             }
             else
-                Drawer.WriteCommand(PlayerInteractionMessages.YOU_WON);
+            {
+                if(!String.IsNullOrEmpty(Player.Name))
+                    Drawer.WriteCommand(Player.Name+PlayerInteractionMessages.YOU_WON);
+                else
+                    Drawer.WriteCommand(PlayerInteractionMessages.YOU_WON);
+            }
         }
 
         public void Step()
@@ -140,7 +149,7 @@ namespace LabWork1github
             visitor.Visit(chatContext);
         }
 
-        private bool FallingCheck(Player player, PlayerMove move)
+        private bool FallingCheck(PlayerMove move)
         {
             if (Player.Place.Y == 0 && move.Direction == Directions.LEFT)
                 return true;
@@ -151,23 +160,6 @@ namespace LabWork1github
             if (Player.Place.X == Board.Height - 1 && move.Direction == Directions.BACKWARDS)
                 return true;
             return false;
-        }
-
-        private void CheckOutOfBoundCharacters()
-        {
-            List<Character> deleteCandidates = new List<Character>();
-            foreach (Character character in Characters)
-            {
-                if (character.Place.X > Board.Height || character.Place.Y > Board.Width)
-                {
-                    deleteCandidates.Add(character);
-                    Drawer.WriteCommand(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + character.Name);
-                }
-            }
-            foreach (Character c in deleteCandidates)
-            {
-                Characters.Remove(c);
-            }
         }
 
         public void PlayerCommand()
@@ -189,7 +181,7 @@ namespace LabWork1github
                     EventCollection.InvokePlayerHealthCheck(Player, healthCheckEvent);
                     break;
                 case CommandType.move:
-                    if (FallingCheck(Player, Move))
+                    if (FallingCheck(Move))
                     {
                         Drawer.WriteCommand(PlayerInteractionMessages.PLAYER_FALLING_OFF_BOARD);
                         WrongMove = true;
@@ -282,9 +274,9 @@ namespace LabWork1github
                     return true;
                 }
             }
-            if (Spawned)
-                if (Monsters.ElementAt(Monsters.Count - 1).Place.DirectionTo(p) == Directions.COLLISION)
-                    return true;
+            if (Spawned && Monsters.ElementAt(Monsters.Count - 1).Place.DirectionTo(p) == 
+                  Directions.COLLISION)
+                return true;
             return false;
         }
 
@@ -358,14 +350,11 @@ namespace LabWork1github
                         return false;
                     }
                 }
-                if (eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
-                {
-                    if (eventHandler.TriggeringEvent.EventType == EventType.Shoot &&
+                if (eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner && eventHandler.TriggeringEvent.EventType == EventType.Shoot &&
                         (eventHandler.TriggeringEvent.SourceCharacter != CharacterOptions.Player))
-                    {
-                        Drawer.WriteCommand(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER);
-                        return false;
-                    }
+                {
+                    Drawer.WriteCommand(ErrorMessages.EventError.MONSTER_SHOOTING_MONSTER);
+                    return false;
                 }
             }
             if (character.GetPartner() is Trap)

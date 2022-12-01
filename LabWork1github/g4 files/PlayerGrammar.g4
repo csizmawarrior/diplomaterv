@@ -12,7 +12,7 @@ statement: movingStatement
         | healthCheckStatement
 		| helpStatement
         ;
-direction: 'F' | 'L' | 'R' | 'B';
+direction: FORWARD | LEFT | RIGHT | BACKWARD;
 movingStatement: MOVE direction;
 shootingStatement: SHOOT direction;
 healthCheckStatement: HEALTH;

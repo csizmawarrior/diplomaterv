@@ -11,6 +11,7 @@ namespace LabWork1github.static_constants
         public static class BoardError
         {
             public const string UNDEFINED_MONSTER_TYPE = "The Monster type is undefined at place:\n";
+            public const string DUPLICATED_NAME = "The following name were assigned to multiple characters, the former one gets the name only, names are unique:\n";
             public const string ZERO_WIDTH = "The given width is zero at place:\n";
             public const string ZERO_HEIGHT = "The given height is zero at place:\n";
             public const string ZERO_AS_COORDINATE = "The coordinate given is zero at place:\n";

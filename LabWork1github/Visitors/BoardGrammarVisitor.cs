@@ -142,6 +142,7 @@ namespace LabWork1github
 
         private void AfterBoardCreationCheck()
         {
+            List<Character> deleteCandidates = new List<Character>();
             foreach (Character character in Program.Characters)
             {
                 if (!character.PartnerName.Equals(StaticStartValues.PLACEHOLDER_PARTNER_NAME))
@@ -149,6 +150,8 @@ namespace LabWork1github
                     foreach(var c in Program.Characters.Where(c => c.Name.Equals(character.Name) && !c.Equals(character)))
                     {
                         c.Name = "";
+                        ErrorFound = true;
+                        ErrorList += $"{ErrorMessages.BoardError.DUPLICATED_NAME}{character.Name}\n";
                     }
                     foreach (var m in Program.Characters.Where(m => m.Name.Equals(character.PartnerName)))
                     {
@@ -191,6 +194,15 @@ namespace LabWork1github
                         }
                     }
                 }
+                if (character.Place.X > Program.Board.Height || character.Place.Y > Program.Board.Width)
+                {
+                    deleteCandidates.Add(character);
+                    ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + character.Name + "\n";
+                }
+            }
+            foreach (Character c in deleteCandidates)
+            {
+                Program.Characters.Remove(c);
             }
         }
     }
