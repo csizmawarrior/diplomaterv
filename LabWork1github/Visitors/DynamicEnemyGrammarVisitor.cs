@@ -27,8 +27,6 @@ namespace LabWork1github
             {
                 typeName = "";
                 type = null;
-                Error = "";
-                ErrorFound = false;
                 CreationStage = TypeCreationStage.ParameterDeclare;
 
                 VisitStatementList(child);

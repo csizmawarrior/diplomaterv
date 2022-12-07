@@ -80,10 +80,12 @@ namespace LabWork1github
             }
             string typeName = context.typeName().GetText();
             if (Program.GetCharacterType(typeName) is MonsterType type) {
-                Monster m = new Monster(StaticStartValues.STARTER_MONSTER_HP, 
+                Monster m = new Monster(StaticStartValues.STARTER_MONSTER_HP,
                                     type, new Place(xPos - 1, yPos - 1));
+                if (Program.GetCharacterType(typeName).Health != StaticStartValues.PLACEHOLDER_HEALTH)
+                    m.Health = Program.GetCharacterType(typeName).Health;
 
-                if(context.nameDeclaration() != null)
+                if (context.nameDeclaration() != null)
                 {
                     m.Name = context.nameDeclaration().ID().GetText();
                 }
@@ -185,12 +187,17 @@ namespace LabWork1github
                             ErrorFound = true;
                             ErrorList += ErrorMessages.GameError.PLAYER_SPAWNED_ON_CHARACTER + "\n";
                         }
-                            if ((c is Trap))
+                        if ((c is Trap))
                         {
                             ErrorFound = true;
                             ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + "\n";
                             if (character is Player)
                                 ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + "\n";
+                        }
+                        else
+                        {
+                            ErrorFound = true;
+                            ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_CHARACTER + "\n";
                         }
                     }
                 }

@@ -76,6 +76,7 @@ namespace LabWork1github.static_constants
             public const string CHARACTER_SPAWNED_ON_TRAP = "A character wwith the following name spawns on a trap, give a valid board: ";
             public const string ERRORS_OCCURED_CONTINUE = "Errors occured, while processing the input scrips, if you wish to continue press a button.\n";
             public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.\n";
+            public const string CHARACTER_SPAWNED_ON_CHARACTER = "A character and another character collide on the board, give a valid board.\n";
             public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.\n";
             public const string PLACE_OUT_OF_BOUNDS = "A referenced place is out of bounds.\n";
         }
