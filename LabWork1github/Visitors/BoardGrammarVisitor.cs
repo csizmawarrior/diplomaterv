@@ -21,7 +21,7 @@ namespace LabWork1github
         {
             VisitStatementList(context.statementList());
             AfterBoardCreationCheck();
-            return null;
+            return ErrorFound;
         }
         public override object VisitBoardCreation([NotNull] BoardCreationContext context)
         {

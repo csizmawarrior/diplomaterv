@@ -32,9 +32,7 @@ namespace LabWork1github
                 VisitStatementList(child);
             }
 
-
-            //since I manually visit every children of the definition, no need to return the base visit function, only a null
-            return null;
+            return ErrorFound;
         }
         public override object VisitTrapNameDeclaration([NotNull] TrapNameDeclarationContext context)
         {

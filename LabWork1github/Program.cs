@@ -48,8 +48,7 @@ namespace LabWork1github
             DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
             DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
-            visitor.Visit(chatContext);
-            if (visitor.ErrorFound)
+            if ((bool)visitor.Visit(chatContext))
                 Drawer.WriteCommand(visitor.Error);
             return visitor.ErrorFound;
         }
@@ -63,8 +62,7 @@ namespace LabWork1github
             BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
             BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
             BoardGrammarVisitor visitor = new BoardGrammarVisitor();
-            visitor.Visit(chatContext);
-            if (visitor.ErrorFound)
+            if ((bool)visitor.Visit(chatContext))
                 Drawer.WriteCommand(visitor.ErrorList);
             return visitor.ErrorFound;
         }
@@ -78,8 +76,7 @@ namespace LabWork1github
             DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
             DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
             DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
-            visitor.Visit(chatContext);
-            if(visitor.ErrorFound)
+            if((bool)visitor.Visit(chatContext))
                 Drawer.WriteCommand(visitor.Error);
             return visitor.ErrorFound;
         }
