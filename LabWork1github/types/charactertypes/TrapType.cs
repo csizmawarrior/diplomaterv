@@ -6,13 +6,6 @@ using System.Threading.Tasks;
 
 namespace LabWork1github
 {
-    public enum TrapEffect 
-    {
-        Damage,
-        Heal,
-        Teleport,
-        Spawner
-    }
 
     public class TrapType : CharacterType
     {

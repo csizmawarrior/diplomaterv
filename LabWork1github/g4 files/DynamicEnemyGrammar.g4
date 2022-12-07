@@ -49,8 +49,8 @@ healthChangeOption: DIRECTION | DIRECTION (distanceDeclare)? (hpChangeAmountDecl
 shootDeclaration: SHOOT healthChangeOption;
 damageDeclaration: DAMAGE healthChangeOption ;
 healDeclaration: HEAL healthChangeOption;
-spawnDeclaration: SPAWN MONSTER name TO place | SPAWN RANDOM | SPAWN MONSTER name | SPAWN TO place | SPAWN;
-teleportDeclaration: TELEPORT_T character TO place | TELEPORT_T character RANDOM | TELEPORT_T character;
+spawnDeclaration: SPAWN (MONSTER name)? (TO place)? | SPAWN RANDOM;
+teleportDeclaration: TELEPORT_T character (TO place | RANDOM)?;
 ifExpression: IF PARENTHESISSTART boolExpression PARENTHESISCLOSE block ;
 whileExpression: WHILE PARENTHESISSTART boolExpression PARENTHESISCLOSE block;
 whenExpression:  WHEN PARENTHESISSTART triggerEvent PARENTHESISCLOSE block;

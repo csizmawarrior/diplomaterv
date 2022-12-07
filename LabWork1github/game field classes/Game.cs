@@ -33,21 +33,31 @@ namespace LabWork1github
 
         private GameParamProvider Provider;
 
-        public void Init()
+        public void Init(Board board, Drawer drawer)
         {
-            Drawer = Program.Drawer;
+            Drawer = drawer;
             Provider = new GameParamProvider(this);
-            Board = Program.Board;
+            Board = board;
             Monsters = Board.Monsters;
             Characters = Program.Characters;
             Traps = Board.Traps;
             Move = new PlayerMove();
             Player = Board.Player;
+            PlayerPresentCheck();
+            EventHandlerCheck();
+        }
+
+        private void PlayerPresentCheck()
+        {
             if (Board.Player == null)
             {
-                Player = new Player(StaticStartValues.PLACEHOLDER_PLACE,0);
+                Player = new Player(StaticStartValues.PLACEHOLDER_PLACE, 0);
                 Drawer.WriteCommand(PlayerInteractionMessages.NO_PLAYER_PROVIDED);
             }
+        }
+
+        private void EventHandlerCheck()
+        {
             foreach (Character character in Characters)
             {
                 if (character.GetCharacterType().EventHandlers.Count > 0)
@@ -56,9 +66,9 @@ namespace LabWork1github
                     foreach (TriggerEventHandler eventHandler in character.GetCharacterType().EventHandlers)
                     {
                         if ((eventHandler.TriggeringEvent.SourceCharacter == CharacterOptions.Partner ||
-                            eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner) 
+                            eventHandler.TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner)
                             && !IsEventHandlerValid(eventHandler, character))
-                                deleteCandidates.Add(eventHandler);
+                            deleteCandidates.Add(eventHandler);
                         eventHandler.GameParamProvider = Provider;
                     }
                     foreach (TriggerEventHandler eventHandler in deleteCandidates)
@@ -117,7 +127,12 @@ namespace LabWork1github
             if (WrongMove)
                 return;
 
+            MonsterDieCheck();
+            Drawer.DrawBoard(Board, Player, Monsters, Traps);
+        }
 
+        private void MonsterDieCheck()
+        {
             foreach (Monster monster in Monsters)
             {
                 ActualCharacter = monster;
@@ -129,13 +144,12 @@ namespace LabWork1github
                         SourceCharacter = CharacterOptions.Monster,
                         SourcePlace = new Place(monster.Place.X, monster.Place.Y)
                     };
+                    EventCollection.InvokeSomeoneDied(monster, dieEvent);
                     Monsters.Remove(monster);
                     Characters.Remove(monster);
-                    EventCollection.InvokeSomeoneDied(monster, dieEvent);
                     break;
                 }
             }
-            Drawer.DrawBoard(Board, Player, Monsters, Traps);
         }
 
         private void CommandProcess(string inputCommand)

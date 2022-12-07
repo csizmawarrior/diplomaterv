@@ -20,6 +20,7 @@ namespace LabWork1github.static_constants
         public static readonly string PLACEHOLDER_PARTNER_NAME = "";
         public static readonly Place PLACEHOLDER_PLACE = new Place(-1, -1);
         public static readonly double BASE_HEALTH_CHANGE = 50;
+        public static readonly double RANDOM_HEALTH_CHANGE_PLAYER_HEALTH_PARTITION = 2;
         public static readonly double STARTER_PLAYER_DAMAGE = 50;
         public static readonly double STARTER_TRAP_DAMAGE = 50.5;
         public static readonly double STARTER_MONSTER_DAMAGE = 50;

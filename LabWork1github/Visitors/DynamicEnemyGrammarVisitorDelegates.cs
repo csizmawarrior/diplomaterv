@@ -440,7 +440,7 @@ namespace LabWork1github.Visitors
         public static void ShootRandom(GameParamProvider provider, ShootCommand command)
         {
             Random rand = new Random();
-            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 2);
+            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / StaticStartValues.RANDOM_HEALTH_CHANGE_PLAYER_HEALTH_PARTITION);
             int XPos = (rand.Next() % provider.GetBoard().Height);
             int YPos = (rand.Next() % provider.GetBoard().Width);
             command.HealthChangeAmount = damage;
@@ -664,7 +664,7 @@ namespace LabWork1github.Visitors
         public static void DamageRandom(GameParamProvider provider, DamageCommand command)
         {
             Random rand = new Random();
-            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 3);
+            int damage = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / StaticStartValues.RANDOM_HEALTH_CHANGE_PLAYER_HEALTH_PARTITION);
             int XPos = (rand.Next() % provider.GetBoard().Height);
             int YPos = (rand.Next() % provider.GetBoard().Width);
             command.HealthChangeAmount = damage;
@@ -887,7 +887,7 @@ namespace LabWork1github.Visitors
         public static void HealRandom(GameParamProvider provider, HealCommand command)
         {
             Random rand = new Random();
-            int Heal = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / 5);
+            int Heal = (int)((rand.Next() % provider.GetPlayer().GetHealth()) / StaticStartValues.RANDOM_HEALTH_CHANGE_PLAYER_HEALTH_PARTITION);
             int XPos = (rand.Next() % provider.GetBoard().Height);
             int YPos = (rand.Next() % provider.GetBoard().Width);
             command.HealthChangeAmount = Heal;

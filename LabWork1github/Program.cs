@@ -12,21 +12,14 @@ namespace LabWork1github
         public static List<CharacterType> CharacterTypes = new List<CharacterType>();
         public static List<Character> Characters = new List<Character>();
         public static List<EventHandler> EventHandlers = new List<EventHandler>();
-        public static Drawer Drawer = new Drawer();
+        private static readonly Drawer Drawer = new Drawer();
         public static Board Board = new Board();
 
         static void Main(string[] args)
         {
-            //we hand in a default type for a monster and a trap, so when nothing is given, the trap or monster will get these ones' attributes
-            //CharacterTypes.Add(new MonsterType(Types.DEFAULT_MONSTER));
-            //GetCharacterType(Types.DEFAULT_MONSTER).Damage = 50;
-            //GetCharacterType(Types.DEFAULT_MONSTER).Health = 200;
+            TrapTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
+            MonsterTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
 
-            //CharacterTypes.Add(new TrapType(Types.DEFAULT_TRAP));
-            //GetCharacterType(Types.DEFAULT_TRAP).Damage = 50;
-
-
-            //  MonsterTypeLoader();
             bool trapInit = TrapTypeLoader(FileNames.EXAMPLE_TRAPS_FILE_ADDRESS);
             bool monsterInit = MonsterTypeLoader(FileNames.EXAMPLE_MONSTERS_FILE_ADDRESS);
             bool boardInit = BoardLoader(FileNames.EXAMPLE_BOARD_FILE_ADDRESS);
@@ -39,7 +32,7 @@ namespace LabWork1github
 
 
             Game theGame = new Game();
-            theGame.Init();
+            theGame.Init(Board, Drawer);
             theGame.Start();
 
             Console.ReadKey();
