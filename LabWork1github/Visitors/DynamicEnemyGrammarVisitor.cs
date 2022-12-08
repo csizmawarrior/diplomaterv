@@ -54,6 +54,7 @@ namespace LabWork1github
                 Program.CharacterTypes.Add(new TrapType(typeName));
             }
             Program.GetCharacterType(typeName).Damage = StaticStartValues.STARTER_TRAP_DAMAGE;
+            Program.GetCharacterType(typeName).Heal = StaticStartValues.STARTER_TRAP_HEAL;
             return base.VisitTrapNameDeclaration(context);
         }
         public override object VisitMonsterNameDeclaration([NotNull] MonsterNameDeclarationContext context)

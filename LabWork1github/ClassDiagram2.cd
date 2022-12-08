@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="LabWork1github.Command" Collapsed="true">
-    <Position X="5" Y="11.5" Width="1.5" />
+    <Position X="6.5" Y="11.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Commands\Command.cs</FileName>
@@ -146,6 +146,8 @@
         <Point X="10" Y="10.316" />
         <Point X="8.833" Y="10.316" Type="JumpStart" />
         <Point X="8.667" Y="10.316" Type="JumpEnd" />
+        <Point X="7.333" Y="10.316" Type="JumpStart" />
+        <Point X="7.167" Y="10.316" Type="JumpEnd" />
         <Point X="6.125" Y="10.316" />
         <Point X="6.125" Y="9.691" />
       </Path>
@@ -163,31 +165,10 @@
     </TypeIdentifier>
   </Class>
   <Class Name="LabWork1github.Commands.HealthChangerCommand" Collapsed="true">
-    <Position X="2.75" Y="11.5" Width="1.5" />
+    <Position X="3.5" Y="11.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAACABAAAgAAAAAABAAAAAAAAAAAA=</HashCode>
       <FileName>Commands\HealthChangerCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.Commands.DamageCommand" Collapsed="true">
-    <Position X="0.5" Y="12.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAIQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\DamageCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.Commands.HealCommand" Collapsed="true">
-    <Position X="2.75" Y="12.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\HealCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.ShootCommand" Collapsed="true">
-    <Position X="5" Y="12.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\ShootCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LabWork1github.DynamicEnemyGrammarVisitor" Collapsed="true">
@@ -223,6 +204,27 @@
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAAAg=</HashCode>
       <FileName>Visitors\PlayerGrammarVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LabWork1github.Commands.NumberParameterDeclareCommand" Collapsed="true">
+    <Position X="0.75" Y="12.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAEAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Commands\NumberParameterDeclareCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LabWork1github.Commands.PlaceParameterDeclareCommand" Collapsed="true">
+    <Position X="4.25" Y="12.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAgAAAEAAAAAAAAA=</HashCode>
+      <FileName>Commands\PlaceParameterDeclareCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LabWork1github.Commands.TypeParameterDeclareCommand" Collapsed="true">
+    <Position X="7.5" Y="12.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Commands\TypeParameterDeclareCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
