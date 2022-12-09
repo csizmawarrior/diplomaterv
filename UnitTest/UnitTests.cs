@@ -5201,7 +5201,7 @@ namespace UnitTest
             Assert.AreEqual(6, Program.Board.Width);
             Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
             Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
-                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2,1))) != null);
+                                Program.GetCharacterType("DefaultTrap")) && t.Name.Equals("T01") && t.Place.Equals(new Place(2,1))) != null);
             Assert.AreEqual(2, Program.Characters.Count);
             Assert.AreEqual(3, Program.CharacterTypes.Count);
             Assert.AreEqual(ErrorMessages.BoardError.PARTNER_CANNOT_BE_THE_PLAYER + "T01" + "\n", visitor.ErrorList);
@@ -5217,7 +5217,7 @@ namespace UnitTest
             Assert.AreEqual(6, Program.Board.Width);
             Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
             Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
-                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2, 1))) != null);
+                                Program.GetCharacterType("DefaultTrap")) && t.Name.Equals("T01") && t.Place.Equals(new Place(2, 1))) != null);
             Assert.AreEqual(2, Program.Characters.Count);
             Assert.AreEqual(3, Program.CharacterTypes.Count);
             Assert.AreEqual(ErrorMessages.BoardError.CANNOT_BE_YOUR_OWN_PARTNER + "T01" + "\n", visitor.ErrorList);
@@ -5233,7 +5233,7 @@ namespace UnitTest
             Assert.AreEqual(6, Program.Board.Width);
             Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
             Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
-                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2, 1))) != null);
+                                Program.GetCharacterType("DefaultTrap")) && t.Name.Equals("T01") && t.Place.Equals(new Place(2, 1))) != null);
             Assert.AreEqual(2, Program.Characters.Count);
             Assert.AreEqual(3, Program.CharacterTypes.Count);
             Assert.AreEqual(ErrorMessages.PartnerError.NON_EXISTANT_PARTNER + "T01" + "\n", visitor.ErrorList);
@@ -5249,10 +5249,10 @@ namespace UnitTest
             Assert.AreEqual(6, Program.Board.Width);
             Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
             Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
-                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(2, 1))) != null);
+                                Program.GetCharacterType("DefaultTrap")) && t.Name.Equals("T01") && t.Place.Equals(new Place(2, 1))) != null);
 
             Assert.IsTrue(Program.Characters.Find(m => m is Monster && m.GetCharacterType().Equals(
-                                Program.GetCharacterType("DefaultMonster")) && m.Place.Equals(new Place(3, 2))) != null);
+                                Program.GetCharacterType("DefaultMonster")) && m.Name.Equals("M03") && m.Place.Equals(new Place(3, 2))) != null);
             Assert.AreEqual(3, Program.Characters.Count);
             Assert.AreEqual(3, Program.CharacterTypes.Count);
         }
@@ -5273,6 +5273,25 @@ namespace UnitTest
                             ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + "M03" + "\n", visitor.ErrorList);
         }
         [Test]
+        public void BoardTrapMonsterSameNameSpawn()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6; player 1,1;trap DefaultTrap name = T01 2,2 ; monster DefaultMonster name = T01 2,3");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(0, 0)));
+            Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultTrap"))  && t.Name.Equals("T01") && t.Place.Equals(new Place(1, 1))) != null);
+
+            Assert.IsTrue(Program.Characters.Find(m => m is Monster && m.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultMonster")) && String.IsNullOrEmpty(m.Name) && m.Place.Equals(new Place(1, 2))) != null);
+            Assert.AreEqual(3, Program.Characters.Count);
+            Assert.AreEqual(3, Program.CharacterTypes.Count);
+            Assert.AreEqual(ErrorMessages.BoardError.DUPLICATED_NAME + "T01" + "\n", visitor.ErrorList);
+        }
+        [Test]
         public void BoardTrapMonsterPlayerSpawnOnEachOther()
         {
             BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player name = P01 2,2; trap DefaultTrap name = T01, partner=M03 2,2 ; monster DefaultMonster name = M03 2,2");
@@ -5283,10 +5302,10 @@ namespace UnitTest
             Assert.AreEqual(6, Program.Board.Width);
             Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
             Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
-                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(1, 1))) != null);
+                                Program.GetCharacterType("DefaultTrap")) && t.Name.Equals("T01") && t.Place.Equals(new Place(1, 1))) != null);
 
             Assert.IsTrue(Program.Characters.Find(m => m is Monster && m.GetCharacterType().Equals(
-                                Program.GetCharacterType("DefaultMonster")) && m.Place.Equals(new Place(1, 1))) != null);
+                                Program.GetCharacterType("DefaultMonster")) && m.Name.Equals("M03") && m.Place.Equals(new Place(1, 1))) != null);
             Assert.AreEqual(3, Program.Characters.Count);
             Assert.AreEqual(3, Program.CharacterTypes.Count);
             Assert.AreEqual(ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + "P01, T01" + "\n" +

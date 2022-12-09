@@ -147,14 +147,15 @@ namespace LabWork1github
             List<Character> deleteCandidates = new List<Character>();
             foreach (Character character in Program.Characters)
             {
+                foreach (var c in Program.Characters.Where(c => c.Name.Equals(character.Name) &&
+                            !c.Equals(character) && !String.IsNullOrEmpty(c.Name)))
+                {
+                    c.Name = "";
+                    ErrorFound = true;
+                    ErrorList += $"{ErrorMessages.BoardError.DUPLICATED_NAME}{character.Name}\n";
+                }
                 if (!character.PartnerName.Equals(StaticStartValues.PLACEHOLDER_PARTNER_NAME))
                 {
-                    foreach(var c in Program.Characters.Where(c => c.Name.Equals(character.Name) && !c.Equals(character)))
-                    {
-                        c.Name = "";
-                        ErrorFound = true;
-                        ErrorList += $"{ErrorMessages.BoardError.DUPLICATED_NAME}{character.Name}\n";
-                    }
                     foreach (var m in Program.Characters.Where(m => m.Name.Equals(character.PartnerName)))
                     {
                         if (m is Player)
