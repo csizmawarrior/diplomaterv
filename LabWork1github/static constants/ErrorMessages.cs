@@ -18,6 +18,7 @@ namespace LabWork1github.static_constants
             public const string UNDEFINED_TRAP_TYPE = "The Trap type is undefined at place:\n";
             public const string PARTNER_CANNOT_BE_THE_PLAYER = "The character with the following name tried to adress the player as its partner:\n";
             public const string CANNOT_BE_YOUR_OWN_PARTNER = "The character with the following name tried to adress itself as its partner:\n";
+            public const string CHARACTER_SPAWNED_ON_CHARACTER = "A character with the given name and another character with the second name collide on the board, give a valid board: ";
         }
 
         public static class ConditionError
@@ -107,10 +108,7 @@ namespace LabWork1github.static_constants
         public static class GameError
         {
             public const string CHARACTER_SPAWNED_OUT_OF_BOUNDS = "A character was out of bounds, so it got deleted, with the given name: ";
-            public const string CHARACTER_SPAWNED_ON_TRAP = "A character wwith the following name spawns on a trap, give a valid board: ";
             public const string ERRORS_OCCURED_CONTINUE = "Errors occured, while processing the input scrips, if you wish to continue press a button.\n";
-            public const string PLAYER_SPAWNED_ON_CHARACTER = "The player and another character collide on the board, give a valid board.\n";
-            public const string CHARACTER_SPAWNED_ON_CHARACTER = "A character and another character collide on the board, give a valid board.\n";
             public const string PLAYER_SPAWNED_ON_TRAP = "The player and a trap collide on the board at spawn, give a valid board.\n";
             public const string PLACE_OUT_OF_BOUNDS = "A referenced place is out of bounds.\n";
         }

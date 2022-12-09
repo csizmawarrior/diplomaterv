@@ -180,30 +180,16 @@ namespace LabWork1github
                 }
                 foreach (Character c in Program.Characters)
                 {
-                    if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && !(c is Player) && !c.Equals(character))
+                    if (c.Place.DirectionTo(character.Place) == Directions.COLLISION && !c.Equals(character))
                     {
-                        if (character is Player)
-                        {
                             ErrorFound = true;
-                            ErrorList += ErrorMessages.GameError.PLAYER_SPAWNED_ON_CHARACTER + "\n";
-                        }
-                        if ((c is Trap))
-                        {
-                            ErrorFound = true;
-                            ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + "\n";
-                            if (character is Player)
-                                ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_TRAP + "\n";
-                        }
-                        else
-                        {
-                            ErrorFound = true;
-                            ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_ON_CHARACTER + "\n";
-                        }
+                            ErrorList += ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + character.Name + ", " + c.Name + "\n";
                     }
                 }
                 if (character.Place.X > Program.Board.Height || character.Place.Y > Program.Board.Width)
                 {
                     deleteCandidates.Add(character);
+                    ErrorFound = true;
                     ErrorList += ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + character.Name + "\n";
                 }
             }

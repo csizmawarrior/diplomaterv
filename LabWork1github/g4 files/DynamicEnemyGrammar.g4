@@ -44,7 +44,7 @@ distanceDeclare: DISTANCE EQUALS NUMBER;
 
 moveDeclaration: MOVE DIRECTION (distanceDeclare)? | MOVE TO place | MOVE TO PLAYER | MOVE TO RANDOM ;
 
-healthChangeOption: DIRECTION | DIRECTION (distanceDeclare)? (hpChangeAmountDeclaration)? | RANDOM |
+healthChangeOption: DIRECTION (distanceDeclare)? (hpChangeAmountDeclaration)? | RANDOM |
 					TO place (hpChangeAmountDeclaration)? | TO character (hpChangeAmountDeclaration)?;
 shootDeclaration: SHOOT healthChangeOption;
 damageDeclaration: DAMAGE healthChangeOption ;

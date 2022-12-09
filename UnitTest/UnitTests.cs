@@ -5256,6 +5256,45 @@ namespace UnitTest
             Assert.AreEqual(3, Program.Characters.Count);
             Assert.AreEqual(3, Program.CharacterTypes.Count);
         }
+        [Test]
+        public void BoardTrapMonsterPlayerOutfBoundsSpawn()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player name = P01 9,2; trap DefaultTrap name = T01, partner=M03 2,9 ; monster DefaultMonster name = M03 9,9");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(8, 1)));
+            Assert.AreEqual(0, Program.Characters.Count);
+            Assert.AreEqual(3, Program.CharacterTypes.Count);
+            Assert.AreEqual(ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + "P01"+"\n" +
+                            ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + "T01" + "\n" +
+                            ErrorMessages.GameError.CHARACTER_SPAWNED_OUT_OF_BOUNDS + "M03" + "\n", visitor.ErrorList);
+        }
+        [Test]
+        public void BoardTrapMonsterPlayerSpawnOnEachOther()
+        {
+            BoardGrammarParser.ProgramContext context = PreparingBoardGrammar("board 3,6;player name = P01 2,2; trap DefaultTrap name = T01, partner=M03 2,2 ; monster DefaultMonster name = M03 2,2");
+            BoardGrammarVisitor visitor = new BoardGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsTrue(visitor.ErrorFound);
+            Assert.AreEqual(3, Program.Board.Height);
+            Assert.AreEqual(6, Program.Board.Width);
+            Assert.IsTrue(Program.Board.Player.Place.Equals(new Place(1, 1)));
+            Assert.IsTrue(Program.Characters.Find(t => t is Trap && t.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultTrap")) && t.Place.Equals(new Place(1, 1))) != null);
 
+            Assert.IsTrue(Program.Characters.Find(m => m is Monster && m.GetCharacterType().Equals(
+                                Program.GetCharacterType("DefaultMonster")) && m.Place.Equals(new Place(1, 1))) != null);
+            Assert.AreEqual(3, Program.Characters.Count);
+            Assert.AreEqual(3, Program.CharacterTypes.Count);
+            Assert.AreEqual(ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + "P01, T01" + "\n" +
+                            ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + "P01, M03" + "\n" +
+                            ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + "T01, P01" + "\n" +
+                            ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + "T01, M03" + "\n" +
+                            ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + "M03, P01" + "\n" +
+                            ErrorMessages.BoardError.CHARACTER_SPAWNED_ON_CHARACTER + "M03, T01" + "\n", visitor.ErrorList);
+        }
     }
 }

@@ -17,49 +17,39 @@ namespace LabWork1github.EventHandling
         public virtual void OnEvent(object sender, TriggerEvent args)
         {
 
-            if (TriggeringEvent.SourceCharacter != CharacterOptions.NULL && TriggeringEvent.SourceCharacter != args.SourceCharacter) 
+            if (TriggeringEvent.SourceCharacter != CharacterOptions.NULL && TriggeringEvent.SourceCharacter != args.SourceCharacter &&
+                !(TriggeringEvent.SourceCharacter == CharacterOptions.Partner || TriggeringEvent.SourceCharacter == CharacterOptions.Me))
             {
-                if ( ! (TriggeringEvent.SourceCharacter == CharacterOptions.Partner || TriggeringEvent.SourceCharacter == CharacterOptions.Me))
-                {
-                    return;
-                }
+                return;
             }
-            if ( TriggeringEvent.TargetCharacterOption != CharacterOptions.NULL && TriggeringEvent.TargetCharacterOption != args.TargetCharacterOption)
-            {
-                if ( ! (TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner || TriggeringEvent.TargetCharacterOption == CharacterOptions.Me))
-                    return;
-            }
+            if (TriggeringEvent.TargetCharacterOption != CharacterOptions.NULL && TriggeringEvent.TargetCharacterOption != args.TargetCharacterOption &&
+                !(TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner || TriggeringEvent.TargetCharacterOption == CharacterOptions.Me))
+                return;
 
             if (TriggeringEvent.TargetCharacterOption == CharacterOptions.Player && ! GameParamProvider.GetPlayer().Equals(args.TargetCharacter))
                 return;
 
-            if (args.EventType.Equals(TriggeringEvent.EventType)) {
-                if ((TriggeringEvent.Amount == StaticStartValues.PLACEHOLDER_AMOUNT || TriggeringEvent.Amount == args.Amount)
+            if (args.EventType.Equals(TriggeringEvent.EventType) && 
+                (TriggeringEvent.Amount == StaticStartValues.PLACEHOLDER_AMOUNT || TriggeringEvent.Amount == args.Amount)
                     && (TriggeringEvent.SourcePlace == null || (TriggeringEvent.SourcePlace.DirectionTo(args.SourcePlace) == Directions.COLLISION))
                     && (TriggeringEvent.TargetPlace == null || (TriggeringEvent.TargetPlace.DirectionTo(args.TargetPlace) == Directions.COLLISION)))
+            {
+                Character backupActualCharacter = GameParamProvider.GetMe();
+                foreach (var c in GameParamProvider.GetCharacters().Where(c => c.GetCharacterType().Equals(Owner)))
                 {
-                    Character backupActualCharacter = GameParamProvider.GetMe();
-                    foreach (Character c in GameParamProvider.GetCharacters())
+                    if ((TriggeringEvent.SourceCharacter == CharacterOptions.Me && !c.Equals(sender)) ||
+                        (TriggeringEvent.SourceCharacter == CharacterOptions.Partner && !sender.Equals(c.GetPartner())) ||
+                        (TriggeringEvent.TargetCharacterOption == CharacterOptions.Me && !c.Equals(args.TargetCharacter)) ||
+                        (TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner && args.TargetCharacter.Equals(c.GetPartner())))
+                            continue;
+                    GameParamProvider.SetActualCharacter(c);
+                    foreach (Command command in Commands)
                     {
-                        if (c.GetCharacterType().Equals(Owner))
-                        {
-                            if ((TriggeringEvent.SourceCharacter == CharacterOptions.Me && !c.Equals(sender)) ||
-                                (TriggeringEvent.SourceCharacter == CharacterOptions.Partner && !sender.Equals(c.GetPartner())) ||
-                                (TriggeringEvent.TargetCharacterOption == CharacterOptions.Me && !c.Equals(args.TargetCharacter)) ||
-                                (TriggeringEvent.TargetCharacterOption == CharacterOptions.Partner && args.TargetCharacter.Equals(c.GetPartner()))
-                                )
-                                continue;
-
-                                GameParamProvider.SetActualCharacter(c);
-
-                            foreach (Command command in Commands)
-                            {
-                                command.Execute(GameParamProvider);
-                            }
-                        }
+                        command.Execute(GameParamProvider);
                     }
-                    GameParamProvider.SetActualCharacter(backupActualCharacter);
                 }
+
+                GameParamProvider.SetActualCharacter(backupActualCharacter);
             }
         }
     }

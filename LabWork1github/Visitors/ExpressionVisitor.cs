@@ -184,7 +184,6 @@ namespace LabWork1github
                     }
                 }
             }
-            //because then it is ROUND
             if (context.attribute() == null && context.ROUND() != null)
                 return true;
 
