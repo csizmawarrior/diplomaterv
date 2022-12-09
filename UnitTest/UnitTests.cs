@@ -9,7 +9,7 @@ using System;
 
 namespace UnitTest
 {
-    public class Tests
+    public class ParameterTests
     {
         [SetUp]
         public void Setup()
@@ -28,15 +28,6 @@ namespace UnitTest
             CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
             DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
             DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
-            return chatContext;
-        }
-        public BoardGrammarParser.ProgramContext PreparingBoardGrammar(string fileText)
-        {
-            AntlrInputStream inputStream = new AntlrInputStream(fileText);
-            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
-            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
-            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
             return chatContext;
         }
 
@@ -621,7 +612,7 @@ namespace UnitTest
             visitor.Visit(context);
             Assert.IsFalse(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
-                .Find(x => x is TypeParameterDeclareCommand 
+                .Find(x => x is TypeParameterDeclareCommand
                 && ((TypeParameterDeclareCommand)x).CharacterType.Name.Equals("testmonster")
                 && ((TypeParameterDeclareCommand)x).TypeParameterDeclareDelegate.Equals(
                     new TypeParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.SpawnTypeChange))) != null);
@@ -659,6 +650,27 @@ namespace UnitTest
                     new TypeParameterDeclareDelegate(DynamicEnemyGrammarVisitorDelegates.SpawnTypeChange))) != null);
             Assert.AreEqual(2, Program.GetCharacterType("testtrap").Commands.Count);
         }
+    }
+    public class CommandTests
+    {
+        [SetUp]
+        public void Setup()
+        {
+            Program.Characters.Clear();
+            Program.CharacterTypes.Clear();
+            Program.Board = new Board();
+            Program.TrapTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
+            Program.MonsterTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
+        }
+        public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(fileText);
+            DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
+            DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
+            DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
+            return chatContext;
+        }
 
         //Command error tests
         [Test]
@@ -669,9 +681,9 @@ namespace UnitTest
             visitor.Visit(context);
             Assert.IsTrue(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
-                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection)) 
+                .Find(x => x is MoveCommand && ((MoveCommand)x).MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection))
                     && ((MoveCommand)x).Distance == StaticStartValues.STARTER_DISTANCE) != null);
-            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_INT +"moveFdistance=3.1\n",visitor.Error);
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_INT + "moveFdistance=3.1\n", visitor.Error);
         }
         [Test]
         public void AssignMonsterMoveCommandZeroDistance()
@@ -1019,7 +1031,7 @@ namespace UnitTest
             Assert.IsTrue(Program.GetCharacterType("testmonster").Commands
                 .Find(x => x is SpawnCommand command && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn))
                     && ((SpawnCommand)x).TargetCharacterType.Name.Equals("DefaultMonster") &&
-                    ((SpawnCommand)x).TargetPlace.Equals(new Place(0,1))) != null);
+                    ((SpawnCommand)x).TargetPlace.Equals(new Place(0, 1))) != null);
             Assert.AreEqual(1, Program.GetCharacterType("testmonster").Commands.Count);
             Assert.AreEqual(ErrorMessages.SpawnError.ONLY_TRAP_CAN_SPAWN + "spawnmonsterDefaultMonsterto1,2" + "\n", visitor.Error);
         }
@@ -1075,7 +1087,7 @@ namespace UnitTest
             Assert.IsTrue(visitor.ErrorFound);
             Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
                 .Find(x => x is SpawnCommand command && ((SpawnCommand)x).SpawnDelegate.Equals(new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn))
-                        && ((SpawnCommand)x).TargetPlace.Equals(new Place(0,1))) != null);
+                        && ((SpawnCommand)x).TargetPlace.Equals(new Place(0, 1))) != null);
             Assert.AreEqual(1, Program.GetCharacterType("testtrap").Commands.Count);
             Assert.AreEqual(ErrorMessages.SpawnError.SPAWN_WITHOUT_TYPE_GIVEN + "spawnto1,2" + "\n", visitor.Error);
         }
@@ -1682,8 +1694,6 @@ namespace UnitTest
                             + "partner.spawn_type.heal" + "\n", visitor.Error);
         }
 
-
-
         //When expressions
         [Test]
         public void AssignTrapWhenExpressionPlayerMoveToDoublePlace()
@@ -1697,7 +1707,7 @@ namespace UnitTest
             Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
                 .Find(x => x.TriggeringEvent.SourceCharacter ==
                         LabWork1github.EventHandling.CharacterOptions.Player &&
-                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move && 
+                        x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
                         x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
             Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "playermoveto1.3,2" + "\n", visitor.Error);
         }
@@ -1711,7 +1721,7 @@ namespace UnitTest
             Assert.AreEqual(0, Program.GetCharacterType("testtrap").Commands.Count);
             Assert.AreEqual(1, Program.GetCharacterType("testtrap").EventHandlers.Count);
             Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
-                .Find(x => x.TriggeringEvent.SourceCharacter == 
+                .Find(x => x.TriggeringEvent.SourceCharacter ==
                         LabWork1github.EventHandling.CharacterOptions.Player &&
                         x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
             Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "playershootto1.3,2" + "\n", visitor.Error);
@@ -1731,7 +1741,7 @@ namespace UnitTest
                         x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
                         x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE) &&
                         x.TriggeringEvent.SourcePlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
-            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "playermovefrom2.3,3to1.3,2" 
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "playermovefrom2.3,3to1.3,2"
                             + "\n" + ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE
                             + "playermovefrom2.3,3to1.3,2" + "\n", visitor.Error);
         }
@@ -1748,7 +1758,7 @@ namespace UnitTest
                 .Find(x => x.TriggeringEvent.SourceCharacter ==
                         LabWork1github.EventHandling.CharacterOptions.Player &&
                         x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Shoot) != null);
-            Assert.AreEqual(ErrorMessages.EventError.PLAYER_SHOOTING_ITSELF 
+            Assert.AreEqual(ErrorMessages.EventError.PLAYER_SHOOTING_ITSELF
                     + "playershoottoplayer" + "\n", visitor.Error);
         }
         [Test]
@@ -1810,7 +1820,7 @@ namespace UnitTest
             Assert.IsTrue(Program.GetCharacterType("testmonster").EventHandlers
                 .Find(x => x.TriggeringEvent.SourceCharacter ==
                         LabWork1github.EventHandling.CharacterOptions.Player &&
-                        x.TriggeringEvent.TargetPlace.Equals(new Place(0,2))) != null);
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 2))) != null);
             Assert.AreEqual(ErrorMessages.EventError.ONLY_TRAP_CAN_HEAL
                     + "playerhealto1,3" + "\n", visitor.Error);
         }
@@ -2188,7 +2198,7 @@ namespace UnitTest
                 .Find(x => x.TriggeringEvent.SourceCharacter ==
                         LabWork1github.EventHandling.CharacterOptions.Trap &&
                         x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Move &&
-                        x.TriggeringEvent.SourcePlace.Equals(new Place(1,2)) &&
+                        x.TriggeringEvent.SourcePlace.Equals(new Place(1, 2)) &&
                         x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
             Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapmovefrom2,3to1.3,2" + "\n", visitor.Error);
         }
@@ -2328,7 +2338,7 @@ namespace UnitTest
                 .Find(x => x.TriggeringEvent.SourceCharacter ==
                         LabWork1github.EventHandling.CharacterOptions.Trap &&
                         x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
-                        x.TriggeringEvent.TargetPlace.Equals(new Place(0,1))) != null);
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
             Assert.AreEqual(ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "trapteleportmeto1,2" + "\n", visitor.Error);
         }
         [Test]
@@ -2345,7 +2355,7 @@ namespace UnitTest
                         LabWork1github.EventHandling.CharacterOptions.Trap &&
                         x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Teleport &&
                         x.TriggeringEvent.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE)) != null);
-            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapteleportmeto1.3,2" + "\n" + 
+            Assert.AreEqual(ErrorMessages.ParseError.UNABLE_TO_PARSE_PLACE + "trapteleportmeto1.3,2" + "\n" +
                         ErrorMessages.TeleportError.TRYING_TO_TELEPORT_YOURSELF + "trapteleportmeto1.3,2" + "\n", visitor.Error);
         }
         [Test]
@@ -2378,7 +2388,7 @@ namespace UnitTest
                 .Find(x => x.TriggeringEvent.SourceCharacter ==
                         LabWork1github.EventHandling.CharacterOptions.Trap &&
                         x.TriggeringEvent.EventType == LabWork1github.EventHandling.EventType.Spawn &&
-                        x.TriggeringEvent.TargetPlace.Equals(new Place(0,1))) != null);
+                        x.TriggeringEvent.TargetPlace.Equals(new Place(0, 1))) != null);
             Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_PLAYER + "trapspawnplayerto1,2" + "\n", visitor.Error);
         }
         [Test]
@@ -3327,9 +3337,6 @@ namespace UnitTest
             Assert.AreEqual(ErrorMessages.EventError.TRAP_SPAWNING_TRAP + "partnerspawnpartnerto1,2" + "\n", visitor.Error);
         }
 
-
-
-
         //Command tests happy path
         [Test]
         public void AssignMonMoveToPlayerCommand()
@@ -3963,8 +3970,8 @@ namespace UnitTest
             Assert.IsTrue(Program.GetCharacterType("testtrap").Commands
                 .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
                  ((IfCommand)x).CommandList.Find(y => y is MoveCommand && ((MoveCommand)y).Direction.Equals("L") &&
-                 ((MoveCommand)y).MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection))) 
-                 != null ) != null);
+                 ((MoveCommand)y).MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveDirection)))
+                 != null) != null);
         }
         [Test]
         public void AssignTrapIfCommandFunctionMeNearMoveDist()
@@ -3990,7 +3997,7 @@ namespace UnitTest
                 .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
                  ((IfCommand)x).CommandList.Find(y => y is MoveCommand command &&
                  command.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlace)) &&
-                 command.TargetPlace.Equals(new Place(1,2))) != null) != null);
+                 command.TargetPlace.Equals(new Place(1, 2))) != null) != null);
         }
         [Test]
         public void AssignTrapIfCommandFunctionTrapNearMoveToPlayer()
@@ -4080,7 +4087,7 @@ namespace UnitTest
                 .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
                  ((IfCommand)x).CommandList.Find(y => y is ShootCommand command && command.ShootDelegate.Equals(
                      new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootToPlace)) &&
-                     command.TargetPlace.Equals(new Place(1,3))) != null) != null);
+                     command.TargetPlace.Equals(new Place(1, 3))) != null) != null);
         }
         [Test]
         public void AssignMonsterIfCommandFunctionHealthCheckShootToPlaceDamage()
@@ -4198,7 +4205,7 @@ namespace UnitTest
                 .Find(x => x is WhileCommand && ((WhileCommand)x).CommandList.Count == 1 &&
                  ((WhileCommand)x).CommandList.Find(y => y is DamageCommand command && command.DamageDelegate.Equals(
                      new DamageDelegate(DynamicEnemyGrammarVisitorDelegates.DamageToPlace)) &&
-                     command.TargetPlace.Equals(new Place(1,2))) != null) != null);
+                     command.TargetPlace.Equals(new Place(1, 2))) != null) != null);
         }
         [Test]
         public void AssignTrapWhileCommandEqualsNumberAttributeDamageToPlaceDamage()
@@ -4366,7 +4373,7 @@ namespace UnitTest
                 .Find(x => x is IfCommand && ((IfCommand)x).CommandList.Count == 1 &&
                  ((IfCommand)x).CommandList.Find(y => y is HealCommand command && command.HealDelegate.Equals(
                      new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlace)) &&
-                     command.TargetPlace.Equals(new Place(1,2))) != null) != null);
+                     command.TargetPlace.Equals(new Place(1, 2))) != null) != null);
         }
         [Test]
         public void AssignTrapIfCommandNegateFunctionPlayerIsNearHealToPlaceHeal()
@@ -4393,8 +4400,8 @@ namespace UnitTest
                 .Find(x => (x != null) && x.Commands.Count == 1 &&
                     x.TriggeringEvent.EventType.Equals(EventType.Move) &&
                     x.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
-                    x.TriggeringEvent.TargetPlace.Equals(new Place(1,2)) &&
-                    x.Commands.Find(y => y is HealCommand command && 
+                    x.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                    x.Commands.Find(y => y is HealCommand command &&
                     command.HealDelegate.Equals(
                      new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPlayer))) != null) != null);
         }
@@ -4450,22 +4457,22 @@ namespace UnitTest
                      new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToMonster)) &&
                      command.HealthChangeAmount == 30.5) != null) != null);
         }
-    [Test]
-    public void AssignTrapWhenExpressionPartnerMoveToPlaceHealToPartner()
-    {
-        DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( partner move to 2,3 ){ heal to partner; };");
-        DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
-        visitor.Visit(context);
-        Assert.IsFalse(visitor.ErrorFound);
-        Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
-            .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
-                handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
-                handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
-                handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
-             handler.Commands.Find(y => y is HealCommand command &&
-                command.HealDelegate.Equals(
-                 new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner))) != null) != null);
-    }
+        [Test]
+        public void AssignTrapWhenExpressionPartnerMoveToPlaceHealToPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap ; commands: when( partner move to 2,3 ){ heal to partner; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                 handler.Commands.Find(y => y is HealCommand command &&
+                    command.HealDelegate.Equals(
+                     new HealDelegate(DynamicEnemyGrammarVisitorDelegates.HealToPartner))) != null) != null);
+        }
         [Test]
         public void AssignTrapWhenExpressionPartnerMoveToPlaceFromPlaceHealToPartnerHeal()
         {
@@ -4517,7 +4524,7 @@ namespace UnitTest
                  handler.Commands.Find(y => y is TeleportCommand command &&
                     command.TeleportDelegate.Equals(
                      new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
-                     command.TargetPlace.Equals(new Place(3,0))) != null) != null);
+                     command.TargetPlace.Equals(new Place(3, 0))) != null) != null);
         }
         [Test]
         public void AssignTrapWhenExpressionMonsterMoveToPlaceTeleportPlayerToRandom()
@@ -4536,24 +4543,24 @@ namespace UnitTest
                      new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPlayer)) &&
                      command.Random && command.TargetPlace.Equals(new Place(2, 1))) != null) != null);
         }
-    [Test]
-    public void AssignTrapWhenExpressionMonsterMoveToPlaceFromPlaceTeleportPartner()
-    {
-        DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster move from 3,3 to 2,3 ){ teleport partner; };");
-        DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
-        visitor.Visit(context);
-        Assert.IsFalse(visitor.ErrorFound);
-        Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
-            .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
-                handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
-                handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
-                handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
-                handler.TriggeringEvent.SourcePlace.Equals(new Place(2, 2)) &&
-             handler.Commands.Find(y => y is TeleportCommand command &&
-                command.TeleportDelegate.Equals(
-                 new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
-                 command.TargetPlace.Equals(new Place(2,1))) != null) != null);
-    }
+        [Test]
+        public void AssignTrapWhenExpressionMonsterMoveToPlaceFromPlaceTeleportPartner()
+        {
+            DynamicEnemyGrammarParser.DefinitionContext context = PreparingEnemyGrammar("trap name = testtrap teleport_place = 3,2; commands: when( monster move from 3,3 to 2,3 ){ teleport partner; };");
+            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
+            visitor.Visit(context);
+            Assert.IsFalse(visitor.ErrorFound);
+            Assert.IsTrue(Program.GetCharacterType("testtrap").EventHandlers
+                .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
+                    handler.TriggeringEvent.EventType.Equals(EventType.Move) &&
+                    handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(1, 2)) &&
+                    handler.TriggeringEvent.SourcePlace.Equals(new Place(2, 2)) &&
+                 handler.Commands.Find(y => y is TeleportCommand command &&
+                    command.TeleportDelegate.Equals(
+                     new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
+                     command.TargetPlace.Equals(new Place(2, 1))) != null) != null);
+        }
         [Test]
         public void AssignTrapWhenExpressionPlayerDieTeleportPartnerToPlace()
         {
@@ -4613,7 +4620,7 @@ namespace UnitTest
                 .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
                     handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
                     handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Monster) &&
-                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0,2)) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0, 2)) &&
                  handler.Commands.Find(y => y is TeleportCommand command &&
                     command.TeleportDelegate.Equals(
                      new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportMonster)) &&
@@ -4683,7 +4690,7 @@ namespace UnitTest
                 .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
                     handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
                     handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
-                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0,2)) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(0, 2)) &&
                  handler.Commands.Find(y => y is TeleportCommand command &&
                     command.TeleportDelegate.Equals(
                      new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
@@ -4705,7 +4712,7 @@ namespace UnitTest
                  handler.Commands.Find(y => y is SpawnCommand command &&
                     command.SpawnDelegate.Equals(
                      new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
-                     command.TargetPlace.Equals(new Place(2, 1)) && 
+                     command.TargetPlace.Equals(new Place(2, 1)) &&
                      command.TargetCharacterType.Name.Equals("SpawnMonster")) != null) != null);
         }
         [Test]
@@ -4742,7 +4749,7 @@ namespace UnitTest
                  handler.Commands.Find(y => y is SpawnCommand command &&
                     command.SpawnDelegate.Equals(
                      new SpawnDelegate(DynamicEnemyGrammarVisitorDelegates.Spawn)) &&
-                     command.TargetPlace.Equals(new Place(2,1)) &&
+                     command.TargetPlace.Equals(new Place(2, 1)) &&
                      command.TargetCharacterType.Name.Equals("SpawnyMonster")) != null) != null);
         }
         [Test]
@@ -4826,7 +4833,7 @@ namespace UnitTest
                 .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
                     handler.TriggeringEvent.EventType.Equals(EventType.Shoot) &&
                     handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
-                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2,1)) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2, 1)) &&
                  handler.Commands.Find(y => y is WhileCommand command &&
                     command.CommandList.Count == 1 && command.CommandList.Find(z => z is MoveCommand moveCommand &&
                     moveCommand.MoveDelegate.Equals(new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveRandom))
@@ -4879,7 +4886,7 @@ namespace UnitTest
                 .Find(x => x is TriggerEventHandler handler && x.Commands.Count == 1 &&
                     handler.TriggeringEvent.EventType.Equals(EventType.Damage) &&
                     handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Partner) &&
-                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2,1)) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2, 1)) &&
                  handler.Commands.Find(y => y is WhileCommand command &&
                     command.CommandList.Count == 1 && command.CommandList.Find(z => z is ShootCommand shootCommand &&
                     shootCommand.ShootDelegate.Equals(new ShootDelegate(DynamicEnemyGrammarVisitorDelegates.ShootRandom))
@@ -4918,7 +4925,7 @@ namespace UnitTest
                  handler.Commands.Find(y => y is WhileCommand command &&
                     command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
                     teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportTrap)) &&
-                    teleportCommand.TargetPlace.Equals(new Place(3,0))) != null) != null) != null);
+                    teleportCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
         }
         [Test]
         public void AssignMonsterWhenExpressionPartnerHealToPlayerHealWhileCommandShootRandom()
@@ -5002,11 +5009,11 @@ namespace UnitTest
                     handler.TriggeringEvent.EventType.Equals(EventType.Teleport) &&
                     handler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Me) &&
                     handler.TriggeringEvent.TargetCharacterOption.Equals(CharacterOptions.Partner) &&
-                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2,1)) &&
+                    handler.TriggeringEvent.TargetPlace.Equals(new Place(2, 1)) &&
                  handler.Commands.Find(y => y is WhenCommand command &&
                     command.TriggerEventHandler.TriggeringEvent.EventType.Equals(EventType.Move) &&
                     command.TriggerEventHandler.TriggeringEvent.SourceCharacter.Equals(CharacterOptions.Player) &&
-                    command.TriggerEventHandler.TriggeringEvent.TargetPlace.Equals(new Place(1,1)) &&
+                    command.TriggerEventHandler.TriggeringEvent.TargetPlace.Equals(new Place(1, 1)) &&
                     command.CommandList.Count == 1 && command.CommandList.Find(z => z is TeleportCommand teleportCommand &&
                     teleportCommand.TeleportDelegate.Equals(new TeleportDelegate(DynamicEnemyGrammarVisitorDelegates.TeleportPartner)) &&
                     teleportCommand.TargetPlace.Equals(new Place(3, 0))) != null) != null) != null);
@@ -5122,9 +5129,27 @@ namespace UnitTest
                         z => z is MoveCommand moveCommand && moveCommand.MoveDelegate.Equals(
                             new MoveDelegate(DynamicEnemyGrammarVisitorDelegates.MoveToPlayer))) != null) != null) != null);
         }
-
-
-        //board tests
+    }
+    public class BoardTests
+    {
+        [SetUp]
+        public void Setup()
+        {
+            Program.Characters.Clear();
+            Program.CharacterTypes.Clear();
+            Program.Board = new Board();
+            Program.TrapTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
+            Program.MonsterTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
+        }
+        public BoardGrammarParser.ProgramContext PreparingBoardGrammar(string fileText)
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(fileText);
+            BoardGrammarLexer BoardGrammarLexer_ = new BoardGrammarLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(BoardGrammarLexer_);
+            BoardGrammarParser BoardGrammarParser = new BoardGrammarParser(commonTokenStream);
+            BoardGrammarParser.ProgramContext chatContext = BoardGrammarParser.program();
+            return chatContext;
+        }
         [Test]
         public void BoardDeclareZeroWidthHeight()
         {
