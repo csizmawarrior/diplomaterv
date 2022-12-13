@@ -141,22 +141,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="BoardCreation.txt" />
-    <Content Include="DefaultMonster.txt" />
-    <Content Include="DefaultTrap.txt" />
-    <Content Include="error_log.txt" />
-    <Content Include="ExampleBoard.txt" />
-    <Content Include="ExampleMonsters.txt" />
-    <Content Include="ExampleTraps.txt" />
-    <Content Include="files\BoardCreation.txt" />
-    <Content Include="files\DefaultMonster.txt" />
-    <Content Include="files\DefaultTrap.txt" />
-    <Content Include="files\error_log.txt" />
-    <Content Include="files\ExampleBoard.txt" />
-    <Content Include="files\ExampleMonsters.txt" />
-    <Content Include="files\ExampleTraps.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

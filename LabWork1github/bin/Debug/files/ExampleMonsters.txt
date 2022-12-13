@@ -7,7 +7,7 @@ when( monster shoot to player )
 	move to player;
 	if(player is near)
 	{
-		shoot to player damage = 5;
+		shoot to player damage = 15;
 	}
 }
 when( partner die )
@@ -667,197 +667,197 @@ health = 200 ;
 commands:
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }
 if ( me is alive && player is near )
 {
-	shoot to player damage = 10;
+	shoot to player damage = 30;
 }

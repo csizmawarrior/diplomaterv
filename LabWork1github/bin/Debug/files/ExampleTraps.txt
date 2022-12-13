@@ -18,7 +18,7 @@ when(player move to 3,6)
 }
 when( me teleport player to 4,4 )
 {
-	damage to player;
+	damage to 4,4;
 }
 when ( partner die )
 {
@@ -31,8 +31,6 @@ when ( partner die )
 trap name = ExampleTrapDamageMonsterHealPlayer ;
 damage = 15.5 ;
 heal = 20.5;
-spawn_type = ExampleMonsterShootClosePlayer ;
-spawn_place = 2,4;
 commands:
 if( round % 2 == 1 && (player is near || monster is near))
 {
@@ -428,10 +426,8 @@ if( round % 2 == 1 && (player is near || monster is near))
 
 
 trap name = ExampleTrapDamagePlayerHealMonster ;
-damage = 15.5 ;
-heal = 20.5;
-spawn_type = ExampleMonsterShootClosePlayer ;
-spawn_place = 2,4;
+damage = 20.5 ;
+heal = 15.5;
 commands:
 if( round % 2 == 0 && (player is near || monster is near))
 {

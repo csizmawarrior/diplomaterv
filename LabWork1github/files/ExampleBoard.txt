@@ -1,8 +1,0 @@
-board 8 , 10;
-player name = P01 3 , 8;
-monster ExampleMonsterShootRight name = M01 4,3 ;
-monster ExampleMonsterWhenCommands name = M02, partner = M03 6 , 9;
-trap ExampleStaticTrapTeleportWhen name = T01, partner = M02  3 , 6;
-trap ExampleTrapDamageMonsterHealPlayer name = T02, partner = T01  5 , 2;
-trap ExampleTrapDamagePlayerHealMonster name = T03  4 , 6;
-monster ExampleMonsterWhenCommands name = M03, partner = M01 5 , 9;
