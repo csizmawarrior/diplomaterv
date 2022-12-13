@@ -1,1 +1,1 @@
-# labWork1github
+# Diplomaterv
