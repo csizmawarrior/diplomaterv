@@ -1,0 +1,7 @@
+board 6 , 12;
+player name = Sanyi 5 , 5;
+monster DefaultMonster name = SZ01 3 , 3 ;
+trap DefaultTrap name = T01 3 , 6;
+trap DefaultTrap name = T02  5 , 10;
+trap DefaultTrap name = T03  5 , 8;
+monster DefaultMonster name = SZ02, partner = T01  5 , 9;

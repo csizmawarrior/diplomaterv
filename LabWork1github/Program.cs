@@ -7,13 +7,13 @@ using static LabWork1github.DynamicEnemyGrammarParser;
 
 namespace LabWork1github
 {
-    public class Program
+    public  static class Program
     {
-        public static List<CharacterType> CharacterTypes = new List<CharacterType>();
-        public static List<Character> Characters = new List<Character>();
-        public static List<EventHandler> EventHandlers = new List<EventHandler>();
+        public static List<CharacterType> CharacterTypes { get; set; } = new List<CharacterType>();
+        public static List<Character> Characters { get; set; } = new List<Character>();
+        public static List<EventHandler> EventHandlers { get; set; } = new List<EventHandler>();
         private static readonly Drawer Drawer = new Drawer();
-        public static Board Board = new Board();
+        public static Board Board { get; set; } = new Board();
 
         static void Main(string[] args)
         {

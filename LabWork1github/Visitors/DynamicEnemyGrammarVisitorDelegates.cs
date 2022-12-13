@@ -16,7 +16,7 @@ namespace LabWork1github.Visitors
         {
             if (!(provider.GetMe() is Trap))
                 return;
-            TriggerEvent spawnEvent = new TriggerEvent
+            TriggerEventArgs spawnEvent = new TriggerEventArgs
             {
                 SourceCharacter = CharacterOptions.Trap,
                 TargetCharacterOption = CharacterOptions.Monster
@@ -74,7 +74,7 @@ namespace LabWork1github.Visitors
         {
             if (!(provider.GetMe() is Trap))
                 return;
-            TriggerEvent teleportEvent = new TriggerEvent
+            TriggerEventArgs teleportEvent = new TriggerEventArgs
             {
                 EventType = EventType.Teleport,
                 SourceCharacter = CharacterOptions.Trap,
@@ -106,31 +106,31 @@ namespace LabWork1github.Visitors
         {
             if (!(provider.GetMe() is Trap))
                 return;
-            TriggerEvent teleportEvent = new TriggerEvent
+            TriggerEventArgs teleportEvent = new TriggerEventArgs
             {
                 EventType = EventType.Teleport,
                 SourceCharacter = CharacterOptions.Trap,
                 TargetCharacterOption = CharacterOptions.Monster,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y)
             };
-            foreach (Monster monster in provider.GetMonsters())
+            foreach (var monster in provider.GetMonsters().
+                        Where(monster => monster.Place.DirectionTo(provider.GetMe().Place).
+                            Equals(Directions.COLLISION)))
             {
-                if (monster.Place.DirectionTo(provider.GetMe().Place).Equals(Directions.COLLISION))
+                if (command.Random)
                 {
-                    if (command.Random)
-                    {
-                        Random rand = new Random();
-                        int XPos = (rand.Next() % provider.GetBoard().Height);
-                        int YPos = (rand.Next() % provider.GetBoard().Width);
-                        command.TargetPlace = new Place(XPos, YPos);
-                    }
-                    if (provider.IsFreePlace(command.TargetPlace))
-                    {
-                        teleportEvent.TargetPlace = command.TargetPlace;
-                        monster.Place = command.TargetPlace;
-                        teleportEvent.TargetCharacter = monster;
-                        EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
-                    }
+                    Random rand = new Random();
+                    int XPos = (rand.Next() % provider.GetBoard().Height);
+                    int YPos = (rand.Next() % provider.GetBoard().Width);
+                    command.TargetPlace = new Place(XPos, YPos);
+                }
+
+                if (provider.IsFreePlace(command.TargetPlace))
+                {
+                    teleportEvent.TargetPlace = command.TargetPlace;
+                    monster.Place = command.TargetPlace;
+                    teleportEvent.TargetCharacter = monster;
+                    EventCollection.InvokeTrapTeleported(provider.GetMe(), teleportEvent);
                 }
             }
         }
@@ -138,7 +138,7 @@ namespace LabWork1github.Visitors
         {
             if (! (provider.GetMe() is Trap))
                 return;
-            TriggerEvent teleportEvent = new TriggerEvent
+            TriggerEventArgs teleportEvent = new TriggerEventArgs
             {
                 EventType = EventType.Teleport,
                 SourceCharacter = CharacterOptions.Trap,
@@ -171,7 +171,7 @@ namespace LabWork1github.Visitors
         {
             if (!(provider.GetMe() is Trap))
                 return;
-            TriggerEvent teleportEvent = new TriggerEvent
+            TriggerEventArgs teleportEvent = new TriggerEventArgs
             {
                 EventType = EventType.Teleport,
                 SourceCharacter = CharacterOptions.Trap,
@@ -200,7 +200,7 @@ namespace LabWork1github.Visitors
 
         public static void MoveDirection(GameParamProvider provider, MoveCommand command)
         {
-            TriggerEvent moveEvent = new TriggerEvent
+            TriggerEventArgs moveEvent = new TriggerEventArgs
             {
                 EventType = EventType.Move,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
@@ -235,7 +235,7 @@ namespace LabWork1github.Visitors
         {
             if (command.TargetPlace.Equals(StaticStartValues.PLACEHOLDER_PLACE))
                 return;
-            TriggerEvent moveEvent = new TriggerEvent
+            TriggerEventArgs moveEvent = new TriggerEventArgs
             {
                 EventType = EventType.Move,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
@@ -254,7 +254,7 @@ namespace LabWork1github.Visitors
 
         public static void MoveToPlayer(GameParamProvider provider, MoveCommand command)
         {
-            TriggerEvent moveEvent = new TriggerEvent
+            TriggerEventArgs moveEvent = new TriggerEventArgs
             {
                 EventType = EventType.Move,
                 SourcePlace = new Place(provider.GetMe().Place.X, provider.GetMe().Place.Y),
@@ -300,8 +300,8 @@ namespace LabWork1github.Visitors
             int YPos = -1;
             while (XPos == -1 && YPos == -1 && counter < 10)
             {
-                XPos = (int)(rand.Next() % provider.GetBoard().Height);
-                YPos = (int)(rand.Next() % provider.GetBoard().Width);
+                XPos = (rand.Next() % provider.GetBoard().Height);
+                YPos = (rand.Next() % provider.GetBoard().Width);
                 if (!provider.IsFreePlace(new Place(XPos, YPos)))
                 {
                     XPos = -1;
@@ -317,7 +317,7 @@ namespace LabWork1github.Visitors
 
         public static void ShootDirection(GameParamProvider provider, ShootCommand command)
         {
-            TriggerEvent shootEvent = new TriggerEvent
+            TriggerEventArgs shootEvent = new TriggerEventArgs
             {
                 EventType = EventType.Shoot,
                 SourceCharacter = CharacterOptions.Monster,
@@ -327,7 +327,7 @@ namespace LabWork1github.Visitors
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    for (int i = 0; i <= command.Distance; i++)
+                    for (int i = 1; i <= command.Distance; i++)
                     {
                         if (provider.GetMe().Place.X - i >= 0)
                         {
@@ -344,7 +344,7 @@ namespace LabWork1github.Visitors
                     }
                     break;
                 case Directions.BACKWARDS:
-                    for (int i = 0; i <= command.Distance; i++)
+                    for (int i = 1; i <= command.Distance; i++)
                     {
                         if (provider.GetMe().Place.X + i < provider.GetBoard().Height)
                         {
@@ -361,7 +361,7 @@ namespace LabWork1github.Visitors
                     }
                     break;
                 case Directions.LEFT:
-                    for (int i = 0; i <= command.Distance; i++)
+                    for (int i = 1; i <= command.Distance; i++)
                     {
                         if (provider.GetMe().Place.Y - i >= 0)
                         {
@@ -378,12 +378,12 @@ namespace LabWork1github.Visitors
                     }
                     break;
                 case Directions.RIGHT:
-                    for (int i = 0; i <= command.Distance; i++)
+                    for (int i = 1; i <= command.Distance; i++)
                     {
                         if (provider.GetMe().Place.Y + i < provider.GetBoard().Width)
                         {
                             if (provider.GetPlayer().Place.Y == provider.GetMe().Place.Y + i
-                                && provider.GetPlayer().Place.X != provider.GetMe().Place.X)
+                                && provider.GetPlayer().Place.X == provider.GetMe().Place.X)
                             {
                                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                                 shootEvent.TargetCharacterOption = CharacterOptions.Player;
@@ -404,7 +404,7 @@ namespace LabWork1github.Visitors
             {
                 return;
             }
-            TriggerEvent shootEvent = new TriggerEvent
+            TriggerEventArgs shootEvent = new TriggerEventArgs
             {
                 EventType = EventType.Shoot,
                 SourceCharacter = CharacterOptions.Monster,
@@ -412,7 +412,7 @@ namespace LabWork1github.Visitors
                 TargetPlace = command.TargetPlace,
                 Amount = command.HealthChangeAmount
             };
-            if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
+            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                 shootEvent.TargetCharacterOption = CharacterOptions.Player;
@@ -423,7 +423,7 @@ namespace LabWork1github.Visitors
 
         public static void ShootToPlayer(GameParamProvider provider, ShootCommand command)
         {
-            TriggerEvent shootEvent = new TriggerEvent
+            TriggerEventArgs shootEvent = new TriggerEventArgs
             {
                 EventType = EventType.Shoot,
                 SourceCharacter = CharacterOptions.Monster,
@@ -450,7 +450,7 @@ namespace LabWork1github.Visitors
 
         public static void DamageDirection(GameParamProvider provider, DamageCommand command)
         {
-            TriggerEvent damageEvent = new TriggerEvent
+            TriggerEventArgs damageEvent = new TriggerEventArgs
             {
                 EventType = EventType.Damage,
                 SourceCharacter = CharacterOptions.Trap,
@@ -579,7 +579,7 @@ namespace LabWork1github.Visitors
             {
                 return;
             }
-            TriggerEvent damageEvent = new TriggerEvent
+            TriggerEventArgs damageEvent = new TriggerEventArgs
             {
                 EventType = EventType.Damage,
                 SourceCharacter = CharacterOptions.Trap,
@@ -587,27 +587,27 @@ namespace LabWork1github.Visitors
                 Amount = command.HealthChangeAmount,
                 TargetPlace = command.TargetPlace
             };
-            if (provider.GetPlayer().Place.X == (command.TargetPlace.X) && provider.GetPlayer().Place.Y == (command.TargetPlace.Y))
+            if (provider.GetPlayer().Place.Equals(command.TargetPlace))
             {
                 provider.GetPlayer().Damage(command.HealthChangeAmount);
                 damageEvent.TargetCharacterOption = CharacterOptions.Player;
                 damageEvent.TargetCharacter = provider.GetPlayer();
             }
-            foreach (Monster monster in provider.GetMonsters())
+
+            foreach (var monster in provider.GetMonsters()
+                .Where(monster => monster.Place.Equals(command.TargetPlace)))
             {
-                if (monster.Place.X == (command.TargetPlace.X) && monster.Place.Y == (command.TargetPlace.Y))
-                {
-                    monster.Damage(command.HealthChangeAmount);
-                    damageEvent.TargetCharacterOption = CharacterOptions.Monster;
-                    damageEvent.TargetCharacter = monster;
-                }
+                monster.Damage(command.HealthChangeAmount);
+                damageEvent.TargetCharacterOption = CharacterOptions.Monster;
+                damageEvent.TargetCharacter = monster;
             }
+
             EventCollection.InvokeTrapDamaged(provider.GetMe(), damageEvent);
         }
 
         public static void DamageToPlayer(GameParamProvider provider, DamageCommand command)
         {
-            TriggerEvent damageEvent = new TriggerEvent
+            TriggerEventArgs damageEvent = new TriggerEventArgs
             {
                 EventType = EventType.Damage,
                 SourceCharacter = CharacterOptions.Trap,
@@ -633,7 +633,7 @@ namespace LabWork1github.Visitors
                 provider.GetDrawer().WriteCommand(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH);
                 return;
             }
-            TriggerEvent damageEvent = new TriggerEvent
+            TriggerEventArgs damageEvent = new TriggerEventArgs
             {
                 EventType = EventType.Damage,
                 SourceCharacter = CharacterOptions.Trap,
@@ -648,7 +648,7 @@ namespace LabWork1github.Visitors
 
         public static void DamageToMonster(GameParamProvider provider, DamageCommand command)
         {
-            TriggerEvent damageEvent = new TriggerEvent
+            TriggerEventArgs damageEvent = new TriggerEventArgs
             {
                 EventType = EventType.Damage,
                 SourceCharacter = CharacterOptions.Trap,
@@ -674,7 +674,7 @@ namespace LabWork1github.Visitors
 
         public static void HealDirection(GameParamProvider provider, HealCommand command)
         {
-            TriggerEvent healEvent = new TriggerEvent
+            TriggerEventArgs healEvent = new TriggerEventArgs
             {
                 EventType = EventType.Heal,
                 SourceCharacter = CharacterOptions.Trap,
@@ -802,7 +802,7 @@ namespace LabWork1github.Visitors
             {
                 return;
             }
-            TriggerEvent healEvent = new TriggerEvent
+            TriggerEventArgs healEvent = new TriggerEventArgs
             {
                 EventType = EventType.Heal,
                 SourceCharacter = CharacterOptions.Trap,
@@ -816,21 +816,19 @@ namespace LabWork1github.Visitors
                 healEvent.TargetCharacterOption = CharacterOptions.Player;
                 healEvent.TargetCharacter = provider.GetPlayer();
             }
-            foreach (Monster monster in provider.GetMonsters())
+            foreach (var monster in provider.GetMonsters()
+                .Where(monster => monster.Place.Equals(command.TargetPlace)))
             {
-                if (monster.Place.X == (command.TargetPlace.X) && monster.Place.Y == (command.TargetPlace.Y))
-                {
-                    monster.Heal(command.HealthChangeAmount);
+                monster.Heal(command.HealthChangeAmount);
                     healEvent.TargetCharacterOption = CharacterOptions.Monster;
                     healEvent.TargetCharacter = monster;
-                }
             }
             EventCollection.InvokeTrapHealed(provider.GetMe(), healEvent);
         }
 
         public static void HealToPlayer(GameParamProvider provider, HealCommand command)
         {
-            TriggerEvent healEvent = new TriggerEvent
+            TriggerEventArgs healEvent = new TriggerEventArgs
             {
                 EventType = EventType.Heal,
                 SourceCharacter = CharacterOptions.Trap,
@@ -856,7 +854,7 @@ namespace LabWork1github.Visitors
                 provider.GetDrawer().WriteCommand(ErrorMessages.HealthChangeError.CHARACTER_HAS_NO_HEALTH);
                 return;
             }
-            TriggerEvent healEvent = new TriggerEvent
+            TriggerEventArgs healEvent = new TriggerEventArgs
             {
                 EventType = EventType.Heal,
                 SourceCharacter = CharacterOptions.Trap,
@@ -871,7 +869,7 @@ namespace LabWork1github.Visitors
 
         public static void HealToMonster(GameParamProvider provider, HealCommand command)
         {
-            TriggerEvent healEvent = new TriggerEvent
+            TriggerEventArgs healEvent = new TriggerEventArgs
             {
                 EventType = EventType.Heal,
                 SourceCharacter = CharacterOptions.Trap,

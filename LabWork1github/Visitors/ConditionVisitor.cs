@@ -83,39 +83,40 @@ namespace LabWork1github.Visitors
             {
                 if (functionExpressionContext.character().ME() != null)
                     return true;
-                if (functionExpressionContext.character().MONSTER() != null)
-                {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetMonster().Place.X) <= Provider.GetNear())
+                if ((functionExpressionContext.character().MONSTER() != null)
+                    &&
+                    (Math.Abs(Provider.GetMe().Place.X - Provider.GetMonster().Place.X) <= Provider.GetNear())
+                    &&
+                    (Math.Abs(Provider.GetMe().Place.Y - Provider.GetMonster().Place.Y) <= Provider.GetNear()))
                     {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetMonster().Place.Y) <= Provider.GetNear())
                             return true;
                     }
-                }
                 if (functionExpressionContext.character().PARTNER() != null)
                 {
                     if (Provider.GetPartner() == null)
                         return false;
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPartner().Place.X) <= Provider.GetNear())
-                    {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPartner().Place.Y) <= Provider.GetNear())
+                    if ((Math.Abs(Provider.GetMe().Place.X - Provider.GetPartner().Place.X) <= Provider.GetNear())
+                        &&
+                       (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPartner().Place.Y) <= Provider.GetNear()))
+                    { 
                             return true;
                     }
                 }
-                if (functionExpressionContext.character().TRAP() != null)
+                if ((functionExpressionContext.character().TRAP() != null)
+                    &&
+                    (Math.Abs(Provider.GetMe().Place.X - Provider.GetTrap().Place.X) <= Provider.GetNear())
+                    &&
+                    (Math.Abs(Provider.GetMe().Place.Y - Provider.GetTrap().Place.Y) <= Provider.GetNear()))
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetTrap().Place.X) <= Provider.GetNear())
-                    {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetTrap().Place.Y) <= Provider.GetNear())
                             return true;
-                    }
                 }
-                if (functionExpressionContext.character().PLAYER() != null)
+                if ((functionExpressionContext.character().PLAYER() != null)
+                    &&
+                    (Math.Abs(Provider.GetMe().Place.X - Provider.GetPlayer().Place.X) <= Provider.GetNear())
+                    &&
+                    (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPlayer().Place.Y) <= Provider.GetNear()))
                 {
-                    if (Math.Abs(Provider.GetMe().Place.X - Provider.GetPlayer().Place.X) <= Provider.GetNear())
-                    {
-                        if (Math.Abs(Provider.GetMe().Place.Y - Provider.GetPlayer().Place.Y) <= Provider.GetNear())
                             return true;
-                    }
                 }
 
             }
@@ -1147,19 +1148,21 @@ namespace LabWork1github.Visitors
                 ErrorFound = true;
                 return StaticStartValues.PLACEHOLDER_PLACE;
             }
-            if (context.character().PARTNER() != null)
+            if ((context.character().PARTNER() != null)
+                &&
+               (context.possibleAttributes().GetText().Equals("place")))
             {
-                if (context.possibleAttributes().GetText().Equals("place"))
-                    return Provider.GetPartner().Place;
+               return Provider.GetPartner().Place;
             }
             if (context.character().ME() != null)
             {
                 return MePlaceAttribute(context);
             }
-            if (context.character().MONSTER() != null)
+            if ((context.character().MONSTER() != null)
+                &&
+                (context.possibleAttributes().GetText().Equals("place")))
             {
-                if (context.possibleAttributes().GetText().Equals("place"))
-                    return Provider.GetMonster().Place;
+                return Provider.GetMonster().Place;
             }
             ErrorList += (ErrorMessages.ConditionError.MONSTER_ATTRIBUTE_ERROR);
             ErrorList += (ErrorMessages.ConditionError.IN_PLACE);
@@ -1602,24 +1605,21 @@ namespace LabWork1github.Visitors
                 ErrorFound = true;
                 return null;
             }
-            if(context.character().PARTNER() != null)
-            {
-                if (context.possibleAttributes().GetText().Equals("type"))
+            if ((context.character().PARTNER() != null)
+              &&
+              (context.possibleAttributes().GetText().Equals("type")))
                 {
                     return Provider.GetPartner().GetCharacterType();
                 }
-            }
             if(context.character().ME() != null)
             {
                 return MeTypeAttribute(context);
             }
-            if(context.character().MONSTER() != null)
-            {
-                if (context.possibleAttributes().GetText().Equals("type"))
+            if((context.character().MONSTER() != null) &&
+                (context.possibleAttributes().GetText().Equals("type")))
                 {
                     return Provider.GetMonster().GetCharacterType();
                 }
-            }
             ErrorList += ErrorMessages.ConditionError.MONSTER_ATTRIBUTE_ERROR;
             ErrorList += (context.GetText() + "\n");
             ErrorFound = true;

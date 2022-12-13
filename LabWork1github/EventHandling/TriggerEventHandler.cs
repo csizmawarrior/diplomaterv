@@ -9,14 +9,15 @@ namespace LabWork1github.EventHandling
 {
     public class TriggerEventHandler
     {
-        public TriggerEvent TriggeringEvent { get; set; }
+        public TriggerEventArgs TriggeringEvent { get; set; }
         public List<Command> Commands { get; set; } = new List<Command>();
-        public GameParamProvider GameParamProvider { get; set; }
+        public GameParamProvider GameParamProvider { get; set; } = null;
         public CharacterType Owner { get; set; }
 
-        public virtual void OnEvent(object sender, TriggerEvent args)
+        public virtual void OnEvent(object sender, TriggerEventArgs args)
         {
-
+            if (GameParamProvider == null)
+                return;
             if (TriggeringEvent.SourceCharacter != CharacterOptions.NULL && TriggeringEvent.SourceCharacter != args.SourceCharacter &&
                 !(TriggeringEvent.SourceCharacter == CharacterOptions.Partner || TriggeringEvent.SourceCharacter == CharacterOptions.Me))
             {

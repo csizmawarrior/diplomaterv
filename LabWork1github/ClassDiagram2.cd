@@ -1,47 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="LabWork1github.Command" Collapsed="true">
-    <Position X="6.5" Y="11.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
-      <FileName>Commands\Command.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.IfCommand" Collapsed="true">
-    <Position X="4.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ABAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\IfCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.MoveCommand" Collapsed="true">
-    <Position X="0.5" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQIACAAAAAgAAAAAABAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\MoveCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.SpawnCommand" Collapsed="true">
-    <Position X="0.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAQAAAAAAAAgAAAAAAAAAAAQAAAAAAA=</HashCode>
-      <FileName>Commands\SpawnCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.TeleportCommand" Collapsed="true">
-    <Position X="2.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAAAQAAAAAAAAgAAAABAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\TeleportCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.WhileCommand" Collapsed="true">
-    <Position X="6.25" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ABAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\WhileCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="LabWork1github.Game" Collapsed="true">
     <Position X="4.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
@@ -100,29 +58,23 @@
       <FileName>characters\Trap.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LabWork1github.CharacterType">
-    <Position X="9.25" Y="6.25" Width="1.5" />
+  <Class Name="LabWork1github.CharacterType" Collapsed="true">
+    <Position X="0.75" Y="5" Width="1.5" />
+    <AssociationLine Name="EventHandlers" Type="LabWork1github.EventHandling.TriggerEventHandler">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.068" Y="1.193" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAACCgCAAAAAAACBAABAAAQAEAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>types\charactertypes\CharacterType.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.MonsterType" Collapsed="true">
-    <Position X="6.75" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
-      <FileName>types\charactertypes\MonsterType.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.TrapType" Collapsed="true">
-    <Position X="3" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
-      <FileName>types\charactertypes\TrapType.cs</FileName>
-    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="EventHandlers" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="LabWork1github.Program" Collapsed="true">
-    <Position X="8.25" Y="1.25" Width="1.5" />
+    <Position X="3.75" Y="9.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAEIAAAAEAAQABBCAAAIA=</HashCode>
       <FileName>Program.cs</FileName>
@@ -138,94 +90,133 @@
       <Field Name="game" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="LabWork1github.PlayerType" Collapsed="true">
-    <Position X="5" Y="9" Width="1.5" />
-    <InheritanceLine Type="LabWork1github.CharacterType" FixedFromPoint="true">
-      <Path>
-        <Point X="10" Y="9.344" />
-        <Point X="10" Y="10.316" />
-        <Point X="8.833" Y="10.316" Type="JumpStart" />
-        <Point X="8.667" Y="10.316" Type="JumpEnd" />
-        <Point X="7.333" Y="10.316" Type="JumpStart" />
-        <Point X="7.167" Y="10.316" Type="JumpEnd" />
-        <Point X="6.125" Y="10.316" />
-        <Point X="6.125" Y="9.691" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
-      <FileName>types\charactertypes\PlayerType.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.Commands.WhenCommand" Collapsed="true">
-    <Position X="8" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAAAgAA=</HashCode>
-      <FileName>Commands\WhenCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.Commands.HealthChangerCommand" Collapsed="true">
-    <Position X="3.5" Y="11.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAACABAAAgAAAAAABAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\HealthChangerCommand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.DynamicEnemyGrammarVisitor" Collapsed="true">
-    <Position X="1" Y="15" Width="3" />
-    <TypeIdentifier>
-      <HashCode>AAABIAAgABAAEYACAS0AQQgACAhhLAAABAASAAcSAQQ=</HashCode>
-      <FileName>Visitors\DynamicEnemyGrammarVisitor.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LabWork1github.BoardGrammarVisitor" Collapsed="true">
-    <Position X="1" Y="16.25" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAAgEIAAAAAAAAABAYAAAAAAAAEAA=</HashCode>
-      <FileName>Visitors\BoardGrammarVisitor.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="LabWork1github.Visitors.ConditionVisitor" Collapsed="true">
-    <Position X="6.5" Y="15" Width="1.5" />
+    <Position X="5.25" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAQrABAIABgUGBIAAAAAIggAQABCAhAEASAAQoQCQEA=</HashCode>
       <FileName>Visitors\ConditionVisitor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LabWork1github.ExpressionVisitor" Collapsed="true">
-    <Position X="4.5" Y="15" Width="1.5" />
+    <Position X="3.5" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAgABgAAAAAQAAAAAAEAABQAAyAAAAAAAAA=</HashCode>
       <FileName>Visitors\ExpressionVisitor.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LabWork1github.PlayerGrammarVisitor" Collapsed="true">
-    <Position X="4.5" Y="16.25" Width="2" />
+  <Class Name="LabWork1github.EventHandling.TriggerEventHandler" Collapsed="true">
+    <Position X="3.75" Y="6.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAAAg=</HashCode>
-      <FileName>Visitors\PlayerGrammarVisitor.cs</FileName>
+      <HashCode>BAAAAgCAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EventHandling\TriggerEventHandler.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TriggeringEvent" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LabWork1github.EventHandling.TriggerEventArgs" Collapsed="true">
+    <Position X="0.5" Y="7.25" Width="1.75" />
+    <AssociationLine Name="SourceCharacter" Type="LabWork1github.EventHandling.CharacterOptions" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.344" Y="7.941" />
+        <Point X="1.344" Y="9.068" />
+        <Point X="4.628" Y="9.068" />
+        <Point X="4.628" Y="9.062" />
+        <Point X="4.812" Y="9.062" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAACAACkEAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>EventHandling\TriggerEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EventType" />
+      <Property Name="SourceCharacter" />
+      <Property Name="TargetCharacterOption" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LabWork1github.EventHandling.EventCollection">
+    <Position X="7.25" Y="5.75" Width="2" />
+    <NestedTypes>
+      <Delegate Name="LabWork1github.EventHandling.EventCollection.EventDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>EventHandling\EventCollection.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAoAAQCECgAAABGEAAAAIAAAAAAAAAAEQAgAQAA=</HashCode>
+      <FileName>EventHandling\EventCollection.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LabWork1github.Commands.NumberParameterDeclareCommand" Collapsed="true">
-    <Position X="0.75" Y="12.75" Width="2.75" />
+  <Class Name="LabWork1github.Command" Collapsed="true">
+    <Position X="2.25" Y="16.25" Width="1.5" />
+    <AssociationLine Name="CommandList" Type="LabWork1github.Command" ManuallyRouted="true">
+      <Path>
+        <Point X="2.25" Y="16.449" />
+        <Point X="1.758" Y="16.449" />
+        <Point X="1.758" Y="16.616" />
+        <Point X="2.25" Y="16.616" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.577" Y="0.002" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAEAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
-      <FileName>Commands\NumberParameterDeclareCommand.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Commands\Command.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="CommandList" />
+    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="LabWork1github.Commands.PlaceParameterDeclareCommand" Collapsed="true">
-    <Position X="4.25" Y="12.75" Width="2.5" />
+  <Class Name="LabWork1github.IfCommand" Collapsed="true">
+    <Position X="0.5" Y="15" Width="1.5" />
+    <AssociationLine Name="Condition" Type="LabWork1github.Condition" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="15.472" />
+        <Point X="6.25" Y="15.472" />
+        <Point X="6.25" Y="16.25" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAgAAAEAAAAAAAAA=</HashCode>
-      <FileName>Commands\PlaceParameterDeclareCommand.cs</FileName>
+      <HashCode>ABAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\IfCommand.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Condition" />
+    </ShowAsAssociation>
   </Class>
-  <Class Name="LabWork1github.Commands.TypeParameterDeclareCommand" Collapsed="true">
-    <Position X="7.5" Y="12.75" Width="2.5" />
+  <Class Name="LabWork1github.WhileCommand" Collapsed="true">
+    <Position X="0.5" Y="17.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
-      <FileName>Commands\TypeParameterDeclareCommand.cs</FileName>
+      <HashCode>ABAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\WhileCommand.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Condition" />
+    </ShowAsAssociation>
   </Class>
+  <Enum Name="LabWork1github.EventHandling.EventType" Collapsed="true">
+    <Position X="4.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAIAABACgAAEAAAAAAAAAAAAAAAAABAAQAAA=</HashCode>
+      <FileName>EventHandling\EventEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="LabWork1github.EventHandling.CharacterOptions" Collapsed="true">
+    <Position X="4.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAABAAAAAAAAAAAAAIAAAgAAAQAAAAg=</HashCode>
+      <FileName>EventHandling\EventEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="LabWork1github.Condition" Collapsed="true">
+    <Position X="5.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\IfCommand.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

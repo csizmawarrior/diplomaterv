@@ -1,0 +1,404 @@
+monster name = DefaultMonster ;
+damage = 50 ;
+health = 200 ;
+commands:
+if ( me is alive && player is near )
+{
+	move R;
+}
+if ( me is alive && player is near )
+{
+	move R;
+}
+when ( partner move to 3 , 5 )
+{
+	move to 6,1;
+}
+if ( me is alive && player is near )
+{
+	move R;
+}
+if ( me is alive && player is near )
+{
+	move R;
+}
+if ( me is alive && player is near )
+{
+	move R;
+}
+if ( me.health > 0 && player is near )
+{
+	move R;
+}
+if ( me.health > 0 && player is near )
+{
+	move R;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}
+if ( me.health > 0 && player is near )
+{
+	shoot to player;
+}

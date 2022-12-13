@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LabWork1github.EventHandling
 {
-    public class TriggerEvent: EventArgs
+    public class TriggerEventArgs: EventArgs
     {
         public EventType EventType { get; set; }
         public Place TargetPlace { get; set; } = null;

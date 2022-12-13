@@ -92,7 +92,7 @@ namespace LabWork1github
             }
             if (Player.GetHealth() <= 0)
             {
-                TriggerEvent dieEvent = new TriggerEvent
+                TriggerEventArgs dieEvent = new TriggerEventArgs
                 {
                     EventType = EventType.Die,
                     SourceCharacter = CharacterOptions.Player,
@@ -104,7 +104,7 @@ namespace LabWork1github
             else
             {
                 if(!String.IsNullOrEmpty(Player.Name))
-                    Drawer.WriteCommand(Player.Name+PlayerInteractionMessages.YOU_WON);
+                    Drawer.WriteCommand($"{Player.Name} {PlayerInteractionMessages.YOU_WON}");
                 else
                     Drawer.WriteCommand(PlayerInteractionMessages.YOU_WON);
             }
@@ -122,12 +122,12 @@ namespace LabWork1github
                 character.GetCharacterType().Step(Provider);
             }
 
+            MonsterDieCheck();
             if (Spawned)
                 Characters.Add(Monsters.ElementAt(Monsters.Count - 1));
             if (WrongMove)
                 return;
 
-            MonsterDieCheck();
             Drawer.DrawBoard(Board, Player, Monsters, Traps);
         }
 
@@ -138,7 +138,7 @@ namespace LabWork1github
                 ActualCharacter = monster;
                 if (monster.Health <= 0)
                 {
-                    TriggerEvent dieEvent = new TriggerEvent
+                    TriggerEventArgs dieEvent = new TriggerEventArgs
                     {
                         EventType = EventType.Die,
                         SourceCharacter = CharacterOptions.Monster,
@@ -185,7 +185,7 @@ namespace LabWork1github
             switch (Move.CommandType)
             {
                 case CommandType.health:
-                    TriggerEvent healthCheckEvent = new TriggerEvent
+                    TriggerEventArgs healthCheckEvent = new TriggerEventArgs
                     {
                         EventType = EventType.HealthCheck,
                         SourceCharacter = CharacterOptions.Player,
@@ -230,7 +230,7 @@ namespace LabWork1github
                         Player.Move(Move.Direction);
                     break;
                 case CommandType.shoot:
-                    TriggerEvent shootEvent = new TriggerEvent
+                    TriggerEventArgs shootEvent = new TriggerEventArgs
                     {
                         EventType = EventType.Shoot,
                         SourceCharacter = CharacterOptions.Player,

@@ -651,7 +651,7 @@ namespace LabWork1github
             {
                 Owner = Program.GetCharacterType(this.typeName)
             };
-            TriggerEvent TriggerEvent = VisitEvent(context.triggerEvent(), EventHandler);
+            TriggerEventArgs TriggerEvent = VisitEvent(context.triggerEvent(), EventHandler);
             EventHandler.TriggeringEvent = TriggerEvent;
 
             if (CreationStage.Equals(TypeCreationStage.CommandListing))
@@ -693,13 +693,13 @@ namespace LabWork1github
             return base.VisitWhenExpression(context);
         }
 
-        public TriggerEvent VisitEvent(TriggerEventContext context, TriggerEventHandler eventHandler)
+        public TriggerEventArgs VisitEvent(TriggerEventContext context, TriggerEventHandler eventHandler)
         {
             if (String.IsNullOrEmpty(context.GetText()))
             {
                 ErrorFound = true;
             }
-            TriggerEvent resultTrigger = new TriggerEvent();
+            TriggerEventArgs resultTrigger = new TriggerEventArgs();
             if(context.HEALTH_CHECK() != null)
             {
                 EventCollection.PlayerHealthCheck += eventHandler.OnEvent;
@@ -736,7 +736,7 @@ namespace LabWork1github
             return resultTrigger;
         }
 
-        private TriggerEvent VisitPlayerActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        private TriggerEventArgs VisitPlayerActionContext(TriggerEventContext context, TriggerEventArgs resultTrigger, TriggerEventHandler eventHandler)
         {
             if (String.IsNullOrEmpty(context.GetText()))
             {
@@ -841,7 +841,7 @@ namespace LabWork1github
             return resultTrigger;
         }
 
-        private TriggerEvent VisitMonsterActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        private TriggerEventArgs VisitMonsterActionContext(TriggerEventContext context, TriggerEventArgs resultTrigger, TriggerEventHandler eventHandler)
         {
             if (String.IsNullOrEmpty(context.GetText()))
             {
@@ -949,7 +949,7 @@ namespace LabWork1github
             return resultTrigger;
         }
 
-        private TriggerEvent VisitTrapActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        private TriggerEventArgs VisitTrapActionContext(TriggerEventContext context, TriggerEventArgs resultTrigger, TriggerEventHandler eventHandler)
         {
             if (String.IsNullOrEmpty(context.GetText()))
             {
@@ -1109,7 +1109,7 @@ namespace LabWork1github
             return resultTrigger;
         }
 
-        private TriggerEvent VisitPartnerActionContext(TriggerEventContext context, TriggerEvent resultTrigger, TriggerEventHandler eventHandler)
+        private TriggerEventArgs VisitPartnerActionContext(TriggerEventContext context, TriggerEventArgs resultTrigger, TriggerEventHandler eventHandler)
         {
             if (String.IsNullOrEmpty(context.GetText()))
             {

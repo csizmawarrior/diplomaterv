@@ -18,7 +18,7 @@ namespace LabWork1github
                 Health = hp;
             Place = place;
         }
-        public double Health { get; set; } = StaticStartValues.STARTER_MONSTER_HP;
+        public double Health { get; set; }
         public MonsterType Type { get; private set; }
 
         public override void Damage(double amount)

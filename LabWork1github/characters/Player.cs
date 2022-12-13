@@ -44,7 +44,7 @@ namespace LabWork1github
 
         public void Move(string direction)
         {
-            TriggerEvent moveEvent = new TriggerEvent
+            TriggerEventArgs moveEvent = new TriggerEventArgs
             {
                 EventType = EventType.Move,
                 SourceCharacter = CharacterOptions.Player,

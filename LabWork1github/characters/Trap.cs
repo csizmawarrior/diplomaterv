@@ -17,11 +17,6 @@ namespace LabWork1github
         public TrapType Type { get; private set; }
         public double Health { get; } = StaticStartValues.TRAP_HEALTH;
 
-        public override void Damage(double amount)
-        {
-            return;
-        }
-
         public override double GetHealth()
         {
             return Health;
@@ -32,14 +27,19 @@ namespace LabWork1github
             return Type;
         }
 
-        public override void Heal(double amount)
-        {
-            return;
-        }
-
         public override Character GetPartner()
         {
             return this.Partner;
+        }
+
+        public override void Damage(double amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Heal(double amount)
+        {
+            throw new NotImplementedException();
         }
     }
 }
