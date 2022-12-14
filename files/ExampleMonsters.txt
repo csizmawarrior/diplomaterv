@@ -1,0 +1,863 @@
+monster name = ExampleMonsterWhenCommands ;
+damage = 30 ;
+health = 200 ;
+commands:
+when( monster shoot to player )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player damage = 15;
+	}
+}
+when( partner die )
+{
+	move to 3,3;
+	while(me.place.y < 6 )
+	{
+		move R;
+		shoot B distance = 2 damage = 20;
+	}
+}
+when ( player move to 1,1 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 2,2 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 3,3 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 4,4 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 5,5 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 6,6 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 7,7 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 8,8 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+when ( player move to 9,9 )
+{
+	move to player;
+	if(player is near)
+	{
+		shoot to player;
+	}
+}
+
+
+
+monster name = ExampleMonsterShootRight ;
+damage = 30 ;
+health = 200 ;
+commands:
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+while(me.place.x < player.place.x )
+{
+	move B;
+	shoot R distance = 2;
+}
+move to 1,1;
+shoot R distance = 2;
+
+
+
+
+monster name = ExampleMonsterShootClosePlayer ;
+health = 200 ;
+commands:
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}
+if ( me is alive && player is near )
+{
+	shoot to player damage = 30;
+}

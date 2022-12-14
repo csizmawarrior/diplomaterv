@@ -1,3 +1,0 @@
-Spawn point not given, but trying to spawn:
-spawnmonsterDefaultMonsterto1,1
-

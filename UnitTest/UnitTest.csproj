@@ -7,6 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="files\BoardCreation.txt" />
+    <None Remove="files\DefaultMonster.txt" />
+    <None Remove="files\DefaultTrap.txt" />
+    <None Remove="files\error_log.txt" />
+    <None Remove="files\ExampleBoard.txt" />
+    <None Remove="files\ExampleMonsters.txt" />
+    <None Remove="files\ExampleTraps.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="files\BoardCreation.txt" />
+    <Content Include="files\DefaultMonster.txt" />
+    <Content Include="files\DefaultTrap.txt" />
+    <Content Include="files\error_log.txt" />
+    <Content Include="files\ExampleBoard.txt" />
+    <Content Include="files\ExampleMonsters.txt" />
+    <Content Include="files\ExampleTraps.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="NUnit" Version="3.13.3" />
