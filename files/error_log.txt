@@ -308,3 +308,31 @@ Player command: shoot B
 Player command: shoot B
 Player command: shoot B
 Player command: shoot B
+Welcome to the game! The board definition file and the files that define the monster and trap types are the following at the moment: C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\ExampleBoard.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\DefaultMonster.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\DefaultTrap.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\ExampleMonsters.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\ExampleTraps.txt
+If you wish to change those, either rewrite the script in those files, or change the address of the used files in the FileNames.cs file.
+Welcome to the game! The board definition file and the files that define the monster and trap types are the following at the moment: C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\ExampleBoard.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\DefaultMonster.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\DefaultTrap.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\ExampleMonsters.txt, C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\ExampleTraps.txt
+If you wish to change those, either rewrite the script in those files, or change the address of the used files in the FileNames.cs file.
+Welcome to the game! The board definition file and the files that define the monster and trap types are the following at the moment: ExampleBoard.txt, DefaultMonster.txt, DefaultTrap.txt, ExampleMonsters.txt, ExampleTraps.txt
+If you wish to change those, either rewrite the script in those files, or change the address of the used files in the FileNames.cs file.
+If you wish to know about how to move with the player use the "help" command in a round.
+Welcome to the game! The board definition file and the files that define the monster and trap types are the following at the moment: 
+ExampleBoard.txt, DefaultMonster.txt, DefaultTrap.txt, ExampleMonsters.txt, ExampleTraps.txt
+If you wish to change those, either rewrite the script in those files, or change the address of the used files in the FileNames.cs file.
+If you wish to know about how to move with the player use the "help" command in a round.
+Welcome to the game! The board definition file and the files that define the monster and trap types are the following at the moment:
+ExampleBoard.txt, DefaultMonster.txt, DefaultTrap.txt, ExampleMonsters.txt, ExampleTraps.txt
+The following two files and the defined monster and trap type that is defined by them are free to use in any board at any time:
+DefaultMonster.txt, DefaultTrap.txt
+If you wish to know about how to move with the player use the "help" command in a round.
+Welcome to the game! The board definition file and the files that define the monster and trap types are the following at the moment:
+ExampleBoard.txt, DefaultMonster.txt, DefaultTrap.txt, ExampleMonsters.txt, ExampleTraps.txt
+The following two files and the defined monster and trap type that is defined by them are free to use in any board at any time:
+DefaultMonster.txt, DefaultTrap.txt
+Press the corresponding number to the following options!
+1) Learn more about how to define the monster and/or trap types
+2) Learn more about how to define the board!
+3) Provide a full file path where the monster and/or trap types defining file, that you created is stored.
+4) Provide a full path to a board defining file containing the defined types and play a game of your own.
+Press any other button to start the predefined game!
+
+If you wish to know about how to move with the player use the "help" command in a round.

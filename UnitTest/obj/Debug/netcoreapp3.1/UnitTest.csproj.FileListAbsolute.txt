@@ -1,11 +1,11 @@
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\testhost.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\testhost.exe
-C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Microsoft.TestPlatform.PlatformAbstractions.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\NUnit3.TestAdapter.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\NUnit3.TestAdapter.pdb
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\nunit.engine.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\nunit.engine.api.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\nunit.engine.core.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\testcentric.engine.metadata.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\UnitTest.deps.json
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\UnitTest.runtimeconfig.json
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\UnitTest.runtimeconfig.dev.json
@@ -14,6 +14,7 @@ C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\U
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Antlr4.Runtime.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.CodeCoverage.Shim.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Microsoft.TestPlatform.CoreUtilities.dll
+C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Microsoft.TestPlatform.PlatformAbstractions.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Microsoft.TestPlatform.CommunicationUtilities.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\Microsoft.TestPlatform.CrossPlatEngine.dll
@@ -99,4 +100,3 @@ C:\Users\Dana\source\repos\visual studio 2019\UnitTest\obj\Debug\netcoreapp3.1\U
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\obj\Debug\netcoreapp3.1\UnitTest.dll
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\obj\Debug\netcoreapp3.1\UnitTest.pdb
 C:\Users\Dana\source\repos\visual studio 2019\UnitTest\obj\Debug\netcoreapp3.1\UnitTest.genruntimeconfig.cache
-C:\Users\Dana\source\repos\visual studio 2019\UnitTest\bin\Debug\netcoreapp3.1\testcentric.engine.metadata.dll

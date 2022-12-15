@@ -460,7 +460,6 @@ namespace LabWork1github.Visitors
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    //distance is 1 as default value
                     for (int i = 0; i <= command.Distance; i++)
                     {
                         if (provider.GetMe().Place.X - i >= 0)
@@ -684,7 +683,6 @@ namespace LabWork1github.Visitors
             switch (command.Direction)
             {
                 case Directions.FORWARD:
-                    //distance is 1 as default value
                     for (int i = 0; i < command.Distance; i++)
                     {
                         if (provider.GetMe().Place.X - i >= 0)

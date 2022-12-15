@@ -11,7 +11,7 @@ namespace UnitTest
 {
     public class ParameterTests
     {
-        public static bool MonsterTypeLoader(string fileName)
+        public static bool EnemyTypeLoader(string fileName)
         {
             string text = System.IO.File.ReadAllText(fileName);
             AntlrInputStream inputStream = new AntlrInputStream(text);
@@ -39,28 +39,14 @@ namespace UnitTest
             return visitor.ErrorFound;
         }
 
-        public static bool TrapTypeLoader(string fileName)
-        {
-            string text = System.IO.File.ReadAllText(fileName);
-            AntlrInputStream inputStream = new AntlrInputStream(text);
-            DynamicEnemyGrammarLexer DynamicEnemyGrammarLexer_ = new DynamicEnemyGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(DynamicEnemyGrammarLexer_);
-            DynamicEnemyGrammarParser DynamicEnemyGrammarParser = new DynamicEnemyGrammarParser(commonTokenStream);
-            DynamicEnemyGrammarParser.DefinitionContext chatContext = DynamicEnemyGrammarParser.definition();
-            DynamicEnemyGrammarVisitor visitor = new DynamicEnemyGrammarVisitor();
-            if ((bool)visitor.Visit(chatContext))
-                Console.WriteLine(visitor.Error);
-            return visitor.ErrorFound;
-        }
-
         [SetUp]
         public void Setup()
         {
             Program.Characters.Clear();
             Program.CharacterTypes.Clear();
             Program.Board = new Board();
-            TrapTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
-            MonsterTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
+            EnemyTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
+            EnemyTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
         }
 
         public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
@@ -701,8 +687,8 @@ namespace UnitTest
             Program.Characters.Clear();
             Program.CharacterTypes.Clear();
             Program.Board = new Board();
-            ParameterTests.TrapTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
-            ParameterTests.MonsterTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
+            ParameterTests.EnemyTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
+            ParameterTests.EnemyTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
         }
         public DynamicEnemyGrammarParser.DefinitionContext PreparingEnemyGrammar(string fileText)
         {
@@ -5180,8 +5166,8 @@ namespace UnitTest
             Program.Characters.Clear();
             Program.CharacterTypes.Clear();
             Program.Board = new Board();
-            ParameterTests.TrapTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
-            ParameterTests.MonsterTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
+            ParameterTests.EnemyTypeLoader(FileNames.DEFAULT_TRAP_FILE_ADDRESS);
+            ParameterTests.EnemyTypeLoader(FileNames.DEFAULT_MONSTER_FILE_ADDRESS);
         }
         public BoardGrammarParser.ProgramContext PreparingBoardGrammar(string fileText)
         {

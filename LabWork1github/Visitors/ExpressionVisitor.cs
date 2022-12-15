@@ -29,7 +29,6 @@ namespace LabWork1github
         {
             this.Visit(context);
         }
-        //this is a visitor so it will be called for the nextBoolExpression as well if present
         public override object VisitBoolExpression([NotNull] BoolExpressionContext context)
         {
             if(context.numberExpression() != null && context.numberExpression().Length > 1)
@@ -69,9 +68,8 @@ namespace LabWork1github
                         return base.VisitBoolExpression(context);
 
 
-                    //if a NumberExpression is not a number, then there is no "nextNumberExpression" and such
-                    //and there must be an attribute, if there isn't then a check failed and we mustn't check
-                    //a failed expression again
+                    //if a NumberExpression is not a number, then it can be only a place,
+                    //a type or a name, or there is an error
                     if(context.numberExpression().ElementAt(0).something().attribute() != null &&
                         context.numberExpression().ElementAt(1).something().attribute() != null)
                     {
@@ -318,9 +316,6 @@ namespace LabWork1github
                                 ErrorList += context.GetText() + "\n";
                                 CheckFailed = true;
                         }
-        //by this we rerstrict the deepness of the reference for types, no need for further levels, the same things can be represented like this as well
-        //and it would not be logical to have e.g. type.type.type, or spawn_type.type they should return the same type as the first one anyway
-        //we can't ensure now that it will be a trap or a monster referred to under type, or a player, so the error for this can only be provided in runtime
                     if ((context.possibleAttributes().possibleAttributes().ElementAt(0).GetText().Equals("spawn_type"))
                         &&
                         (!(context.possibleAttributes().possibleAttributes().ElementAt(1).GetText().Equals("health") ||

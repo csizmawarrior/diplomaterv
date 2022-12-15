@@ -1,32 +1,3 @@
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\LabWork1github.exe.config
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\LabWork1github.exe
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\LabWork1github.pdb
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\Antlr4.Runtime.dll
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\bin\Debug\Antlr4.Runtime.xml
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarLexer.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarParser.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarListener.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarBaseListener.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarVisitor.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\BoardGrammarBaseVisitor.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarLexer.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarParser.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarListener.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarBaseListener.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarVisitor.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\PlayerGrammarBaseVisitor.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.csproj.Antlr4GeneratedCodeFileListAbsolute.txt
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.csproj.CoreCompileInputs.cache
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.csproj.CopyComplete
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.exe
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.pdb
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarLexer.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarParser.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarListener.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarBaseListener.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarVisitor.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\DynamicEnemyGrammarBaseVisitor.cs
-C:\Users\Dana\source\repos\LabWork1github\LabWork1github\obj\Debug\LabWork1github.csprojAssemblyReference.cache
 C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\LabWork1github.exe.config
 C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\LabWork1github.exe
 C:\Users\Dana\source\repos\visual studio 2019\LabWork1github\bin\Debug\LabWork1github.pdb

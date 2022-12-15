@@ -594,7 +594,6 @@ namespace LabWork1github
             {
                 ErrorFound = true;
             }
-            //It doesn't seem to contain the whole while expression, or doesn't recognize it
             ExpressionVisitor ConditionHelper = new ExpressionVisitor(context.boolExpression(), type);
             ConditionHelper.CheckBool(context.boolExpression());
             if (ConditionHelper.CheckFailed)

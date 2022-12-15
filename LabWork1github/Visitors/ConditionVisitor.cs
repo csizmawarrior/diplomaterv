@@ -306,7 +306,6 @@ namespace LabWork1github.Visitors
                     }
                 }
             }
-            //because then it is ROUND
             if (context.attribute() == null && context.ROUND() != null)
                 return true;
 
